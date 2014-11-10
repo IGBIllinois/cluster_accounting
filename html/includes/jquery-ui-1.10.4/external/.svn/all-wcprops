@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/cluster_accounting/!svn/ver/146/trunk/html/includes/jquery-ui-1.10.4/external
+END
+jquery.mousewheel.js
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/cluster_accounting/!svn/ver/146/trunk/html/includes/jquery-ui-1.10.4/external/jquery.mousewheel.js
+END
+qunit.js
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/cluster_accounting/!svn/ver/146/trunk/html/includes/jquery-ui-1.10.4/external/qunit.js
+END
+globalize.js
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/cluster_accounting/!svn/ver/146/trunk/html/includes/jquery-ui-1.10.4/external/globalize.js
+END
+globalize.culture.de-DE.js
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/cluster_accounting/!svn/ver/146/trunk/html/includes/jquery-ui-1.10.4/external/globalize.culture.de-DE.js
+END
+jshint.js
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/cluster_accounting/!svn/ver/146/trunk/html/includes/jquery-ui-1.10.4/external/jshint.js
+END
+globalize.culture.ja-JP.js
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/cluster_accounting/!svn/ver/146/trunk/html/includes/jquery-ui-1.10.4/external/globalize.culture.ja-JP.js
+END
+qunit.css
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/cluster_accounting/!svn/ver/146/trunk/html/includes/jquery-ui-1.10.4/external/qunit.css
+END

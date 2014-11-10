@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/cluster_accounting/!svn/ver/148/trunk/html/includes/PHPExcel_1.8.0/Classes/PHPExcel/Shared/JAMA
+END
+QRDecomposition.php
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/cluster_accounting/!svn/ver/148/trunk/html/includes/PHPExcel_1.8.0/Classes/PHPExcel/Shared/JAMA/QRDecomposition.php
+END
+CholeskyDecomposition.php
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/cluster_accounting/!svn/ver/148/trunk/html/includes/PHPExcel_1.8.0/Classes/PHPExcel/Shared/JAMA/CholeskyDecomposition.php
+END
+CHANGELOG.TXT
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/cluster_accounting/!svn/ver/148/trunk/html/includes/PHPExcel_1.8.0/Classes/PHPExcel/Shared/JAMA/CHANGELOG.TXT
+END
+SingularValueDecomposition.php
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/cluster_accounting/!svn/ver/148/trunk/html/includes/PHPExcel_1.8.0/Classes/PHPExcel/Shared/JAMA/SingularValueDecomposition.php
+END
+LUDecomposition.php
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/cluster_accounting/!svn/ver/148/trunk/html/includes/PHPExcel_1.8.0/Classes/PHPExcel/Shared/JAMA/LUDecomposition.php
+END
+Matrix.php
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/cluster_accounting/!svn/ver/148/trunk/html/includes/PHPExcel_1.8.0/Classes/PHPExcel/Shared/JAMA/Matrix.php
+END
+EigenvalueDecomposition.php
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/cluster_accounting/!svn/ver/148/trunk/html/includes/PHPExcel_1.8.0/Classes/PHPExcel/Shared/JAMA/EigenvalueDecomposition.php
+END

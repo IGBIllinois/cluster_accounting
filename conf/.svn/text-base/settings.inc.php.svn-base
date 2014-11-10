@@ -1,0 +1,42 @@
+<?php
+////////////////////////////////////
+//
+//	settings.inc.php
+//
+//	Settings for the scripts.
+//
+//	David Slater
+//	May 2009
+//
+////////////////////////////////////
+
+define("__VERSION__","1.37");
+define("__TITLE__","Biocluster Accounting, University of Illinois Urbana-Champaign");
+define("__MYSQL_HOST__","127.0.0.1");
+define("__MYSQL_USER__","accounting_test");
+define("__MYSQL_PASSWORD__","d3revQNeRRV2txAU");
+define("__MYSQL_DATABASE__","cluster_accounting");
+define("__LDAP_HOST__","auth.igb.uiuc.edu");
+define("__LDAP_BASE_DN__","dc=igb,dc=uiuc,dc=edu");
+define("__LDAP_PEOPLE_OU__","ou=people,dc=igb,dc=uiuc,dc=edu");
+define("__LDAP_GROUP_OU__","ou=group,dc=igb,dc=uiuc,dc=edu");
+define("__LDAP_BIND_USER__","");
+define("__LDAP_BIND_PASS__","");
+define("__LDAP_SSL__",FALSE);
+define("__LDAP_PORT__",389);
+define("__TORQUE_ACCOUNTING__","/var/spool/torque/server_priv/accounting/");
+define("__TORQUE_JOBS_LOG__","/var/spool/torque/job_logs/");
+
+define("__GALAXY_USER__","galaxy");
+define("__ADMIN_EMAIL__","dslater@igb.illinois.edu");
+define("__SESSION_NAME__","cluster_accounting");
+define("__SESSION_TIMEOUT__",3600);
+
+define("__DATA_MIN_BILL__",1.00);
+define("__RESERVE_PROCESSORS_FACTOR__",0.1);
+define("__RESERVE_MEMORY_FACTOR__",0.1);
+define("__ROOT_DATA_DIR__","/home/a-m /home/n-z /home/labs /home/groups /home/themes");
+
+define("__LOG_FILE__","/var/www/html/eclipse/cluster_accounting/log/log.txt");
+define("__ENABLE_LOG__",true);
+?>
