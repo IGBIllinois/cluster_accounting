@@ -215,7 +215,7 @@ class queue {
 	}
 
 	public function verify_queue_name($name) {
-		if (!($name == "") && (preg_match('/^[_a-z0-9]+$/',$name))) {
+		if (!($name == "") && (preg_match('/^[-_a-z0-9]+$/',$name))) {
 			return true;
 		}
 		return false;
