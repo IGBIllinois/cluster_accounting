@@ -27,7 +27,7 @@ define("__LDAP_PORT__",389);
 define("__TORQUE_ACCOUNTING__","/var/spool/torque/server_priv/accounting/");
 define("__TORQUE_JOBS_LOG__","/var/spool/torque/job_logs/");
 
-define("__GALAXY_USER__",""
+define("__GALAXY_USER__","");
 define("__ADMIN_EMAIL__","");
 define("__SESSION_NAME__","cluster_accounting");
 define("__SESSION_TIMEOUT__",3600);

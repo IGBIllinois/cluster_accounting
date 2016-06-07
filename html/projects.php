@@ -72,7 +72,13 @@ foreach ($projects as $project) {
 $users = user_functions::get_users($db);
 $owner_html = "<select name='owner' id='owner_input' class='input'>";
 foreach ($users as $owner) {
-	$owner_html .= "<option value='" . $owner['user_id'] . "'>" . $owner['user_name'] . "</option>";
+	if ((isset($_POST['owner'])) && ($_POST['owner'] == $owner['user_id'])) {
+		$owner_html .= "<option value='" . $owner['user_id'] . "' selected='selected'>" . $owner['user_name'] . "</option>";
+	}
+	else {
+		$owner_html .= "<option value='" . $owner['user_id'] . "'>" . $owner['user_name'] . "</option>";
+	}
+
 }
 $owner_html .= "</select>";
 ?>

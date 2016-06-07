@@ -107,7 +107,7 @@ if (isset($_POST['login'])) {
 					echo $message;
 } ?>
 
-				<em>&copy 2012 University of Illinois Board of Trustees</em>
+				<em>&copy 2012-<?php echo date('Y'); ?> University of Illinois Board of Trustees</em>
 			</div>
 		</div>
 	</div>
