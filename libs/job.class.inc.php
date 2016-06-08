@@ -149,8 +149,7 @@ class job {
 			}
 		}
 		else {
-			return array('RESULT'=>false,
-					'MESSAGE'=>"Job Number: " . $job_number . " already exists in database.");
+			return array('RESULT'=>false);
 		}
 
 	}
