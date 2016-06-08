@@ -1,7 +1,7 @@
-cluster_accounting
-==================
+#Cluster Acconting
 
 PBS Torque Job Acounting Program
+This reads the PBS Torque log files and inserts them into a database.  There is a web interface to view the jobs and to charge usage based on the queue the job was submitted to.
 
 #Installation
 
@@ -22,7 +22,5 @@ PBS Torque Job Acounting Program
 0 4 L * * root php scripts/data.php
 0 4 1 * * root php scripts/email.php
 ```
-This will grab accounting information everyday.  Calculate data usage on last day
-of the month and email users their job information on the 1st of the month.
 7.  All Done.
 
