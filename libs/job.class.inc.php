@@ -79,7 +79,6 @@ class job {
 		$job_number = $job_data['job_number'];
 		$split_job = $this->split_job_number($job_data['job_number']);
 		if (!$this->job_exists($job_number)) {
-
 			$this->queue = new queue($this->db,0,$job_data['job_submission_time'],$job_data['job_queue_name']);
 			$user = new user($this->db,$ldap,0,$job_data['job_user']);
 			

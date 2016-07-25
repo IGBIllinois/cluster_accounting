@@ -10,6 +10,8 @@
 
 class torque_functions {
 
+	const MAX_JOB_SCRIPT_LENGTH = 65535;
+
 	public static function add_torque_accounting($db,$ldap,$job_data,$job_log_xml) {
 		list(,$status,$job_number,$parameters_string) = explode(";",$job_data);
 
@@ -197,6 +199,9 @@ class torque_functions {
 					$job_script = htmlspecialchars($job_script,ENT_QUOTES,'UTF-8');
 					$job_script = addslashes($job_script);
 					$job_script = trim(rtrim($job_script));
+					if (strlen($job_script) > self::MAX_JOB_SCRIPT_LENGTH) {
+						$job_script = substr($job_script,0,self::MAX_JOB_SCRIPT_LENGTH);
+					}
 					return $job_script;
 			
 				}
@@ -258,7 +263,6 @@ class torque_functions {
 			if (count($result) && (trim(rtrim($result[0]['script'])) == "") && ($qsub_script != "")) {
 				$sql = "UPDATE jobs SET job_qsub_script='" . $qsub_script . "' ";
                                 $sql .= "WHERE job_id='" . $result[0]['job_id'] . "' LIMIT 1";
-				echo $sql . "\n";
 				$final_result = $db->non_select_query($sql);
 				if ($final_result) {
 					return array('RESULT'=>true,'MESSAGE'=>$job_number . " job script successfully added");

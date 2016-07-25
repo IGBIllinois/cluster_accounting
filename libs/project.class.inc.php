@@ -116,11 +116,6 @@ class project {
 		else {
 			$error = false;
 			$message = "";
-			if (!$this->verify_project_name($name)) {
-                        	$error = true;
-	                        $message .= "<div class='alert'>Please enter a valid project name.</div>";
-        	        }
-
                 	if (!$this->verify_ldap_group($ldap_group)) {
                         	$error = true;
 	                        $message .= "<div class='alert'>Please enter a valid LDAP group.</div>";

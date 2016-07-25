@@ -68,7 +68,6 @@ class db {
 	//$sql - sql string to run on the database
 	//returns the id number of the new record, 0 if it fails
 	public function insert_query($sql) {
-
 		$result = $this->link->exec($sql);
 		if ($result === false) {
 			functions::log_message("INSERT ERROR: " . $sql);
