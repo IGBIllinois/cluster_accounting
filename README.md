@@ -1,11 +1,11 @@
-#Cluster Acconting
+# Cluster Acconting
 
 PBS Torque Job Acounting Program
 This reads the PBS Torque log files and inserts them into a database.  There is a web interface to view the jobs and to charge usage based on the queue the job was submitted to.
 
-#Installation
+# Installation
 
-##Prerequisites
+## Prerequisites
 - PHP
 - PHP Mysql
 - PHP LDAP
