@@ -20,7 +20,7 @@ class data_usage {
         public function __destruct() {
         }
 	
-	public function create($data_dir_id,$data_cost_dir,$bytes,$files) {
+	public function create($data_dir_id,$data_cost_dir,$bytes,$files = 0) {
 		$data_dir = new data_dir($this->db,$data_dir_id);
 		$project = new project($this->db,$data_dir->get_project_id());
 	
@@ -44,7 +44,7 @@ class data_usage {
 		return $this->db->build_insert('data_usage',$insert_array);
 
 	}
-
+	
 	public function get_bytes() {
 		return $bytes;
 	}

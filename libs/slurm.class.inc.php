@@ -2,17 +2,17 @@
 
 ///////////////////////////
 //
-// torque_functions.class.inc.php
+// slurm.class.inc.php
 //
 // helper functions to help convert accounting string into needed format
 //
 ///////////////////////////
 
-class torque_functions {
+class slurm {
 
 	const MAX_JOB_SCRIPT_LENGTH = 65535;
 
-	public static function add_torque_accounting($db,$ldap,$job_data,$job_log_xml) {
+	public static function add_accounting($db,$ldap,$job_data,$job_log_xml) {
 		list(,$status,$job_number,$parameters_string) = explode(";",$job_data);
 
 		if ($status == "E") {

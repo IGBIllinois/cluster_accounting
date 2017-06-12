@@ -24,6 +24,7 @@ define("__LDAP_BIND_USER__","");
 define("__LDAP_BIND_PASS__","");
 define("__LDAP_SSL__",FALSE);
 define("__LDAP_PORT__",389);
+define("__JOB_SCHEDULER__","");
 define("__TORQUE_ACCOUNTING__","/var/spool/torque/server_priv/accounting/");
 define("__TORQUE_JOBS_LOG__","/var/spool/torque/job_logs/");
 

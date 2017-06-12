@@ -45,6 +45,9 @@ class settings {
 		return __TITLE__; 
 	}
 
+	public static function get_job_scheduler() {
+		return __JOB_SCHEDULER__;
+	}
 	public static function get_server_name() {
                 $server_name = substr($_SERVER['SERVER_NAME'],0,strpos($_SERVER['SERVER_NAME'],"."));
                 return $server_name;

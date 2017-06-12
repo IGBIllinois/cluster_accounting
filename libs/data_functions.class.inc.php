@@ -2,6 +2,8 @@
 
 class data_functions {
 
+	const PERCENTILE = 0.95;
+
 	public static function add_data_usage($db,$data_dir_id,$data) {
 	        $backup = explode("\t",$data[0]);
         	$no_backup = explode("\t",$data[1]);
@@ -15,6 +17,16 @@ class data_functions {
 	        $data_usage->create($data_dir_id,"no_backup",$no_backup[1],$no_backup[2]);
 	}
 
+	public static function add_data_usage2($db,$data_dir_id,$data_cost_id,$bytes) {
+		$data_dir = new data_dir($db,$data_dir_id);
+		$data_usage = new data_usage($db);
+		$msg = $data_dir->get_directory() . ": " . $bytes . " Bytes";
+		functions::log_message($msg);
+		$result = $data_usage->create($data_dir_id,$data_cost_id,$bytes);
+		
+
+
+	}
 	public static function get_directories($db,$default = 1,$start,$count) {
 		$sql = "SELECT data_dir.*, projects.project_name, projects.project_id ";
 		$sql .= "FROM data_dir ";
@@ -84,7 +96,7 @@ class data_functions {
 		$sql = "SELECT data_dir.data_dir_path as 'Directory', ";
 	        $sql .= "ROUND(data_usage_bytes / 1099511627776,3) as 'Terabytes', ";
         	$sql .= "ROUND(data_cost_value,2) as 'Rate ($/Terabyte)', ";
-	        $sql .= "data_cost_dir as 'Data Type', ";
+	        $sql .= "data_cost_type as 'Data Type', ";
         	$sql .= "ROUND(data_usage_total_cost,2) as 'Total Cost', ";
 	        $sql .= "ROUND(data_usage_billed_cost,2) as 'Billed Cost', ";
         	$sql .= "projects.project_name as 'Project', ";
@@ -136,6 +148,16 @@ class data_functions {
 		
 		
 		
+	}
+
+	public static function calculate_cost($db,$data_dir_id,$month,$year) {
+		$sql = "SELECT data_usage_bytes as bytes FROM data_usage WHERE data_usage_data_dir_id='" . $data_dir_id . "' ";
+		$sql .= "AND MONTH(data_usage.data_usage_time)='" . $month . "' ";
+		$sql .= "AND YEAR(data_usage.data_usage_time)='" . $year . "' ";
+		$sql .= "ORDER BY data_usage.data_usage_bytes ASC";
+		$result = $db->query($sql);
+		print_r($result);					
+
 	}
 }
 ?>

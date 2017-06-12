@@ -5,21 +5,20 @@ class data_cost {
 	////////////////Private Variables//////////
 	private $db; //database object
 	private $id;
-	private $directory;
+	private $type;
 	private $cost;
 	private $time_created;
 	private $enabled;
-	
+
+	const bytes_to_terabytes = 1099511627776;	
+
 	////////////////Public Functions///////////
 	
-	public function __construct($db,$id = 0,$directory = "") {
+	public function __construct($db,$id = 0) {
 		$this->db = $db;
 		
 		if ($id != 0) {
 			$this->get_data_cost($id);
-		}
-		elseif (($directory == "backup") || ($directory == "no_backup")) {
-			$this->load_by_name($directory);
 		}
 	}
 	public function __destruct() {
@@ -28,8 +27,8 @@ class data_cost {
 	public function get_data_cost_id() {
 		return $this->id;
 	}
-	public function get_directory() {
-		return $this->directory;
+	public function get_type() {
+		return $this->type;
 	}
 	public function get_cost() {
 		return $this->cost;
@@ -45,7 +44,7 @@ class data_cost {
 	}
 
 	public function update_cost($cost) {
-		$insert_array = array('data_cost_dir'=>$this->get_directory(),
+		$insert_array = array('data_cost_type'=>$this->get_type(),
 				'data_cost_value'=>$cost);
 		$result = $this->db->build_insert("data_cost",$insert_array);
 		if ($result) {
@@ -88,7 +87,7 @@ class data_cost {
 		$result = $this->db->query($sql);
 		if ($result) {
 			$this->id = $result[0]['data_cost_id'];
-			$this->directory = $result[0]['data_cost_dir'];
+			$this->type = $result[0]['data_cost_type'];
 			$this->cost = $result[0]['data_cost_value'];
 			$this->time_created = $result[0]['data_cost_time'];
 			$this->enabled = $result[0]['data_cost_enabled'];
@@ -96,16 +95,8 @@ class data_cost {
 		}
 		
 	}
-	private function load_by_name($directory) {
-		$sql = "SELECT data_cost_id FROM data_cost ";
-		$sql .= "WHERE data_cost_enabled='1' AND ";
-		$sql .= "data_cost_dir='" . $directory . "' LIMIT 1 ";
-		$result = $this->db->query($sql);
-		if ($result) {
-			$this->get_data_cost($result[0]['data_cost_id']);
-		}
-	}
+	
 	private function convert_terabytes($bytes) {
-		return $bytes / 1099511627776;
+		return $bytes / self::bytes_to_terabytes;
 	}
 }

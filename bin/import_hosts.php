@@ -31,7 +31,7 @@ else {
 	$number_new_jobs = 0;
 	while (($data = fgets($file_handle)) !== FALSE) {
 
-		$result = torque_functions::add_exec_host($db,$data);
+		$result = torque::add_exec_host($db,$data);
 		if ($result['RESULT']) {
 			$number_new_jobs++;
 		}

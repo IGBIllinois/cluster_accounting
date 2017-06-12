@@ -22,7 +22,9 @@ else {
 			$data_dir = new data_dir($db,$directory['data_dir_id']);
 			$size = $data_dir->get_dir_size();
 			echo "Directory: " . $data_dir->get_directory() . " Size: " . $size . " Bytes\n";
-			$data_dir->add_usage($size);
+			//$data_dir->add_usage($size);
+			data_functions::calculate_cost($db,$directory['data_dir_id'],6,2017);
+
 	}
 	
 }

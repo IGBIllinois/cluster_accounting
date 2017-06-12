@@ -29,7 +29,7 @@ else {
 	$file_handle = @fopen(__TORQUE_ACCOUNTING__ . "/" . $torque_date,"r") or
 		die(functions::log_message("Error: Torque Accounting file not found in " . __TORQUE_ACCOUNTING__));
 	$number_new_jobs = 0;
-	$job_log_xml = torque_functions::get_job_log_xml($torque_date);
+	$job_log_xml = torque::get_job_log_xml($torque_date);
 	if (!$job_log_xml) {
 		functions::log_message("Malformed " . functions::get_torque_job_dir() . $torque_date);
 		print_r(libxml_get_errors());
@@ -37,7 +37,7 @@ else {
 	}
 	while (($data = fgets($file_handle)) !== FALSE) {
 
-		$result = torque_functions::add_torque_accounting($db,$ldap,$data,$job_log_xml);
+		$result = torque::add_accounting($db,$ldap,$data,$job_log_xml);
 		if ($result['RESULT']) {
 			$number_new_jobs++;
 		}
