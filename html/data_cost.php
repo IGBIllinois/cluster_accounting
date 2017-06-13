@@ -20,7 +20,7 @@ foreach ($data_costs as $data_cost) {
 	$data_costs_html .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . "'>";
 	$data_costs_html .= "<input type='hidden' name='data_cost_id' value='" . $cost_object->get_data_cost_id() . "'>";
 	$data_costs_html .= "<table class='table table-bordered table-striped table-condensed'>";
-	$data_costs_html .= "<thead><th colspan='2'>" . $cost_object->get_directory() . "</th>";
+	$data_costs_html .= "<thead><th colspan='2'>" . $cost_object->get_type() . "</th>";
 	$data_costs_html .= "<tr><th>Cost (per TB)</th><th>Time Set</th></tr>";
 	$data_costs_html .= "</thead>";
 	$data_costs_html .= "<tr>";

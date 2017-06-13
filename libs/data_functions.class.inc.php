@@ -82,12 +82,12 @@ class data_functions {
 
 	public static function get_data_costs($db) {
 		$sql = "SELECT data_cost.data_cost_id as id, ";
-		$sql .= "data_cost.data_cost_dir as directory, ";
+		$sql .= "data_cost.data_cost_type as type, ";
 		$sql .= "ROUND(data_cost_value,2) as cost, ";
 		$sql .= "data_cost_time as time ";
 		$sql .= "FROM data_cost ";
 		$sql .= "WHERE data_cost_enabled='1' ";
-		$sql .= "ORDER BY directory ";
+		$sql .= "ORDER BY type ";
 		return $db->query($sql);	
 	}
 
