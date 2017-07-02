@@ -1,1 +1,4 @@
 /conf/settings.inc.php
+/vendor
+/html/vendor
+/components
