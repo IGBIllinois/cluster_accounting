@@ -8,13 +8,14 @@ require_once 'includes/session.inc.php';
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<link rel='stylesheet' href='includes/jquery-ui-1.10.0.custom.css'>
+<!--<link rel='stylesheet' href='includes/jquery-ui-1.10.0.custom.css'>-->
+<link rel='stylesheet' href='vendor/components/jqueryui/themes/base/jquery-ui.css'>
 <script src='includes/main.inc.js' type='text/javascript'></script>
-<script src='includes/jquery-2.1.0/jquery-2.1.0.min.js' type='text/javascript'></script>
-<script src='includes/jquery-ui-1.10.4/ui/jquery-ui.js' type='text/javascript'></script>
+<script src='vendor/components/jquery/jquery.min.js' type='text/javascript'></script>
+<script src='vendor/components/jqueryui/ui/minified/jquery-ui.min.js' type='text/javascript'></script>
 <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 <link rel="stylesheet" type="text/css"
-	href="includes/bootstrap/css/bootstrap.min.css">
+	href="vendor/components/bootstrap/css/bootstrap.min.css">
 <title><?php echo __TITLE__; ?></title>
 
 </head>

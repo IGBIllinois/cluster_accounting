@@ -63,9 +63,7 @@ if (isset($_POST['login'])) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <link rel="stylesheet" type="text/css"
-	href="includes/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css"
-	href="includes/bootstrap/css/bootstrap-responsive.min.css">
+	href="vendor/components/bootstrap/css/bootstrap.min.css">
 <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 <title><?php echo __TITLE__; ?></title>
 </head>

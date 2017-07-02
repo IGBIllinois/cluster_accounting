@@ -47,6 +47,7 @@ class db {
 		try {
 			$this->link = new PDO("mysql:host=$host;dbname=$database",$username,$password,
 					array(PDO::ATTR_PERSISTENT => true));
+			$this->link->setAttribute(PDO::ATTR_EMULATE_PREPARES,true);
 			$this->host = $host;
 			$this->database = $database;
 			$this->username = $username;

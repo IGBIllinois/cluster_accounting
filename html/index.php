@@ -13,7 +13,7 @@ $data_costs = data_functions::get_data_costs($db);
 $data_html = "";
 foreach ($data_costs as $value) {
 	$data_html .= "<tr>";
-	$data_html .= "<td>" . $value['directory'] . "</td>";
+	$data_html .= "<td>" . $value['type'] . "</td>";
 	$data_html .= "<td>$" . $value['cost'] . "</td>";
 	$data_html .= "</tr>";
 
@@ -59,8 +59,6 @@ foreach ($data_costs as $value) {
 
 <div class='span8'>
 <p><h3>Data Storage Costs</h3>
-<p>Data Storage Costs is calculated by finding all files inside no_backup folders 
-and then all other files.
 <p><table class='table table-bordered table-striped'>
 	<thead>
 		<tr>
