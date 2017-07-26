@@ -370,29 +370,31 @@ class user {
 
 		$subject = "Biocluster Accounting Bill - " . functions::get_pretty_date($start_date) . "-" . functions::get_pretty_date($end_date);
 		$to = $this->get_email();
-		$message = "<p>Biocluster Accounting Bill - " . functions::get_pretty_date($start_date) . "-" . functions::get_pretty_date($end_date) . "</p>";
-		$message .= "<br>Name: " . $this->get_full_name();
-		$message .= "<br>Username: " . $this->get_username();
-		$message .= "<br>Start Date: " . functions::get_pretty_date($start_date);
-		$message .= "<br>End Date: " . functions::get_pretty_date($end_date);
-		$message .= "<br>Number of Jobs: " . $user_stats->get_num_jobs();
-		$message .= "<p>Below is your bill.  You can go to https://biocluster.igb.illinois.edu/accounting/ ";
-		$message .= "to view a detail listing of your jobs.";
-		$message .= "<p>Cluster Usage</p>";
+		$from = $admin_email; 
+
+		$html_message = "<p>Biocluster Accounting Bill - " . functions::get_pretty_date($start_date) . "-" . functions::get_pretty_date($end_date) . "</p>";
+		$html_message .= "<br>Name: " . $this->get_full_name();
+		$html_message .= "<br>Username: " . $this->get_username();
+		$html_message .= "<br>Start Date: " . functions::get_pretty_date($start_date);
+		$html_message .= "<br>End Date: " . functions::get_pretty_date($end_date);
+		$html_message .= "<br>Number of Jobs: " . $user_stats->get_num_jobs();
+		$html_message .= "<p>Below is your bill.  You can go to https://biocluster.igb.illinois.edu/accounting/ ";
+		$html_message .= "to view a detail listing of your jobs.";
+		$html_message .= "<p>Cluster Usage</p>";
 		
-		$message .= $this->get_jobs_table($start_date,$end_date);
-
+		$html_message .= $this->get_jobs_table($start_date,$end_date);
+		$html_message .= "<p>Data Usage</p>";	
+		$html_message .= $this->get_data_table($month,$year);
 
 		
-		$message .= "<p>Data Usage</p>";	
-		$message .= $this->get_data_table($month,$year);
-
-
-		$headers = "From: " . $admin_email . "\r\n";
-		$headers .= "Content-Type: text/html; charset=iso-8859-1" . "\r\n";
-		mail($to,$subject,$message,$headers," -f " . $admin_email);
-
-
+		$extraheaders = array("From"=>$from,
+				"Subject"=>$subject
+		);
+		$message = new Mail_mime();
+		$message->setHTMLBody($html_message);
+		$headers= $message->headers($extraheaders);
+		$mail = Mail::factory("mail");
+		$mail->send($to,$headers,$body);
 
 	}
 

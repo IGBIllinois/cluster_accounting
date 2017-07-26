@@ -137,6 +137,27 @@ class functions {
                 return __ENABLE_LOG__;
         }
 
+	public static function get_job_scheduler() {
+		return __JOB_SCHEDULER__;
+	}
+
+	public static function verify_date($inDate) {
+		$format = "Y-m-d H:i:s";
+		$date = DateTime::createFromFormat($format,$inDate);
+		return $date && ($date->format($format) === $inDate);
+		
+	}
+
+	public static function recursive_array_search($needle,$haystack) {
+		foreach($haystack as $key=>$value) {
+			$current_key=$key;
+			if ($needle===$value OR (is_array($value) && self::recursive_array_search($needle,$value) !== false)) {
+				return $current_key;
+        		}
+		}
+		return false;
+	}
+
 }
 
 ?>

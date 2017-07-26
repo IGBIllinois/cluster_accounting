@@ -187,14 +187,15 @@ if ($job->get_cpu_time() * settings::get_reserve_processor_factor() > ($job->get
 if ($job->get_submitted_project() !== $job->get_project()->get_name()) {
 	echo "<div class='alert alert-error span8'>Please use the correct project when submitting jobs.  This job was charged to your default project.</div>";
 }
-if (!strpos($job->get_qsub_script(),'module load') && $job->get_qsub_script_exists()) {
+if (!strpos($job->get_job_script(),'module load') && $job->get_job_script_exists()) {
 	echo "<div class='alert alert-error span8'>Please use the module command in your qsub script.</div>";
 }
 ?>
 </div>
 <div class='row span12'>
-<a href='job_script.php?job=<?php echo $job->get_full_job_number(); ?>' class='btn btn-primary'>View qsub Script</a>&nbsp
-<?php
+<?php if ($job->get_job_script_exists()) {
+	echo "<a href='job_script.php?job=" . $job->get_full_job_number() . "' class='btn btn-primary'>View Job Script</a>&nbsp";
+}
 if ($login_user->is_admin()) {
 	echo "<a href='edit_job.php?job=" . $job->get_full_job_number() . "' class='btn btn-primary'>Edit Job</a>";
 

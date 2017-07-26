@@ -30,13 +30,13 @@ else {
 ?>
 <h3>Job Script - <?php echo $job->get_full_job_number(); ?></h3>
 <?php
-	if (!strpos($job->get_qsub_script(),'module load') && $job->get_qsub_script_exists()) {
-        	echo "<div class='alert alert-error span8'>Please use the module command in your qsub script.</div>";
+	if (!strpos($job->get_job_script(),'module load') && $job->get_job_script_exists()) {
+        	echo "<div class='alert alert-error span8'>Please use the module command in your job script.</div>";
 	}
 ?>
 <div class='row span11'>
 <?php
-	echo "<pre class='prettyprint linenums span11'>" . $job->get_qsub_script() . "</pre>";
+	echo "<pre class='prettyprint linenums span11'>" . $job->get_job_script() . "</pre>";
 ?>
 </div>
 <div class='row span10'>

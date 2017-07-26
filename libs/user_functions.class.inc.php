@@ -13,7 +13,7 @@ class user_functions {
 
 	//get_users()
 	//returns array of users
-	function get_users($db,$ldap = "",$search = "") {
+	public static function get_users($db,$ldap = "",$search = "") {
         	$search = strtolower(trim(rtrim($search)));
 	        $where_sql = array();
 	
