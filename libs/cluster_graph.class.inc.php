@@ -1,9 +1,10 @@
 <?php
-require_once 'jpgraph.php';
-require_once 'jpgraph_bar.php';
-require_once 'jpgraph_pie.php';
-require_once 'jpgraph_pie3d.php';
-require_once 'jpgraph_line.php';
+
+JpGraph\JpGraph::load();
+JpGraph\JpGraph::module('bar');
+JpGraph\JpGraph::module('pie');
+JpGraph\JpGraph::module('pie3d');
+JpGraph\JpGraph::module('line');
 
 if( !function_exists('imageantialias') ) {
     function imageantialias( $image, $enabled ) {

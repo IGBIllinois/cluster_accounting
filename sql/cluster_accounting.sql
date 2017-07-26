@@ -81,7 +81,7 @@ CREATE TABLE jobs (
 	job_cpu_time BIGINT UNSIGNED,
 	job_reserved_mem BIGINT UNSIGNED,
 	job_used_mem BIGINT UNSIGNED,
-	job_exit_status INT,
+	job_exit_status VARCHAR(10),
 	job_exec_hosts VARCHAR(255),
 	job_qsub_script TEXT,	
 	job_maxvmem BIGINT UNSIGNED,

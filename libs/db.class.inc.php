@@ -25,6 +25,10 @@ class db {
 	////////////////Public Functions///////////
 
 	public function __construct($host,$database,$username,$password) {
+
+		ini_set('mysql.connect_timeout', 300);
+		ini_set('default_socket_timeout', 300);
+		ini_set('mysqlnd.net_read_timeout',300);
 		$this->open($host,$database,$username,$password);
 
 
@@ -45,13 +49,16 @@ class db {
 	public function open($host,$database,$username,$password,$port = 3306) {
 		//Connects to database.
 		try {
-			$this->link = new PDO("mysql:host=$host;dbname=$database",$username,$password,
-					array(PDO::ATTR_PERSISTENT => true));
-			$this->link->setAttribute(PDO::ATTR_EMULATE_PREPARES,true);
+		//	$this->link = new PDO("mysql:host=$host;dbname=$database",$username,$password,
+		//			array(PDO::ATTR_PERSISTENT => true,PDO::ATTR_EMULATE_PREPARES => true));
+
+			$this->link = new PDO("mysql:host=$host;dbname=$database",$username,$password,array());
+
 			$this->host = $host;
 			$this->database = $database;
 			$this->username = $username;
 			$this->password = $password;
+
 		}
 		catch(PDOException $e) {
 			echo $e->getMessage();

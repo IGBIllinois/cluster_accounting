@@ -38,8 +38,8 @@ class job {
 	private $exit_status;
 	private $submitted_project;
 	private $exec_hosts = array();
-	private $qsub_script = "No Job Script Available";
-	private $qsub_script_exists = 0;
+	private $job_script = "No Job Script Available";
+	private $job_script_exists = 0;
 	private $exit_status_codes = array('0'=>'JOB_EXEC_OK',
 			'-1'=>'JOB_EXEC_FAIL1',
 			'-2'=>'JOB_EXEC_FAIL2',
@@ -145,6 +145,7 @@ class job {
 					return array('RESULT'=>false,
 						'MESSAGE'=>'ERROR adding job ' . $job_number);
 				}
+				
 			}
 		}
 		else {
@@ -268,11 +269,11 @@ class job {
 	public function get_exec_hosts() {
 		return $this->exec_hosts;
 	}
-	public function get_qsub_script() {
-		return urldecode($this->qsub_script);
+	public function get_job_script() {
+		return urldecode($this->job_script);
 	}
-	public function get_qsub_script_exists() {
-		return $this->qsub_script_exists;
+	public function get_job_script_exists() {
+		return $this->job_script_exists;
 	}
 	public function get_exit_status() {
 		if (isset($this->exit_status_codes[$this->exit_status])) {
@@ -431,23 +432,35 @@ class job {
 			$this->project = new project($this->db,$result[0]['project_id']);
 			$this->set_exec_hosts_var($result[0]['exec_hosts']);
 			if ($result[0]['qsub_script']) {
-				$this->qsub_script = $result[0]['qsub_script'];
-				$this->qsub_script_exists = 1;
+				$this->job_script = $result[0]['qsub_script'];
+				$this->job_script_exists = 1;
 			}
 		}
 	}
 
-	private static function split_job_number($job_number) {
+	private static function split_job_number($in_job_number) {
 		$job_number_array = 0;
-                if (strpos($job_number,"[")) {
-                        $hyphen_pos = strrpos($job_number,"[");
-                        $job_number_array = substr($job_number, $hyphen_pos+1);
+	
+		//Torque Job Array	
+                if (strpos($in_job_number,"[")) {
+                        $hyphen_pos = strrpos($in_job_number,"[");
+                        $job_number_array = substr($in_job_number, $hyphen_pos+1);
                         $job_number_array = substr($job_number_array,0,strlen($job_number_array)-1);
-                        $job_number = substr($job_number,0,$hyphen_pos);
+                        $job_number = substr($in_job_number,0,$hyphen_pos);
 			return array('job_number'=>$job_number,'job_number_array'=>$job_number_array);
                 }
+		//Slurm Job Array
+		elseif (strpos($in_job_number,"_")) {
+			$underscore_pos = strpos($in_job_number,"_");
+			$job_number_array = substr($in_job_number,$underscore_pos+1);
+			$job_number = substr($in_job_number,0,$underscore_pos);
+			return array('job_number'=>$job_number,'job_number_array'=>$job_number_array);
+
+
+		}
+		//Neither
 		else {
-			return array('job_number'=>$job_number,'job_number_array'=>"");
+			return array('job_number'=>$in_job_number,'job_number_array'=>"");
 		}
 
 	}
