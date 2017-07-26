@@ -1,7 +1,12 @@
-# Cluster Acconting
+# Cluster Accounting
 
-PBS Torque Job Acounting Program
-This reads the PBS Torque log files and inserts them into a database.  There is a web interface to view the jobs and to charge usage based on the queue the job was submitted to.
+- Cluster Accounting records jobs submitted on an HPC cluster using Torque or SLURM.
+- Records data usage of the shared filesystem for billing
+- Supports different prices for CPU, Memory, GPUs in different queues.
+- Emails users their monthly bill
+- Download Job reports and billing reports
+- Graphs show top users, jobs submitted, data usage
+- Use on [University of Illinois Institute for Genomic Biology Biocluster](http://biocluster.igb.illinois.edu)
 
 # Installation
 
