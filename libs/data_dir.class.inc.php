@@ -13,6 +13,7 @@ class data_dir {
 	private $data_cost_id;
 	private $cost_type;
 
+	const precentile = 0.95;
 
 	public function __construct($db,$data_dir_id = 0) {
 		$this->db = $db;
@@ -169,7 +170,6 @@ class data_dir {
 
 			for ($j=0; $j<=$i; $j++) {
 				$sub_dir .= "/" . $directories[$j];
-				echo $sub_dir;
 			}
 			if($this->data_dir_exists($sub_dir)) {
 				return true;
@@ -200,4 +200,62 @@ class data_dir {
 
 	}	
 
+	public function get_usage($month,$year) {
+		$sql = "SELECT * FROM data_usage ";
+		$sql .= "LEFT JOIN data_dir ON data_dir_id=data_usage_data_dir_id ";
+		$sql .= "WHERE MONTH(data_usage_time)='" . $month . "' ";
+		$sql .= "AND YEAR(data_usage_time)='" . $year . "' ";
+		$sql .= "AND data_usage_data_dir_id=" . $this->get_data_dir_id() . " ";
+		$sql .= "ORDER BY data_usage_bytes DESC";
+		$result = $this->db->query($sql);
+		$days_in_month = date('t',mktime(0,0,0,$month,1,$year));
+		if (count($result) < $days_in_month) {
+			$diff = $days_in_month - count($result);
+			$empty_array = array();
+			for ($i=0;$i<$diff;$i++) {
+				array_push($empty_array,array('data_usage_bytes'=>0));
+			}
+			$result = array_merge($empty_array,$result);	
+		}
+		$slice = round(count($result)*self::precentile,0,PHP_ROUND_HALF_DOWN);
+		return array_slice($result,0,$slice);
+	}
+
+	public function add_data_bill($month,$year,$bytes) {
+		$bill_date = $year . "-" . $month . "-01 00:00:00";
+		$sql = "SELECT count(1) as count ";
+		$sql .= "FROM data_bill ";
+		$sql .= "WHERE data_bill.data_bill_date='" . $bill_date ."' ";
+		$sql .= "AND data_bill_data_dir_id='" . $this->get_data_dir_id() . "' ";
+		$sql .= "LIMIT 1";
+		$check_exists = $this->db->query($sql);
+		$result = true;
+		$insert_id = 0;
+		if ($check_exists[0]['count']) {
+			$result = false;
+			$message = "Data Bill Already Calculated";
+		}
+		else {
+	                $project = new project($this->db,$this->get_project_id());
+	
+        	        $data_cost = new data_cost($this->db,$this->get_data_cost_id());
+			$total_cost = $data_cost->calculate_cost($bytes);
+			$billed_cost = 0;
+			if ($project->get_bill_project()) {
+				$billed_cost = $total_cost;
+			}
+        	        $insert_array = array('data_bill_data_dir_id'=>$this->get_data_dir_id(),
+                	                'data_bill_project_id'=>$project->get_project_id(),
+                        	        'data_bill_cfop_id'=>$project->get_cfop_id(),
+                                	'data_bill_data_cost_id'=>$this->get_data_cost_id(),
+	                                'data_bill_avg_bytes'=>$bytes,
+					'data_bill_total_cost'=>$total_cost,
+					'data_bill_billed_cost'=>$billed_cost,
+					'data_bill_date'=>$bill_date
+	                                );
+        	        $insert_id = $this->db->build_insert('data_bill',$insert_array);
+			$message = "Successfully added data bill";
+		}
+		return array('RESULT'=>$result,'MESSAGE'=>$message,'id'=>$insert_id);
+	}
 }

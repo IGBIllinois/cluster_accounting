@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 chdir(dirname(__FILE__));
 
 $include_paths = array('../libs');
@@ -36,24 +38,34 @@ if (php_sapi_name() != 'cli') {
         echo "Error: This script can only be run from the command line.";
 }
 else {
-	$year = "";
-	$month = "";
+	$year = date('Y',strtotime(date('Y-m')." -1 month"));
+	$month = date('m',strtotime(date('Y-m')." -1 month"));
 	$options = getopt($shortopts,$longopts);
 
-	print_r($options);
         if (isset($options['h']) || isset($options['help'])) {
                 echo $output_command;
                 exit;
         }
+	if (isset($options['year']) && isset($options['month'])) {
+		$year = $options['year'];
+		$month = $options['month'];
+	}
+	elseif ((!isset($options['year']) && isset($options['month'])) ||
+		(isset($options['year']) && !isset($options['month']))) {
+		echo "Must specify year and month together\n";
+		echo $output_command;
+		exit;
+	}
+	$db = new db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__);
+	$ldap = new ldap(__LDAP_HOST__,__LDAP_SSL__,__LDAP_PORT__,__LDAP_BASE_DN__);
+	$user_object = new user($db,$ldap,0,'arhamil2');
+	$user_object->email_bill(__ADMIN_EMAIL__,$year,$month);
 
-	//$db = new db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__);
-	//$ldap = new ldap(__LDAP_HOST__,__LDAP_SSL__,__LDAP_PORT__,__LDAP_BASE_DN__);
-	
-	//$user_list = user_functions::get_users($db,$ldap);
-	//foreach ($user_list as $user) {
-	//		$user_object = new user($db,$ldap,$user['user_id']);
-	//		$user_object->email_bill(__ADMIN_EMAIL__);
-	//}
+	$user_list = user_functions::get_users($db,$ldap);
+	foreach ($user_list as $user) {
+			$user_object = new user($db,$ldap,$user['user_id']);
+			$user_object->email_bill(__ADMIN_EMAIL__,$year,$month);
+	}
 
 
 }

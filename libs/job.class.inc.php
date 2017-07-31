@@ -335,8 +335,6 @@ class job {
 			$cfop = functions::get_cfop($this->db,$cfop_id);
 			$this->cfop = $cfop[0]['cfop_value'];
 			$this->activity_code = $cfop[0]['cfop_activity'];
-			echo "<br>job cfop is " . $this->get_cfop();
-			echo "<br>job activity is " . $this->get_activity_code();
 			return array('RESULT'=>true,'MESSAGE'=>$message);
 		}
 		return array('RESULT'=>false,'MESSAGE'=>'Failed updating CFOP');

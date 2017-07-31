@@ -146,7 +146,6 @@ class user {
 		$sql .= "WHERE DATE(jobs.job_end_time) BETWEEN '" . $start_date ."' AND '" . $end_date . "' ";
 		$sql .= "AND jobs.job_user_id='". $this->get_user_id() . "' ";
 		$sql .= "GROUP BY jobs.job_queue_id, jobs.job_project_id, jobs.job_user_id";
-
 		$result = $this->db->query($sql);
 		foreach($result as $key=>$value) {
 			if ($value['total_cost'] == 0.00) {
@@ -182,23 +181,22 @@ class user {
 	}
 	public function get_data_summary($month,$year) {
 		$sql = "SELECT data_dir.data_dir_path as directory, ";
-		$sql .= "data_cost.data_cost_dir as data_cost_dir, ";
+		$sql .= "data_cost.data_cost_value as data_cost_value, ";
 		$sql .= "projects.project_name as project, ";
-		$sql .= "ROUND((data_usage.data_usage_bytes / 1099511627776),4) as terabytes, ";
-		$sql .= "data_usage.data_usage_files as files, ";
-		$sql .= "ROUND(data_usage.data_usage_total_cost,2) as total_cost, ";
-		$sql .= "ROUND(data_usage.data_usage_billed_cost,2) as billed_cost, ";
+		$sql .= "ROUND((data_bill.data_bill_avg_bytes / 1099511627776),4) as terabytes, ";
+		$sql .= "ROUND(data_bill.data_bill_total_cost,2) as total_cost, ";
+		$sql .= "ROUND(data_bill.data_bill_billed_cost,2) as billed_cost, ";
 		$sql .= "cfops.cfop_value as cfop, ";
 		$sql .= "cfops.cfop_activity as activity_code, ";
 		$sql .= "cfops.cfop_restricted as cfop_restricted ";
-		$sql .= "FROM data_usage ";
-		$sql .= "LEFT JOIN projects ON projects.project_id=data_usage.data_usage_project_id ";
-		$sql .= "LEFT JOIN data_dir ON data_dir.data_dir_id=data_usage.data_usage_data_dir_id ";
-		$sql .= "LEFT JOIN cfops ON cfops.cfop_id=data_usage.data_usage_cfop_id ";
-		$sql .= "LEFT JOIN data_cost ON data_cost.data_cost_id=data_usage.data_usage_data_cost_id ";
+		$sql .= "FROM data_bill ";
+		$sql .= "LEFT JOIN projects ON projects.project_id=data_bill.data_bill_project_id ";
+		$sql .= "LEFT JOIN data_dir ON data_dir.data_dir_id=data_bill.data_bill_data_dir_id ";
+		$sql .= "LEFT JOIN cfops ON cfops.cfop_id=data_bill.data_bill_cfop_id ";
+		$sql .= "LEFT JOIN data_cost ON data_cost.data_cost_id=data_bill.data_bill_data_cost_id ";
 		$sql .= "WHERE projects.project_owner='" . $this->get_user_id() . "' ";
-		$sql .= "AND YEAR(data_usage.data_usage_time)='" . $year . "' ";
-        $sql .= "AND MONTH(data_usage.data_usage_time)='" . $month . "' ";
+		$sql .= "AND YEAR(data_bill.data_bill_date)='" . $year . "' ";
+	        $sql .= "AND MONTH(data_bill.data_bill_date)='" . $month . "' ";
 		return $this->db->query($sql);
 		
 	}
@@ -358,34 +356,35 @@ class user {
 		return FALSE;
 
 	}
-	public function email_bill($admin_email,$start_date = 0,$end_date = 0) {
-		if (($start_date == 0) && ($end_date == 0)) {
-			$end_date = date('Ymd',strtotime('-1 second', strtotime(date('Ym') . "01")));
-			$start_date = substr($end_date,0,4) . substr($end_date,4,2) . "01";
-		}
-		$month = date('m',strtotime($start_date));
-		$year = date('Y',strtotime($start_date));
+	public function email_bill($admin_email,$year,$month) {
+		$start_date = $year . $month . "01";
+		$end_date = $year . $month . date('t',strtotime($start_date));
 
 		$user_stats = new user_stats($this->db,$this->get_user_id(),$start_date,$end_date);
 
-		$subject = "Biocluster Accounting Bill - " . functions::get_pretty_date($start_date) . "-" . functions::get_pretty_date($end_date);
+		$subject = "Biocluster 2 Accounting Bill - " . functions::get_pretty_date($start_date) . "-" . functions::get_pretty_date($end_date);
 		$to = $this->get_email();
-		$from = $admin_email; 
-
-		$html_message = "<p>Biocluster Accounting Bill - " . functions::get_pretty_date($start_date) . "-" . functions::get_pretty_date($end_date) . "</p>";
+		$from = $admin_email;
+		$html_message = "<!DOCTYPE html>";
+		$html_message .= "<html lang='en'>"; 
+		$html_message = "<head><style>";
+		$html_message .= file_get_contents('../vendor/components/bootstrap/css/bootstrap.min.css');
+		$html_message .= "</style></head>";
+		$html_message .= "<body><div class='container-fluid'><div class='span12'>";
+		$html_message .= "<p>Biocluster Accounting Bill - " . functions::get_pretty_date($start_date) . "-" . functions::get_pretty_date($end_date) . "</p>";
 		$html_message .= "<br>Name: " . $this->get_full_name();
 		$html_message .= "<br>Username: " . $this->get_username();
 		$html_message .= "<br>Start Date: " . functions::get_pretty_date($start_date);
 		$html_message .= "<br>End Date: " . functions::get_pretty_date($end_date);
 		$html_message .= "<br>Number of Jobs: " . $user_stats->get_num_jobs();
-		$html_message .= "<p>Below is your bill.  You can go to https://biocluster.igb.illinois.edu/accounting/ ";
+		$html_message .= "<p>Below is your bill.  You can go to <a href='https://biocluster2.igb.illinois.edu/accounting/'> ";
+		$html_message .= "https://biocluster2.igb.illinois.edu/accounting/</a>";
 		$html_message .= "to view a detail listing of your jobs.";
-		$html_message .= "<p>Cluster Usage</p>";
-		
+		$html_message .= "<h4>Cluster Usage</h4>";
 		$html_message .= $this->get_jobs_table($start_date,$end_date);
-		$html_message .= "<p>Data Usage</p>";	
+		$html_message .= "<h4>Data Usage</h4>";	
 		$html_message .= $this->get_data_table($month,$year);
-
+		$html_message .= "</div></body></html>";
 		
 		$extraheaders = array("From"=>$from,
 				"Subject"=>$subject
@@ -393,17 +392,18 @@ class user {
 		$message = new Mail_mime();
 		$message->setHTMLBody($html_message);
 		$headers= $message->headers($extraheaders);
+		$body = $message->get();
 		$mail = Mail::factory("mail");
-		$mail->send($to,$headers,$body);
+		$result = $mail->send($to,$headers,$body);
 
 	}
 
 	public function get_jobs_table($start_date,$end_date) {
 		$jobs_summary = $this->get_jobs_summary($start_date,$end_date);
-		$jobs_html = "<p><table border='1'>";
+		$jobs_html = "<p><table class='table table-striped table-bordered table-condensed'>";
 		if (count($jobs_summary)) {
-                        $jobs_html .= "<tr><td>Queue</td><td>Project</td>";
-                        $jobs_html .= "<td>Cost</td><td>Billed Amount</td><td>CFOP</td><td>Activity Code</td></tr>";
+                        $jobs_html .= "<tr><th>Queue</th><th>Project</th>";
+                        $jobs_html .= "<th>Cost</th><th>Billed Amount</th><th>CFOP</th><th>Activity Code</th></tr>";
                         foreach ($jobs_summary as $summary) {
                                 $jobs_html .= "<tr>";
                                 $jobs_html .= "<td>" . $summary['queue'] . "</td>";
@@ -421,7 +421,7 @@ class user {
                         }
                 }
                 else {
-                        $jobs_html .= "<tr><td>No Jobs</td></tr>";
+                        $jobs_html .= "<tr><th>No Jobs</th></tr>";
 
                 }
 		$jobs_html .= "</table>";
@@ -434,21 +434,21 @@ class user {
 	public function get_data_table($month,$year) {
 
 		$data_summary = $this->get_data_summary($month,$year);
-		$data_html = "<p><table border='1'>";
+		$data_html = "<p><table class='table table-striped table-bordered table-condensed'>";
 		if (count($data_summary)) {
-                        $data_html .= "<tr><td>Directory</td>";
-                        $data_html .= "<td>Type</td>";
-                        $data_html .= "<td>Project</td>";
-                        $data_html .= "<td>Terabytes</td>";
-                        $data_html .= "<td>Cost</td>";
-                        $data_html .= "<td>Billed Amount</td>";
-                        $data_html .= "<td>CFOP</td>";
-                        $data_html .= "<td>Activity Code</td>";
+                        $data_html .= "<tr><th>Directory</th>";
+                        $data_html .= "<th>Cost ($/TB)</th>";
+                        $data_html .= "<th>Project</th>";
+                        $data_html .= "<th>Terabytes</th>";
+                        $data_html .= "<th>Cost</th>";
+                        $data_html .= "<th>Billed Amount</th>";
+                        $data_html .= "<th>CFOP</th>";
+                        $data_html .= "<th>Activity Code</th>";
                         $data_html .= "</tr>";
                         foreach ($data_summary as $data) {
                                 $data_html .= "<tr>";
                                 $data_html .= "<td>" . $data['directory'] . "</td>";
-                                $data_html .= "<td>" . $data['data_cost_dir'] . "</td>";
+                                $data_html .= "<td>" . number_format($data['data_cost_value'],2) . "</td>";
                                 $data_html .= "<td>" . $data['project'] . "</td>";
                                 $data_html .= "<td>" . $data['terabytes'] . "</td>";
                                 $data_html .= "<td>$" . number_format($data['total_cost'],2) . "</td>";

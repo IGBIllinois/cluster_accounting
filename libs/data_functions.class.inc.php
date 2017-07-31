@@ -94,21 +94,21 @@ class data_functions {
 
 	public static function get_data_bill($db,$month,$year,$minimum_bill = 0) {
 		$sql = "SELECT data_dir.data_dir_path as 'Directory', ";
-	        $sql .= "ROUND(data_usage_bytes / 1099511627776,3) as 'Terabytes', ";
-        	$sql .= "ROUND(data_cost_value,2) as 'Rate ($/Terabyte)', ";
-	        $sql .= "data_cost_type as 'Data Type', ";
-        	$sql .= "ROUND(data_usage_total_cost,2) as 'Total Cost', ";
-	        $sql .= "ROUND(data_usage_billed_cost,2) as 'Billed Cost', ";
+	        $sql .= "ROUND(data_bill.data_bill_avg_bytes / 1099511627776,3) as 'Terabytes', ";
+        	$sql .= "ROUND(data_cost.data_cost_value,2) as 'Rate ($/Terabyte)', ";
+	        $sql .= "data_cost.data_cost_type as 'Data Type', ";
+        	$sql .= "ROUND(data_bill.data_bill_total_cost,2) as 'Total Cost', ";
+	        $sql .= "ROUND(data_bill.data_bill_billed_cost,2) as 'Billed Cost', ";
         	$sql .= "projects.project_name as 'Project', ";
 	        $sql .= "cfops.cfop_value as 'CFOP', cfops.cfop_activity as 'Activity Code' ";
-        	$sql .= "FROM data_usage ";
-	        $sql .= "LEFT JOIN cfops ON cfops.cfop_id=data_usage.data_usage_cfop_id ";
-        	$sql .= "LEFT JOIN projects ON projects.project_id=data_usage.data_usage_project_id ";
-	        $sql .= "LEFT JOIN data_dir ON data_dir.data_dir_id=data_usage.data_usage_data_dir_id ";
-        	$sql .= "LEFT JOIN data_cost ON data_cost_id=data_usage_data_cost_id ";
-	        $sql .= "WHERE YEAR(data_usage.data_usage_time)='" . $year . "' ";
-        	$sql .= "AND MONTH(data_usage.data_usage_time)='" . $month . "' ";
-	        $sql .= "AND data_usage_total_cost > 0.01 ";
+        	$sql .= "FROM data_bill ";
+	        $sql .= "LEFT JOIN cfops ON cfops.cfop_id=data_bill.data_bill_cfop_id ";
+        	$sql .= "LEFT JOIN projects ON projects.project_id=data_bill.data_bill_project_id ";
+	        $sql .= "LEFT JOIN data_dir ON data_dir.data_dir_id=data_bill.data_bill_data_dir_id ";
+        	$sql .= "LEFT JOIN data_cost ON data_cost_id=data_bill_data_cost_id ";
+	        $sql .= "WHERE YEAR(data_bill.data_bill_date)='" . $year . "' ";
+        	$sql .= "AND MONTH(data_bill.data_bill_date)='" . $month . "' ";
+	        $sql .= "AND data_bill.data_bill_total_cost>'" . $minimum_bill . "' ";
 		$sql .= "ORDER BY Directory ASC";
         	return $db->query($sql);
 	}

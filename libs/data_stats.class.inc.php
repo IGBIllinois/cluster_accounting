@@ -3,9 +3,9 @@ class data_stats {
 
 
 	public static function get_total_cost($db,$start_date,$end_date,$format = 0) {
-	        $sql = "SELECT SUM(data_usage_total_cost) as total_cost ";
-        	$sql .= "FROM data_usage ";
-	        $sql .= "WHERE data_usage_time BETWEEN '" . $start_date . "' AND '" . $end_date . "' ";
+	        $sql = "SELECT SUM(data_bill_total_cost) as total_cost ";
+        	$sql .= "FROM data_bill ";
+	        $sql .= "WHERE data_bill_date BETWEEN '" . $start_date . "' AND '" . $end_date . "' ";
 	        $result = $db->query($sql);
 		$cost = 0;
 	        if ($result) {
@@ -18,9 +18,9 @@ class data_stats {
 	}
 
 	public static function get_billed_cost($db,$start_date,$end_date,$format = 0) {
-		$sql = "SELECT SUM(data_usage_billed_cost) as billed_cost ";
-                $sql .= "FROM data_usage ";
-		$sql .= "WHERE data_usage_time BETWEEN '" . $start_date . "' AND '" . $end_date . "' ";
+		$sql = "SELECT SUM(data_bill_billed_cost) as billed_cost ";
+                $sql .= "FROM data_bill ";
+		$sql .= "WHERE data_bill_date BETWEEN '" . $start_date . "' AND '" . $end_date . "' ";
                 $result = $db->query($sql);
                 $cost = 0;
                 if ($result) {
