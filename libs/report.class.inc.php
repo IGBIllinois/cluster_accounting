@@ -1,5 +1,4 @@
 <?php
-require_once 'PHPExcel.php';
 class report {
 
 	//create_excel_2003_report()

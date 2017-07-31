@@ -25,6 +25,7 @@ foreach ($data_bill as $value) {
 		$data_html .= "<tr>";
 		$data_html .= "<td>" . $value['Directory'] . "</td>";
 		$data_html .= "<td>" . $value['Project'] . "</td>";
+		$data_html .= "<td>" . $value['Terabytes'] . "</td>";
 		$data_html .= "<td>$" . $value['Total Cost'] . "</td>";
 		$data_html .= "<td>$" . $value['Billed Cost'] . "</td>";
 		$data_html .= "<td>" . $value['CFOP'] . "</td>";
@@ -55,6 +56,7 @@ foreach ($data_bill as $value) {
                 <tr>
                         <th>Directory</th>
                         <th>Project</th>
+			<th>Terabytes</th>
                         <th>Cost</th>
                         <th>Billed Amount</th>
                         <th>CFOP</th>
@@ -65,12 +67,12 @@ foreach ($data_bill as $value) {
 
         <tr>
                 <td>Total Cost:</td>
-                <td colspan='5'>$<?php echo data_stats::get_total_cost($db,$start_date,$end_date,1); ?>
+                <td colspan='6'>$<?php echo data_stats::get_total_cost($db,$start_date,$end_date,1); ?>
                 </td>
 	</tr>
 	<tr>
 		<td>Billed Cost:</td>
-		<td colspan='5'>$<?php echo data_stats::get_billed_cost($db,$start_date,$end_date,1); ?>
+		<td colspan='6'>$<?php echo data_stats::get_billed_cost($db,$start_date,$end_date,1); ?>
         </tr>
 
 </table>
