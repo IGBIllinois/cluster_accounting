@@ -1,7 +1,7 @@
 <?php
 class data_stats {
 
-
+	const bytes_per_terabyte = 1099511627776;
 	public static function get_total_cost($db,$start_date,$end_date,$format = 0) {
 	        $sql = "SELECT SUM(data_bill_total_cost) as total_cost ";
         	$sql .= "FROM data_bill ";
@@ -34,55 +34,53 @@ class data_stats {
 	}
 
         public static function get_usage_per_month($db,$year,$directory_type = 0,$project_id = "") {
-		$bytes_per_terabyte = 1099511627776;
-                $sql = "SELECT MONTH(data_usage.data_usage_time) as month, ";
-		$sql .= "ROUND(SUM(data_usage.data_usage_bytes)/" . $bytes_per_terabyte . ",2) as terabyte ";
-                $sql .= "FROM data_usage ";
-		$sql .= "LEFT JOIN data_cost ON data_cost.data_cost_id=data_usage.data_usage_data_cost_id ";
-                $sql .= "WHERE YEAR(data_usage_time)='" . $year . "' ";
+                $sql = "SELECT MONTH(data_bill.data_bill_date) as month, ";
+		$sql .= "ROUND(SUM(data_bill.data_bill_avg_bytes)/" . self::bytes_per_terabyte . ",2) as terabyte ";
+                $sql .= "FROM data_bill ";
+		$sql .= "LEFT JOIN data_cost ON data_cost.data_cost_id=data_bill.data_bill_data_cost_id ";
+                $sql .= "WHERE YEAR(data_bill_date)='" . $year . "' ";
 		if ($project_id) {
-			$sql .= "AND data_usage.data_usage_project_id='" . $project_id . "' ";
+			$sql .= "AND data_bill.data_bill_project_id='" . $project_id . "' ";
 		}
 		if ($directory_type) {
-			$sql .= "AND data_cost.data_cost_dir='" . $directory_type . "' ";
+			$sql .= "AND data_cost.data_cost_value='" . $directory_type . "' ";
 		}
-                $sql .= "GROUP BY MONTH(data_usage.data_usage_time) ";
-		$sql .= "ORDER BY MONTH(data_usage.data_usage_time) ASC ";
+                $sql .= "GROUP BY MONTH(data_bill.data_bill_date) ";
+		$sql .= "ORDER BY MONTH(data_bill.data_bill_date) ASC ";
 		$result = $db->query($sql);
 		return statistics::get_month_array($result,"month","terabyte");
 	}
 
         public static function get_project_usage_per_month($db,$year,$directory_type = 0) {
-                $bytes_per_terabyte = 1099511627776;
-                $sql = "SELECT MONTH(data_usage.data_usage_time) as month, ";
+                $sql = "SELECT MONTH(data_bill.data_bill_time) as month, ";
 		$sql .= "projects.project_name as project, ";
-                $sql .= "ROUND(SUM(data_usage.data_usage_bytes)/" . $bytes_per_terabyte . ",2) as terabyte ";
-                $sql .= "FROM data_usage ";
-                $sql .= "LEFT JOIN data_cost ON data_cost.data_cost_id=data_usage.data_usage_data_cost_id ";
-		$sql .= "LEFT JOIN projects ON projects.project_id=data_usage.data_usage_project_id ";
-                $sql .= "WHERE YEAR(data_usage_time)='" . $year . "' ";
+                $sql .= "ROUND(SUM(data_bill.data_bill_bytes)/" . self::bytes_per_terabyte . ",2) as terabyte ";
+                $sql .= "FROM data_bill ";
+                $sql .= "LEFT JOIN data_cost ON data_cost.data_cost_id=data_bill.data_bill_data_cost_id ";
+		$sql .= "LEFT JOIN projects ON projects.project_id=data_bill.data_bill_project_id ";
+                $sql .= "WHERE YEAR(data_bill_date)='" . $year . "' ";
                 if ($directory_type) {
-                        $sql .= "AND data_cost.data_cost_dir='" . $directory_type . "' ";
+                        $sql .= "AND data_cost.data_cost_value='" . $directory_type . "' ";
                 }
-                $sql .= "GROUP BY project,MONTH(data_usage.data_usage_time) ";
-                $sql .= "ORDER BY MONTH(data_usage.data_usage_time) ASC ";
+                $sql .= "GROUP BY project,MONTH(data_bill.data_bill_time) ";
+                $sql .= "ORDER BY MONTH(data_bill.data_bill_time) ASC ";
 
                 $result = $db->query($sql);
                 return statistics::get_month_array($result,"month","terabyte");
         }
         public static function get_project_usage($db,$start_date,$end_date,$directory_type = 0) {
-                $bytes_per_terabyte = 1099511627776;
                 $sql = "SELECT projects.project_name as project, ";
-                $sql .= "ROUND(SUM(data_usage.data_usage_bytes)/" . $bytes_per_terabyte . ",2) as terabyte ";
-                $sql .= "FROM data_usage ";
-                $sql .= "LEFT JOIN data_cost ON data_cost.data_cost_id=data_usage.data_usage_data_cost_id ";
-                $sql .= "LEFT JOIN projects ON projects.project_id=data_usage.data_usage_project_id ";
-		$sql .= "WHERE data_usage_time BETWEEN '" . $start_date . "' AND '" . $end_date . "' ";
+                $sql .= "ROUND(SUM(data_bill.data_bill_avg_bytes)/" . self::bytes_per_terabyte . ",2) as terabyte ";
+                $sql .= "FROM data_bill ";
+                $sql .= "LEFT JOIN data_cost ON data_cost.data_cost_id=data_bill.data_bill_data_cost_id ";
+                $sql .= "LEFT JOIN projects ON projects.project_id=data_bill.data_bill_project_id ";
+		$sql .= "WHERE data_bill_date BETWEEN '" . $start_date . "' AND '" . $end_date . "' ";
                 if ($directory_type) {
-                        $sql .= "AND data_cost.data_cost_dir='" . $directory_type . "' ";
+                        $sql .= "AND data_cost.data_cost_type='" . $directory_type . "' ";
                 }
                 $sql .= "GROUP BY project ";
                 $sql .= "ORDER BY terabyte DESC ";
+		error_log($sql);
                 return $db->query($sql);
         }
 	public static function get_top_data_usage($db,$start_date,$end_date,$top) {

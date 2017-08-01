@@ -46,8 +46,15 @@ else {
 	foreach ($directories as $directory) {
 			$data_dir = new data_dir($db,$directory['data_dir_id']);
 			$size = $data_dir->get_dir_size();
-			echo "Directory: " . $data_dir->get_directory() . " Size: " . $size . " Bytes\n";
-			$data_dir->add_usage($size);
+			$result = $data_dir->add_usage($size);
+			if ($result['RESULT']) {
+				$message = "Data Usage: Directory: " . $data_dir->get_directory() . " Gigabytes: " . data_functions::bytes_to_gigabytes($size) . " sucessfully added";
+				
+			}
+			else {
+				$message = "Data Usage: Direvtory: " . $data_dir->get_directory() . " failed adding to database";
+			}
+			functions::log($message);
 	}
 	
 }

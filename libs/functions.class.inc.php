@@ -115,10 +115,14 @@ class functions {
 
 	}
 
-	public static function log_message($message) {
+	public static function log($message) {
                 $current_time = date('Y-m-d H:i:s');
                 $full_msg = $current_time . ": " . $message . "\n";
+		
                 if (self::log_enabled()) {
+			if (!file_exists(self::get_log_file())) {
+				touch(self::get_log_file());
+			}
                         file_put_contents(self::get_log_file(),$full_msg,FILE_APPEND | LOCK_EX);
                 }
                 echo $full_msg;

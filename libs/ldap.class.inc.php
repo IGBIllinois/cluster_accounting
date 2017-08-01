@@ -175,9 +175,9 @@ class ldap {
                         $filter = "(uid=" . $username . ")";
                         $attributes = array('mail');
                         $result = $this->search($filter,"",$attributes);
-                        if ($result['count']) {
-
-                                return $result[0]['mail'][0];
+                        if (($result['count']) && (isset($result[0]['mail'][0]))){
+				return $result[0]['mail'][0];
+			
                         }
                         else {
                                 return false;
