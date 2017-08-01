@@ -1,0 +1,7 @@
+/var/www/accounting/log/*.log {
+    monthly
+    rotate 10
+    notifempty
+    missingok
+}
+
