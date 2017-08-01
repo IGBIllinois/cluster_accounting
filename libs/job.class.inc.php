@@ -94,7 +94,7 @@ class job {
 			$error = false;
 			if (!$this->queue->get_queue_id()) {
 				$error = true;
-				$message = "Job Number: " . $job_number . " - Queue " . $job_data['job_queue_name'] . " does not exist.";
+				$message = "Job Number: " . $job_number . " - Queue " . $job_data['job_queue_name'] . " does not exist.\n";
 			}
 
 			if (!$this->project->get_project_id()) {
@@ -103,7 +103,7 @@ class job {
 			}
 			if (!$user->get_user_id()) {
 				$error = true;
-				$message .= "Job Number: " . $job_number . " - User " . $job_data['job_user'] . " does not exist.\n";
+				$message .= "Job Number: " . $job_number . " - User " . $job_data['job_user'] . " does not exist.";
 			}
 
 			if ($error) {
@@ -139,7 +139,7 @@ class job {
 				$job_id = $this->db->build_insert("jobs",$job_data);
 				if ($job_id) {
 					return array('RESULT'=>true,
-						'job_id'=>$job_id,'MESSAGE'=>"Job Number: " . $job_number . " successfully added to database");
+						'job_id'=>$job_id,'MESSAGE'=>"Job Number: " . $job_number . " - User: " . $job_data['job_user'] . " - Successfully added to database");
 				}
 				else {
 					return array('RESULT'=>false,

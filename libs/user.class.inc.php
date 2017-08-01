@@ -357,44 +357,61 @@ class user {
 
 	}
 	public function email_bill($admin_email,$year,$month) {
-		$start_date = $year . $month . "01";
-		$end_date = $year . $month . date('t',strtotime($start_date));
 
-		$user_stats = new user_stats($this->db,$this->get_user_id(),$start_date,$end_date);
+		if (!$this->ldap->is_ldap_user($this->get_username())) {
+			functions::log("Email Bill - User " . $this->get_username() . " not in ldap");
+		}
+		elseif ($this->get_email() == "") {
+			functions::log("Email Bill - User " . $this->get_username() . " email is not set");
+		}
+		else {
+			$start_date = $year . $month . "01";
+			$end_date = $year . $month . date('t',strtotime($start_date));
 
-		$subject = "Biocluster 2 Accounting Bill - " . functions::get_pretty_date($start_date) . "-" . functions::get_pretty_date($end_date);
-		$to = $this->get_email();
-		$from = $admin_email;
-		$html_message = "<!DOCTYPE html>";
-		$html_message .= "<html lang='en'>"; 
-		$html_message = "<head><style>";
-		$html_message .= file_get_contents('../vendor/components/bootstrap/css/bootstrap.min.css');
-		$html_message .= "</style></head>";
-		$html_message .= "<body><div class='container-fluid'><div class='span12'>";
-		$html_message .= "<p>Biocluster Accounting Bill - " . functions::get_pretty_date($start_date) . "-" . functions::get_pretty_date($end_date) . "</p>";
-		$html_message .= "<br>Name: " . $this->get_full_name();
-		$html_message .= "<br>Username: " . $this->get_username();
-		$html_message .= "<br>Start Date: " . functions::get_pretty_date($start_date);
-		$html_message .= "<br>End Date: " . functions::get_pretty_date($end_date);
-		$html_message .= "<br>Number of Jobs: " . $user_stats->get_num_jobs();
-		$html_message .= "<p>Below is your bill.  You can go to <a href='https://biocluster2.igb.illinois.edu/accounting/'> ";
-		$html_message .= "https://biocluster2.igb.illinois.edu/accounting/</a>";
-		$html_message .= "to view a detail listing of your jobs.";
-		$html_message .= "<h4>Cluster Usage</h4>";
-		$html_message .= $this->get_jobs_table($start_date,$end_date);
-		$html_message .= "<h4>Data Usage</h4>";	
-		$html_message .= $this->get_data_table($month,$year);
-		$html_message .= "</div></body></html>";
 		
-		$extraheaders = array("From"=>$from,
-				"Subject"=>$subject
-		);
-		$message = new Mail_mime();
-		$message->setHTMLBody($html_message);
-		$headers= $message->headers($extraheaders);
-		$body = $message->get();
-		$mail = Mail::factory("mail");
-		$result = $mail->send($to,$headers,$body);
+			$user_stats = new user_stats($this->db,$this->get_user_id(),$start_date,$end_date);
+
+			$subject = "Biocluster 2 Accounting Bill - " . functions::get_pretty_date($start_date) . "-" . functions::get_pretty_date($end_date);
+			$to = $this->get_email();
+			$from = $admin_email;
+			$html_message = "<!DOCTYPE html>";
+			$html_message .= "<html lang='en'>"; 
+			$html_message = "<head><style>";
+			$html_message .= file_get_contents('../vendor/components/bootstrap/css/bootstrap.min.css');
+			$html_message .= "</style></head>";
+			$html_message .= "<body><div class='container-fluid'><div class='span12'>";
+			$html_message .= "<p>Biocluster Accounting Bill - " . functions::get_pretty_date($start_date) . "-" . functions::get_pretty_date($end_date) . "</p>";
+			$html_message .= "<br>Name: " . $this->get_full_name();
+			$html_message .= "<br>Username: " . $this->get_username();
+			$html_message .= "<br>Start Date: " . functions::get_pretty_date($start_date);
+			$html_message .= "<br>End Date: " . functions::get_pretty_date($end_date);
+			$html_message .= "<br>Number of Jobs: " . $user_stats->get_num_jobs();
+			$html_message .= "<p>Below is your bill.  You can go to <a href='https://biocluster2.igb.illinois.edu/accounting/'> ";
+			$html_message .= "https://biocluster2.igb.illinois.edu/accounting/</a>";
+			$html_message .= "to view a detail listing of your jobs.";
+			$html_message .= "<h4>Cluster Usage</h4>";
+			$html_message .= $this->get_jobs_table($start_date,$end_date);
+			$html_message .= "<h4>Data Usage</h4>";	
+			$html_message .= $this->get_data_table($month,$year);
+			$html_message .= "</div></body></html>";
+		
+			$extraheaders = array("From"=>$from,
+					"Subject"=>$subject
+			);
+			$message = new Mail_mime();
+			$message->setHTMLBody($html_message);
+			$headers= $message->headers($extraheaders);
+			$body = $message->get();
+			$mail = Mail::factory("mail");
+			$result = $mail->send($to,$headers,$body);
+			if (PEAR::isError($result)) { 
+				functions::log("Email Bill - User " . $this->get_username() . " Error sending mail. " . $mail->getMessage());
+			}
+			else {
+				functions::log("Email Bill - User " . $this->get_username() . " successfully sent to " . $this->get_email());
+			}
+			
+		}
 
 	}
 

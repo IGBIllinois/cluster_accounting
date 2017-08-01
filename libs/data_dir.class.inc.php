@@ -14,7 +14,7 @@ class data_dir {
 	private $cost_type;
 
 	const precentile = 0.95;
-
+	
 	public function __construct($db,$data_dir_id = 0) {
 		$this->db = $db;
 
@@ -195,8 +195,14 @@ class data_dir {
                                 'data_usage_bytes'=>$bytes,
                                 'data_usage_files'=>$files
                                 );
-                return $this->db->build_insert('data_usage',$insert_array);
+                $insert_id = $this->db->build_insert('data_usage',$insert_array);
+		if ($insert_id) {
+			return array('RESULT'=>true,'INSERT_ID'=>$insert_id);
 
+		}
+		else {
+			return array('RESULT'=>false);
+		}
 
 	}	
 
@@ -233,7 +239,7 @@ class data_dir {
 		$insert_id = 0;
 		if ($check_exists[0]['count']) {
 			$result = false;
-			$message = "Data Bill Already Calculated";
+			$message = "Data Bill: Directory: " . $this->get_directory() . " Bill already calculated";
 		}
 		else {
 	                $project = new project($this->db,$this->get_project_id());
@@ -254,8 +260,9 @@ class data_dir {
 					'data_bill_date'=>$bill_date
 	                                );
         	        $insert_id = $this->db->build_insert('data_bill',$insert_array);
-			$message = "Successfully added data bill";
+			$message = "Data Bill: Directory: " . $this->get_directory() . " Successfully added data bill";
 		}
 		return array('RESULT'=>$result,'MESSAGE'=>$message,'id'=>$insert_id);
 	}
+
 }

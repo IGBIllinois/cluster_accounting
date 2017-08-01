@@ -3,6 +3,8 @@
 class data_functions {
 
 	const PERCENTILE = 0.95;
+        const convert_terabytes = 1099511627776;
+        const convert_gigabytes = 1073741824;
 
 	public static function add_data_usage($db,$data_dir_id,$data) {
 	        $backup = explode("\t",$data[0]);
@@ -11,8 +13,8 @@ class data_functions {
 	        $data_usage = new data_usage($db);
 		$backup_msg = $data_dir->get_directory() . ": Backup - " . $backup[1] . " bytes";
 		$no_backup_msg = $data_dir->get_directory() . ": No Backup - " . $no_backup[1] . " bytes";
-		functions::log_message($backup_msg);
-		functions::log_message($no_backup_msg);
+		functions::log($backup_msg);
+		functions::log($no_backup_msg);
         	$data_usage->create($data_dir_id,"backup",$backup[1],$backup[2]);
 	        $data_usage->create($data_dir_id,"no_backup",$no_backup[1],$no_backup[2]);
 	}
@@ -21,7 +23,7 @@ class data_functions {
 		$data_dir = new data_dir($db,$data_dir_id);
 		$data_usage = new data_usage($db);
 		$msg = $data_dir->get_directory() . ": " . $bytes . " Bytes";
-		functions::log_message($msg);
+		functions::log($msg);
 		$result = $data_usage->create($data_dir_id,$data_cost_id,$bytes);
 		
 
@@ -159,5 +161,14 @@ class data_functions {
 		print_r($result);					
 
 	}
+
+	public static function bytes_to_terabytes($bytes = 0) {
+                return round($bytes / self::convert_terabytes,3);
+
+        }
+        public static function bytes_to_gigabytes($bytes = 0) {
+                return round($bytes / self::convert_gigabytes,3);
+        }
+
 }
 ?>

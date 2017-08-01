@@ -76,6 +76,7 @@ else {
 			}
 			$average = round($sum / $count);
 			$result = $data_dir->add_data_bill($month,$year,$average);
+			functions::log($result['MESSAGE']);
         }
 	
 	

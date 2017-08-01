@@ -78,7 +78,7 @@ class db {
 	public function insert_query($sql) {
 		$result = $this->link->exec($sql);
 		if ($result === false) {
-			functions::log_message("INSERT ERROR: " . $sql);
+			functions::log("INSERT ERROR: " . $sql);
 		}
 		return $this->link->lastInsertId();
 
