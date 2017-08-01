@@ -1,4 +1,5 @@
 /conf/settings.inc.php
+/conf/log_rotate.conf
 /vendor
 /html/vendor
 /components
