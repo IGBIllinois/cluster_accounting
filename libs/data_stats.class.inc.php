@@ -80,7 +80,6 @@ class data_stats {
                 }
                 $sql .= "GROUP BY project ";
                 $sql .= "ORDER BY terabyte DESC ";
-		error_log($sql);
                 return $db->query($sql);
         }
 	public static function get_top_data_usage($db,$start_date,$end_date,$top) {
