@@ -41,11 +41,15 @@ class user {
 		//Verify Username
 		if ($username == "") {
 			$error = true;
-			$message = "<div class='alert'>Please enter a username.</div>";
+			$message = "<div class='alert'>Please enter a username</div>";
+		}
+		elseif (preg_match('/[A-Z]/',$username)) {
+			$error = true;
+			$message = "<div class='alert'>Username can only be lowercase</div>";
 		}
 		elseif ($this->get_user_exist($username)) {
 			$error = true;
-			$message .= "<div class='alert'>User already exists in database.</div>";
+			$message .= "<div class='alert'>User already exists in database</div>";
 		}
 		elseif (!$this->ldap->is_ldap_user($username)) {
 			$error = true;
@@ -77,6 +81,7 @@ class user {
 			if ($this->is_disabled($username)) {
 				$this->load_by_username($username);
 				$this->enable();
+				$this->set_supervisor($supervisor_id);
 				$this->default_project()->enable();
 				$this->default_data_dir()->enable();
 				$this->default_project()->set_cfop($bill_project,$cfop,$activity,$hide_cfop);
@@ -599,7 +604,7 @@ class user {
 		$sql = "SELECT count(1) as count FROM users WHERE user_name='" . $username . "' ";
 		$sql .= "AND user_enabled='0' LIMIT 1";
 		$result = $this->db->query($sql);
-		if ($result['count']) {
+		if ($result[0]['count']) {
 			return true;
 		}
 		return false;
