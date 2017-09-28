@@ -104,7 +104,7 @@ $exec_host_html .= "</table>";
         </tr>
 
 	<tr>
-		<td>Wallclock Time (H:M:S): </td>
+		<td>Wallclock Elapsed Time (H:M:S): </td>
 		<td><?php echo $job->get_wallclock_time_hours(); ?></td>
 	</tr>
 	<tr>

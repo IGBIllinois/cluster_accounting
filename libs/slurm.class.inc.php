@@ -10,7 +10,7 @@
 
 class slurm {
 
-	const SLURM_FORMAT = "State,JobID,User,JobName,Account,Partition,ExitCode,Submit,Start,End,CPUTimeRaw,ReqMem,MaxRSS,ReqCPUS,NodeList,MaxVMSize,TotalCPU,NTasks,NNodes";
+	const SLURM_FORMAT = "State,JobID,User,JobName,Account,Partition,ExitCode,Submit,Start,End,Elapsed,ReqMem,MaxRSS,ReqCPUS,NodeList,MaxVMSize,TotalCPU,NTasks,NNodes,AllocGRES";
 	const SLURM_STATES = "CA,CD,F,NF,TO";
 	const SLURM_DELIMITER = "|";
 	const SLURM_TIME_FORMAT = "%Y-%m-%d %H:%M:%s";
@@ -80,8 +80,6 @@ class slurm {
 				$temp_mem = $temp_mem * $job_data['NNodes'];
 				$job_data['ReqMem'] = $temp_mem . $units;
 			}
-		
-			$job_data['TotalCPU'] = self::format_slurm_time($job_data['TotalCPU']);
                 	//creates array that gets submitted to the job.class.inc.php with the required information
 	                $job_insert = array('job_number'=>$job_data['JobID'],
         	                        'job_user'=>$job_data['User'],
@@ -92,8 +90,8 @@ class slurm {
         	                        'job_submission_time'=>$job_data['Submit'],
                 	                'job_start_time'=>$job_data['Start'],
                         	        'job_end_time'=>$job_data['End'],
-                                	'job_ru_wallclock'=>self::convert_to_seconds($job_data['TotalCPU']),
-	                                'job_cpu_time'=>$job_data['CPUTimeRaw'],
+                                	'job_ru_wallclock'=>self::convert_to_seconds(self::format_slurm_time($job_data['Elapsed'])),
+	                                'job_cpu_time'=>self::convert_to_seconds(self::format_slurm_time($job_data['TotalCPU'])),
         	                        'job_reserved_mem'=>self::convert_memory($job_data['ReqMem']),
                 	                'job_used_mem'=>self::convert_memory($job_data['MaxRSS']),
                         	        'job_exit_status'=>$job_data['ExitCode'],
@@ -131,14 +129,13 @@ class slurm {
 	}
 
 	public static function format_slurm_time($slurm_time) {
-	
 		//Remove Microseconds
 		if (strpos($slurm_time,".")) {
                                 $slurm_time = substr($slurm_time,0,strpos($slurm_time,"."));
 		}
 		//Replace Day in format of DD- to DD:
 		if (strpos($slurm_time,"-")) {
-			$time = str_replace("-",":",$slurm_time);
+			$slurm_time = str_replace("-",":",$slurm_time);
 		}
 
 		return $slurm_time;

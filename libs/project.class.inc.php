@@ -145,6 +145,20 @@ class project {
 		}
 
 	}
+
+	public function get_cfop_id_by_date($inDate) {
+		$sql = "SELECT cfop_id FROM cfops ";
+		$sql .= "WHERE cfop_project_id='" . $this->get_project_id() . "' ";
+		$sql .= "AND cfop_time_created<'" . $inDate . "' ";
+		$sql .= "ORDER BY cfop_time_created DESC ";
+		$sql .= "LIMIT 1";
+		$result = $this->db->query($sql);
+		if (count($result)) {
+			return $result[0]['cfop_id'];
+		}
+		return false;
+
+	}
 	public function get_project_id() {
 		return $this->id;
 	}
