@@ -11,14 +11,15 @@ class functions {
 		$sql .= "queues.queue_ldap_group as ldap_group, ";
 		$sql .= "queues.queue_description as description, ";
 		$sql .= "queues.queue_time_created as time_created, ";
-		$sql .= "queue_cost.queue_cost_mem as cost_memory_secs, ";
-		$sql .= "queue_cost.queue_cost_mem * " . $secs_in_day . " as cost_memory_day, ";
-		$sql .= "queue_cost.queue_cost_cpu as cost_cpu_secs, ";
-		$sql .= "queue_cost.queue_cost_cpu * " . $secs_in_day . " as cost_cpu_day, ";
-		$sql .= "queue_cost.queue_cost_gpu as cost_gpu_secs, ";
-		$sql .= "queue_cost.queue_cost_gpu * " . $secs_in_day . " as cost_gpu_day ";
+		$sql .= "a.queue_cost_mem as cost_memory_secs, ";
+		$sql .= "a.queue_cost_mem * " . $secs_in_day . " as cost_memory_day, ";
+		$sql .= "a.queue_cost_cpu as cost_cpu_secs, ";
+		$sql .= "a.queue_cost_cpu * " . $secs_in_day . " as cost_cpu_day, ";
+		$sql .= "a.queue_cost_gpu as cost_gpu_secs, ";
+		$sql .= "a.queue_cost_gpu * " . $secs_in_day . " as cost_gpu_day ";
 	        $sql .= "FROM queues ";
-        	$sql .= "LEFT JOIN queue_cost ON queue_cost.queue_cost_queue_id=queues.queue_id ";
+        	$sql .= "LEFT JOIN (select * FROM queue_cost WHERE queue_cost_time_created In(SELECT MAX(queue_cost_time_created) ";
+		$sql .= "FROM queue_cost GROUP BY queue_cost_queue_id)) a ON a.queue_cost_queue_id=queues.queue_id ";
 	        $sql .= "WHERE queue_enabled='1' ";
 		if ($public) {
 			$sql .= "AND queue_ldap_group='' ";
