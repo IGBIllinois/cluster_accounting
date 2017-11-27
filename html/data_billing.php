@@ -18,7 +18,7 @@ $month = date('m',strtotime($start_date));
 $year = date('Y',strtotime($start_date));
 $url_navigation = html::get_url_navigation($_SERVER['PHP_SELF'],$start_date,$end_date);
 
-$data_bill = data_functions::get_data_bill($db,$month,$year,__DATA_MIN_BILL__);
+$data_bill = data_functions::get_data_bill($db,$month,$year);
 $data_html = "";
 foreach ($data_bill as $value) {
 	if ($value['Billed Cost'] > 0) {
