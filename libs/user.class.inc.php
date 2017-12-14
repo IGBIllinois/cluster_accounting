@@ -150,7 +150,7 @@ class user {
 		$sql .= "LEFT JOIN cfops ON cfops.cfop_id=jobs.job_cfop_id ";
 		$sql .= "WHERE DATE(jobs.job_end_time) BETWEEN '" . $start_date ."' AND '" . $end_date . "' ";
 		$sql .= "AND jobs.job_user_id='". $this->get_user_id() . "' ";
-		$sql .= "GROUP BY jobs.job_queue_id, jobs.job_project_id, jobs.job_user_id";
+		$sql .= "GROUP BY jobs.job_queue_id, jobs.job_cfop_id, jobs.job_user_id";
 		$result = $this->db->query($sql);
 		foreach($result as $key=>$value) {
 			if ($value['total_cost'] == 0.00) {
