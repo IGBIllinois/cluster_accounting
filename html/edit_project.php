@@ -41,6 +41,22 @@ else {
 	exit;
 }
 
+$previous_cfops = $project->get_all_cfops();
+$previous_cfops_html = "";
+foreach ($previous_cfops as $cfops) {
+	$previous_cfops_html .= "<tr><td>" . $cfops['cfop_value'] . "</td>";
+	$previous_cfops_html .= "<td>" . $cfops['cfop_activity'] . "</td>";
+	if ($cfops['cfop_bill'] == '1') {
+		$previous_cfops_html .= "<td><i class='icon-ok'></i></td>";
+	}
+	else {
+		$previous_cfops_html .= "<td><i class='icon-remove'></i></td>";
+                                }
+
+	$previous_cfops_html .= "<td>" . $cfops['cfop_time_created'] . "</td>";
+
+
+}
 $users = user_functions::get_users($db);
 $owner_html = "";
 if ($project->get_default()) {
@@ -158,6 +174,22 @@ foreach ($group_members as $member) {
 		</div>
 	</fieldset>
 </form>
+<hr>
+<h3>Previous CFOPs</h3>
+<table class='table table-striped table-condensed table-bordered'>
+        <thead>
+                <tr>
+                        <th>CFOP</th>
+                        <th>Activity Code</th>
+                        <th>Bill Project</th>
+                        <th>Date Added</th>
+                </tr>
+        </thead>
+        <?php echo $previous_cfops_html; ?>
+
+
+</table>
+
 <script type='text/javascript'>
 enable_project_bill();
 </script>
