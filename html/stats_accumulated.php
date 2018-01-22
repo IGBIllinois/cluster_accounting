@@ -22,7 +22,7 @@ $graph_type_array[1]['title'] = 'Billed Job Cost Per Month';
 $graph_type_array[2]['type'] = 'total_cost_per_month';
 $graph_type_array[2]['title'] = 'Total Job Cost Per Month';
 
-$graph_type_array[3]['type'] = 'data_usage_per_month_backup';
+$graph_type_array[3]['type'] = 'data_usage_per_month';
 $graph_type_array[3]['title'] = 'Data Usage Per Month';
 
 

@@ -128,7 +128,7 @@ class statistics {
 	}
 
 	public function get_avg_job($start_date,$end_date) {
-		$sql = "SELECT SEC_TO_TIME(AVG(TIME_TO_SEC(jobs.job_ru_wallclock))) as avg_job_length ";
+		$sql = "SELECT SEC_TO_TIME(ROUND(AVG(TIME_TO_SEC(jobs.job_ru_wallclock)))) as avg_job_length ";
 		$sql .= "FROM jobs ";
 		$sql .= "WHERE DATE(job_end_time) BETWEEN '" . $start_date . "' AND '" . $end_date . "'";
 		$result = $this->db->query($sql);
@@ -146,7 +146,7 @@ class statistics {
 	//$end_date - end date
 	//returns number of secs
 	public function get_avg_wait($start_date,$end_date) {
-		$sql = "SELECT SEC_TO_TIME(AVG(TIME_TO_SEC(job_start_time)-TIME_TO_SEC(job_submission_time))) AS avg_wait ";
+		$sql = "SELECT SEC_TO_TIME(ROUND(AVG(TIMESTAMPDIFF(SECOND,job_submission_time,job_start_time)))) AS avg_wait ";
 		$sql .= "FROM jobs ";
 		$sql .= "WHERE DATE(job_end_time) BETWEEN '" . $start_date . "' AND '" . $end_date . "'";
 		$result = $this->db->query($sql);
