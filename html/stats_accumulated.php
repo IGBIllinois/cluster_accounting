@@ -23,13 +23,8 @@ $graph_type_array[2]['type'] = 'total_cost_per_month';
 $graph_type_array[2]['title'] = 'Total Job Cost Per Month';
 
 $graph_type_array[3]['type'] = 'data_usage_per_month_backup';
-$graph_type_array[3]['title'] = 'Backup Data Usage Per Month';
+$graph_type_array[3]['title'] = 'Data Usage Per Month';
 
-$graph_type_array[4]['type'] = 'data_usage_per_month_nobackup';
-$graph_type_array[4]['title'] = 'No Backup Data Usage Per Month';
-
-$graph_type_array[5]['type'] = 'data_usage_per_month_accumulated';
-$graph_type_array[5]['title'] = 'Accumulated Data Usage Per Month';
 
 
 $graph_type = $graph_type_array[0]['type'];

@@ -135,25 +135,13 @@ elseif ($graph_type == "data_usage_per_month") {
 	cluster_graph::bar_graph($data,$xaxis,$yaxis,$title);
 }
 
-//Accumulated Graph with Data Usage Per Month with backup and no backup
-elseif ($graph_type == "data_usage_per_month_accumulated") {
-        $backup_data = data_stats::get_usage_per_month($db,$year,"backup");
-	$no_backup_data =data_stats::get_usage_per_month($db,$year,"no_backup");
-	$data[0] = $backup_data;
-	$data[1] = $no_backup_data;
-	$legend = array('Backup Data','No Backup Data');
-        $xaxis = "month_name";
-        $yaxis = "terabyte";
-        $title = "Total Data Usage Per Month (Terabytes)";
-        cluster_graph::accumulated_bar_plot($data,$xaxis,$yaxis,$title,$legend);
-}
 
 //Data Usage Per Month Backup Folder
 elseif ($graph_type == "data_usage_per_month_backup") {
         $data = data_stats::get_usage_per_month($db,$year,"backup");
         $xaxis = "month_name";
         $yaxis = "terabyte";
-        $title = "Backup Data Usage Per Month (Terabytes)";
+        $title = "Data Usage Per Month (Terabytes)";
         cluster_graph::bar_graph($data,$xaxis,$yaxis,$title);
 
 }

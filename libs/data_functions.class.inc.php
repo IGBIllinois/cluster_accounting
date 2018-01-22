@@ -6,6 +6,8 @@ class data_functions {
         const convert_terabytes = 1099511627776;
         const convert_gigabytes = 1073741824;
 
+	const ignore_directories = array('..','.');
+
 	public static function add_data_usage($db,$data_dir_id,$data) {
 	        $backup = explode("\t",$data[0]);
         	$no_backup = explode("\t",$data[1]);
@@ -122,7 +124,7 @@ class data_functions {
 		foreach ($root_dirs as $dir) {
 			
 			$found_dirs = array();
-			$found_dirs = array_diff(scandir($dir), array('..', '.'));
+			$found_dirs = array_diff(scandir($dir), self::ignore_directories);
 			foreach ($found_dirs as &$value) {
 				$value = $dir . "/" . $value;
 			}
