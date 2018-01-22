@@ -94,16 +94,16 @@ class job {
 			$error = false;
 			if (!$this->queue->get_queue_id()) {
 				$error = true;
-				$message = "Job Number: " . $job_number . " - Queue " . $job_data['job_queue_name'] . " does not exist.\n";
+				$message = "ERROR: Job Number: " . $job_number . " - Queue " . $job_data['job_queue_name'] . " does not exist.\n";
 			}
 
 			if (!$this->project->get_project_id()) {
 				$error = true;
-				$message .= "Job Number: " . $job_number . " - Project " . $job_data['job_project'] . " does not exist.\n";
+				$message .= "ERROR: Job Number: " . $job_number . " - Project " . $job_data['job_project'] . " does not exist.\n";
 			}
 			if (!$user->get_user_id()) {
 				$error = true;
-				$message .= "Job Number: " . $job_number . " - User " . $job_data['job_user'] . " does not exist.";
+				$message .= "ERROR: Job Number: " . $job_number . " - User " . $job_data['job_user'] . " does not exist.";
 			}
 
 			if ($error) {
@@ -143,7 +143,7 @@ class job {
 				}
 				else {
 					return array('RESULT'=>false,
-						'MESSAGE'=>'ERROR adding job ' . $job_number);
+						'MESSAGE'=>'ERROR: Error adding job ' . $job_number);
 				}
 				
 			}
