@@ -52,7 +52,7 @@ else {
 				
 			}
 			else {
-				$message = "Data Usage: Direvtory: " . $data_dir->get_directory() . " failed adding to database";
+				$message = "ERROR: Data Usage: Directory: " . $data_dir->get_directory() . " failed adding to database";
 			}
 			functions::log($message);
 	}
