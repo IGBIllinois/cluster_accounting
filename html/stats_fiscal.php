@@ -22,7 +22,7 @@ else {
 }
 
 $previous_year = $year -1;
-$next_year =$year +1;
+$next_year = $year + 1;
 $start_date = $year -1 . "0701";
 $end_date = $year . "0630";
 
@@ -56,7 +56,7 @@ $graph_image = "<img src='graph.php?" . http_build_query($get_array) . "'>";
 
 
 $graph_form = "<form class='form-inline' name='select_graph' id='select_graph' method='post' action='" . $_SERVER['PHP_SELF'];
-$graph_form .= "?start_date=" . $start_date . "&end_date=" . $end_date . "'>";
+$graph_form .= "?year=" . $year . "'>";
 $graph_form .= "<select name='graph_type' onChange='document.select_graph.submit();'>";
 
 foreach ($graph_type_array as $graph) {
