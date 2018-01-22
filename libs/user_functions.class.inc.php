@@ -66,7 +66,9 @@ class user_functions {
 		$result = $ldap->search($search,"",array('uid'));
 		$users = array();
 		foreach ($result as $value) {
-			array_push($users,$value['uid'][0]);
+			if (isset($value['uid'][0])) {
+				array_push($users,$value['uid'][0]);
+			}
 			
 		}
 		return $users;

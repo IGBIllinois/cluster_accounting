@@ -10,7 +10,6 @@ foreach ($dirs as $dir) {
 $server_name = $_SERVER['SERVER_NAME'];
 $cluster_users = user_functions::get_users_not_in_accounting($db,$ldap,$server_name);
 
-
 $users_html = "";
 foreach ($cluster_users as $cluster_user) {
 	$users_html .= "<tr><td>" . $cluster_user . "</td></tr>";
