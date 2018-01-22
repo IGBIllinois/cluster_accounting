@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "5d7b03df7eee7cc309f9d5ea0344b243",
+    "content-hash": "0c1b5fd7753b6b49b3a8d4dce14d8a99",
     "packages": [
         {
             "name": "components/bootstrap",
@@ -241,23 +241,23 @@
         },
         {
             "name": "jpgraph/jpgraph",
-            "version": "3.5.0-beta-1",
+            "version": "4.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ztec/JpGraph.git",
-                "reference": "ad26df5941e847cf1255aecd2011ce16207304cf"
+                "reference": "e82db7da6a546d3926c24c9a346226da7aa49094"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ztec/JpGraph/zipball/ad26df5941e847cf1255aecd2011ce16207304cf",
-                "reference": "ad26df5941e847cf1255aecd2011ce16207304cf",
+                "url": "https://api.github.com/repos/ztec/JpGraph/zipball/e82db7da6a546d3926c24c9a346226da7aa49094",
+                "reference": "e82db7da6a546d3926c24c9a346226da7aa49094",
                 "shasum": ""
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "JpGraph": "lib/"
-                }
+                "classmap": [
+                    "lib/JpGraph.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -277,7 +277,7 @@
                 "jpgraph",
                 "pie"
             ],
-            "time": "2013-05-23T14:04:00+00:00"
+            "time": "2017-02-23T09:44:15+00:00"
         },
         {
             "name": "kriswallsmith/assetic",
@@ -764,9 +764,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "jpgraph/jpgraph": 10
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

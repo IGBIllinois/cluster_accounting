@@ -136,25 +136,6 @@ elseif ($graph_type == "data_usage_per_month") {
 }
 
 
-//Data Usage Per Month Backup Folder
-elseif ($graph_type == "data_usage_per_month_backup") {
-        $data = data_stats::get_usage_per_month($db,$year,"backup");
-        $xaxis = "month_name";
-        $yaxis = "terabyte";
-        $title = "Data Usage Per Month (Terabytes)";
-        cluster_graph::bar_graph($data,$xaxis,$yaxis,$title);
-
-}
-
-//Data Usage Per Month No_Backup Folder
-elseif ($graph_type == "data_usage_per_month_nobackup") {
-        $data = data_stats::get_usage_per_month($db,$year,"no_backup");
-        $xaxis = "month_name";
-        $yaxis = "terabyte";
-        $title = "No_Backup Data Usage Per Month (Terabytes)";
-        cluster_graph::bar_graph($data,$xaxis,$yaxis,$title);
-
-}
 
 //Top 5 Data Users
 elseif ($graph_type == 'top_data_usage') {

@@ -96,7 +96,7 @@ if (count($user_list)) {
 
 
 ?>
-<h3>Yearly Stats - <?php echo $year; ?></h3>
+<h3>User Stats - <?php echo $year; ?></h3>
 <form class='form-inline' method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>'>
 <?php 
 	if ($login_user->is_supervisor() || $login_user->is_admin()) {
