@@ -18,7 +18,7 @@ foreach ($cluster_users as $cluster_user) {
 	
 }
 ?>
-<h4>Verify Users and Directories</h4>
+<h3>Verify Users and Directories</h3>
 <div class='row span4'>
 <h4>Users</h4>
 <p>These users have access to the biocluster but are not in the accounting program<p>
