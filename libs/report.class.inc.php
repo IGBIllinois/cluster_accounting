@@ -56,8 +56,8 @@ class report {
 				$column=0;
 				foreach ($row_data as $key => $value) {
 					$excel_file->getActiveSheet()->setCellValueByColumnAndRow($column,$start_row,$value);
-					if (($key == 'Cost') || ($key == 'Billed Amount')) {
-						$excel_file->getActiveSheet()->getStyleByColumnAndRow($column,$start_row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_USD_SIMPLE);
+					if (($key == 'Cost') || ($key == 'Billed Amount') || ($key == 'COST')) {
+						$excel_file->getActiveSheet()->getStyleByColumnAndRow($column,$start_row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00);
 					}
 					else {
 						$excel_file->getActiveSheet()->getStyleByColumnAndRow($column,$start_row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
