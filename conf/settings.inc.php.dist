@@ -10,7 +10,7 @@
 //
 ////////////////////////////////////
 
-define("__VERSION__","1.42 Beta");
+define("__VERSION__","1.42");
 define("__TITLE__","Biocluster Accounting, University of Illinois Urbana-Champaign");
 define("__MYSQL_HOST__","");
 define("__MYSQL_USER__","");
