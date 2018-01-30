@@ -78,7 +78,7 @@ $users_html = html::get_users_rows($all_users,$start,$count);
         </select> <input class='btn btn-primary' type='submit'
                 name='create_user_report' value='Download User List'>
 </form>
-</div>
 
 <?php echo $pages_html; ?>
+</div>
 <?php include_once 'includes/footer.inc.php'; ?>
