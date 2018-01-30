@@ -232,15 +232,13 @@ class queue {
 
 	}
 
-	public function calculate_cost($cpu_time,$wallclock_time,$slots,$mem,$start_time,$end_time) {
-		$cpu_cost = $this->calculate_cpu_cost($cpu_time,$wallclock_time,$slots,$start_time,$end_time);
-		$mem_cost = $this->calculate_mem_cost($wallclock_time,$mem,$start_time,$end_time);
-		if ($cpu_cost > $mem_cost) {
-			return $cpu_cost;
-		}
-		else {
-			return $mem_cost;
-		}
+	public function calculate_cost($cpu_time,$wallclock_time,$slots,$mem,$start_time,$end_time,$num_gpu) {
+		$elapsed_time = strtotime($end_time) - strtotime($start_time);
+		$cost_array = array();
+		array_push($cost_array,$this->calculate_cpu_cost($cpu_time,$wallclock_time,$slots,$start_time,$end_time));
+		array_push($cost_array,$this->calculate_mem_cost($wallclock_time,$mem,$start_time,$end_time));
+		array_push($cost_array,$this->calculate_gpu_cost($wallclock_time,$num_gpu,$elapsed_time));
+		return max($cost_array);
 	}
 
 	public function get_all_costs() {
@@ -328,8 +326,23 @@ class queue {
 
 	}
 
-	private function calculate_gpu_cost($elapsed_time,$gpu) {
-		return 0;
+	private function calculate_gpu_cost($wallclock_time,$num_gpu,$elapsed_time) {
+		$final_time = 0;
+		if ($wallclock_time == 0) {
+                        $wallclock_time = 1;
+                }
+                if ($elapsed_time == 0) {
+                        $elapsed_time = 1;
+                }
+                if ($wallclock_time >= $elapsed_time) {
+                        $final_time = $wallclock_time;
+                }
+                elseif ($elapsed_time > $wallclock_time) {
+                        $final_time = $elapsed_time;
+                }
+                return $final_time * $num_gpu * $this->get_gpu_cost();
+
+
 	}
 
 	private function calculate_time($cpu_time,$wallclock_time,$slots,$start_time,$end_time) {

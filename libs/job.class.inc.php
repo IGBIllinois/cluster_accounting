@@ -40,6 +40,7 @@ class job {
 	private $exec_hosts = array();
 	private $job_script = "No Job Script Available";
 	private $job_script_exists = 0;
+	private $reserved_gpu;
 	private $exit_status_codes = array('0'=>'JOB_EXEC_OK',
 			'-1'=>'JOB_EXEC_FAIL1',
 			'-2'=>'JOB_EXEC_FAIL2',
@@ -119,7 +120,7 @@ class job {
 					$mem = $job_data['job_reserved_mem'];
 				}
 				$cost = $this->queue->calculate_cost($job_data['job_cpu_time'],$job_data['job_ru_wallclock'],
-						$job_data['job_slots'],$mem,$job_data['job_start_time'],$job_data['job_end_time']);
+						$job_data['job_slots'],$mem,$job_data['job_start_time'],$job_data['job_end_time'],$job_data['job_gpu']);
 				$bill_cost = 0;
 				if ($this->project->get_bill_project()) {
 					$bill_cost = $cost;
@@ -260,6 +261,9 @@ class job {
 	}
 	public function get_submitted_project() {
 		return $this->submitted_project;
+	}
+	public function get_reserved_gpu() {
+		return $this->reserved_gpu;
 	}
 	public function get_project() {
 		return $this->project;
@@ -429,6 +433,7 @@ class job {
 			$this->queue = new queue($this->db,$result[0]['queue_id'],$result[0]['submission_time']);
 			$this->project = new project($this->db,$result[0]['project_id']);
 			$this->set_exec_hosts_var($result[0]['exec_hosts']);
+			$this->reserved_gpu = $result[0]['gpu'];
 			if ($result[0]['qsub_script']) {
 				$this->job_script = $result[0]['qsub_script'];
 				$this->job_script_exists = 1;

@@ -10,7 +10,7 @@
 
 class slurm {
 
-	const SLURM_FORMAT = "State,JobID,User,JobName,Account,Partition,ExitCode,Submit,Start,End,Elapsed,ReqMem,MaxRSS,ReqCPUS,NodeList,MaxVMSize,TotalCPU,NTasks,NNodes,AllocGRES";
+	const SLURM_FORMAT = "State,JobID,User,JobName,Account,Partition,ExitCode,Submit,Start,End,Elapsed,ReqMem,MaxRSS,ReqCPUS,NodeList,MaxVMSize,TotalCPU,NTasks,NNodes,ReqGRES";
 	const SLURM_STATES = "CA,CD,F,NF,TO";
 	const SLURM_DELIMITER = "|";
 	const SLURM_TIME_FORMAT = "%Y-%m-%d %H:%M:%s";
@@ -80,6 +80,11 @@ class slurm {
 				$temp_mem = $temp_mem * $job_data['NNodes'];
 				$job_data['ReqMem'] = $temp_mem . $units;
 			}
+			
+			$gpu = 0;
+			if (isset($job_data['ReqGRES'])) {
+				$gpu = substr($job_data['ReqGRES'],strpos($job_data['ReqGRES'],':') +1 );
+			}
                 	//creates array that gets submitted to the job.class.inc.php with the required information
 	                $job_insert = array('job_number'=>$job_data['JobID'],
         	                        'job_user'=>$job_data['User'],
@@ -96,8 +101,9 @@ class slurm {
                 	                'job_used_mem'=>self::convert_memory($job_data['MaxRSS']),
                         	        'job_exit_status'=>$job_data['ExitCode'],
 					'job_exec_hosts'=>$job_data['NodeList'],
-					'job_qsub_script'=>"",
-        	                        'job_maxvmem'=>self::convert_memory($job_data['MaxVMSize'])
+					'job_qsub_script'=>'',
+        	                        'job_maxvmem'=>self::convert_memory($job_data['MaxVMSize']),
+					'job_gpu'=>$gpu
                 	);
 			return $job->create($job_insert,$ldap);
 		}

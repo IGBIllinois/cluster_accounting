@@ -40,13 +40,24 @@ if (isset($_GET['start']) && is_numeric($_GET['start'])) {
 }
 else { $start = 0;
 }
+
+$search = "";
+if (isset($_GET['search'])) {
+        $search = trim(rtrim($_GET['search']));
+}
+
+$custom = 'ALL';
+if (isset($_GET['custom'])) {
+	$custom = $_GET['custom'];
+}
+
 $count=30;
-$custom = true;
-$num_projects = functions::get_num_projects($db,$custom);
-$pages_url = $_SERVER['PHP_SELF'];
+$num_projects = functions::get_num_projects($db,$custom,$search);
+$get_array = array('search'=>$search,
+                'custom'=>$custom);
+$pages_url = $_SERVER['PHP_SELF'] . "?" . http_build_query($get_array);
 $pages_html = html::get_pages_html($pages_url,$num_projects,$start,$count);
-$custom = true;
-$projects = functions::get_projects($db,$custom,$start,$count);
+$projects = functions::get_projects($db,$custom,$search,$start,$count);
 $projects_html = "";
 
 foreach ($projects as $project) {
@@ -83,6 +94,25 @@ foreach ($users as $owner) {
 $owner_html .= "</select>";
 ?>
 <h3>Projects</h3>
+<div class='row'>
+<form class='span6 form-search' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
+		<div class='input-append'>
+                <input type='text' name='search' class='input-xlarge search-query' placeholder='Search'
+                        value='<?php if (isset($search)) { echo $search; } ?>'>
+		<input type='hidden' name='custom' value='<?php echo $custom; ?>'>
+                <button type='submit' class='btn btn-primary'>Search</button>
+		</div>
+</form>
+<div class='span6 btn-toolbar text-right'>
+	<div class='btn-group'>
+		<a class='btn' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&custom=ALL"; ?>'>All Projects</a>
+		<a class='btn' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&custom=CUSTOM"; ?>'>Custom Projects</a>
+		<a class='btn' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&custom=DEFAULT"; ?>'>User Projects</a>
+	</div>
+
+</div>
+</div>
+<div class='row'>
 <table class='table table-condensed table-striped table-bordered'>
 	<thead>
 		<tr>
@@ -99,85 +129,13 @@ $owner_html .= "</select>";
 	<?php echo $projects_html; ?>
 </table>
 <?php echo $pages_html; ?>
-<form class='form-horizontal' name='form' method='post'
-	action='<?php echo $_SERVER['PHP_SELF']; ?>'>
-	<fieldset>
-		<legend>Add Project</legend>
-		<div class='control-group'>
-			<label class='control-label' for='name_input'>Project Name: </label>
-			<div class='controls'>
-				<input type='text' name='name' id='name_input'
-					value='<?php if (isset($_POST['name'])) { echo $_POST['name']; } ?>'>
-			</div>
-		</div>
-				<div class='control-group'>
-			<label class='control-label' for='owner_input'>Owner: </label>
-			<div class='controls'>
-				<?php echo $owner_html; ?>
-			</div>
-		</div>
-		<div class='control-group'>
-			<label class='control-label' for='ldap_group_input'>LDAP Group: </label>
-			<div class='controls'>
-				<input type='text' name='ldap_group' id='ldap_group_input'
-					value='<?php if(isset($_POST['ldap_group'])) { echo $_POST['ldap_group']; } ?>'>
-			</div>
-		</div>
-		<div class='control-group'>
-			<label class='control-label' for='description_input'>Description: </label>
-			<div class='controls'>
-				<input type='text' name='description' id='description_input'
-					value='<?php if(isset($_POST['description'])) { echo $_POST['description']; } ?>'>
-			</div>
-		</div>
-		<div class='control-group'>
-			<label class='control-label' for='bill_project_input'>Do not bill
-				project: </label>
-			<div class='controls'>
-				<input type='checkbox' name='bill_project' id='bill_project_input'
-					onClick='enable_project_bill();'>
-			</div>
-		</div>
-		<div class='control-group'>
-			<label class='control-label' for='cfop_input'>CFOP:</label>
-			<div class='controls'>
-				<input class='input-mini' type='text' name='cfop_1' id='cfop_input'
-					maxlength='1' onKeyUp='cfop_advance_1()'
-					value='<?php if (isset($_POST['cfop_1'])) { echo $_POST['cfop_1']; } ?>'>
-				- <input class='input-mini' type='text' name='cfop_2'
-					id='cfop_input' maxlength='6' onKeyUp='cfop_advance_2()'
-					value='<?php if (isset($_POST['cfop_2'])) { echo $_POST['cfop_2']; } ?>'>
-				- <input class='input-mini' type='text' name='cfop_3'
-					id='cfop_input' maxlength='6' onKeyUp='cfop_advance_3()'
-					value='<?php if (isset($_POST['cfop_3'])) { echo $_POST['cfop_3']; } ?>'>
-				- <input class='input-mini' type='text' name='cfop_4'
-					id='cfop_input' maxlength='6'
-					value='<?php if (isset($_POST['cfop_4'])) { echo $_POST['cfop_4']; } ?>'>
-			</div>
-		</div>
-		<div class='control-group'>
-			<label class='control-label' for='activity_input'>Activity Code
-				(optional):</label>
-			<div class='controls'>
-				<input class='input-mini' type='text' name='activity' maxlength='6'
-					id='activity_input'
-					value='<?php if (isset($_POST['activity'])) { echo $_POST['activity']; } ?>'>
-			</div>
-		</div>
-		<div class='control-group'>
-			<div class='controls'>
-				<input class='btn btn-primary' type='submit' name='add_project'
-					value='Add Project'> <input class='btn btn-warning' type='submit'
-					name='cancel_project' value='Cancel'>
-			</div>
-		</div>
-	</fieldset>
-</form>
 <?php
 if (isset($result['MESSAGE'])) {
 	echo $result['MESSAGE'];
 }
-
+?>
+</div>
+<?php
 
 include_once 'includes/footer.inc.php';
 ?>

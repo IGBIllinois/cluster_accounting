@@ -56,7 +56,10 @@ class user {
 			$message = "<div class='alert'>User does not exist in LDAP database.</div>";
 		}
 
-
+		if ($supervisor_id == "-1") {
+			$error = true;
+			$message .= "<div class='alert'>Please select a supervisor.</div>";
+		}
 		//Verify CFOP/Activty Code
 		$project = new project($this->db);
 		if (!$project->verify_cfop($cfop) && $bill_project) {

@@ -58,6 +58,7 @@ require_once 'includes/session.inc.php';
 							echo "<li><a href='list_users.php'>List Users</a></li>";
 							echo "<li><a href='add_user.php'>Add User</a></li>";
 							echo "<li><a href='projects.php'>Projects</a></li>";
+							echo "<li><a href='add_project.php'>Add Project</a></li>";
 							echo "<li><a href='queues.php'>Queues</a></li>";
 							echo "<li><a href='add_queue.php'>Add Queue</a></li>";
 							echo "<li><a href='data_dir_home.php'>Home Directories</a></li>";

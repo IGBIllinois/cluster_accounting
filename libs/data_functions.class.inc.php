@@ -95,7 +95,7 @@ class data_functions {
 	}
 
 
-	public static function get_data_bill($db,$month,$year,$minimum_bill = 0) {
+	public static function get_data_bill($db,$month,$year,$minimum_bill = 0.00) {
 		$sql = "SELECT data_dir.data_dir_path as 'Directory', ";
 	        $sql .= "ROUND(data_bill.data_bill_avg_bytes / 1099511627776,3) as 'Terabytes', ";
         	$sql .= "ROUND(data_cost.data_cost_value,2) as 'Rate ($/Terabyte)', ";
@@ -111,10 +111,42 @@ class data_functions {
         	$sql .= "LEFT JOIN data_cost ON data_cost_id=data_bill_data_cost_id ";
 	        $sql .= "WHERE YEAR(data_bill.data_bill_date)='" . $year . "' ";
         	$sql .= "AND MONTH(data_bill.data_bill_date)='" . $month . "' ";
-	        $sql .= "AND data_bill.data_bill_total_cost>'" . $minimum_bill . "' ";
+	        $sql .= "AND ROUND(data_bill.data_bill_total_cost,2)>'" . $minimum_bill . "' ";
 		$sql .= "ORDER BY Directory ASC";
         	return $db->query($sql);
 	}
+
+        public static function get_data_boa_bill($db,$month,$year,$minimal_bill = 0.00) {
+                $sql = "SELECT '' as 'DATE', ";
+		$sql .= "projects.project_name as 'NAME', ";
+		$sql .= "cfops.cfop_value as 'CFOP', ";
+		$sql .= "cfops.cfop_activity as 'ACTIVITY CODE', ";	
+                $sql .= "ROUND(data_bill.data_bill_billed_cost,2) as 'COST' ";
+                $sql .= "FROM data_bill ";
+                $sql .= "LEFT JOIN cfops ON cfops.cfop_id=data_bill.data_bill_cfop_id ";
+                $sql .= "LEFT JOIN projects ON projects.project_id=data_bill.data_bill_project_id ";
+                $sql .= "LEFT JOIN data_dir ON data_dir.data_dir_id=data_bill.data_bill_data_dir_id ";
+                $sql .= "LEFT JOIN data_cost ON data_cost_id=data_bill_data_cost_id ";
+                $sql .= "WHERE YEAR(data_bill.data_bill_date)='" . $year . "' ";
+                $sql .= "AND MONTH(data_bill.data_bill_date)='" . $month . "' ";
+                $sql .= "AND ROUND(data_bill.data_bill_billed_cost,2)>'" . $minimal_bill . "' ";
+                $sql .= "ORDER BY 'NAME' ASC";
+		$data_result = $db->query($sql);
+
+
+		$total_bill = 0;
+		foreach ($data_result as $num => $values) {
+                        $total_bill += $values['COST'];
+                }
+
+                $first_row = array(array('DATE'=>$month . "/" . $year,
+                        'NAME'=>'IGB Biocluster Data',
+                        'CFOP'=>settings::get_boa_cfop(),
+                        'ACTIVITY CODE'=>'',
+                        'COST'=>"-" . $total_bill));
+
+		return array_merge($first_row,$data_result);			
+        }
 
 	public static function get_existing_dirs() {
 		$root_dirs = settings::get_root_data_dirs();

@@ -36,7 +36,7 @@ if ($login_user->is_admin()) {
 }
 $user_list_html = "";
 if (count($user_list)) {
-	$user_list_html = "<label>User: </label><select class='input-small' name='user_id'>";
+	$user_list_html = "<label>User: </label><select class='input-medium' name='user_id'>";
 	if ((!isset($_GET['user_id'])) || ($_GET['user_id'] == $login_user->get_user_id())) {
                 $user_list_html .= "<option value='" . $login_user->get_user_id(). "' selected='selected'>";
                 $user_list_html .= $login_user->get_username() . "</option>";

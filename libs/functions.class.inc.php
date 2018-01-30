@@ -2,21 +2,20 @@
 
 class functions {
 
-
+	const secs_in_day = 86400;
 
 	public static function get_queues($db,$public = 1) {
-		$secs_in_day = 86400;
         	$sql = "SELECT queues.queue_id as queue_id, ";
 		$sql .= "queues.queue_name as name, ";
 		$sql .= "queues.queue_ldap_group as ldap_group, ";
 		$sql .= "queues.queue_description as description, ";
 		$sql .= "queues.queue_time_created as time_created, ";
 		$sql .= "a.queue_cost_mem as cost_memory_secs, ";
-		$sql .= "a.queue_cost_mem * " . $secs_in_day . " as cost_memory_day, ";
+		$sql .= "a.queue_cost_mem * " . self::secs_in_day . " as cost_memory_day, ";
 		$sql .= "a.queue_cost_cpu as cost_cpu_secs, ";
-		$sql .= "a.queue_cost_cpu * " . $secs_in_day . " as cost_cpu_day, ";
+		$sql .= "a.queue_cost_cpu * " . self::secs_in_day . " as cost_cpu_day, ";
 		$sql .= "a.queue_cost_gpu as cost_gpu_secs, ";
-		$sql .= "a.queue_cost_gpu * " . $secs_in_day . " as cost_gpu_day ";
+		$sql .= "a.queue_cost_gpu * " . self::secs_in_day . " as cost_gpu_day ";
 	        $sql .= "FROM queues ";
         	$sql .= "LEFT JOIN (select * FROM queue_cost WHERE queue_cost_time_created In(SELECT MAX(queue_cost_time_created) ";
 		$sql .= "FROM queue_cost GROUP BY queue_cost_queue_id)) a ON a.queue_cost_queue_id=queues.queue_id ";
@@ -40,11 +39,11 @@ class functions {
 	        $sql .= "queues.queue_description as description, ";
         	$sql .= "queues.queue_time_created as time_created, ";
 	        $sql .= "queue_cost.queue_cost_mem as cost_memory_secs, ";
-        	$sql .= "queue_cost.queue_cost_mem * " . $secs_in_day . " as cost_memory_day, ";
+        	$sql .= "queue_cost.queue_cost_mem * " . self::secs_in_day . " as cost_memory_day, ";
 	        $sql .= "queue_cost.queue_cost_cpu as cost_cpu_secs, ";
-        	$sql .= "queue_cost.queue_cost_cpu * " . $secs_in_day . " as cost_cpu_day, ";
+        	$sql .= "queue_cost.queue_cost_cpu * " . self::secs_in_day . " as cost_cpu_day, ";
 	        $sql .= "queue_cost.queue_cost_gpu as cost_gpu_secs, ";
-        	$sql .= "queue_cost.queue_cost_gpu * " . $secs_in_day . " as cost_gpu_day ";
+        	$sql .= "queue_cost.queue_cost_gpu * " . self::secs_in_day . " as cost_gpu_day ";
 	        $sql .= "FROM queues ";
         	$sql .= "LEFT JOIN queue_cost ON queue_cost.queue_cost_queue_id=queues.queue_id ";
 	        $sql .= "WHERE queue_enabled='1' ";
@@ -54,16 +53,56 @@ class functions {
 
 	}
 
-	public static function get_projects($db,$custom = false, $start=0,$count=0) {
+	public static function get_projects($db,$custom = 'ALL', $search = '', $start=0,$count=0) {
+
+		$search = strtolower(trim(rtrim($search)));
+		$where_sql = array();
+		array_push($where_sql,"project_enabled='1' ");
+		array_push($where_sql,"cfops.cfop_active='1' ");
+	
 		$sql = "SELECT projects.*,cfops.*, users.user_name as owner ";
 		$sql .= "FROM projects ";
 		$sql .= "LEFT JOIN users ON users.user_id=projects.project_owner ";
 		$sql .= "LEFT JOIN cfops ON cfops.cfop_project_id=projects.project_id ";
-		$sql .= "WHERE project_enabled='1' ";
-		if ($custom) {
-			$sql .= "AND project_default='0' ";
+		
+		if ($custom == 'CUSTOM') {
+			array_push($where_sql,"project_default='0' ");
 		}
-		$sql .= "GROUP BY projects.project_id ";
+		elseif ($custom == 'DEFAULT') {
+			array_push($where_sql,"project_default='1' ");
+		}
+		elseif ($custom == 'ALL') {
+		}
+
+                if ($search != "" ) {
+                        $terms = explode(" ",$search);
+                        foreach ($terms as $term) {
+                                $search_sql = "(projects.project_name LIKE '%" . $term . "%' OR ";
+                                $search_sql .= "projects.project_ldap_group LIKE '%" . $term . "%' OR ";
+                                $search_sql .= "projects.project_description LIKE '%" . $term . "%' OR ";
+				$search_sql .= "cfops.cfop_value LIKE '%" . $term . "%' OR ";
+                                $search_sql .= "cfops.cfop_activity LIKE '%" . $term . "%' OR ";
+                                $search_sql .= "users.user_name LIKE '%" . $term . "%') ";
+                                array_push($where_sql,$search_sql);
+                        }
+
+                }
+                $num_where = count($where_sql);
+                if ($num_where) {
+                        $sql .= "WHERE ";
+                        $i = 0;
+                        foreach ($where_sql as $where) {
+                                $sql .= $where;
+                                if ($i<$num_where-1) {
+                                        $sql .= "AND ";
+                                }
+                                $i++;
+                        }
+
+                }
+
+
+		//$sql .= "GROUP BY projects.project_id ";
 		$sql .= "ORDER BY projects.project_name ASC ";
 		if ($count != 0) {
 			$sql .= "LIMIT " . $start . "," . $count;
@@ -72,12 +111,53 @@ class functions {
 
 	}
 
-	public static function get_num_projects($db,$custom = false) {
-		$sql = "SELECT count(1) as count FROM projects ";
-		$sql .= "WHERE project_enabled=1 ";
-		if ($custom) {
-			$sql .= "AND project_default='0'";
+	public static function get_num_projects($db,$custom = 'ALL',$search = '') {
+
+                $search = strtolower(trim(rtrim($search)));
+                $where_sql = array();
+                array_push($where_sql,"project_enabled='1' ");
+		array_push($where_sql,"cfops.cfop_active='1' ");
+
+		$sql = "SELECT count(1) as count ";
+		$sql .= "FROM projects ";
+                $sql .= "LEFT JOIN users ON users.user_id=projects.project_owner ";
+                $sql .= "LEFT JOIN cfops ON cfops.cfop_project_id=projects.project_id ";
+
+		if ($custom == 'CUSTOM') {
+			array_push($where_sql,"project_default='0' ");
 		}
+		elseif ($custom == 'DEFAULT') {
+			array_push($where_sql,"project_default='1' ");
+		}
+		elseif ($custom == 'ALL') {
+		}
+
+		if ($search != "" ) {
+                        $terms = explode(" ",$search);
+                        foreach ($terms as $term) {
+                                $search_sql = "(projects.project_name LIKE '%" . $term . "%' OR ";
+                                $search_sql .= "projects.project_ldap_group LIKE '%" . $term . "%' OR ";
+                                $search_sql .= "projects.project_description LIKE '%" . $term . "%' OR ";
+                                $search_sql .= "cfops.cfop_value LIKE '%" . $term . "%' OR ";
+                                $search_sql .= "cfops.cfop_activity LIKE '%" . $term . "%' OR ";
+                                $search_sql .= "users.user_name LIKE '%" . $term . "%') ";
+                                array_push($where_sql,$search_sql);
+                        }
+
+                }
+                $num_where = count($where_sql);
+                if ($num_where) {
+                        $sql .= "WHERE ";
+                        $i = 0;
+                        foreach ($where_sql as $where) {
+                                $sql .= $where;
+                                if ($i<$num_where-1) {
+                                        $sql .= "AND ";
+                                }
+                                $i++;
+                        }
+
+                }
 		$result = $db->query($sql);
 		return $result[0]['count'];
 	}

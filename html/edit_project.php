@@ -190,6 +190,13 @@ foreach ($group_members as $member) {
 
 </table>
 
+<?php if (isset($_SERVER['HTTP_REFERER'])) {
+        echo "<a href='" . $_SERVER['HTTP_REFERER'] . "' class='btn btn-primary'>Back</a>";
+
+}
+
+?>
+
 <script type='text/javascript'>
 enable_project_bill();
 </script>

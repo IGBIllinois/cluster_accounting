@@ -92,6 +92,9 @@ $stats = new statistics($db);
 		<option value='csv'>CSV</option>
 	</select> <input class='btn btn-primary' type='submit'
 		name='create_job_report' value='Download Report'>
+	<input class='btn btn-primary' type='submit'
+                name='create_job_boa_report' value='Download BOA Report'>
+
 </form>
 <?php
 

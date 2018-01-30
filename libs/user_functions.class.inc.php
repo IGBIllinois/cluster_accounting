@@ -13,12 +13,12 @@ class user_functions {
 
 	//get_users()
 	//returns array of users
-	public static function get_users($db,$ldap = "",$search = "") {
+	public static function get_users($db,$ldap = "",$search = "", $enabled = 1) {
         	$search = strtolower(trim(rtrim($search)));
 	        $where_sql = array();
 	
         	$sql = "SELECT users.* FROM users ";
-	        array_push($where_sql,"users.user_enabled='1'");
+	        array_push($where_sql,"users.user_enabled='" . $enabled . "'");
 
         	if ($search != "" ) {
                 	$terms = explode(" ",$search);
