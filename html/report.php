@@ -54,14 +54,13 @@ elseif (isset($_POST['create_data_boa_report'])) {
         $server_name = settings::get_server_name();
         $filename = $server_name . "-data-boa-" . $month . "-" . $year . "." . $type;
 
-
 }
 switch ($type) {
 	case 'csv':
 		report::create_csv_report($data,$filename);
 		break;
 	case 'xls':
-        	report::create_excel_2003_report($data,$filename);
+	      	report::create_excel_2003_report($data,$filename);
                 break;
 	case 'xlsx':
 		report::create_excel_2007_report($data,$filename);
