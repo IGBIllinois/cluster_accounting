@@ -143,6 +143,10 @@ $exec_host_html .= "</table>";
 		<td><?php echo $job->get_maxvmem_gb(); ?>GB</td>
 	</tr>
 	<tr>
+		<td>GPUs Reserved:</td>
+		<td><?php echo $job->get_reserved_gpu(); ?></td>
+	</tr>
+	<tr>
 		<td>Cost:</td>
 		<?php if ($job->get_total_cost() < 0.01) { 
 			echo "<td>$ < 0.01</td>";
@@ -193,6 +197,11 @@ if (!strpos($job->get_job_script(),'module load') && $job->get_job_script_exists
 ?>
 </div>
 <div class='row span12'>
+<?php if (isset($_SERVER['HTTP_REFERER'])) {
+	echo "<a href='" . $_SERVER['HTTP_REFERER'] . "' class='btn btn-primary'>Back</a> ";
+
+}
+?>
 <?php if ($job->get_job_script_exists()) {
 	echo "<a href='job_script.php?job=" . $job->get_full_job_number() . "' class='btn btn-primary'>View Job Script</a>&nbsp";
 }

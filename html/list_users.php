@@ -20,9 +20,15 @@ if (isset($_GET['search'])) {
         $get_array['search'] = $search;
 }
 
-
-$all_users = user_functions::get_users($db,$ldap,$search);
+$enabled = 1;
+if (isset($_GET['enabled'])) {
+	$enabled = $_GET['enabled'];
+}
+$all_users = user_functions::get_users($db,$ldap,$search,$enabled);
 $num_users = count($all_users);
+$get_array = array('search'=>$search,
+                'enabled'=>$enabled);
+
 $pages_url = $_SERVER['PHP_SELF'] . "?" . http_build_query($get_array);
 $pages_html = html::get_pages_html($pages_url,$num_users,$start,$count);
 $users_html = "";
@@ -33,12 +39,22 @@ $users_html = html::get_users_rows($all_users,$start,$count);
 
 ?>
 <h3>List of Users</h3>
-<form class='form-search' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
+<div class='row'>
+<form class='span6 form-search' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
         <div class='input-append'>
-                <input type='text' name='search' class='input-long search-query' value='<?php if (isset($search)) { echo $search; } ?>'>
-                <input type='submit' class='btn' value='Search'>
+                <input type='text' name='search' class='input-xlarge search-query' placeholder='Search' value='<?php if (isset($search)) { echo $search; } ?>'>
+		<input type='hidden' name='enabled' value='<?php echo $enabled; ?>'>
+                <button type='submit' class='btn btn-primary'>Search</button>
         </div>
 </form>
+<div class='span6 btn-toolbar text-right'>
+        <div class='btn-group'>
+                <a class='btn' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&enabled=1"; ?>'>Active</a>
+                <a class='btn' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&enabled=0"; ?>'>Deactived</a>
+        </div>
+
+</div>
+</div>
 
 <table class='table table-striped table-condensed table-bordered'>
 	<thead>

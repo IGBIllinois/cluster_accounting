@@ -10,7 +10,7 @@
 //
 ////////////////////////////////////
 
-define("__VERSION__","1.41");
+define("__VERSION__","1.42 Beta");
 define("__TITLE__","Biocluster Accounting, University of Illinois Urbana-Champaign");
 define("__MYSQL_HOST__","");
 define("__MYSQL_USER__","");
@@ -40,4 +40,6 @@ define("__ROOT_DATA_DIR__","/home/a-m /home/n-z /home/labs /home/groups /home/th
 
 define("__LOG_FILE__","");
 define("__ENABLE_LOG__",false);
+define("__BOA_CFOP__",'');
+
 ?>

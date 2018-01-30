@@ -9,7 +9,7 @@ if (isset($_POST['create_job_report'])) {
 	$type = $_POST['report_type'];
 	$data = job_functions::get_jobs_bill($db,$month,$year);
 	$server_name = settings::get_server_name();
-	$filename = $server_name . "-" . $month . "-" . $year . "." . $type; 
+	$filename = $server_name . "-job-" . $month . "-" . $year . "." . $type; 
 }
 
 elseif (isset($_POST['user_job_report'])) {
@@ -25,7 +25,7 @@ elseif (isset($_POST['create_data_report'])) {
         $type = $_POST['report_type'];
         $data = data_functions::get_data_bill($db,$month,$year);
 	$server_name = settings::get_server_name();
-	$filename = $server_name . "-" . $month . "-" . $year . "." . $type;
+	$filename = $server_name . "-data-" . $month . "-" . $year . "." . $type;
 }
 
 elseif (isset($_POST['create_user_report'])) {
@@ -34,6 +34,28 @@ elseif (isset($_POST['create_user_report'])) {
 	$filename = "users." . $type;
 }
 
+elseif (isset($_POST['create_job_boa_report'])) {
+	$month = $_POST['month'];
+        $year = $_POST['year'];
+        $type = $_POST['report_type'];
+        $data = job_functions::get_jobs_boa_bill($db,$month,$year);
+        $server_name = settings::get_server_name();
+        $filename = $server_name . "-job-boa-" . $month . "-" . $year . "." . $type;
+
+
+
+}
+elseif (isset($_POST['create_data_boa_report'])) {
+
+	$month = $_POST['month'];
+        $year = $_POST['year'];
+        $type = $_POST['report_type'];
+        $data = data_functions::get_data_boa_bill($db,$month,$year);
+        $server_name = settings::get_server_name();
+        $filename = $server_name . "-data-boa-" . $month . "-" . $year . "." . $type;
+
+
+}
 switch ($type) {
 	case 'csv':
 		report::create_csv_report($data,$filename);

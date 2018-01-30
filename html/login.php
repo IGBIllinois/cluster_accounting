@@ -82,18 +82,31 @@ if (isset($_POST['login'])) {
 	
 	<div class='container-fluid'>
 		<div class='container'>
-			<div class='span6 offset4'>
+			<div class='span6 offset3'>
 
 				<form action='login.php' method='post' name='login'
 					class='form-vertical'>
-					<label>Username:</label> <input class='span3' type='text'
+					<div class='control-group'>	
+					<label class='control-label' for='username'>Username:</label> 
+					<div class='controls'>
+						<div class='input-append'>
+						<input class='span5' type='text'
 						name='username' tabindex='1' placeholder='Username'
 						value='<?php if (isset($username)) { echo $username; } ?>'> 
-					<i class='icon-user'></i>
-					<label>Password:</label>
+						<span class='add-on'><i class='icon-user'></i></span>
+						</div>
+						</div>
+					</div>
+					<div class='control-group'>
+					<label class='control-label' for='password'>Password:</label>
 					<div class='controls'>
-					<input class='span3' type='password' name='password' 
-						placeholder='Password' tabindex='2'><i class='icon-lock'></i>
+						<div class='input-append'>
+					<input class='span5' type='password' name='password' 
+						placeholder='Password' tabindex='2'>
+							<span class='add-on'><i class='icon-lock'></i></span>
+						</div>
+
+					</div>
 					</div>
 					<br>
 					<button type='submit' name='login' class='btn btn-primary'>Login</button>

@@ -60,6 +60,12 @@ class settings {
 		
 		
 	}
+
+	public static function get_boa_cfop() {
+		return __BOA_CFOP__;
+		
+
+	}
 }
 
 ?>

@@ -85,7 +85,9 @@ foreach ($data_bill as $value) {
                 <option value='xlsx'>Excel 2007</option>
                 <option value='csv'>CSV</option>
         </select> <input class='btn btn-primary' type='submit'
-                name='create_data_report' value='Download Report'>
+                name='create_data_report' value='Download Full Report'>
+	<input class='btn btn-primary' type='submit'
+		name='create_data_boa_report' value='Download BOA Report'>
 </form>
 
 <?php

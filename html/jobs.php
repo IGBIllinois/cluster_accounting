@@ -11,7 +11,7 @@ if (!$login_user->permission($user_id)) {
         exit;
 }
 
-
+$count = 40;
 $start = 0;
 if (isset($_GET['start']) && is_numeric($_GET['start'])) {
         $start = $_GET['start'];
@@ -30,11 +30,9 @@ $search = "";
 if (isset($_GET['search'])) {
 	$search = $_GET['search'];
 }
-	
-$jobs = job_functions::get_jobs($db,$user_id,$search,$start_date,$end_date);
 
-$count = 40;
-$number_jobs = count($jobs);
+$jobs = job_functions::get_jobs($db,$user_id,$search,$start_date,$end_date,$start,$count);
+$number_jobs = job_functions::get_num_jobs($db,$user_id,$search,$start_date,$end_date);
 $get_array = array('user_id'=>$user_id,
 		'search'=>$search,
 		'start_date'=>$start_date,
@@ -42,9 +40,10 @@ $get_array = array('user_id'=>$user_id,
 $pages_url = $_SERVER['PHP_SELF'] . "?" . http_build_query($get_array);
 $pages_html = html::get_pages_html($pages_url,$number_jobs,$start,$count);
 
-$jobs_html = html::get_jobs_rows($jobs,$start,$count);
+$jobs_html = html::get_jobs_rows($jobs);
 
 //list of users to select from
+$user_list = array();
 if ($login_user->is_admin()) {
 	$user_list = user_functions::get_users($db,"","");
 }
@@ -54,7 +53,7 @@ elseif ($login_user->is_supervisor()) {
 $user_list_html = "";
 
 if (count($user_list) > 1) {
-        $user_list_html = "<select class='input-small' name='user_id'>";
+        $user_list_html = "<select class='input-large' name='user_id'>";
 	if ($login_user->is_admin()) {
 		$user_list_html .= "<option value='0'>All Users</option>";
 	}
@@ -107,7 +106,7 @@ $( "#end_date" ).datepicker({
 <h3>Search Jobs</h3>
 <form class='form-inline' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
         <!--<div class='input-append'>-->
-                <input type='text' name='search' class='input-long' placeholder='Search'
+                <input type='text' name='search' class='input-xlarge' placeholder='Search'
 			value='<?php if (isset($_GET['search'])) { echo $_GET['search']; } ?>'>
 		<?php
 			if ($login_user->is_admin() || $login_user->is_supervisor()) {
