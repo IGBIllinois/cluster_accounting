@@ -59,7 +59,7 @@ class job_functions {
                 $sql .= "jobs.job_queue_id, ";
                 $sql .= "users.user_name ";
 		$sql .= "HAVING ROUND(SUM(jobs.job_billed_cost),2) > 0.00 ";
-                $sql .= "ORDER BY users.user_name ";
+                $sql .= "ORDER BY `CFOP` ASC, `ACTIVITY CODE` ASC ";
                 $job_result = $db->query($sql);
 
 		$total_bill = 0;

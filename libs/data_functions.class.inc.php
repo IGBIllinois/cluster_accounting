@@ -6,7 +6,6 @@ class data_functions {
         const convert_terabytes = 1099511627776;
         const convert_gigabytes = 1073741824;
 
-
 	public static function add_data_usage($db,$data_dir_id,$data) {
 	        $backup = explode("\t",$data[0]);
         	$no_backup = explode("\t",$data[1]);
@@ -130,7 +129,7 @@ class data_functions {
                 $sql .= "WHERE YEAR(data_bill.data_bill_date)='" . $year . "' ";
                 $sql .= "AND MONTH(data_bill.data_bill_date)='" . $month . "' ";
                 $sql .= "AND ROUND(data_bill.data_bill_billed_cost,2)>'" . $minimal_bill . "' ";
-                $sql .= "ORDER BY 'NAME' ASC";
+                $sql .= "ORDER BY `CFOP` ASC, `ACTIVITY CODE` ASC";
 		$data_result = $db->query($sql);
 
 
