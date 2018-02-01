@@ -48,7 +48,7 @@ else {
 			$size = $data_dir->get_dir_size();
 			$result = $data_dir->add_usage($size);
 			if ($result['RESULT']) {
-				$message = "Data Usage: Directory: " . $data_dir->get_directory() . " Gigabytes: " . data_functions::bytes_to_gigabytes($size) . " sucessfully added";
+				$message = "Data Usage: Directory: " . $data_dir->get_directory() . " Size: " . data_functions::bytes_to_gigabytes($size) . "GB sucessfully added";
 				
 			}
 			else {
