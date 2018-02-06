@@ -17,12 +17,14 @@ require_once '../vendor/autoload.php';
 //Command parameters
 $output_command = "data.php Inserts data usage into database\n";
 $output_command .= "Usage: php data.php \n";
+$output_command .= "	--dry-run	Do dry run, do not add to database\n";
 $output_command .= "    -h, --help              Display help menu\n";
 
 //Parameters
 $shortopts = "h";
 
 $longopts = array(
+	"dry-run",
         "help"
 );
 
@@ -42,21 +44,34 @@ else {
 
 	$db = new db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__);
 	
+	$start_time = microtime(true);
+	functions::log("Data Usage: Start");	
 	$directories = data_functions::get_all_directories($db);
 	foreach ($directories as $directory) {
 			$data_dir = new data_dir($db,$directory['data_dir_id']);
 			$size = $data_dir->get_dir_size();
-			$result = $data_dir->add_usage($size);
-			if ($result['RESULT']) {
+			if (!isset($options['dry-run'])) {
+				$result = $data_dir->add_usage($size);
+			}
+			else {
+				$result['RESULT'] = true;
+			}	
+			if (($result['RESULT']) && (!isset($options['dry-run']))) {
 				$message = "Data Usage: Directory: " . $data_dir->get_directory() . " Size: " . data_functions::bytes_to_gigabytes($size) . "GB sucessfully added";
 				
+			}
+			elseif (isset($options['dry-run'])) {
+				$message = "DRY-RUN: Data Usage: Directory: " . $data_dir->get_directory() . " Size: " . data_functions::bytes_to_gigabytes($size) . "GB sucessfully added.";
+
 			}
 			else {
 				$message = "ERROR: Data Usage: Directory: " . $data_dir->get_directory() . " failed adding to database";
 			}
 			functions::log($message);
 	}
-	
+	$end_time = microtime(true);
+	$elapsed_time = round($end_time - $start_time,2);
+	functions::log("Data Usage: Finished. Elapsed Time: " . $elapsed_time . " seconds");
 }
 
 ?>
