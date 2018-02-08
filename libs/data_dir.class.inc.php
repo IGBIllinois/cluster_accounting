@@ -205,7 +205,8 @@ class data_dir {
 
 		$result = 0;
                 if (file_exists($this->get_directory())) {
-                        $exec = self::gpfs_mmpolicy_du . " " . $this->get_directory() . "/ | awk '{print $1}'";
+                        $exec = "source /etc/profile; ";
+			$exec .= self::gpfs_mmpolicy_du . " " . $this->get_directory() . "/ | awk '{print $1}'";
                         $exit_status = 1;
                         $output_array = array();
                         $output = exec($exec,$output_array,$exit_status);
