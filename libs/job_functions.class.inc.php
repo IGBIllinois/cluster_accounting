@@ -2,6 +2,7 @@
 
 class job_functions {
 
+	const completed_exit_status = "0:0";
 
 	public static function get_jobs_bill($db,$month,$year) {
 
@@ -78,7 +79,7 @@ class job_functions {
         }
 
 
-	public static function get_jobs($db,$user_id = 0,$search = "",
+	public static function get_jobs($db,$user_id = 0,$search = "",$completed = -1,
 					$start_date=0,$end_date=0,$start = 0,$count = 0) {
 
 	        $search = strtolower(trim(rtrim($search)));
@@ -90,6 +91,13 @@ class job_functions {
                 	array_push($where_sql, "DATE(end_time) BETWEEN '" . $start_date . "' AND '" . $end_date . "' ");
 	        }	
 
+		if ($completed == 0) {
+			array_push($where_sql, "exit_status<>'" . self::completed_exit_status . "' ");
+
+		}
+		elseif ($completed == 1) {
+			array_push($where_sql, "exit_status='" . self::completed_exit_status . "' ");
+		}
         	$sql = "SELECT id as id, ";
 		$sql .= "job_number_full, ";
 		$sql .= "job_number, job_number_array, ";
@@ -99,7 +107,8 @@ class job_functions {
         	$sql .= "SEC_TO_TIME(wallclock_time) as elapsed_time, ";
 	        $sql .= "username as username, ";
         	$sql .= "project_name as project, queue_name as queue, ";
-	        $sql .= "cfop as cfop, activity_code as activity ";
+	        $sql .= "cfop as cfop, activity_code as activity, ";
+		$sql .= "exit_status as exit_status ";
         	$sql .= "FROM job_info ";
 
 	        if ($search != "" ) {
@@ -139,7 +148,7 @@ class job_functions {
 }
 
 
-        public static function get_num_jobs($db,$user_id = 0,$search = "",$start_date=0,$end_date=0) {
+        public static function get_num_jobs($db,$user_id = 0,$search = "",$completed = -1,$start_date=0,$end_date=0) {
 
                 $search = strtolower(trim(rtrim($search)));
                 $where_sql = array();
@@ -148,6 +157,13 @@ class job_functions {
                 }
                 if (($start_date != 0) && ($end_date != 0)) {
                         array_push($where_sql, "DATE(end_time) BETWEEN '" . $start_date . "' AND '" . $end_date . "' ");
+                }
+		if ($completed == 0) {
+                        array_push($where_sql, "exit_status<>'" . self::completed_exit_status . "' ");
+
+                }
+                elseif ($completed == 1) {
+                        array_push($where_sql, "exit_status='" . self::completed_exit_status . "' ");
                 }
 
                 $sql = "SELECT count(1) as count ";

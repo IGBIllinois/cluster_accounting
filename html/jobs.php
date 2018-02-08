@@ -31,12 +31,23 @@ if (isset($_GET['search'])) {
 	$search = $_GET['search'];
 }
 
-$jobs = job_functions::get_jobs($db,$user_id,$search,$start_date,$end_date,$start,$count);
-$number_jobs = job_functions::get_num_jobs($db,$user_id,$search,$start_date,$end_date);
+$completed = -1;
+if (isset($_GET['completed'])) {
+	$completed = $_GET['completed'];
+}
+$jobs = job_functions::get_jobs($db,$user_id,$search,$completed,$start_date,$end_date,$start,$count);
+$number_jobs = job_functions::get_num_jobs($db,$user_id,$search,$completed,$start_date,$end_date);
 $get_array = array('user_id'=>$user_id,
 		'search'=>$search,
+		'completed'=>$completed,
 		'start_date'=>$start_date,
 		'end_date'=>$end_date);
+
+$completed_get_array = array('user_id'=>$user_id,
+                'search'=>$search,
+                'start_date'=>$start_date,
+                'end_date'=>$end_date);
+
 $pages_url = $_SERVER['PHP_SELF'] . "?" . http_build_query($get_array);
 $pages_html = html::get_pages_html($pages_url,$number_jobs,$start,$count);
 
@@ -104,7 +115,8 @@ $( "#end_date" ).datepicker({
 
 
 <h3>Search Jobs</h3>
-<form class='form-inline' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
+<div class='row'>
+<form class='span6 form-inline' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
         <!--<div class='input-append'>-->
                 <input type='text' name='search' class='input-xlarge' placeholder='Search'
 			value='<?php if (isset($_GET['search'])) { echo $_GET['search']; } ?>'>
@@ -121,10 +133,27 @@ $( "#end_date" ).datepicker({
                 <input type='submit' class='btn btn-primary' value='Search'>
         <!--</div>-->
 </form>
+<div class='span6 btn-toolbar text-right'>
+        <div class='btn-group'>
+                <a class='btn btn-primary' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array); ?>'>All Jobs</a>
+                <a class='btn btn-success' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array) . "&completed=1"; ?>'>Completed Jobs</a>
+                <a class='btn btn-danger' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array) . "&completed=0"; ?>'>Failed Jobs</a>
+        </div>
+
+</div>
+</div>
+<div class='row'>
+<ul class='unstyled inline'>
+<li><span class='badge badge-success'>&nbsp</span> Completed Job</li>
+<li><span class='badge badge-important'>&nbsp</span> Failed Job</li>
+</ul> 
+</div>
+<div class='row'>
 <table class='table table-condensed table-bordered table-striped'>
         <thead>
                 <tr>
 			<th>Job Number</th>
+			<th>Status</th>
 			<th>Username</th>
                         <th>Job Name</th>
                         <th>Project</th>
@@ -151,7 +180,7 @@ $( "#end_date" ).datepicker({
 </form>
 
 <?php echo $pages_html; ?>
-
+</div>
 <?php
 
 include_once 'includes/footer.inc.php';
