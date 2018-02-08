@@ -87,8 +87,7 @@ class html {
 		if (count($jobs)) {
 			for ($i=$i_start;$i<$i_count;$i++) {
 				if (array_key_exists($i,$jobs)) {
-			 	       $jobs_html .= "<tr>";
-				
+		 	       		$jobs_html .= "<tr>";
 					$job_name = $jobs[$i]['job_name'];
 					if (strlen($job_name) >= $max_job_name_length) {
 		                        	$job_name = $job_name . "...";
@@ -96,6 +95,12 @@ class html {
 
 				        $jobs_html .= "<td><a href='job.php?job=" . $jobs[$i]['job_number_full'] . "'>";
 					$jobs_html .= $jobs[$i]['job_number_full'] . "</a></td>";
+					if ($jobs[$i]['exit_status'] == "0:0") {
+						$jobs_html .= "<td><span class='badge badge-success'>&nbsp</span></td>";
+					}
+					elseif ($jobs[$i]['exit_status'] != "0:0") {
+						$jobs_html .= "<td><span class='badge badge-important'>&nbsp</span></td>";
+					}
 			        	$jobs_html .= "<td>" . $jobs[$i]['username'] . "</td>";
 			        	$jobs_html .= "<td>" . $job_name . "</td>";
 				        $jobs_html .= "<td>" . $jobs[$i]['project'] . "</td>";
