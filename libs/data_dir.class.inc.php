@@ -15,7 +15,7 @@ class data_dir {
 
 	const precentile = 0.95;
 	const gpfs_replication = 2;
-	const gpfs_mmpolicy_du = "mmpolicy-du.pl";
+	const gpfs_mmpolicy_du = "/usr/local/bin/mmpolicy-du.pl";
 	const kilobytes_to_bytes = "1024";
 
 	public function __construct($db,$data_dir_id = 0) {
