@@ -120,6 +120,7 @@ class job_functions {
                         	$search_sql .= "activity_code LIKE '%" . $term . "%' OR ";
 	                        $search_sql .= "project_name LIKE '%" . $term . "%' OR ";
         	                $search_sql .= "job_number LIKE '%" . $term . "%') ";
+				$search_sql .= "exec_hosts LIKE '%" . $term . "%') ";
                 	        array_push($where_sql,$search_sql);
 	                }
 
