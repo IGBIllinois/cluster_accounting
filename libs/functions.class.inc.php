@@ -4,12 +4,13 @@ class functions {
 
 	const secs_in_day = 86400;
 
-	public static function get_queues($db,$public = 1) {
+	public static function get_queues($db,$selection = 'ALL') {
         	$sql = "SELECT queues.queue_id as queue_id, ";
 		$sql .= "queues.queue_name as name, ";
 		$sql .= "queues.queue_ldap_group as ldap_group, ";
 		$sql .= "queues.queue_description as description, ";
 		$sql .= "queues.queue_time_created as time_created, ";
+		$sql .= "a.queue_cost_id as cost_id, ";
 		$sql .= "a.queue_cost_mem as cost_memory_secs, ";
 		$sql .= "a.queue_cost_mem * " . self::secs_in_day . " as cost_memory_day, ";
 		$sql .= "a.queue_cost_cpu as cost_cpu_secs, ";
@@ -17,41 +18,21 @@ class functions {
 		$sql .= "a.queue_cost_gpu as cost_gpu_secs, ";
 		$sql .= "a.queue_cost_gpu * " . self::secs_in_day . " as cost_gpu_day ";
 	        $sql .= "FROM queues ";
-        	$sql .= "LEFT JOIN (select * FROM queue_cost WHERE queue_cost_time_created In(SELECT MAX(queue_cost_time_created) ";
-		$sql .= "FROM queue_cost GROUP BY queue_cost_queue_id)) a ON a.queue_cost_queue_id=queues.queue_id ";
+		$sql .= "LEFT JOIN (SELECT * FROM queue_cost n ";
+		$sql .= "WHERE queue_cost_time_created=(SELECT MAX(queue_cost_time_created) ";
+		$sql .= "FROM queue_cost WHERE queue_cost_queue_id=n.queue_cost_queue_id)) a ";
+		$sql .= "ON queues.queue_id=a.queue_cost_queue_id ";
 	        $sql .= "WHERE queue_enabled='1' ";
-		if ($public) {
+		if ($selection == 'PUBLIC') {
 			$sql .= "AND queue_ldap_group='' ";
 		}
-		elseif (!$public) {
+		elseif ($selection == 'PRIVATE') {
 			$sql .= "AND queue_ldap_group!='' ";
 		}
-        	$sql .= "GROUP BY queues.queue_id ";
 	        $sql .= "ORDER BY queues.queue_name ASC";
         	return $db->query($sql);
 	}
 
-	public static function get_all_queues($db) {
-		$secs_in_day = 86400;
-        	$sql = "SELECT queues.queue_id as queue_id, ";
-	        $sql .= "queues.queue_name as name, ";
-        	$sql .= "queues.queue_ldap_group as ldap_group, ";
-	        $sql .= "queues.queue_description as description, ";
-        	$sql .= "queues.queue_time_created as time_created, ";
-	        $sql .= "queue_cost.queue_cost_mem as cost_memory_secs, ";
-        	$sql .= "queue_cost.queue_cost_mem * " . self::secs_in_day . " as cost_memory_day, ";
-	        $sql .= "queue_cost.queue_cost_cpu as cost_cpu_secs, ";
-        	$sql .= "queue_cost.queue_cost_cpu * " . self::secs_in_day . " as cost_cpu_day, ";
-	        $sql .= "queue_cost.queue_cost_gpu as cost_gpu_secs, ";
-        	$sql .= "queue_cost.queue_cost_gpu * " . self::secs_in_day . " as cost_gpu_day ";
-	        $sql .= "FROM queues ";
-        	$sql .= "LEFT JOIN queue_cost ON queue_cost.queue_cost_queue_id=queues.queue_id ";
-	        $sql .= "WHERE queue_enabled='1' ";
-        	$sql .= "GROUP BY queues.queue_id ";
-	        $sql .= "ORDER BY queues.queue_name ASC";
-        	return $db->query($sql);
-
-	}
 
 	public static function get_projects($db,$custom = 'ALL', $search = '', $start=0,$count=0) {
 

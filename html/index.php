@@ -1,12 +1,10 @@
 <?php
 require_once 'includes/header.inc.php';
 
-$public = 1;
-$public_queues = functions::get_queues($db,$public);
-
+$public_queues = functions::get_queues($db,'PUBLIC');
 $public_queues_html = html::get_queue_rows($public_queues);
-$private = 0;
-$private_queues = functions::get_queues($db,$private);
+
+$private_queues = functions::get_queues($db,'PRIVATE');
 $private_queues_html = html::get_queue_rows($private_queues);
 
 $data_costs = data_functions::get_data_costs($db);

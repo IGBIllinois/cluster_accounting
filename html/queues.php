@@ -20,7 +20,7 @@ elseif (isset($_POST['delete_queue'])) {
 }
 
 $queue_html = "";
-$queues = functions::get_all_queues($db);
+$queues = functions::get_queues($db,'ALL');
 
 foreach ($queues as $queue) {
 
