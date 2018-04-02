@@ -379,7 +379,7 @@ class user {
 		
 			$user_stats = new user_stats($this->db,$this->get_user_id(),$start_date,$end_date);
 
-			$subject = "Biocluster 2 Accounting Bill - " . functions::get_pretty_date($start_date) . "-" . functions::get_pretty_date($end_date);
+			$subject = "Biocluster Accounting Bill - " . functions::get_pretty_date($start_date) . "-" . functions::get_pretty_date($end_date);
 			$to = $this->get_email();
 			$from = $admin_email;
 			$html_message = "<!DOCTYPE html>";
@@ -394,8 +394,8 @@ class user {
 			$html_message .= "<br>Start Date: " . functions::get_pretty_date($start_date);
 			$html_message .= "<br>End Date: " . functions::get_pretty_date($end_date);
 			$html_message .= "<br>Number of Jobs: " . $user_stats->get_num_jobs();
-			$html_message .= "<p>Below is your bill.  You can go to <a href='https://biocluster2.igb.illinois.edu/accounting/'> ";
-			$html_message .= "https://biocluster2.igb.illinois.edu/accounting/</a>";
+			$html_message .= "<p>Below is your bill.  You can go to <a href='https://biocluster.igb.illinois.edu/accounting/'> ";
+			$html_message .= "https://biocluster.igb.illinois.edu/accounting/</a>";
 			$html_message .= "to view a detail listing of your jobs.";
 			$html_message .= "<h4>Cluster Usage</h4>";
 			$html_message .= $this->get_jobs_table($start_date,$end_date);
@@ -473,7 +473,7 @@ class user {
                         foreach ($data_summary as $data) {
                                 $data_html .= "<tr>";
                                 $data_html .= "<td>" . $data['directory'] . "</td>";
-                                $data_html .= "<td>" . number_format($data['data_cost_value'],2) . "</td>";
+                                $data_html .= "<td>$" . number_format($data['data_cost_value'],2) . "</td>";
                                 $data_html .= "<td>" . $data['project'] . "</td>";
                                 $data_html .= "<td>" . $data['terabytes'] . "</td>";
                                 $data_html .= "<td>$" . number_format($data['total_cost'],2) . "</td>";
