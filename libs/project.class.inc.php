@@ -341,8 +341,5 @@ class project {
 		if (isset($result[0]['project_id'])) {
 			$this->get_project($result[0]['project_id']);
 		}
-
-
-
 	}
 }

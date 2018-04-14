@@ -192,7 +192,5 @@ class slurm {
 		return $bytes;
 	}
 
-
-
 }
 ?>
