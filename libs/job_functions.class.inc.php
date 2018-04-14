@@ -42,8 +42,6 @@ class job_functions {
 		$sql .= "users.user_name as 'NAME', ";
                 $sql .= "cfops.cfop_value as 'CFOP', ";
                 $sql .= "cfops.cfop_activity as 'ACTIVITY CODE', ";
-                //$sql .= "projects.project_name as 'Project', ";
-                //$sql .= "queues.queue_name as 'Queue', ";
                 $sql .= "ROUND(SUM(jobs.job_billed_cost),2) as 'COST' ";
                 $sql .= "FROM jobs ";
                 $sql .= "LEFT JOIN users ON users.user_id=jobs.job_user_id ";
