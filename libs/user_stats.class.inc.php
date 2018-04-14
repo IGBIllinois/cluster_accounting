@@ -122,9 +122,6 @@ class user_stats {
 		$sql .= "AND jobs.job_user_id='" . $this->user_id . "'";
 		$this->generic_results = $this->db->query($sql);
 
-
-
-
 	}
 
 }

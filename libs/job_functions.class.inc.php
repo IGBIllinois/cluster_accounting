@@ -202,17 +202,6 @@ class job_functions {
 
 	}
 
-
-
-
-
-
 }
-
-
-
-
-
-
 
 ?>
