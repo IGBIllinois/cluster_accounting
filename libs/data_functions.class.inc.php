@@ -2,33 +2,9 @@
 
 class data_functions {
 
-	const PERCENTILE = 0.95;
         const convert_terabytes = 1099511627776;
         const convert_gigabytes = 1073741824;
 
-	public static function add_data_usage($db,$data_dir_id,$data) {
-	        $backup = explode("\t",$data[0]);
-        	$no_backup = explode("\t",$data[1]);
-		$data_dir = new data_dir($db,$data_dir_id);		
-	        $data_usage = new data_usage($db);
-		$backup_msg = $data_dir->get_directory() . ": Backup - " . $backup[1] . " bytes";
-		$no_backup_msg = $data_dir->get_directory() . ": No Backup - " . $no_backup[1] . " bytes";
-		functions::log($backup_msg);
-		functions::log($no_backup_msg);
-        	$data_usage->create($data_dir_id,"backup",$backup[1],$backup[2]);
-	        $data_usage->create($data_dir_id,"no_backup",$no_backup[1],$no_backup[2]);
-	}
-
-	public static function add_data_usage2($db,$data_dir_id,$data_cost_id,$bytes) {
-		$data_dir = new data_dir($db,$data_dir_id);
-		$data_usage = new data_usage($db);
-		$msg = $data_dir->get_directory() . ": " . $bytes . " Bytes";
-		functions::log($msg);
-		$result = $data_usage->create($data_dir_id,$data_cost_id,$bytes);
-		
-
-
-	}
 	public static function get_directories($db,$default = 1,$start,$count) {
 		$sql = "SELECT data_dir.*, projects.project_name, projects.project_id ";
 		$sql .= "FROM data_dir ";
@@ -182,16 +158,6 @@ class data_functions {
 		
 		
 		
-	}
-
-	public static function calculate_cost($db,$data_dir_id,$month,$year) {
-		$sql = "SELECT data_usage_bytes as bytes FROM data_usage WHERE data_usage_data_dir_id='" . $data_dir_id . "' ";
-		$sql .= "AND MONTH(data_usage.data_usage_time)='" . $month . "' ";
-		$sql .= "AND YEAR(data_usage.data_usage_time)='" . $year . "' ";
-		$sql .= "ORDER BY data_usage.data_usage_bytes ASC";
-		$result = $db->query($sql);
-		print_r($result);					
-
 	}
 
 	public static function bytes_to_terabytes($bytes = 0) {

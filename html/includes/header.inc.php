@@ -28,7 +28,7 @@ require_once 'includes/session.inc.php';
 				</div>
 				<div class='span4 pull-right'>
 					<p class='navbar-text pull-right'>
-						<small>Version <?php echo __VERSION__; ?></small>
+						Version <?php echo __VERSION__; ?>
 						<a class='btn btn-danger btn-small' href='logout.php'>Logout</a>
 					</p>
 				</div>

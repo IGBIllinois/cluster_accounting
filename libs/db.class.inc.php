@@ -49,9 +49,6 @@ class db {
 	public function open($host,$database,$username,$password,$port = 3306) {
 		//Connects to database.
 		try {
-		//	$this->link = new PDO("mysql:host=$host;dbname=$database",$username,$password,
-		//			array(PDO::ATTR_PERSISTENT => true,PDO::ATTR_EMULATE_PREPARES => true));
-
 			$this->link = new PDO("mysql:host=$host;dbname=$database",$username,$password,array());
 
 			$this->host = $host;
