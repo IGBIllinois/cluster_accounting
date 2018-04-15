@@ -7,7 +7,7 @@ require_once 'includes/session.inc.php';
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel='stylesheet' href='vendor/components/jquery-ui/themes/base/jquery-ui.css'>
 <script src='includes/main.inc.js' type='text/javascript'></script>
 <script src='vendor/components/jquery/jquery.min.js' type='text/javascript'></script>
@@ -15,6 +15,8 @@ require_once 'includes/session.inc.php';
 <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 <link rel="stylesheet" type="text/css"
 	href="vendor/components/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css"
+        href="vendor/components/bootstrap/css/bootstrap-responsive.css">
 <title><?php echo __TITLE__; ?></title>
 
 </head>
