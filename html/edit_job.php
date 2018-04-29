@@ -257,4 +257,4 @@ $edit_cfop_html .= "</select>";
 <?php echo functions::output_message($messages); ?>
 </div>
 <?php 
-include_once 'includes/footer.inc.php'; ?>
+require_once 'includes/footer.inc.php'; ?>

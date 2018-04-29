@@ -81,4 +81,4 @@ $users_html = html::get_users_rows($all_users,$start,$count);
 
 <?php echo $pages_html; ?>
 </div>
-<?php include_once 'includes/footer.inc.php'; ?>
+<?php require_once 'includes/footer.inc.php'; ?>

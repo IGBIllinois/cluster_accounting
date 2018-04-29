@@ -41,5 +41,5 @@ $dir_html = $dir_html = html::get_data_dir_rows($directories);
 	echo $pages_html;
 
 
-include_once 'includes/footer.inc.php';
+require_once 'includes/footer.inc.php';
 ?>

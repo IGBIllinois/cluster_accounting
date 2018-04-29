@@ -1,5 +1,5 @@
 <?php
-include_once 'includes/graph_main.inc.php';
+require_once 'includes/graph_main.inc.php';
 
 if (isset($_GET['start_date']) && isset($_GET['end_date'])) {
 

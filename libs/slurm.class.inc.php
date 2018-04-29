@@ -28,9 +28,11 @@ class slurm {
 		$output_array = array();
 		$output = exec($exec,$output_array,$exit_status);
 		$job_data = array();
+		$startMemory = memory_get_usage();
 		foreach ($output_array as $job_array) {
 			array_push($job_data,array_combine(explode(",",self::SLURM_FORMAT),explode(self::SLURM_DELIMITER,$job_array)));
 		}
+		functions::log(memory_get_usage() - $startMemory . " bytes");
 		return self::format_slurm_accounting($job_data);
 	}
 

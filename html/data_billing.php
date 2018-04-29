@@ -92,5 +92,5 @@ foreach ($data_bill as $value) {
 
 <?php
 
-include_once 'includes/footer.inc.php';
+require_once 'includes/footer.inc.php';
 ?>

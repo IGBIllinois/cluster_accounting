@@ -214,4 +214,4 @@ if ($login_user->is_admin()) {
 </div>
 </div>
 
-<?php include_once 'includes/footer.inc.php'; ?>
+<?php require_once 'includes/footer.inc.php'; ?>

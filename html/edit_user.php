@@ -1,6 +1,6 @@
 <?php
-include_once 'includes/main.inc.php';
-include_once 'includes/session.inc.php';
+require_once 'includes/main.inc.php';
+require_once 'includes/session.inc.php';
 
 if (!$login_user->is_admin()) {
 	exit;
@@ -77,7 +77,7 @@ foreach ($supervisors as $supervisor) {
 }
 $supervisors_html .= "</select>";
 
-include_once 'includes/header.inc.php';
+require_once 'includes/header.inc.php';
 
 ?>
 
@@ -131,5 +131,5 @@ enable_supervisors();
 </script>
 <?php
 if (isset($message)) { echo $message; }
-include_once 'includes/footer.inc.php';
+require_once 'includes/footer.inc.php';
 ?>

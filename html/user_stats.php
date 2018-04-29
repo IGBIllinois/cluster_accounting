@@ -76,5 +76,5 @@ $format = 1;
 
 <?php
 
-include_once 'includes/footer.inc.php';
+require_once 'includes/footer.inc.php';
 ?>

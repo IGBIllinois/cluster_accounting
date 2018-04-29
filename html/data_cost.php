@@ -41,5 +41,5 @@ foreach ($data_costs as $data_cost) {
 if (isset($result['MESSAGE'])) {
 	echo $result['MESSAGE'];
 }
-include_once 'includes/footer.inc.php';
+require_once 'includes/footer.inc.php';
 ?>
