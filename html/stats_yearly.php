@@ -124,5 +124,5 @@ $stats = new statistics($db);
 </table>
 <?php
 
-include_once 'includes/footer.inc.php';
+require_once 'includes/footer.inc.php';
 ?>

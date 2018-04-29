@@ -93,5 +93,5 @@ elseif (isset($_POST['cancel_queue'])) {
 if (isset($result['MESSAGE'])) { echo $result['MESSAGE']; }
 
 
-include_once 'includes/footer.inc.php';
+require_once 'includes/footer.inc.php';
 ?>

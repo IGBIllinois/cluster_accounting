@@ -117,5 +117,5 @@ else { $graph_form .= "<option value='users_billed_cost'>Users Billed Cost</opti
 
 <?php
 
-include_once 'includes/footer.inc.php';
+require_once 'includes/footer.inc.php';
 ?>

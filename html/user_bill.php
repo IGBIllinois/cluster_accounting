@@ -203,4 +203,4 @@ foreach ($data_usage as $value) {
                 name='user_job_report' value='Download Cluster Usage Report'>
 </form>
 
-<?php include_once 'includes/footer.inc.php'; ?>
+<?php require_once 'includes/footer.inc.php'; ?>

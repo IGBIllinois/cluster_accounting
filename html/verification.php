@@ -37,5 +37,5 @@ foreach ($cluster_users as $cluster_user) {
 
 <?php
 
-include_once 'includes/footer.inc.php';
+require_once 'includes/footer.inc.php';
 ?>

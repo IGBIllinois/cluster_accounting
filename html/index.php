@@ -70,5 +70,5 @@ foreach ($data_costs as $value) {
 </div>
 <?php
 
-include_once 'includes/footer.inc.php';
+require_once 'includes/footer.inc.php';
 ?>
