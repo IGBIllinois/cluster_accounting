@@ -85,7 +85,6 @@ if (isset($_POST['login'])) {
 	
 	
 	<div class='container-fluid'>
-		<div class='container'>
 			<div class='span6 offset3'>
 
 				<form action='login.php' method='post' name='login'
@@ -124,5 +123,4 @@ if (isset($_POST['login'])) {
 
 				<em>&copy 2012-<?php echo date('Y'); ?> University of Illinois Board of Trustees</em>
 			</div>
-		</div>
 	</div>
