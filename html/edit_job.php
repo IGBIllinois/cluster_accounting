@@ -26,7 +26,7 @@ if (isset($_POST)) {
                 $var = trim(rtrim($var));
         }
 }
-if (isset($_POST['update_job'])) {
+if (isset($_POST['update_project'])) {
 	if ($job->get_project()->get_project_id() != $_POST['billed_project']) {
                 $result = $job->set_project($_POST['billed_project']);
                 array_push($messages,$result);

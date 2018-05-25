@@ -112,7 +112,7 @@ $data_html = "";
 foreach ($data_usage as $value) {
 	$data_html .= "<tr>";
 	$data_html .= "<td>" . $value['directory'] . "</td>";
-	$data_html .= "<td>" . $value['data_cost_dir'] . "</td>";
+	$data_html .= "<td>" . $value['data_cost_type'] . "</td>";
 	$data_html .= "<td>" . $value['project'] . "</td>";
 	$data_html .= "<td>" . $value['terabytes'] . "</td>";
 	$data_html .= "<td>$" . number_format($value['total_cost'],2) . "</td>";

@@ -12,7 +12,7 @@
 //////////////////////////////////////////////////
 
 $session = new session(__SESSION_NAME__);
-
+$login_user = "";
 //If not logged in
 if (!($session->get_var('login'))) {
 	$webpage = $_SERVER['PHP_SELF'];

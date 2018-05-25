@@ -50,11 +50,11 @@ class ldap {
 		$result = false;
 		if ($this->get_connection()) {
 			if (($rdn != "") && ($password != "")) {
-				$result = ldap_bind($this->get_resource(), $rdn, $password);
+				$result = @ldap_bind($this->get_resource(), $rdn, $password);
 
 			}
 			elseif (($rdn == "") && ($password == "")) {
-				$result = ldap_bind($this->get_resource());
+				$result = @ldap_bind($this->get_resource());
 			}
 		}
 		return $result;
