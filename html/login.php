@@ -84,7 +84,7 @@ if (isset($_POST['login'])) {
 	<p>
 	
 	
-	<div class='container-fluid'>
+	<div class='container'>
 			<div class='span6 offset3'>
 
 				<form action='login.php' method='post' name='login'
