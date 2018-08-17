@@ -23,6 +23,17 @@ else {
 	$start_date = date('Ym') . "01";
 }
 
+$user = new user($db,$ldap,$user_id);
+
+if (isset($_POST['email_bill'])) {
+	$email_result = $user->email_bill(__ADMIN_EMAIL__,$year,$month);
+	if ($email_result['RESULT']) {
+		$message = "<div class='alert alert-success'>" . $email_result['MESSAGE'] . "</div>";
+	}
+	else {
+		$message = "<div class='alert alert-error'>" . $email_result['MESSAGE'] . "</div>";
+	}
+}
 $end_date = date('Ymd',strtotime('-1 second',strtotime('+1 month',strtotime($start_date))));
 $month_name = date('F',strtotime($start_date));
 
@@ -126,6 +137,12 @@ foreach ($data_usage as $value) {
 	}
 	$data_html .= "</tr>";
 }
+$get_vars = array('user_id'=>$user_id,
+	'month'=>$month,
+	'year'=>$year);
+
+$self_url = $_SERVER['PHP_SELF'] . "?" . http_build_query($get_vars);
+
 ?>
 
 <form class='form-inline' action='<?php echo $_SERVER['PHP_SELF']; ?>'
@@ -202,5 +219,12 @@ foreach ($data_usage as $value) {
         </select> <input class='btn btn-primary' type='submit'
                 name='user_job_report' value='Download Cluster Usage Report'>
 </form>
+<form class='form-inline' method='post' action='<?php echo $self_url; ?>'>
+	<input class='btn btn-primary' type='submit'
+		name='email_bill' value='Email Bill to User'>
+</form>
 
-<?php require_once 'includes/footer.inc.php'; ?>
+<?php 
+if (isset($message)) { echo $message; }
+
+require_once 'includes/footer.inc.php'; ?>

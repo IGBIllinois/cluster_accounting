@@ -184,7 +184,9 @@ class functions {
                 if (self::log_enabled()) {
                         file_put_contents(self::get_log_file(),$full_msg,FILE_APPEND | LOCK_EX);
                 }
-                echo $full_msg;
+		if (php_sapi_name() == "cli") {
+	                echo $full_msg;
+		}
 
         }
 
