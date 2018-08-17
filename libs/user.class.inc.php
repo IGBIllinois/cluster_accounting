@@ -389,6 +389,7 @@ class user {
 			$html_message .= file_get_contents('../vendor/components/bootstrap/css/bootstrap.min.css');
 			$html_message .= "</style></head>";
 			$html_message .= "<body><div class='container-fluid'><div class='span12'>";
+			$html_message .= "<p></p>";
 			$html_message .= "<p>Biocluster Accounting Bill - " . functions::get_pretty_date($start_date) . "-" . functions::get_pretty_date($end_date) . "</p>";
 			$html_message .= "<br>Name: " . $this->get_full_name();
 			$html_message .= "<br>Username: " . $this->get_username();
@@ -396,7 +397,7 @@ class user {
 			$html_message .= "<br>End Date: " . functions::get_pretty_date($end_date);
 			$html_message .= "<br>Number of Jobs: " . $user_stats->get_num_jobs();
 			$html_message .= "<p>Below is your bill.  You can go to <a href='https://biocluster.igb.illinois.edu/accounting/'> ";
-			$html_message .= "https://biocluster.igb.illinois.edu/accounting/</a>";
+			$html_message .= "https://biocluster.igb.illinois.edu/accounting/</a> ";
 			$html_message .= "to view a detail listing of your jobs.";
 			$html_message .= "<h4>Cluster Usage</h4>";
 			$html_message .= $this->get_jobs_table($start_date,$end_date);
@@ -411,15 +412,19 @@ class user {
 			$message->setHTMLBody($html_message);
 			$headers= $message->headers($extraheaders);
 			$body = $message->get();
-			$mail = Mail::factory("mail");
+			$mail = Mail::factory("mail","-f " . $from);
 			$result = $mail->send($to,$headers,$body);
-			if (PEAR::isError($result)) { 
-				functions::log("Email Bill - User " . $this->get_username() . " Error sending mail. " . $mail->getMessage());
+			if (PEAR::isError($result)) {
+				$message = "Email BIll - User " . $this->get_username() . " Error sending mail. " . $mail->getMessage();
+				$result = false;
 			}
 			else {
-				functions::log("Email Bill - User " . $this->get_username() . " successfully sent to " . $this->get_email());
+				
+				$message = "Email Bill - User " . $this->get_username() . " successfully sent to " . $this->get_email();
+				$result = true;
 			}
-			
+			functions::log($message);
+			return array('RESULT'=>$result,'MESSAGE'=>$message);
 		}
 
 	}
