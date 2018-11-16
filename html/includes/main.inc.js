@@ -10,6 +10,9 @@ function confirm_edit_user() {
 function confirm_delete_queue() {
 	return confirm("Are you sure you want to delete this queue?");
 }
+function confirm_delete_dir() {
+	return confirm("Are you sure want to remove this directory from the accounting software?");
+}
 function enable_supervisors() {
 	if (document.form.is_supervisor.checked == false) {
 		document.form.supervisor_id.disabled = false;

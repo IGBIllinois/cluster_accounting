@@ -59,7 +59,7 @@ if (!$data_dir->is_default()) {
 
 	echo "<form method='post' action='" . $_SERVER['PHP_SELF'] . "'>";
 	echo "<input type='hidden' name='data_dir_id' value='" . $data_dir_id . "'>";
-	echo "<input type='submit' class='btn btn-danger' name='remove_data_dir' value='Remove' >";
+	echo "<input type='submit' class='btn btn-danger' name='remove_data_dir' value='Remove' onClick='return confirm_delete_dir();'>";
 	echo "</form>";
 
 }
