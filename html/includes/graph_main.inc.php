@@ -18,5 +18,4 @@ $db = new db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__
 
 
 
-
 ?>
