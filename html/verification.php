@@ -1,5 +1,11 @@
 <?php
 require_once 'includes/header.inc.php';
+
+if (!$login_user->is_admin()) {
+        exit;
+}
+
+
 $dirs = data_functions::get_unmonitored_dirs($db);
 
 $dirs_html = "";

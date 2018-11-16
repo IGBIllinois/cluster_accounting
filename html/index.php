@@ -1,5 +1,6 @@
 <?php
 require_once 'includes/header.inc.php';
+require_once 'includes/session.inc.php';
 
 $public_queues = functions::get_queues($db,'PUBLIC');
 $public_queues_html = html::get_queue_rows($public_queues);

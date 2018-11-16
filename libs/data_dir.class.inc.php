@@ -127,6 +127,9 @@ class data_dir {
 
 	}
 
+	public function is_default() {
+		return $this->default;
+	}
 	public function directory_exists() {
 		return is_dir($this->get_directory());
 

@@ -198,7 +198,7 @@ class html {
         	        	$directory_exists = "<i class='icon-remove'></i>";
 	        	}
 	        	$dir_html .= "<tr>";
-		        $dir_html .= "<td>" . $directory['data_dir_path'] . "</td>";
+		        $dir_html .= "<td><a href='data_dir.php?data_dir_id=" . $directory['data_dir_id'] . "'>" . $directory['data_dir_path'] . "</a></td>";
         		$dir_html .= "<td>" . $directory_exists . "</td>";
 		        $dir_html .= "<td><a href='edit_project.php?project_id=";
 			$dir_html .= $directory['project_id'] ."'>" .  $directory['project_name'] . "</a></td>";
