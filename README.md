@@ -26,6 +26,10 @@ Alias /accounting /var/www/accounting/html
 mysql -u root -p cluster_accounting < sql/cluster_accounting.sql
 ```
 3.  Create a user/password on the mysql server which has select/insert/delete/update permissions on the cluster_accounting database.
+```
+CREATE USER 'cluster_accounting'@'localhost' IDENTIFIED BY 'STRONG_PASSWORD';
+GRANT SELECT,INSERT,DELETE,UPDATE ON cluster_accounting.* to 'cluster_accounting'@'localhost';
+```
 4.  Edit /conf/settings.inc.php to reflect your settings.
 5.  Run composer to install php dependencies
 ```
