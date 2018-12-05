@@ -72,7 +72,6 @@ $users_html = html::get_users_rows($all_users,$start,$count);
 </table>
 <form class='form-inline' method='post' action='report.php'>
                 <select name='report_type' class='input-medium'>
-                <option value='xls'>Excel 2003</option>
                 <option value='xlsx'>Excel 2007</option>
                 <option value='csv'>CSV</option>
         </select> <input class='btn btn-primary' type='submit'

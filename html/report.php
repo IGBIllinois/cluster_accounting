@@ -17,6 +17,13 @@ elseif (isset($_POST['user_job_report'])) {
 	$filename = $user->get_username() . "-" . $_POST['start_date'] . "-" . $_POST['end_date'] . "." . $type;
 	$data = $user->get_jobs_report($_POST['start_date'],$_POST['end_date']);
 }
+elseif (isset($_POST['job_report'])) {
+	
+        $type = $_POST['report_type'];
+        $filename = "job-report-" . $_POST['start_date'] . "-" . $_POST['end_date'] . "." . $type;
+        $data = job_functions::get_jobs($db,$_POST['user_id'],$_POST['search'],$_POST['completed'],$_POST['start_date'],$_POST['end_date']);
+}
+
 
 elseif (isset($_POST['create_data_report'])) {
 	$month = $_POST['month'];

@@ -3,6 +3,8 @@
 		"phpoffice/phpexcel": "1.8.1",
 		"components/jquery": "2.1.0",
 		"components/jqueryui": "1.10.4",
+		"components/jquery": "3.3.1",
+		"components/jqueryui": "1.12.1",
 		"jpgraph/jpgraph": "4.0.2",
 		"components/bootstrap-default": "2.3.2",
 		"components/bootstrap": "2.3.2",
