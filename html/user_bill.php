@@ -213,7 +213,6 @@ $self_url = $_SERVER['PHP_SELF'] . "?" . http_build_query($get_vars);
                 name='end_date' value='<?php echo $end_date; ?>'> <input type='hidden'
                 name='user_id' value='<?php echo $user_id;?>'> <select
                 name='report_type' class='input-medium'>
-                <option value='xls'>Excel 2003</option>
                 <option value='xlsx'>Excel 2007</option>
                 <option value='csv'>CSV</option>
         </select> <input class='btn btn-primary' type='submit'

@@ -167,16 +167,16 @@ $( "#end_date" ).datepicker({
         <?php echo $jobs_html; ?>
 </table>
 <form class='form-inline' method='post' action='report.php'>
-        <input type='hidden' name='start_date'
-                value='<?php echo $start_date; ?>'> <input type='hidden'
-                name='end_date' value='<?php echo $end_date; ?>'> <input type='hidden'
-                name='user_id' value='<?php echo $user_id;?>'> <select
-                name='report_type' class='input-medium'>
-                <option value='xls'>Excel 2003</option>
+	<input type='hidden' name='search' value='<?php echo $search; ?>'>
+        <input type='hidden' name='start_date' value='<?php echo $start_date; ?>'> 
+	<input type='hidden' name='end_date' value='<?php echo $end_date; ?>'> 
+	<input type='hidden' name='user_id' value='<?php echo $user_id;?>'>
+	<input type='hidden' name='completed' value='<?php echo $completed; ?>'> 
+	<select name='report_type' class='input-medium'>
                 <option value='xlsx'>Excel 2007</option>
                 <option value='csv'>CSV</option>
         </select> <input class='btn btn-primary' type='submit'
-                name='user_job_report' value='Download Detailed Report'>
+                name='job_report' value='Download Detailed Report'>
 </form>
 
 <?php echo $pages_html; ?>
