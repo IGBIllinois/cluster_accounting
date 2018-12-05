@@ -35,17 +35,6 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON cluster_accounting.* to 'cluster_accounting
 ```
 composer install
 ```
-6.  To /etc/crontab add
-```
-0 4 * * * root php /var/www/accounting/bin/data.php > /dev/null 2>&1
-4 * * * * root php /var/www/accounting/bin/accounting.php --previous-hour > /dev/null 2>&1
-0 4 1 * * root php /var/www/accounting/bin/calc_data_usage.php > /dev/null 2>&1
-10 4 1 * * root php /var/www/accounting/bin/email.php > /dev/null 2>&1
-```
-7.  If you enabled logging, add logrotate script to /etc/logrotate.d
-```
-ln -s /var/www/accounting/conf/logrotate.conf /etc/logrotate.d/cluster_accounting
-```
 6.  To enable cron to upload jobs and data, add conf/cron.conf to /etc/cron.d/
 ```
 cp /var/www/accounting/conf/cron.dist /var/www/accounting/conf/cron
