@@ -32,7 +32,6 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON cluster_accounting.* to 'cluster_accounting
 ```
 4.  Edit /conf/settings.inc.php to reflect your settings.
 5.  Run composer to install php dependencies
-<<<<<<< HEAD
 ```
 composer install
 ```
@@ -45,9 +44,7 @@ composer install
 ```
 7.  If you enabled logging, add logrotate script to /etc/logrotate.d
 ```
-=======
-```
-composer install
+ln -s /var/www/accounting/conf/logrotate.conf /etc/logrotate.d/cluster_accounting
 ```
 6.  To enable cron to upload jobs and data, add conf/cron.conf to /etc/cron.d/
 ```
