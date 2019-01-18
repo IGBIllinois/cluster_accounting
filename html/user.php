@@ -1,16 +1,22 @@
 <?php
 require_once 'includes/header.inc.php';
 
-$user_id = $login_user->get_user_id();
+$user_id = 0;
+$user = "";
 if (isset($_GET['user_id']) && (is_numeric($_GET['user_id']))) {
-        $user_id = $_GET['user_id'];
+	$user = new user($db,$ldap,$_GET['user_id']);
 }
-
+elseif (isset($_GET['username'])) {
+	$user = new user($db,$ldap,'',$_GET['username']);
+}
+else {
+	$user = new user($db,$ldap,$login_user->get_user_id());
+}
 if (!$login_user->permission($user_id)) {
         echo "<div class='alert alert-error'>Invalid Permissions</div>";
         exit;
 }
-$user = new user($db,$ldap,$user_id);
+
 $supervising_users_html = "";
 if ($user->is_supervisor()) {
 	$supervising_users = $user->get_supervising_users();
@@ -128,15 +134,15 @@ foreach ($queues as $queue) {
 <?php 
 
 if ($login_user->is_admin()) {
-	echo "<form method='post' action='" . $_SERVER['PHP_SELF'] . "?user_id=" . $user_id . "'>";
+	echo "<form method='post' action='" . $_SERVER['PHP_SELF'] . "?user_id=" . $user->get_user_id() . "'>";
 	echo "<div class='btn-toolbar'>";
 	echo "<div class='btn-group'>";
 	echo "<a class='btn btn-primary' href='edit_project.php?project_id=" .
 			$user->default_project()->get_project_id() . "'>";
 	echo "<i class='icon-pencil'></i>Edit User Project</a>";
-	echo "<a class='btn btn-primary' href='edit_user.php?user_id=" . $user_id . "'><i class='icon-pencil'></i>Edit User</a>";
-	echo "<a class='btn btn-info' href='user_bill.php?user_id=" . $user_id . "'>User Bill</a>";
-	echo "<a class='btn btn-success' href='jobs.php?user_id=" . $user_id . "'>User Jobs</a>";
+	echo "<a class='btn btn-primary' href='edit_user.php?user_id=" . $user->get_user_id() . "'><i class='icon-pencil'></i>Edit User</a>";
+	echo "<a class='btn btn-info' href='user_bill.php?user_id=" . $user->get_user_id() . "'>User Bill</a>";
+	echo "<a class='btn btn-success' href='jobs.php?user_id=" . $user->get_user_id() . "'>User Jobs</a>";
 	echo "</div></div>";
 	echo "</form>";
 }
