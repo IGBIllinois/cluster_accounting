@@ -12,6 +12,7 @@
 $include_paths = array('../libs');
 
 set_include_path(get_include_path() . ":" . implode(':',$include_paths));
+require_once '../conf/app.inc.php';
 require_once '../conf/settings.inc.php';
 require_once '../vendor/autoload.php';
 
@@ -93,6 +94,9 @@ if (isset($_POST['login'])) {
 				<a class="btn btn-navbar" data-toggle="collapse"
 					data-target=".nav-collapse"></a> <a class="brand" href="#"><?php echo __TITLE__; ?>
 				</a>
+				<p class='navbar-text pull-right'>
+                                                Version <?php echo __VERSION__; ?>
+				</p>
 			</div>
 		</div>
 	</div>
