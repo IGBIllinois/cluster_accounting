@@ -22,6 +22,7 @@ if (!($session->get_var('login'))) {
 	$session->set_session_var('webpage',$webpage);
 
 	header('Location: login.php');
+	exit();
 }
 //If session timeout is reach
 elseif (time() > $session->get_var('timeout') + __SESSION_TIMEOUT__) {
