@@ -3,7 +3,9 @@
 $include_paths = array('../libs');
 
 set_include_path(get_include_path() . ":" . implode(':',$include_paths));
+require_once '../conf/app.inc.php';
 require_once '../conf/settings.inc.php';
+
 require_once '../vendor/autoload.php';
 
 function my_autoloader($class_name) {
