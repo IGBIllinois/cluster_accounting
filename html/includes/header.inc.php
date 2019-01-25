@@ -25,15 +25,12 @@ require_once 'includes/main.inc.php';
 	<div class='navbar navbar-inverse'>
 		<div class='navbar-inner'>
 			<div class='container'>
-				<div class='span8 brand'>
+				<div class='brand'>
 					<?php echo __TITLE__; ?>
 				</div>
-				<div class='span4 pull-right'>
-					<p class='navbar-text pull-right'>
-						Version <?php echo __VERSION__; ?>
-						<a class='btn btn-danger btn-small' href='logout.php'>Logout</a>
-					</p>
-				</div>
+				<span class='navbar-text pull-right'>Version <?php echo __VERSION__; ?>&nbsp;
+					<a class='btn btn-danger btn-small' role="button" href='logout.php'>Logout</a>
+				</span>
 			</div>
 		</div>
 	</div>
