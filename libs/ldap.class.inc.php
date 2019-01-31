@@ -224,22 +224,19 @@ class ldap {
         private function set_port($ldap_port) { $this->ldap_port = $ldap_port; }
 
 	private function connect() {
-
-                $prefix;
-                if ($this->get_ssl() == true) {
-                        $prefix = "ldaps://";
+                $ldap_uri;
+                if ($this->get_ssl()) {
+                        $ldap_uri = "ldaps://" . $this->get_host() . ":" . $this->get_port();
                 }
-                elseif ($this->get_ssl() == false) {
-                        $prefix = "ldap://";
+                elseif (!$this->get_ssl()) {
+                        $ldap_uri = "ldap://" . $this->get_host() . ":" . $this->get_port();
                 }
 
-		$this->ldap_resource = ldap_connect($prefix . $this->get_host(),$this->get_port());
-		$result = false;
-                if ($this->get_connection()) {
-			$result = true;
-
-                }
-		return $result;
+		$this->ldap_resource = ldap_connect($ldap_uri);
+		if ($this->get_connection()) {
+			return true;
+		}
+		return false;
         }
 
 }
