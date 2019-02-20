@@ -20,7 +20,7 @@ class user {
 	private $default_data_dir_id;
 	////////////////Public Functions///////////
 
-	public function __construct($db,$ldap,$id = 0,$username = "") {
+	public function __construct(&$db,&$ldap,$id = 0,$username = "") {
 		$this->db = $db;
 		$this->ldap = $ldap;
 		if ($id != 0) {
