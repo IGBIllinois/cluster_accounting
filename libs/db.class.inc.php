@@ -25,10 +25,6 @@ class db {
 	////////////////Public Functions///////////
 
 	public function __construct($host,$database,$username,$password) {
-
-		ini_set('mysql.connect_timeout', 300);
-		ini_set('default_socket_timeout', 300);
-		ini_set('mysqlnd.net_read_timeout',300);
 		$this->open($host,$database,$username,$password);
 
 
@@ -49,13 +45,12 @@ class db {
 	public function open($host,$database,$username,$password,$port = 3306) {
 		//Connects to database.
 		try {
-			$this->link = new PDO("mysql:host=$host;dbname=$database",$username,$password,array());
-
+			$this->link = new PDO("mysql:host=$host;dbname=$database",$username,$password,
+					array(PDO::ATTR_PERSISTENT => true));
 			$this->host = $host;
 			$this->database = $database;
 			$this->username = $username;
 			$this->password = $password;
-
 		}
 		catch(PDOException $e) {
 			echo $e->getMessage();
@@ -73,9 +68,9 @@ class db {
 	//$sql - sql string to run on the database
 	//returns the id number of the new record, 0 if it fails
 	public function insert_query($sql) {
+
 		$result = $this->link->exec($sql);
 		if ($result === false) {
-			functions::log("INSERT ERROR: " . $sql);
 		}
 		return $this->link->lastInsertId();
 
@@ -86,26 +81,40 @@ class db {
 	//$data - associative array with index being the column and value the data.
 	//returns the id number of the new record, 0 if it fails
 	public function build_insert($table,$data) {
-		$sql = "INSERT INTO " . $table;
-		$values_sql = "VALUES(";
-		$columns_sql = "(";
-		$count = 0;
-		foreach ($data as $key=>$value) {
-			if ($count == 0) {
-				$columns_sql .= $key;
-				$values_sql .= "'" . $value . "'";
-			}
-			else {
-				$columns_sql .= "," . $key;
-				$values_sql .= ",'" . $value . "'";
+		try {
+			$sql = "INSERT INTO " . $table;
+			$values_sql = "VALUES(";
+			$columns_sql = "(";
+			$count = count($data);
+			$i = 1;
+			foreach ($data as $key=>$value) {
+				if ($i == $count) {
+					$columns_sql .= $key;
+					$values_sql .= ":" . $key . " ";
+				}
+				else {
+					$columns_sql .= $key . ","; 
+					$values_sql .= " :" . $key . ", ";
+				}
+	
+				$i++;
 			}
 
-			$count++;
+			$values_sql .= ")";
+			$columns_sql .= ")";
+			$sql = $sql . $columns_sql . " " . $values_sql;
+			$statement = $this->link->prepare($sql);
+			foreach ($data as $key=>$value) {
+				$statement->bindValue(":" . $key,$value);
+			}
+			$result = $statement->execute();
+			return $this->link->lastInsertId();
 		}
-		$values_sql .= ")";
-		$columns_sql .= ")";
-		$sql = $sql . $columns_sql . " " . $values_sql;
-		return $this->insert_query($sql);
+		catch(PDOException $e) {
+                        echo "<br>Error: " . $e->getMessage();
+			var_dump($e);
+                }
+
 	}
 
 	//non_select_query()
@@ -150,5 +159,38 @@ class db {
 		return $result;
 
 	}
+
+	public function update($table,$data,$where_key,$where_value) {
+		try {
+	
+			$sql = "UPDATE `" . $table . "` SET ";
+			
+			$count = count($data);
+			$i = 1;
+	                foreach ($data as $key=>$value) {
+				if ($i == $count) {
+					$sql .= $key . "= :" . $key . " ";;
+                        	}
+	                        else {
+					$sql .= $key . "= :" . $key . ", ";
+                	        }
+
+                        	$i++;
+	                }
+			$sql .= "WHERE " . $where_key . "='" . $where_value . "' LIMIT 1";
+			$statement = $this->link->prepare($sql);
+			foreach ($data as $key=>$value) {
+				$statement->bindValue(":" . $key,$value);
+			}
+			$result = $statement->execute();
+			return $result;
+		}
+		catch(PDOException $e) {
+			echo "<br>Error: " . $e->getMessage();
+		}
+
+
+	}
 }
 ?>
+
