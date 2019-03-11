@@ -149,7 +149,6 @@ class statistics {
 		$sql = "SELECT SEC_TO_TIME(ROUND(AVG(TIME_TO_SEC(TIMEDIFF(job_start_time,job_submission_time))))) AS avg_wait ";
 		$sql .= "FROM jobs ";
 		$sql .= "WHERE DATE(job_end_time) BETWEEN '" . $start_date . "' AND '" . $end_date . "'";
-		error_log($sql);
 		$result = $this->db->query($sql);
 		$avg_wait = $result[0]['avg_wait'];
 		if (!$avg_wait) {

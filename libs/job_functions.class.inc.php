@@ -42,7 +42,8 @@ class job_functions {
 		$sql .= "users.user_name as 'NAME', ";
                 $sql .= "cfops.cfop_value as 'CFOP', ";
                 $sql .= "cfops.cfop_activity as 'ACTIVITY CODE', ";
-                $sql .= "ROUND(SUM(jobs.job_billed_cost),2) as 'COST' ";
+                $sql .= "ROUND(SUM(jobs.job_billed_cost),2) as 'COST', ";
+		$sql .= "CONCAT('Biocluster Jobs - ',projects.project_name) as 'DESCRIPTION' ";
                 $sql .= "FROM jobs ";
                 $sql .= "LEFT JOIN users ON users.user_id=jobs.job_user_id ";
                 $sql .= "LEFT JOIN projects ON projects.project_id=jobs.job_project_id ";
@@ -59,6 +60,7 @@ class job_functions {
                 $sql .= "users.user_name ";
 		$sql .= "HAVING ROUND(SUM(jobs.job_billed_cost),2) > 0.00 ";
                 $sql .= "ORDER BY `CFOP` ASC, `ACTIVITY CODE` ASC ";
+		echo $sql;
                 $job_result = $db->query($sql);
 
 		$total_bill = 0;
@@ -69,7 +71,9 @@ class job_functions {
 			'NAME'=>'IGB Biocluster Jobs',
 			'CFOP'=>settings::get_boa_cfop(),
 			'ACTIVITY CODE'=>'',
-			'COST'=>"-" . $total_bill));
+			'COST'=>"-" . $total_bill,
+			'DESCRIPTION'=>'',
+			));
 
 		return array_merge($first_row,$job_result);
 		

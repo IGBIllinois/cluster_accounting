@@ -6,6 +6,7 @@ class report {
 	//$filename - string - name of the file to create
 	//prompts to save an excel 2003 report.
 	public static function create_excel_2003_report($data,$filename) {
+		ob_clean();
 		$excel_file = self::create_generic_excel($data);
 		header('Content-Type: application/vnd.ms-excel');
 		header('Content-Disposition: attachment;filename=' . $filename);
@@ -21,6 +22,7 @@ class report {
 	//$filename = string - name of the file to create
 	//prompts to save an excel 2007 report.
 	public static function create_excel_2007_report($data,$filename) {
+		ob_clean();
 		$excel_file = self::create_generic_excel($data);
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 		header("Content-Disposition: attachment;filename=" . $filename);
@@ -28,7 +30,6 @@ class report {
 		header('Pragma: public');
 		$writer = PHPExcel_IOFactory::createWriter($excel_file,'Excel2007');
 		$writer->save('php://output');
-
 	}
 
 	//create_generic_excel()
@@ -79,6 +80,7 @@ class report {
 	//$filename - name of file to create
 	//creates a csv file with data and prompts you to save it.
 	public static function create_csv_report($data,$filename) {
+		ob_clean();
 		$delimiter = ",";
 		$file_handle = fopen('php://output','w');
 		$headings = array_keys($data[0]);
@@ -94,9 +96,9 @@ class report {
 		header('Expires: 0');
 		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 		header('Content-Type: application/csv');
-		header("Content-Disposition:attachment; filename=" . $filename);
+		header('Content-Disposition: attachment; filename="' . $filename . '"');
+		header('Pragma: no-cache');
 		echo $result;
-		
 	
 	}
 

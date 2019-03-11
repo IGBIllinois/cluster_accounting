@@ -72,5 +72,4 @@ switch ($type) {
 		report::create_excel_2007_report($data,$filename);
 		break;
 }
-
 ?>

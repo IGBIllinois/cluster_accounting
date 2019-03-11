@@ -96,7 +96,8 @@ class data_functions {
 		$sql .= "projects.project_name as 'NAME', ";
 		$sql .= "cfops.cfop_value as 'CFOP', ";
 		$sql .= "cfops.cfop_activity as 'ACTIVITY CODE', ";	
-                $sql .= "ROUND(data_bill.data_bill_billed_cost,2) as 'COST' ";
+                $sql .= "ROUND(data_bill.data_bill_billed_cost,2) as 'COST', ";
+		$sql .= "CONCAT('Biocluster Data - ',data_dir.data_dir_path) as 'DESCRIPTION' ";
                 $sql .= "FROM data_bill ";
                 $sql .= "LEFT JOIN cfops ON cfops.cfop_id=data_bill.data_bill_cfop_id ";
                 $sql .= "LEFT JOIN projects ON projects.project_id=data_bill.data_bill_project_id ";
@@ -118,7 +119,9 @@ class data_functions {
                         'NAME'=>'IGB Biocluster Data',
                         'CFOP'=>settings::get_boa_cfop(),
                         'ACTIVITY CODE'=>'',
-                        'COST'=>"-" . $total_bill));
+                        'COST'=>"-" . $total_bill,
+			'DESCRIPTION'=>'',
+			));
 
 		return array_merge($first_row,$data_result);			
         }
