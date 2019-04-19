@@ -41,6 +41,7 @@ class cluster_graph {
                 $graph->xaxis->SetLabelAngle('55');
                 $bplot = self::bar_plot($input_data,$yaxis);
                 $graph->Add($bplot);
+		ob_clean();
                 $graph->Stroke();
 	 }
 
@@ -82,6 +83,7 @@ class cluster_graph {
 
 		}
 		$graph->Add($gbplot);
+		ob_clean();
                 $graph->Stroke();
 
 
@@ -115,6 +117,7 @@ class cluster_graph {
         	$graph->legend->SetPos(0.6,0.2,"left","top");
 	        $graph->legend->SetLayout("LEGEND_VERT");
 	        $graph->Add($p1);
+		ob_clean();
         	$graph->Stroke();
 	}
 
