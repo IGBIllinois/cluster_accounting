@@ -2,7 +2,7 @@
 /*
 Stores application variables
 */
-define("__VERSION__","1.44");
+define("__VERSION__","1.45");
 
 
 

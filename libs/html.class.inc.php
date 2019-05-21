@@ -176,6 +176,12 @@ class html {
 			$queues_html .= "<td>" . $queue['name'] . " - " . $queue['description'] . "</td>";
 			$queues_html .= "<td>$" . number_format($queue['cost_cpu_day'],2) . "</td>";
 			$queues_html .= "<td>$" . number_format($queue['cost_memory_day'],2) . "</td>";
+			if ($queue['cost_gpu_day'] != 0.00) {
+				$queues_html .= "<td>$" . number_format($queue['cost_gpu_day'],2) . "</td>";
+			}
+			else {
+				$queues_html .= "<td>N/A</td>";
+			}
 			$queues_html .= "</tr>";	
 
 

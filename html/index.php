@@ -37,6 +37,7 @@ foreach ($data_costs as $value) {
 			<th>Queue</th>
 			<th>CPU cost per day</th>
 			<th>Memory (GB) cost per day</th>
+			<th>GPU cost per day</th>
 		</tr>
 	</thead>
 	<?php echo $public_queues_html; ?>
@@ -50,6 +51,7 @@ foreach ($data_costs as $value) {
                         <th>Queue</th>
                         <th>CPU cost per day</th>
                         <th>Memory (GB) cost per day</th>
+			<th>GPU cost per day</th>
                 </tr>
         </thead>
         <?php echo $private_queues_html; ?>

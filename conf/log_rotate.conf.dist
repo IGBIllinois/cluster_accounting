@@ -3,6 +3,6 @@
     rotate 10
     notifempty
     missingok
-    create mode 0660 apache apache
+    create 0660 root root
 }
 
