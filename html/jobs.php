@@ -119,7 +119,7 @@ $( "#end_date" ).datepicker({
 <form class='span6 form-inline' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
         <!--<div class='input-append'>-->
                 <input type='text' name='search' class='input-xlarge' placeholder='Search'
-			value='<?php if (isset($_GET['search'])) { echo $_GET['search']; } ?>'>
+			value='<?php if (isset($_GET['search'])) { echo $_GET['search']; } ?>' autocapitalize='none'>
 		<?php
 			if ($login_user->is_admin() || $login_user->is_supervisor()) {
 				echo $user_list_html;

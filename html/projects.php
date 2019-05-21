@@ -98,7 +98,7 @@ $owner_html .= "</select>";
 <form class='span6 form-search' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
 		<div class='input-append'>
                 <input type='text' name='search' class='input-xlarge search-query' placeholder='Search'
-                        value='<?php if (isset($search)) { echo $search; } ?>'>
+                        value='<?php if (isset($search)) { echo $search; } ?>' autocapitalize='none'>
 		<input type='hidden' name='custom' value='<?php echo $custom; ?>'>
                 <button type='submit' class='btn btn-primary'>Search</button>
 		</div>

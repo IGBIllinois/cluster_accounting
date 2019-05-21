@@ -114,7 +114,7 @@ if (isset($_POST['login'])) {
 						<div class='input-append'>
 						<input class='span5' type='text'
 						name='username' tabindex='1' placeholder='Username'
-						value='<?php if (isset($username)) { echo $username; } ?>'> 
+						value='<?php if (isset($username)) { echo $username; } ?>' autocapitalize='none'> 
 						<span class='add-on'><i class='icon-user'></i></span>
 						</div>
 						</div>

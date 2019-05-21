@@ -58,7 +58,7 @@ $owner_html .= "</select>";
 			<label class='control-label' for='name_input'>Project Name: </label>
 			<div class='controls'>
 				<input type='text' name='name' id='name_input'
-					value='<?php if (isset($_POST['name'])) { echo $_POST['name']; } ?>'>
+					value='<?php if (isset($_POST['name'])) { echo $_POST['name']; } ?>' autocapitalize='none'>
 			</div>
 		</div>
 				<div class='control-group'>
@@ -71,7 +71,7 @@ $owner_html .= "</select>";
 			<label class='control-label' for='ldap_group_input'>LDAP Group: </label>
 			<div class='controls'>
 				<input type='text' name='ldap_group' id='ldap_group_input'
-					value='<?php if(isset($_POST['ldap_group'])) { echo $_POST['ldap_group']; } ?>'>
+					value='<?php if(isset($_POST['ldap_group'])) { echo $_POST['ldap_group']; } ?>' autocapitalize='none'>
 			</div>
 		</div>
 		<div class='control-group'>
