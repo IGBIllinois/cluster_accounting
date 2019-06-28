@@ -121,6 +121,12 @@ class ldap {
                         return $members;
                 }
         }
+
+        public function is_group_member($username,$group) {
+                $group_members = $this->get_group_members($group);
+                return in_array($username,$group_members);
+
+        }
 	 public function get_user_groups($username) {
                 if ($this->get_connection()) {
                         $username = trim(rtrim($username));
@@ -231,6 +237,7 @@ class ldap {
                 elseif (!$this->get_ssl()) {
                         $ldap_uri = "ldap://" . $this->get_host() . ":" . $this->get_port();
                 }
+		echo "uri: " . $ldap_uri;
 		$this->ldap_resource = ldap_connect($ldap_uri);
 		if ($this->get_connection()) {
 			return true;
@@ -241,3 +248,4 @@ class ldap {
 }
 
 ?>
+
