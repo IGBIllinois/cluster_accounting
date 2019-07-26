@@ -237,7 +237,6 @@ class ldap {
                 elseif (!$this->get_ssl()) {
                         $ldap_uri = "ldap://" . $this->get_host() . ":" . $this->get_port();
                 }
-		echo "uri: " . $ldap_uri;
 		$this->ldap_resource = ldap_connect($ldap_uri);
 		if ($this->get_connection()) {
 			return true;

@@ -53,7 +53,6 @@ $owner_html .= "</select>";
 <form class='form-horizontal' name='form' method='post'
 	action='<?php echo $_SERVER['PHP_SELF']; ?>'>
 	<fieldset>
-		<legend>Add Project</legend>
 		<div class='control-group'>
 			<label class='control-label' for='name_input'>Project Name: </label>
 			<div class='controls'>

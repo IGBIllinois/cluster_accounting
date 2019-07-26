@@ -12,6 +12,7 @@ require_once 'includes/main.inc.php';
 <script src='includes/main.inc.js' type='text/javascript'></script>
 <script src='vendor/components/jquery/jquery.min.js' type='text/javascript'></script>
 <script src='vendor/components/jquery-ui/ui/minified/jquery-ui.min.js' type='text/javascript'></script>
+<script src='vendor/components/bootstrap/js/bootstrap.min.js' type='text/javascript'></script>
 <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 <link rel="stylesheet" type="text/css"
 	href="vendor/components/bootstrap/css/bootstrap.min.css">

@@ -70,10 +70,12 @@ $supervisors_html .= "</select>";
 
 ?>
 
+<h3>Add User</h3>
 <form class='form-horizontal' method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>'
 	name='form'>
 	<fieldset>
-		<legend>Add User</legend>
+		<hr>
+		<h4>User Information</h4>
 		<div class='control-group'>
 			<label class='control-label' for='username_input'>Username:</label>
 			<div class='controls'>
@@ -101,46 +103,91 @@ $supervisors_html .= "</select>";
 				<?php echo $supervisors_html; ?>
 			</div>
 		</div>
-		<div class='control-group'>
-			<label class='control-label' for='bill_project_input'>Do not bill
-				default project:</label>
-			<div class='controls'>
-				<input type='checkbox' name='bill_project'
-					onClick='enable_project_bill();' <?php if (isset($_POST['bill_project'])) { echo "checked='checked'"; } ?>>
-			</div>
+		<hr>
+		<h4>Default Project Billing</h4>
+		<div class='tabbable'>
+			<ul class='nav nav-tabs'>
+				<li class='active'><a href='#bill1' data-toggle='tab'>CFOP</a></li>
+				<li><a href='#bill2' data-toggle='tab'>Custom Billing</a></li>
+				<li><a href='#bill3' data-toggle='tab'>Do Not Bill</a></li>
+			</ul>
+
+			<div class='tab-content'>
+
+		<!--------------------------------CFOP-------------------------->
+		<div class='tab-pane active' id='bill1'>
+			<div class='control-group'>
+                        <label class='control-label' for='cfop_input'>CFOP:</label>
+                        <div class='controls'>
+                                <input class='input-mini' type='text' name='cfop_1' id='cfop_input'
+                                        maxlength='1' onKeyUp='cfop_advance_1()'
+                                        value='<?php if (isset($_POST['cfop_1'])) { echo $_POST['cfop_1']; } ?>'>
+                                - <input class='input-mini' type='text' name='cfop_2'
+                                        id='cfop_input' maxlength='6' onKeyUp='cfop_advance_2()'
+                                        value='<?php if (isset($_POST['cfop_2'])) { echo $_POST['cfop_2']; } ?>'>
+                                - <input class='input-mini' type='text' name='cfop_3'
+                                        id='cfop_input' maxlength='6' onKeyUp='cfop_advance_3()'
+                                        value='<?php if (isset($_POST['cfop_3'])) { echo $_POST['cfop_3']; } ?>'>
+                                - <input class='input-mini' type='text' name='cfop_4'
+                                        id='cfop_input' maxlength='6'
+                                        value='<?php if (isset($_POST['cfop_4'])) { echo $_POST['cfop_4']; } ?>'>
+                        </div>
+                	</div>
+
+                	<div class='control-group'>
+                        <label class='control-label' for='activity_input'>Activity Code
+                                (optional):</label>
+                        <div class='controls'>
+                                <input class='input-mini' type='text' name='activity' maxlength='6'
+                                        id='activity_input'
+                                        value='<?php if (isset($_POST['activity'])) { echo $_POST['activity']; } ?>'>
+                        </div>
+	                </div>
+
+        	        <div class='control-group'>
+                        <label class='control-label' for='hide_cfop_input'>Hide CFOP From User:</label>
+                        <div class='controls'>
+                                <input type='checkbox' name='hide_cfop' <?php if (isset($_POST['hide_cfop'])) { echo "checked='checked'"; } ?>>
+                        </div>
+                	</div>
 		</div>
-		<div class='control-group'>
-			<label class='control-label' for='cfop_input'>CFOP:</label>
-			<div class='controls'>
-				<input class='input-mini' type='text' name='cfop_1' id='cfop_input'
-					maxlength='1' onKeyUp='cfop_advance_1()'
-					value='<?php if (isset($_POST['cfop_1'])) { echo $_POST['cfop_1']; } ?>'>
-				- <input class='input-mini' type='text' name='cfop_2'
-					id='cfop_input' maxlength='6' onKeyUp='cfop_advance_2()'
-					value='<?php if (isset($_POST['cfop_2'])) { echo $_POST['cfop_2']; } ?>'>
-				- <input class='input-mini' type='text' name='cfop_3'
-					id='cfop_input' maxlength='6' onKeyUp='cfop_advance_3()'
-					value='<?php if (isset($_POST['cfop_3'])) { echo $_POST['cfop_3']; } ?>'>
-				- <input class='input-mini' type='text' name='cfop_4'
-					id='cfop_input' maxlength='6'
-					value='<?php if (isset($_POST['cfop_4'])) { echo $_POST['cfop_4']; } ?>'>
+
+
+		<!-----------------Custom Billing------------------->
+
+			<div class='tab-pane' id='bill2'>
+				<div class='control-group'>
+					<label class='control-label' style='min-width: 200px' for='custom_bill_description'>Custom Bill Description: &nbsp;
+						<br>(e.g. Check, Personal Credit Card, Government Credit Card) &nbsp;
+					</label>
+					<div class='controls'>
+						<textarea rows='5' style="min-width: 800px" id='custom_bill_description' name='custom_bill_description'>
+							<?php if (isset($_POST['custom_bill_description'])) { echo $_POST['custom_bill_description']; } ?>
+						</textarea>
+					</div>
+
+				</div>
+			</div>	
+
+
+
+
+		<!------------------Do Not Bill----------------->
+			<div class='tab-pane' id='bill3'>
+		                <div class='control-group'>
+        		                <label class='control-label' style='min-width: 200px' for='bill_project_input'>Do not bill default project: &nbsp</label>
+		                        <div class='controls'>
+                		                <input type='checkbox' id='bill_project_input' name='bill_project'
+                                	        onClick='enable_project_bill();' <?php if (isset($_POST['bill_project'])) { echo "checked='checked'"; } ?>>
+                        		</div>
+				</div>
+
 			</div>
-		</div>
-		<div class='control-group'>
-			<label class='control-label' for='activity_input'>Activity Code
-				(optional):</label>
-			<div class='controls'>
-				<input class='input-mini' type='text' name='activity' maxlength='6'
-					id='activity_input'
-					value='<?php if (isset($_POST['activity'])) { echo $_POST['activity']; } ?>'>
-			</div>
-		</div>
-		<div class='control-group'>
-			<label class='control-label' for='hide_cfop_input'>Hide CFOP From User:</label>
-			<div class='controls'>
-				<input type='checkbox' name='hide_cfop' <?php if (isset($_POST['hide_cfop'])) { echo "checked='checked'"; } ?>>
-			</div>
-		</div>
+	
+
+                </div>
+	
+		<hr>
 		<div class='control-group'>
 			<div class='controls'>
 				<input class='btn btn-primary' type='submit' name='add_user'
