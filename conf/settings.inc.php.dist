@@ -40,5 +40,5 @@ define("__ROOT_DATA_DIR__","/home/a-m /home/n-z /home/labs /home/groups /home/th
 define("__LOG_FILE__","");
 define("__ENABLE_LOG__",false);
 define("__BOA_CFOP__",'');
-
+define ('__PASSWORD_RESET_URL__','');
 ?>

@@ -52,6 +52,7 @@ class job_functions {
                 $sql .= "LEFT JOIN queues ON queues.queue_id=jobs.job_queue_id ";
                 $sql .= "WHERE (YEAR(jobs.job_end_time)='" . $year . "' AND month(jobs.job_end_time)='" . $month . "') ";
 		$sql .= "AND cfops.cfop_bill='1' ";
+		$sql .= "AND cfops.cfop_custom='0' ";
                 $sql .= "GROUP BY ";
                 $sql .= "queue_cost.queue_cost_id, ";
                 $sql .= "jobs.job_cfop_id, ";
@@ -60,7 +61,6 @@ class job_functions {
                 $sql .= "users.user_name ";
 		$sql .= "HAVING ROUND(SUM(jobs.job_billed_cost),2) > 0.00 ";
                 $sql .= "ORDER BY `CFOP` ASC, `ACTIVITY CODE` ASC ";
-		echo $sql;
                 $job_result = $db->query($sql);
 
 		$total_bill = 0;
@@ -80,6 +80,38 @@ class job_functions {
 
         }
 
+        public static function get_jobs_custom_bill($db,$month,$year) {
+
+
+                $sql = "SELECT '' as 'DATE', ";
+                $sql .= "users.user_name as 'NAME', ";
+                $sql .= "cfops.cfop_custom_description as 'DESCRIPTION', ";
+                $sql .= "ROUND(SUM(jobs.job_billed_cost),2) as 'COST', ";
+                $sql .= "projects.project_name as 'PROJECT' ";
+                $sql .= "FROM jobs ";
+                $sql .= "LEFT JOIN users ON users.user_id=jobs.job_user_id ";
+                $sql .= "LEFT JOIN projects ON projects.project_id=jobs.job_project_id ";
+                $sql .= "LEFT JOIN cfops ON cfops.cfop_id=jobs.job_cfop_id ";
+                $sql .= "LEFT JOIN queue_cost ON queue_cost.queue_cost_id=jobs.job_queue_cost_id ";
+                $sql .= "LEFT JOIN queues ON queues.queue_id=jobs.job_queue_id ";
+                $sql .= "WHERE (YEAR(jobs.job_end_time)='" . $year . "' AND month(jobs.job_end_time)='" . $month . "') ";
+                $sql .= "AND cfops.cfop_bill='1' ";
+		$sql .= "AND cfops.custom_billi='1' ";
+                $sql .= "GROUP BY ";
+                $sql .= "queue_cost.queue_cost_id, ";
+                $sql .= "jobs.job_cfop_id, ";
+                $sql .= "jobs.job_project_id, ";
+                $sql .= "jobs.job_queue_id, ";
+                $sql .= "users.user_name ";
+                $sql .= "HAVING ROUND(SUM(jobs.job_billed_cost),2) > 0.00 ";
+                $sql .= "ORDER BY `NAME` ASC";
+                $job_result = $db->query($sql);
+
+
+                return $job_result;
+
+
+        }
 
 	public static function get_jobs($db,$user_id = 0,$search = "",$completed = -1,
 					$start_date=0,$end_date=0,$start = 0,$count = 0) {

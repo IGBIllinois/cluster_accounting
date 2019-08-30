@@ -61,6 +61,29 @@ elseif (isset($_POST['create_data_boa_report'])) {
         $filename = $server_name . "-data-boa-" . $month . "-" . $year . "." . $type;
 
 }
+
+elseif (isset($_POST['create_job_custom_report']] {
+	        $month = $_POST['month'];
+        $year = $_POST['year'];
+        $type = $_POST['report_type'];
+        $data = job_functions::get_jobs_custom_bill($db,$month,$year);
+        $server_name = settings::get_server_name();
+        $filename = $server_name . "-job-custom-" . $month . "-" . $year . "." . $type;
+
+
+}
+
+elseif (isset($_POST['create_data_custom_report']] {
+                $month = $_POST['month'];
+        $year = $_POST['year'];
+        $type = $_POST['report_type'];
+        $data = data_functions::get_data_custom_bill($db,$month,$year);
+        $server_name = settings::get_server_name();
+        $filename = $server_name . "-data-custom-" . $month . "-" . $year . "." . $type;
+
+
+}
+
 switch ($type) {
 	case 'csv':
 		report::create_csv_report($data,$filename);

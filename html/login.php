@@ -132,7 +132,10 @@ if (isset($_POST['login'])) {
 					</div>
 					<br>
 					<button type='submit' name='login' class='btn btn-primary'>Login</button>
-
+					<?php if (settings::get_password_reset_url()) {
+						echo "<a class='pull-right' href='" . settings::get_password_reset_url() . "'>Forgot Password?</a>";
+					}
+					?>
 				</form>
 
 

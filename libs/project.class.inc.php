@@ -10,7 +10,7 @@ class project {
 	private $name;
 	private $ldap_group;
 	private $description;
-	private $bill_project;
+	private $billtype;
 	private $cfop;
 	private $cfop_activity;
 	private $time;
@@ -178,8 +178,8 @@ class project {
 	public function get_default() {
 		return $this->default;
 	}
-	public function get_bill_project() {
-		return $this->bill_project;
+	public function get_billtype() {
+		return $this->billtype;
 	}
 	public function get_cfop() {
 		return $this->cfop;
@@ -230,13 +230,15 @@ class project {
 		$sql .= "WHERE cfop_project_id='" . $this->get_project_id() . "' ";
 		$this->db->non_select_query($sql);
 		$active = 1;
+		$cfop_billtype = 'no_bill';
 		if (!$bill_project) {
 			$cfop = "";
 			$activity = "";
 			$hide_cfop = 0;
+			$cfop_billtype = "cfop";
 		}
 		$insert_array = array('cfop_project_id'=>$this->get_project_id(),
-				'cfop_bill'=>$bill_project,
+				'cfop_billtype'=>$cfop_billtype,
 				'cfop_value'=>$cfop,
 				'cfop_activity'=>$activity,
 				'cfop_active'=>$active,
@@ -317,7 +319,7 @@ class project {
 			$this->name = $result[0]['project_name'];
 			$this->description = $result[0]['project_description'];
 			$this->ldap_group = $result[0]['project_ldap_group'];
-			$this->bill_project = $result[0]['cfop_bill'];
+			$this->billtype = $result[0]['cfop_billtype'];
 			$this->cfop = $result[0]['cfop_value'];
 			$this->cfop_activity = $result[0]['cfop_activity'];
 			$this->time_created = $result[0]['cfop_time_created'];

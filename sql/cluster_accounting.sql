@@ -30,11 +30,11 @@ CREATE TABLE projects (
 CREATE TABLE cfops(
 	cfop_id INT NOT NULL AUTO_INCREMENT,
 	cfop_project_id INT REFERENCES projects(project_id),
-	cfop_bill BOOLEAN DEFAULT 1,
 	cfop_value VARCHAR(22),
 	cfop_activity VARCHAR(6),
 	cfop_restricted BOOLEAN DEFAULT 0,
 	cfop_time_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	cfop_billtype ENUM('no_bill','cfop','custom'),
 	PRIMARY KEY(cfop_id)
 );
 
