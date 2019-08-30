@@ -121,6 +121,12 @@ class ldap {
                         return $members;
                 }
         }
+
+        public function is_group_member($username,$group) {
+                $group_members = $this->get_group_members($group);
+                return in_array($username,$group_members);
+
+        }
 	 public function get_user_groups($username) {
                 if ($this->get_connection()) {
                         $username = trim(rtrim($username));
@@ -241,3 +247,4 @@ class ldap {
 }
 
 ?>
+

@@ -66,6 +66,15 @@ class settings {
 		
 
 	}
+	public static function get_password_reset_url() {
+                if (defined('__PASSWORD_RESET_URL__') && (__PASSWORD_RESET_URL__ != "") &&
+                        filter_var(__PASSWORD_RESET_URL__,FILTER_VALIDATE_URL,FILTER_FLAG_SCHEME_REQUIRED)) {
+
+                        return __PASSWORD_RESET_URL__;
+                }
+                return false;
+        }
+
 }
 
 ?>
