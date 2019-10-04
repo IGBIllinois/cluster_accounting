@@ -218,12 +218,17 @@ $self_url = $_SERVER['PHP_SELF'] . "?" . http_build_query($get_vars);
         </select> <input class='btn btn-primary' type='submit'
                 name='user_job_report' value='Download Cluster Usage Report'>
 </form>
-<form class='form-inline' method='post' action='<?php echo $self_url; ?>'>
-	<input class='btn btn-primary' type='submit'
-		name='email_bill' value='Email Bill to User'>
-</form>
+
 
 <?php 
+if ($login_user->is_admin()) {
+
+        echo "<form class='form-inline' method='post' action='" . $self_url . "'>";
+        echo "<input class='btn btn-primary' type='submit' name='email_bill' value='Email Bill to User'>";
+        echo "</form>";
+}
+
+
 if (isset($message)) { echo $message; }
 
 require_once 'includes/footer.inc.php'; ?>
