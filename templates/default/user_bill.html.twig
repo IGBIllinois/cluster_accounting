@@ -1,30 +1,60 @@
-<!DOCTYPE html>
-<html lang='en'>
-<head>
 <style>
 {{ css }}
 </style>
-</head>
-<body>
 <div class='container-fluid'><div class='span12'>
-<p></p>
-<p>Biocluster Accounting Bill - {{ start_date }} - {{ end_date }}</p>
+<br>
+<p>{{ full_name }}, </p>
+<p>Below is your bill.  You can go to <a href='{{ website_url }}'>{{ website_url }}</a>
+to view a detail listing of your jobs.
+<p>
 <br>Name: {{ full_name }}
 <br>Username: {{ username }}
 <br>Start Date: {{ start_date }}
 <br>End Date: {{ end_date }}
 <br>Number of Jobs: {{ num_jobs }}
-<p>Below is your bill.  You can go to <a href='{{ website_url }}'>{{ website_url }}</a>
-to view a detail listing of your jobs.
+
 <h4>Cluster Usage</h4>
 
-{{ jobs_table }}
+<p>
+<table class='table table-striped table-bordered table-condensed'>
+<thead>
+<th>Queue</th>
+<th>Project</th>
+<th>Cost</th>
+<th>Billed Amount</th>
+<th>CFOP</th>
+<th>Activity Code</th>
+</thead>
+{% for row in jobs_table %}
+	<tr>
+		<td> {{ jobs_table.queue }} </td>
+		<td> {{ jobs_table.project }} </td>
+		<td> {{ jobs_table.total_cost }} </td>
+		<td> {{ jobs_table.billed_cost }} </td>
+		<td> {{ jobs_table.cfop }} </td>
+		<td> {{ jobs_table.activity }} </td>
+	</tr>
+{% endfor %}
+</table>
 
-<h4>Data Usage</h4>";
+<h4>Data Usage</h4>
+
+<p>
+<table class='table table-striped table-bordered table-condensed'>
+<thead>
+<th>Directory</th>
+<th>Cost ($/TB)</th>
+<th>Project</th>
+<th>Terabytes</th>
+<th>Cost</th>
+<th>Billed Amount</th>
+<th>CFOP</th>
+<th>Activity Code</th>
+</thead>
 
 {{ data_table }}
 
-</div>
+</table>
 
-</body>
-</html>
+</div>
+</div>

@@ -91,7 +91,7 @@ class cluster_graph {
 	public static function pie_graph($input_data,$title = "") {
 	        $data_legend;
 		$data;
-        	if (count($input_data) > 0) {
+        	if ((is_array($input_date) || $input_data instanceof Countable) && count($input_data) > 0) {
                 	$count = 0;
 	                foreach($input_data as $row) {
         	                $data_legend[] = $row['legend'];

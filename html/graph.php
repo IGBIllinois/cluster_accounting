@@ -160,6 +160,10 @@ switch ($graph_type) {
 	        cluster_graph::pie_graph($data,$title);
 		break;
 
+
+	case 'data_usage_daily':
+		break;
+
 }
 
 

@@ -1,4 +1,8 @@
 <?php
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 class report {
 
 	//create_excel_2003_report()
@@ -12,7 +16,7 @@ class report {
 		header('Content-Disposition: attachment;filename=' . $filename);
 		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 		header('Pragma: public');
-		$writer = PHPExcel_IOFactory::createWriter($excel_file,'Excel5');
+		$writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($excel_file,'Xls');
 		$writer->save('php://output');
 
 	}
@@ -28,7 +32,7 @@ class report {
 		header("Content-Disposition: attachment;filename=" . $filename);
 		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 		header('Pragma: public');
-		$writer = PHPExcel_IOFactory::createWriter($excel_file,'Excel2007');
+		$writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($excel_file,'Xlsx');
 		$writer->save('php://output');
 	}
 
@@ -38,16 +42,17 @@ class report {
 	//this function is used with create_excel_2007_report and create_excel_2003_report functions
 	//to reuse common code.
 	public static function create_generic_excel($data) {
-		$excel_file = new PHPExcel();
+
+		$excel_file = new Spreadsheet();
 		$excel_file->setActiveSheetIndex(0);
 		if (count($data) !== 0 ) {
 			//Creates headers
 			$headings = array_keys($data[0]);
 			for ($i=0;$i<count($headings);$i++) {
 				$excel_file->getActiveSheet()->setCellValueByColumnAndRow($i,1,$headings[$i]);
-				$excel_file->getActiveSheet()->getStyleByColumnAndRow($i,1)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+				$excel_file->getActiveSheet()->getStyleByColumnAndRow($i,1)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 				$excel_file->getActiveSheet()->getStyleByColumnAndRow($i,1)->getFont()->setBold(true);
-				$excel_file->getActiveSheet()->getStyleByColumnAndRow($i,1)->getFont()->setUnderline(PHPExcel_STYLE_Font::UNDERLINE_SINGLE);
+				$excel_file->getActiveSheet()->getStyleByColumnAndRow($i,1)->getFont()->setUnderline(\PhpOffice\PhpSpreadsheet\Style\Font::UNDERLINE_SINGLE);
 				$excel_file->getActiveSheet()->getColumnDimensionByColumn($i)->setAutoSize(true);
 			}
 			//Adds data
@@ -58,18 +63,18 @@ class report {
 				foreach ($row_data as $key => $value) {
 					$excel_file->getActiveSheet()->setCellValueByColumnAndRow($column,$start_row,$value);
 					if (($key == 'Cost') || ($key == 'Billed Amount') || ($key == 'COST')) {
-						$excel_file->getActiveSheet()->getStyleByColumnAndRow($column,$start_row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00);
+						$excel_file->getActiveSheet()->getStyleByColumnAndRow($column,$start_row)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_00);
 					}
 					else {
-						$excel_file->getActiveSheet()->getStyleByColumnAndRow($column,$start_row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
-						$excel_file->getActiveSheet()->getStyleByColumnAndRow($column,$start_row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+						$excel_file->getActiveSheet()->getStyleByColumnAndRow($column,$start_row)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
+						$excel_file->getActiveSheet()->getStyleByColumnAndRow($column,$start_row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
 					}
 					$column++;
 				}
 				$start_row++;
 			}
 		}
-		$excel_file->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+		$excel_file->getActiveSheet()->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
 		$excel_file->getActiveSheet()->getPageSetup()->setFitToPage(true);
 		return $excel_file;
 

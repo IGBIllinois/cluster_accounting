@@ -62,7 +62,7 @@ elseif (isset($_POST['create_data_boa_report'])) {
 
 }
 
-elseif (isset($_POST['create_job_custom_report']] {
+elseif (isset($_POST['create_job_custom_report'])) {
 	        $month = $_POST['month'];
         $year = $_POST['year'];
         $type = $_POST['report_type'];
@@ -73,7 +73,7 @@ elseif (isset($_POST['create_job_custom_report']] {
 
 }
 
-elseif (isset($_POST['create_data_custom_report']] {
+elseif (isset($_POST['create_data_custom_report'])) {
                 $month = $_POST['month'];
         $year = $_POST['year'];
         $type = $_POST['report_type'];

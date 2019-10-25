@@ -82,8 +82,16 @@ class settings {
 	}
 	
 	public static function get_email_css() {
-		$file = dirname(__DIR__) . "/" . __EMAIL_CSS__;
-		return $file;
+			
+		$file_path = dirname(__DIR__) . "/" . __EMAIL_CSS__;
+		return $file_path;
+	}
+
+	public static function get_email_css_contents() {
+		$css = self::get_email_css();
+		$contents = file_get_contents($css); 
+		return file_get_contents($css);
+
 	}
 }
 

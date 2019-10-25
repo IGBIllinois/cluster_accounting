@@ -1,6 +1,6 @@
 {
 	"require": {
-		"phpoffice/phpexcel": "1.8.1",
+		"phpoffice/phpspreadsheet": "1.9.0",
 		"components/jquery": "3.3.1",
 		"components/jqueryui": "1.12.1",
 		"jpgraph/jpgraph": "4.0.2",

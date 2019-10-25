@@ -387,7 +387,7 @@ class user {
 			$to = $this->get_email();
 
 			$twig_variables = array(
-        	                'css' => file_get_contents(settings::get_email_css()),
+        	                'css' => settings::get_email_css_contents(),
                 	        'start_date' => functions::get_pretty_date($start_date),
                         	'end_date' => functions::get_pretty_date($end_date),
 	                        'full_name' => $this->get_full_name(),
@@ -435,10 +435,8 @@ class user {
 
 	public function get_jobs_table($start_date,$end_date) {
 		$jobs_summary = $this->get_jobs_summary($start_date,$end_date);
-		$jobs_html = "<p><table class='table table-striped table-bordered table-condensed'>";
+		$jobs_html = "";
 		if (count($jobs_summary)) {
-                        $jobs_html .= "<tr><th>Queue</th><th>Project</th>";
-                        $jobs_html .= "<th>Cost</th><th>Billed Amount</th><th>CFOP</th><th>Activity Code</th></tr>";
                         foreach ($jobs_summary as $summary) {
                                 $jobs_html .= "<tr>";
                                 $jobs_html .= "<td>" . $summary['queue'] . "</td>";
@@ -456,10 +454,9 @@ class user {
                         }
                 }
                 else {
-                        $jobs_html .= "<tr><th>No Jobs</th></tr>";
+                        $jobs_html = "<tr><td colpan='6'>No Jobs</td></tr>";
 
                 }
-		$jobs_html .= "</table>";
 		return $jobs_html;
 
 
@@ -469,17 +466,8 @@ class user {
 	public function get_data_table($month,$year) {
 
 		$data_summary = $this->get_data_summary($month,$year);
-		$data_html = "<p><table class='table table-striped table-bordered table-condensed'>";
+		$data_html = "";
 		if (count($data_summary)) {
-                        $data_html .= "<tr><th>Directory</th>";
-                        $data_html .= "<th>Cost ($/TB)</th>";
-                        $data_html .= "<th>Project</th>";
-                        $data_html .= "<th>Terabytes</th>";
-                        $data_html .= "<th>Cost</th>";
-                        $data_html .= "<th>Billed Amount</th>";
-                        $data_html .= "<th>CFOP</th>";
-                        $data_html .= "<th>Activity Code</th>";
-                        $data_html .= "</tr>";
                         foreach ($data_summary as $data) {
                                 $data_html .= "<tr>";
                                 $data_html .= "<td>" . $data['directory'] . "</td>";
@@ -501,9 +489,8 @@ class user {
                         }
                 }
                 else {
-                        $data_html .= "<tr><td>No Data Usage.</td></tr>";
+                        $data_html = "<tr><td colspan='6'>No Data Usage</td></tr>";
                 }
-		$data_html .= "</table>";
 		return $data_html;
 
 
