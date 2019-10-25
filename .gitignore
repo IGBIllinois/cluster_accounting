@@ -4,6 +4,6 @@
 /html/vendor
 /components
 /log/*
-!/log/.gitkeep
+!.gitkeep
 composer.lock
 /templates/custom
