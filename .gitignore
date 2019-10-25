@@ -4,6 +4,9 @@
 /html/vendor
 /components
 /log/*
-!.gitkeep
 composer.lock
-/templates/custom
+/templates/custom/*
+
+####Whitelist#####
+
+!.gitkeep
