@@ -75,6 +75,16 @@ class settings {
 		}
 		return false;
 	}
+
+	public static function get_twig_dir() {
+		$dir = dirname(__DIR__) . "/" . __TWIG_DIR__;
+		return $dir;
+	}
+	
+	public static function get_email_css() {
+		$file = dirname(__DIR__) . "/" . __EMAIL_CSS__;
+		return $file;
+	}
 }
 
 ?>

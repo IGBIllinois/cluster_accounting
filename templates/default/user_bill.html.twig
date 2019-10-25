@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<style>
+{{ css }}
+</style>
+</head>
+<body>
+<div class='container-fluid'><div class='span12'>
+<p></p>
+<p>Biocluster Accounting Bill - {{ start_date }} - {{ end_date }}</p>
+<br>Name: {{ full_name }}
+<br>Username: {{ username }}
+<br>Start Date: {{ start_date }}
+<br>End Date: {{ end_date }}
+<br>Number of Jobs: {{ num_jobs }}
+<p>Below is your bill.  You can go to <a href='{{ website_url }}'>{{ website_url }}</a>
+to view a detail listing of your jobs.
+<h4>Cluster Usage</h4>
+
+{{ jobs_table }}
+
+<h4>Data Usage</h4>";
+
+{{ data_table }}
+
+</div>
+
+</body>
+</html>

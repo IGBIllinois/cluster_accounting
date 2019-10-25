@@ -18,6 +18,9 @@ class user {
 	private $admin;
 	private $default_project_id;
 	private $default_data_dir_id;
+	
+	const USER_BILL_TWIG = "user_bill.html.twig";
+	
 	////////////////Public Functions///////////
 
 	public function __construct(&$db,&$ldap,$id = 0,$username = "") {
@@ -382,29 +385,30 @@ class user {
 
 			$subject = "Biocluster Accounting Bill - " . functions::get_pretty_date($start_date) . "-" . functions::get_pretty_date($end_date);
 			$to = $this->get_email();
+
+			$twig_variables = array(
+        	                'css' => file_get_contents(settings::get_email_css()),
+                	        'start_date' => functions::get_pretty_date($start_date),
+                        	'end_date' => functions::get_pretty_date($end_date),
+	                        'full_name' => $this->get_full_name(),
+        	                'username' => $this->get_username(),
+				'num_jobs' => $user_stats->get_num_jobs(),
+                	        'website_url' => "https://biocluster.igb.illinois.edu/accounting/",
+                        	'jobs_table' => $this->get_jobs_table($start_date,$end_date),
+	                        'data_table' => $this->get_data_table($month,$year)
+	                );
+
+			$loader = new Twig_Loader_Filesystem(settings::get_twig_dir());
+			$twig = new Twig_Environment($loader);
+
+			if (file_exists(settings::get_twig_dir() . "/custom/" . self::USER_BILL_TWIG)) {
+				$html_message = $twig->render("custom/" . self::USER_BILL_TWIG,$twig_variables);
+			}
+			else {
+				$html_message = $twig->render("default/" . self::USER_BILL_TWIG,$twig_variables);
+			}
 			$from = $admin_email;
-			$html_message = "<!DOCTYPE html>";
-			$html_message .= "<html lang='en'>"; 
-			$html_message = "<head><style>";
-			$html_message .= file_get_contents('../vendor/components/bootstrap/css/bootstrap.min.css');
-			$html_message .= "</style></head>";
-			$html_message .= "<body><div class='container-fluid'><div class='span12'>";
-			$html_message .= "<p></p>";
-			$html_message .= "<p>Biocluster Accounting Bill - " . functions::get_pretty_date($start_date) . "-" . functions::get_pretty_date($end_date) . "</p>";
-			$html_message .= "<br>Name: " . $this->get_full_name();
-			$html_message .= "<br>Username: " . $this->get_username();
-			$html_message .= "<br>Start Date: " . functions::get_pretty_date($start_date);
-			$html_message .= "<br>End Date: " . functions::get_pretty_date($end_date);
-			$html_message .= "<br>Number of Jobs: " . $user_stats->get_num_jobs();
-			$html_message .= "<p>Below is your bill.  You can go to <a href='https://biocluster.igb.illinois.edu/accounting/'> ";
-			$html_message .= "https://biocluster.igb.illinois.edu/accounting/</a> ";
-			$html_message .= "to view a detail listing of your jobs.";
-			$html_message .= "<h4>Cluster Usage</h4>";
-			$html_message .= $this->get_jobs_table($start_date,$end_date);
-			$html_message .= "<h4>Data Usage</h4>";	
-			$html_message .= $this->get_data_table($month,$year);
-			$html_message .= "</div></body></html>";
-		
+				
 			$extraheaders = array("From"=>$from,
 					"Subject"=>$subject
 			);
@@ -619,6 +623,7 @@ class user {
 		return false;
 
 	}
+
 }
 
 
