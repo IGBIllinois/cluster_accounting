@@ -63,10 +63,10 @@ $projects_html = "";
 foreach ($projects as $project) {
 
 	if ($project['cfop_bill']) {
-		$project_bill = "<i class='icon-ok'></i>";
+		$project_bill = "<i class='fas fa-check'></i>";
 	}
 	else {
-		$project_bill = "<i class='icon-remove'></i>";
+		$project_bill = "<i class='fas fa-times'></i>";
 	}
 	$projects_html .= "<tr>";
 	$projects_html .= "<td><a href='edit_project.php?project_id=" . $project['project_id'] . "'>" . $project['project_name'] . "</a></td>";

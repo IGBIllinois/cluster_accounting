@@ -64,7 +64,7 @@ elseif ($login_user->is_supervisor()) {
 $user_list_html = "";
 
 if (count($user_list) > 1) {
-        $user_list_html = "<select class='input-large' name='user_id'>";
+        $user_list_html = "<select class='custom-select custom-select-sm' name='user_id'>";
 	if ($login_user->is_admin()) {
 		$user_list_html .= "<option value='0'>All Users</option>";
 	}
@@ -116,37 +116,47 @@ $( "#end_date" ).datepicker({
 
 <h3>Search Jobs</h3>
 <div class='row'>
-<form class='span6 form-inline' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
-        <!--<div class='input-append'>-->
-                <input type='text' name='search' class='input-xlarge' placeholder='Search'
+<div class='col-md-6 col-lg-6 col-xl-6'>
+<form class='form-inline' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
+	<div class='form-group'>
+                <input type='text' name='search' class='form-control form-control-sm' placeholder='Search'
 			value='<?php if (isset($_GET['search'])) { echo $_GET['search']; } ?>' autocapitalize='none'>
+	</div>
+	<div class='form-group'>
 		<?php
 			if ($login_user->is_admin() || $login_user->is_supervisor()) {
 				echo $user_list_html;
 			}
 
 		?>
-		<input class='input-small' type='text' name='start_date' id='start_date' placeholder='Start Date'
+	</div>
+	<div class='form-group'>
+		<input class='form-control form-control-sm' type='text' name='start_date' id='start_date' placeholder='Start Date'
 			value='<?php if (isset($start_date)) { echo $start_date; } ?>'>
-		<input class='input-small' type='text' name='end_date' id='end_date' placeholder='End Date'
+	</div>
+	<div class='form-group'>
+		<input class='form-control form-control-sm' type='text' name='end_date' id='end_date' placeholder='End Date'
 			value='<?php if (isset($end_date)) { echo $end_date; } ?>'>
-                <input type='submit' class='btn btn-primary' value='Search'>
-        <!--</div>-->
+	</div>
+	<div class='form-group'>
+                <input type='submit' class='btn btn-primary btn-sm' value='Search'>
+	</div>
 </form>
-<div class='span6 btn-toolbar text-right'>
-        <div class='btn-group'>
-                <a class='btn btn-primary' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array); ?>'>All Jobs</a>
-                <a class='btn btn-success' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array) . "&completed=1"; ?>'>Completed Jobs</a>
-                <a class='btn btn-danger' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array) . "&completed=0"; ?>'>Failed Jobs</a>
+</div>
+<div class='col-md-6 col-lg-6 col-xl-6 float-right'>
+        <div class='btn-group' role='group'>
+                <a class='btn btn-sm btn-primary' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array); ?>'>All Jobs</a>
+                <a class='btn btn-sm btn-success' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array) . "&completed=1"; ?>'>Completed Jobs</a>
+                <a class='btn btn-sm btn-danger' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array) . "&completed=0"; ?>'>Failed Jobs</a>
         </div>
 
 </div>
 </div>
 <div class='row'>
-<ul class='unstyled inline'>
-<li><span class='badge badge-success'>&nbsp</span> Completed Job</li>
-<li><span class='badge badge-important'>&nbsp</span> Failed Job</li>
-</ul> 
+	<ul class='list-group list-group-horizontal list-group-flush'>
+		<li class='list-group-item'><span class='badge badge-success'>&nbsp</span> Completed Job</li>
+		<li class='list-group-item'><span class='badge badge-danger'>&nbsp</span> Failed Job</li>
+	</ul> 
 </div>
 <div class='row'>
 <table class='table table-sm table-bordered table-striped'>
@@ -171,12 +181,17 @@ $( "#end_date" ).datepicker({
         <input type='hidden' name='start_date' value='<?php echo $start_date; ?>'> 
 	<input type='hidden' name='end_date' value='<?php echo $end_date; ?>'> 
 	<input type='hidden' name='user_id' value='<?php echo $user_id;?>'>
-	<input type='hidden' name='completed' value='<?php echo $completed; ?>'> 
-	<select name='report_type' class='input-medium'>
+	<input type='hidden' name='completed' value='<?php echo $completed; ?>'>
+	<div class='form-group'>
+	<select class='custom-select custom-select-sm' name='report_type'>
                 <option value='xlsx'>Excel 2007</option>
                 <option value='csv'>CSV</option>
-        </select> <input class='btn btn-primary' type='submit'
+        </select>
+	</div>
+	&nbsp;
+	<input class='btn btn-primary btn-sm' type='submit'
                 name='job_report' value='Download Detailed Report'>
+	
 </form>
 
 <?php echo $pages_html; ?>

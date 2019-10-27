@@ -48,7 +48,7 @@ $graph_image = "<img src='graph.php?" . http_build_query($get_array) . "'>";
 $graph_form = "<form class='form-inline' name='select_graph' id='select_graph' method='post' action='" . $_SERVER['PHP_SELF'];
 //$graph_form .= "?start_date=" . $start_date . "&end_date=" . $end_date . "'>";
 $graph_form .= "?year=" . $year . "'>";
-$graph_form .= "<select name='graph_type' onChange='document.select_graph.submit();'>";
+$graph_form .= "<select class='custom-select custom-select sm' name='graph_type' onChange='document.select_graph.submit();'>";
 
 foreach ($graph_type_array as $graph) {
         $graph_form .= "<option value='" . $graph['type'] . "' ";
@@ -66,21 +66,22 @@ $stats = new statistics($db);
 
 ?>
 <h3>Yearly Stats - <?php echo $year; ?></h3>
-<ul class='pager'>
-        <li class='previous'><a href='<?php echo $back_url; ?>'>Previous Year</a></li>
+<nav>
+<ul class='pagination'>
+        <li class='page-item'><a class='page-link' href='<?php echo $back_url; ?>'>Previous Year</a></li>
 
         <?php
                 $next_year = strtotime('+1 day', strtotime($end_date));
                 $today = mktime(0,0,0,date('m'),date('d'),date('y'));
                 if ($next_year > $today) {
-                        echo "<li class='next disabled'><a href='#'>Next Year</a></li>";
+                        echo "<li class='page-item disabled'><a class='page-link' href='#'>Next Year</a></li>";
                 }
                 else {
-                        echo "<li class='next'><a href='" . $forward_url . "'>Next Year</a></li>";
+                        echo "<li class='page-item'><a class='page-link' href='" . $forward_url . "'>Next Year</a></li>";
                 }
         ?>
 </ul>
-
+</nav>
 <table class='table table-striped table-bordered table-sm'>
 	<tr>
 		<td>Number Of Jobs:</td>

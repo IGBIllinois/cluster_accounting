@@ -45,7 +45,7 @@ foreach ($queues as $queue) {
 	$queue_html .= "<td>$<input class='input-small' type='text' name='mem_cost''></td>";
 	$queue_html .= "<td>$<input class='input-small' type='text' name='gpu_cost'></td>";
 	$queue_html .= "<td><button class='btn btn-small btn-primary' type='submit' name='set_cost'><i class='icon-pencil'></i>Update Cost</button>";
-	$queue_html .= "<button class='btn btn-small btn-danger' type='submit' name='delete_queue' onClick='return confirm_delete_queue()'><i class='icon-remove'></i>Delete</button></td></tr>";
+	$queue_html .= "<button class='btn btn-small btn-danger' type='submit' name='delete_queue' onClick='return confirm_delete_queue()'><i class='fas fa-times'></i>Delete</button></td></tr>";
 	$queue_html .= "</table></form>";
 	$queue_html .= "<br>";
 }

@@ -46,10 +46,10 @@ foreach ($previous_cfops as $cfops) {
 	$previous_cfops_html .= "<tr><td>" . $cfops['cfop_value'] . "</td>";
 	$previous_cfops_html .= "<td>" . $cfops['cfop_activity'] . "</td>";
 	if ($cfops['cfop_bill'] == '1') {
-		$previous_cfops_html .= "<td><i class='icon-ok'></i></td>";
+		$previous_cfops_html .= "<td><i class='fas fa-check'></i></td>";
 	}
 	else {
-		$previous_cfops_html .= "<td><i class='icon-remove'></i></td>";
+		$previous_cfops_html .= "<td><i class='fas fa-times'></i></td>";
                                 }
 
 	$previous_cfops_html .= "<td>" . $cfops['cfop_time_created'] . "</td>";

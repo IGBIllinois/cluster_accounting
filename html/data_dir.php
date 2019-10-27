@@ -39,10 +39,10 @@ require_once 'includes/header.inc.php';
 	<td>
 	<?php
 	if ($data_dir->directory_exists()) {
-		echo "<i class='icon-ok'></i>";
+		echo "<i class='fas fa-check'></i>";
 	}
 	else {
-        	echo "<i class='icon-remove'></i>";
+        	echo "<i class='fas fa-times'></i>";
         }
 	?>
 </td>

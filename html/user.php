@@ -86,27 +86,27 @@ foreach ($queues as $queue) {
 	<tr>
 		<td>Administrator:</td>
 		<td><?php if ($user->is_admin()) {
-                	echo "<i class='icon-ok'></i>";
+                	echo "<i class='fas fa-check'></i>";
         	}
         	else {
-                	echo "<i class='icon-remove'></i>";
+                	echo "<i class='fas fa-times'></i>";
         	}
 		?>
 		</td>
 	</tr>
 	<tr>	<td>Active IGB/LDAP Account</td>
 		<td><?php if ($ldap->is_ldap_user($user->get_username())) {
-			echo "<i class='icon-ok'></i>";
+			echo "<i class='fas fa-check'></i>";
 		}
 		else {
-			echo "<i class='icon-remove'></i>";
+			echo "<i class='fas fa-times'></i>";
 		}
 		?></td></tr>
 		<?php if ($user->is_supervisor()) {    
-                        echo "<tr><td>Is Supervisor:</td><td><i class='icon-ok'></i></td></tr>";
+                        echo "<tr><td>Is Supervisor:</td><td><i class='fas fa-check'></i></td></tr>";
                 }
                 else {
-                        echo "<tr><td>Is Supervisor:</td><td><i class='icon-remove'></i></td></tr>";
+                        echo "<tr><td>Is Supervisor:</td><td><i class='fas fa-times'></i></td></tr>";
 			echo "<tr><td>Supervisor's Name: </td><td>" . $user->get_supervisor_name() . "</td></tr>";
                 }
                 ?>
@@ -139,8 +139,8 @@ if ($login_user->is_admin()) {
 	echo "<div class='btn-group'>";
 	echo "<a class='btn btn-primary' href='edit_project.php?project_id=" .
 			$user->default_project()->get_project_id() . "'>";
-	echo "<i class='icon-pencil'></i>Edit User Project</a>";
-	echo "<a class='btn btn-primary' href='edit_user.php?user_id=" . $user->get_user_id() . "'><i class='icon-pencil'></i>Edit User</a>";
+	echo "<i class='fas fa-edit'></i>Edit User Project</a>";
+	echo "<a class='btn btn-primary' href='edit_user.php?user_id=" . $user->get_user_id() . "'><i class='fas fa-user-edit'></i>Edit User</a>";
 	echo "<a class='btn btn-info' href='user_bill.php?user_id=" . $user->get_user_id() . "'>User Bill</a>";
 	echo "<a class='btn btn-success' href='jobs.php?user_id=" . $user->get_user_id() . "'>User Jobs</a>";
 	echo "</div></div>";

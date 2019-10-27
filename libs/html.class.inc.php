@@ -123,7 +123,7 @@ class html {
 			}
 		}
 		else {
-			$jobs_html .= "<tr><td colspan='8'>No Jobs</td></tr>";
+			$jobs_html .= "<tr><td colspan='9'>No Jobs</td></tr>";
 		}
 		return $jobs_html;
 	}
