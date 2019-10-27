@@ -98,7 +98,7 @@ $edit_cfop_html .= "</select>";
 </h3>
 <div class='span8'>
 <form method='post' name='form' action='<?php echo $_SERVER['PHP_SELF'] . "?job=" . $job->get_full_job_number(); ?>'>
-<table class='table table-bordered table-condensed table-striped'>
+<table class='table table-bordered table-sm table-striped'>
         <tr>
                 <td>Job Number:</td>
                 <td><?php echo $job->get_full_job_number(); ?></td>

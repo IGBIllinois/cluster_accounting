@@ -159,7 +159,7 @@ $self_url = $_SERVER['PHP_SELF'] . "?" . http_build_query($get_vars);
 	<input class='btn btn-primary' type='submit' value='Get Bill'>
 </form>
 <h4>User Bill - <?php echo $month_name . " " . $year; ?></h4>
-<table class='table table-condensed table-striped table-bordered'>
+<table class='table table-sm table-striped table-bordered'>
 
 	<tr>
 		<td>Name:</td>
@@ -177,7 +177,7 @@ $self_url = $_SERVER['PHP_SELF'] . "?" . http_build_query($get_vars);
 </table>
 
 <h4>Cluster Usage</h4>
-<table class='table table-condensed table-striped table-bordered'>
+<table class='table table-sm table-striped table-bordered'>
 	<thead>
 		<tr>
 			<th>Queue</th>
@@ -191,7 +191,7 @@ $self_url = $_SERVER['PHP_SELF'] . "?" . http_build_query($get_vars);
 	<?php echo $jobs_html; ?>
 </table>
 <h4>Data Usage</h4>
-<table class='table table-condensed table-striped table-bordered'>
+<table class='table table-sm table-striped table-bordered'>
 	<thead>
 		<tr>
 			<th>Directory</th>

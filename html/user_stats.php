@@ -43,7 +43,7 @@ $format = 1;
         ?>
 </ul>
 
-<table class='table table-condensed table-striped table-bordered'>
+<table class='table table-sm table-striped table-bordered'>
 	<tr>
 		<td>Number of Jobs</td>
 		<td><?php echo $user_stats->get_num_jobs($format); ?></td>

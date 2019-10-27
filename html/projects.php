@@ -113,7 +113,7 @@ $owner_html .= "</select>";
 </div>
 </div>
 <div class='row'>
-<table class='table table-condensed table-striped table-bordered'>
+<table class='table table-bordered table-sm table-striped'>
 	<thead>
 		<tr>
 			<th>Name</th>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<style>
+{{ css }}
+</style>
+</head>
+<body>
+<div class='container-fluid'><div class='span12'>
+<br>
+<p>{{ full_name }}, </p>
+<p>Below is your bill.  You can go to <a href='{{ website_url }}'>{{ website_url }}</a>
+to view a detail listing of your jobs.
+<p>
+<br>Name: {{ full_name }}
+<br>Username: {{ username }}
+<br>Start Date: {{ start_date }}
+<br>End Date: {{ end_date }}
+<br>Number of Jobs: {{ num_jobs }}
+
+<h4>Cluster Usage</h4>
+
+<p>
+<table class='table table-striped table-bordered table-condensed'>
+<thead>
+<th>Queue</th>
+<th>Project</th>
+<th>Cost</th>
+<th>Billed Amount</th>
+<th>CFOP</th>
+<th>Activity Code</th>
+</thead>
+{{ jobs_table }}
+
+</table>
+
+<h4>Data Usage</h4>
+
+<p>
+<table class='table table-striped table-bordered table-condensed'>
+<thead>
+<th>Directory</th>
+<th>Cost ($/TB)</th>
+<th>Project</th>
+<th>Terabytes</th>
+<th>Cost</th>
+<th>Billed Amount</th>
+<th>CFOP</th>
+<th>Activity Code</th>
+</thead>
+
+{{ data_table }}
+
+</table>
+
+</div>
+
+</body>
+</html>

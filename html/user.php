@@ -65,7 +65,7 @@ foreach ($queues as $queue) {
 
 ?>
 <div class='row'>
-<table class='table table-striped table-bordered table-condensed'>
+<table class='table table-striped table-bordered table-sm'>
 	<tr>
 		<td>Name:</td>
 		<td><?php echo $user->get_full_name(); ?></td>

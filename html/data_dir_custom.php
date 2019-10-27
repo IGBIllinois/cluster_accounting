@@ -23,7 +23,7 @@ $dir_html = $dir_html = html::get_data_dir_rows($directories);
 	
 ?>
 <h3>List of Directories</h3>
-<table class='table table-striped table-condensed table-bordered'>
+<table class='table table-striped table-sm table-bordered'>
 	<thead>
 		<tr>
 			<th>Directory</th>

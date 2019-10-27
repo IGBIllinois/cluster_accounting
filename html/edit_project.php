@@ -85,7 +85,7 @@ foreach ($group_members as $member) {
 	Project -
 	<?php echo $project->get_name(); ?>
 </h3>
-<table class='table table-bordered table-striped table-condensed'>
+<table class='table table-bordered table-striped table-sm'>
 	<thead>
 		<tr>
 			<th>Project Members</th>
@@ -175,7 +175,7 @@ foreach ($group_members as $member) {
 </form>
 <hr>
 <h3>Previous CFOPs</h3>
-<table class='table table-striped table-condensed table-bordered'>
+<table class='table table-striped table-sm table-bordered'>
         <thead>
                 <tr>
                         <th>CFOP</th>

@@ -90,7 +90,7 @@ $stats = new statistics($db);
         ?>
 </ul>
 
-<table class='table table-striped table-bordered table-condensed'>
+<table class='table table-striped table-bordered table-sm'>
 	<tr>
 		<td>Number Of Jobs:</td>
 		<td><?php echo $stats->get_num_jobs($start_date,$end_date,true); ?></td>

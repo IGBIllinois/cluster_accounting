@@ -70,7 +70,7 @@ else { $graph_form .= "<option value='users_billed_cost'>Users Billed Cost</opti
         ?>
 </ul>
 
-<table class='table table-striped table-bordered table-condensed'>
+<table class='table table-striped table-bordered table-sm'>
 	<tbody>
 		<tr>
 			<td>Number Of Jobs:</td>

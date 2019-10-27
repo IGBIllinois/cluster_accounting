@@ -149,7 +149,7 @@ $( "#end_date" ).datepicker({
 </ul> 
 </div>
 <div class='row'>
-<table class='table table-condensed table-bordered table-striped'>
+<table class='table table-sm table-bordered table-striped'>
         <thead>
                 <tr>
 			<th>Job Number</th>

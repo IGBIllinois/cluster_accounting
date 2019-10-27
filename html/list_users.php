@@ -56,7 +56,7 @@ $users_html = html::get_users_rows($all_users,$start,$count);
 </div>
 </div>
 <div class='row'>
-<table class='table table-striped table-condensed table-bordered'>
+<table class='table table-striped table-sm table-bordered'>
 	<thead>
 		<tr>
 			<th>NetID</th>

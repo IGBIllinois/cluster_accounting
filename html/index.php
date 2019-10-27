@@ -18,8 +18,8 @@ foreach ($data_costs as $value) {
 
 }
 ?>
-<div class='hero-unit'>
-	<h1>
+<div class='jumbotron'>
+	<h1 class='display-4'>
 		<img src="images/imark_bw.gif"
 			style="padding: 0 10px 10px 0; vertical-align: text-top;">Biocluster
 		Accounting
@@ -31,7 +31,7 @@ foreach ($data_costs as $value) {
 <p>Cluster usage is calculated by taking the higher of the
 	cpu usage or memory usage for the queue the job was submitted to.</p>
 <strong>Public Queues</strong> - Queues everyone with access to the biocluster can submit to.
-<p><table class='table table-bordered table-striped'>
+<p><table class='table table-bordered table-sm table-striped'>
 	<thead>
 		<tr>
 			<th>Queue</th>
@@ -45,7 +45,7 @@ foreach ($data_costs as $value) {
 </div>
 <div class='span8'>
 <p><strong>Private Queues</strong> - Queues specific to certain groups.  You must have authorization to submit to these queues.
-<p><table class='table table-bordered table-striped'>
+<p><table class='table table-bordered table-sm table-striped'>
         <thead>
                 <tr>
                         <th>Queue</th>
@@ -60,7 +60,7 @@ foreach ($data_costs as $value) {
 
 <div class='span8'>
 <p><h3>Data Storage Costs</h3>
-<p><table class='table table-bordered table-striped'>
+<p><table class='table table-bordered table-sm table-striped'>
 	<thead>
 		<tr>
 			<th>Type</th>

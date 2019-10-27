@@ -27,7 +27,7 @@ foreach ($projects as $project) {
 }
 ?>
 <h3>List of Home Directories</h3>
-<table class='table table-striped table-condensed table-bordered'>
+<table class='table table-striped table-sm table-bordered'>
 	<thead>
 		<tr>
 			<th>Directory</th>

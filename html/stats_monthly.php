@@ -75,7 +75,7 @@ $graph_form .= "</select>";
         ?>
 </ul>
 
-<table class='table table-striped table-bordered table-condensed'>
+<table class='table table-striped table-bordered table-sm'>
 	<tbody>
 		<tr>
 			<td>Number Of Jobs:</td>

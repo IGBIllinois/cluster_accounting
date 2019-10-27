@@ -29,14 +29,14 @@ foreach ($cluster_users as $cluster_user) {
 <h4>Users</h4>
 <p>These users have access to the biocluster but are not in the accounting program<p>
 
-<table class='table table-condensed table-bordered'>
+<table class='table table-sm table-bordered'>
 <?php echo $users_html;  ?>
 </table>
 </div>
 <div class='row span4'>
 <h4>Directories</h4>
 <p>These directories are on the storage system but are not being monitored by the accounting program</p>
-<table class='table table-condensed table-bordered'>
+<table class='table table-sm table-bordered'>
 <?php echo $dirs_html; ?>
 </table>
 </div>

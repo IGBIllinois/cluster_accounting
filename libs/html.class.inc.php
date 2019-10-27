@@ -19,36 +19,36 @@ class html {
         	        $url .= "?start=";
 	        }
 
-        	$pages_html = "<div class='pagination pagination-centered'><ul>";
+        	$pages_html = "<nav><ul class='pagination justify-content-center'>";
 
 	        if ($current_page > 1) {
         	        $start_record = $start - $count;
-                	$pages_html .= "<li><a href='" . $url . $start_record . "'>&laquo;</a></li> ";
+                	$pages_html .= "<li class='page-item'><a class='page-link' href='" . $url . $start_record . "'>&laquo;</a></li> ";
 	        }
         	else {
-                	$pages_html .= "<li class='disabled'><a href='#'>&laquo;</a></li>";
+                	$pages_html .= "<li class='page-item disabled'><a class='page-link' href='#'>&laquo;</a></li>";
 	        }
 
         	for ($i=0; $i<$num_pages; $i++) {
                 	$start_record = $count * $i;
 	                if ($i == $current_page - 1) {
-        	                $pages_html .= "<li class='disabled'>";
+        	                $pages_html .= "<li class='page-item disabled'>";
                 	}
 	                else {
-        	                $pages_html .= "<li>";
+        	                $pages_html .= "<li class='page-item'>";
                 	}
 	                $page_number = $i + 1;
-        	        $pages_html .= "<a href='" . $url . $start_record . "'>" . $page_number . "</a></li>";
+        	        $pages_html .= "<a class='page-link' href='" . $url . $start_record . "'>" . $page_number . "</a></li>";
         	}
 
 	        if ($current_page < $num_pages) {
         	        $start_record = $start + $count;
-                	$pages_html .= "<li><a href='" . $url . $start_record . "'>&raquo;</a></li> ";
+                	$pages_html .= "<li class='page-item'><a class='page-link' href='" . $url . $start_record . "'>&raquo;</a></li> ";
 	        }
         	else {
-                	$pages_html .= "<li class='disabled'><a href='#'>&raquo;</a></li>";
+                	$pages_html .= "<li class='page-item disabled'><a class='page-link' href='#'>&raquo;</a></li>";
 	        }
-        	$pages_html .= "</ul></div>";
+        	$pages_html .= "</ul></nav>";
 	        return $pages_html;
 
 	}
@@ -139,28 +139,28 @@ class html {
 		for ($i=$i_start;$i<$i_count;$i++) {
 		        if (array_key_exists($i,$users)) {
                 		if ($users[$i]['user_admin']) {
-		                        $user_admin = "<i class='icon-ok'></i>";
+		                        $user_admin = "<i class='fas fa-check'></i>";
                 		}
 	                	else {
-        		                $user_admin = "<i class='icon-remove'></i>";
+        		                $user_admin = "<i class='fas fa-times'></i>";
 		                }
                 		$users_html .= "<tr>";
 	                	$users_html .= "<td><a href='user.php?user_id=" . $users[$i]['user_id'] . "'>";
 				$users_html .= $users[$i]['user_name'] . "</a></td>";
 		                $users_html .= "<td>" . $users[$i]['user_full_name']. "</td>";
 				if ($users[$i]['user_supervisor'] == '0') {
-					$users_html .= "<td><i class='icon-ok'></i></td>";
+					$users_html .= "<td><i class='fas fa-check'></i></td>";
 				}
 				else {
-					$users_html .= "<td><i class='icon-remove'></i>";
+					$users_html .= "<td><i class='fas fa-times'></i>";
 				}
         		        $users_html .= "<td>" . $user_admin . "</td>";
 				
 				if ($users[$i]['user_ldap']) {
-					$users_html .= "<td><i class='icon-ok'></i></td>";
+					$users_html .= "<td><i class='fas fa-check'></i></td>";
 				}
 				else {
-					$users_html .= "<td><i class='icon-remove'><i></td>";
+					$users_html .= "<td><i class='fas fa-check'><i></td>";
 				}
                 		$users_html .= "</tr>";
 			}
@@ -198,10 +198,10 @@ class html {
 		$dir_html = "";
 		foreach ($directories as $directory) {
 		        if ($directory['dir_exists']) {
-                		$directory_exists = "<i class='icon-ok'></i>";
+                		$directory_exists = "<i class='fas fa-check'></i>";
 	        	}
 	        	else {
-        	        	$directory_exists = "<i class='icon-remove'></i>";
+        	        	$directory_exists = "<i class='fas fa-times'></i>";
 	        	}
 	        	$dir_html .= "<tr>";
 		        $dir_html .= "<td><a href='data_dir.php?data_dir_id=" . $directory['data_dir_id'] . "'>" . $directory['data_dir_path'] . "</a></td>";

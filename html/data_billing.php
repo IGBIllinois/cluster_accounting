@@ -51,7 +51,7 @@ foreach ($data_bill as $value) {
         ?>
 </ul>
 
-<table class='table table-striped table-condensed table-bordered'>
+<table class='table table-striped table-sm table-bordered'>
         <thead>
                 <tr>
                         <th>Directory</th>

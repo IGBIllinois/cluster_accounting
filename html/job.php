@@ -36,7 +36,7 @@ else {
 }
 
 
-$exec_host_html = "<table class='table table-bordered table-condensed table-striped'>";
+$exec_host_html = "<table class='table table-bordered table-sm table-striped'>";
 $exec_host_html .= "<tr><th>Execution Hosts</th></tr>";
 $exec_hosts = $job->get_exec_hosts();
 if (count($exec_hosts)) {
@@ -57,7 +57,7 @@ $exec_host_html .= "</table>";
 </h3>
 <div class='row span12'>
 <div class='span8'>
-<table class='table table-bordered table-condensed table-striped'>
+<table class='table table-bordered table-sm table-striped'>
 	<tr>
 		<td>Job Number:</td>
 		<td><?php echo $job->get_full_job_number(); ?></td>

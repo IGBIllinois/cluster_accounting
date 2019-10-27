@@ -28,7 +28,7 @@ foreach ($queues as $queue) {
 	$all_costs = $queue_object->get_all_costs();
 	$queue_html .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . "'>";
 	$queue_html .= "<input type='hidden' name='queue_id' value='" . $queue_object->get_queue_id() . "'>";
-	$queue_html .= "<table class='table table-bordered table-striped table-condensed'>";
+	$queue_html .= "<table class='table table-bordered table-striped table-sm'>";
 	$queue_html .= "<thead><tr><th colspan='4'>" . $queue_object->get_name() . " - "  . $queue_object->get_description() . "</th></tr></thead>";
 	$queue_html .= "<tr><td>CPU Cost (per sec)</td>";
 	$queue_html .= "<td>Memory Cost (per GB)</td>";

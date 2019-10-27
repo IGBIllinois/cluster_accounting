@@ -58,7 +58,7 @@ $stats = new statistics($db);
         ?>
 </ul>
 
-<table class='table table-striped table-condensed table-bordered'>
+<table class='table table-striped table-sm table-bordered'>
 	<thead>
 		<tr>
 			<th>Username</th>
