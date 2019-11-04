@@ -95,23 +95,22 @@ $owner_html .= "</select>";
 ?>
 <h3>Projects</h3>
 <div class='row'>
-<form class='span6 form-search' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
-		<div class='input-append'>
-                <input type='text' name='search' class='input-xlarge search-query' placeholder='Search'
+	<form class='form-inline' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
+		<div class='form-group'>
+                <input class='form-control' type='text' name='search' placeholder='Search'
                         value='<?php if (isset($search)) { echo $search; } ?>' autocapitalize='none'>
 		<input type='hidden' name='custom' value='<?php echo $custom; ?>'>
                 <button type='submit' class='btn btn-primary'>Search</button>
 		</div>
-</form>
-<div class='span6 btn-toolbar text-right'>
-	<div class='btn-group'>
-		<a class='btn' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&custom=ALL"; ?>'>All Projects</a>
-		<a class='btn' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&custom=CUSTOM"; ?>'>Custom Projects</a>
-		<a class='btn' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&custom=DEFAULT"; ?>'>User Projects</a>
+	</form>
+	<div class='btn-group pull-right ml-auto' role='group' aria-label='test'>
+		<a class='btn btn-light' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&custom=ALL"; ?>'>All Projects</a>
+		<a class='btn btn-light' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&custom=CUSTOM"; ?>'>Custom Projects</a>
+		<a class='btn btn-light' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&custom=DEFAULT"; ?>'>User Projects</a>
 	</div>
 
 </div>
-</div>
+<br>
 <div class='row'>
 <table class='table table-bordered table-sm table-striped'>
 	<thead>
@@ -128,7 +127,10 @@ $owner_html .= "</select>";
 	</thead>
 	<?php echo $projects_html; ?>
 </table>
+</div>
 <?php echo $pages_html; ?>
+
+<div class='row'>
 <?php
 if (isset($result['MESSAGE'])) {
 	echo $result['MESSAGE'];

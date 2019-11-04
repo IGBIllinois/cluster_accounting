@@ -33,35 +33,30 @@ foreach ($projects as $project) {
 	
 }
 ?>
-<form class='form-horizontal' method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>'
-	name='form'>
+<div class='col-md-6 col-lg-6 col-xl-6'>
+<form class='form' method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>' name='form'>
 	<fieldset>
 		<legend>Add Data Directory</legend>
-		<div class='control-group'>
-			<label class='control-label' for='directory_input'>Directory:</label>
+		<div class='form-group'>
+			<label for='directory_input'>Directory:</label>
 			<div class='controls'>
-				<input type='text' name='directory' id='directory_input'
+				<input class='form-control' type='text' name='directory' id='directory_input'
 					value='<?php if (isset($_POST['directory'])) { echo $_POST['directory']; } ?>'>
 			</div>
 		</div>
-		<div class='control-group'>
-			<label class='control-label' for='project_input'>Project:</label>
-			<div class='controls'>
-				<select name='project_id' id='project_input'>
+		<div class='form-group'>
+			<label for='project_input'>Project:</label>
+			<select class='form-control custom-select' name='project_id' id='project_input'>
 				<?php echo $projects_html; ?>
-				</select>
-			</div>
+			</select>
 		</div>
-		<div class='control-group'>
-			<div class='controls'>
-				<input class='btn btn-primary' type='submit' name='add_dir'
-					value='Add Directory'> <input class='btn btn-warning' type='submit'
-					name='cancel_dir' value='Cancel'>
-			</div>
+		<div class='form-group'>
+				<input class='btn btn-primary' type='submit' name='add_dir' value='Add Directory'> 
+				<input class='btn btn-warning' type='submit' name='cancel_dir' value='Cancel'>
 		</div>
 	</fieldset>
 </form>
-
+</div>
 
 <?php
 if (isset($result['MESSAGE'])) { echo $result['MESSAGE']; }
