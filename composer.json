@@ -1,13 +1,14 @@
 {
 	"require": {
+		"php":	">=7.1",
 		"phpoffice/phpspreadsheet": "1.9.0",
 		"components/jquery": "3.4.1",
 		"components/jqueryui": "1.12.1",
 		"jpgraph/jpgraph": "4.0.2",
-		"twbs/bootstrap": "v4.3.1",
+		"twbs/bootstrap": "v4.4.1",
 		"pear/mail_mime": "1.10.4",
 		"pear/mail": "1.4.1",
-		"twig/twig": "v2.12.1",
+		"twig/twig": "v3.0.3",
 		"fortawesome/font-awesome": "5.11.2"
 	}
 }

@@ -46,7 +46,8 @@ class db {
 		//Connects to database.
 		try {
 			$this->link = new PDO("mysql:host=$host;dbname=$database",$username,$password,
-					array(PDO::ATTR_PERSISTENT => true));
+					array(PDO::ATTR_PERSISTENT => false));
+			$this->link->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_WARNING);
 			$this->host = $host;
 			$this->database = $database;
 			$this->username = $username;
@@ -66,14 +67,15 @@ class db {
 
 	//insert_query()
 	//$sql - sql string to run on the database
+	//$args - array of arguments to insert into sql string
 	//returns the id number of the new record, 0 if it fails
-	public function insert_query($sql) {
-
-		$result = $this->link->exec($sql);
-		if ($result === false) {
+	public function insert_query($sql,$args=array()) {
+		$result = $this->link->prepare($sql);
+		$retVal = $result->execute($args);
+		if ($retVal === false) {
+			log::log_message("INSERT ERROR: " . $sql,false);
 		}
 		return $this->link->lastInsertId();
-
 	}
 
 	//build_insert()
@@ -81,57 +83,47 @@ class db {
 	//$data - associative array with index being the column and value the data.
 	//returns the id number of the new record, 0 if it fails
 	public function build_insert($table,$data) {
-		try {
-			$sql = "INSERT INTO " . $table;
-			$values_sql = "VALUES(";
-			$columns_sql = "(";
-			$count = count($data);
-			$i = 1;
-			foreach ($data as $key=>$value) {
-				if ($i == $count) {
-					$columns_sql .= $key;
-					$values_sql .= ":" . $key . " ";
-				}
-				else {
-					$columns_sql .= $key . ","; 
-					$values_sql .= " :" . $key . ", ";
-				}
-	
-				$i++;
+		$sql = "INSERT INTO " . $table;
+		$values_sql = "VALUES(";
+		$columns_sql = "(";
+		$args = array();
+		$count = 0;
+		foreach ($data as $key=>$value) {
+			if ($count == 0) {
+				$columns_sql .= $key;
+				$values_sql .= ":".$key;
 			}
+			else {
+				$columns_sql .= "," . $key;
+				$values_sql .= ",:".$key;
+			}
+			$args[':'.$key]=$value;
 
-			$values_sql .= ")";
-			$columns_sql .= ")";
-			$sql = $sql . $columns_sql . " " . $values_sql;
-			$statement = $this->link->prepare($sql);
-			foreach ($data as $key=>$value) {
-				$statement->bindValue(":" . $key,$value);
-			}
-			$result = $statement->execute();
-			return $this->link->lastInsertId();
+			$count++;
 		}
-		catch(PDOException $e) {
-                        echo "<br>Error: " . $e->getMessage();
-			var_dump($e);
-                }
-
+		$values_sql .= ")";
+		$columns_sql .= ")";
+		$sql = $sql . $columns_sql . " " . $values_sql;
+		return $this->insert_query($sql,$args);
 	}
 
 	//non_select_query()
 	//$sql - sql string to run on the database
 	//For update and delete queries
 	//returns true on success, false otherwise
-	public function non_select_query($sql) {
-		$result = $this->link->exec($sql);
-		return $result;
+	public function non_select_query($sql,$args=array()) {
+		$result = $this->link->prepare($sql);
+		$retval = $result->execute($args);
+		return $retval;
 	}
 
 	//query()
 	//$sql - sql string to run on the database
 	//Used for SELECT queries
 	//returns an associative array of the select query results.
-	public function query($sql) {
-		$result = $this->link->query($sql);
+	public function query($sql,$args=array()) {
+		$result = $this->link->prepare($sql);
+		$result->execute($args);
 		return $result->fetchAll(PDO::FETCH_ASSOC);
 	}
 
@@ -152,45 +144,51 @@ class db {
 
 	}
 
-	public function transaction($sql) {
+	public function transaction($sql,$args) {
 		$this->link->beginTransaction();
-		$result = $this->link->exec($sql);
+		$result = $this->link->prepare($sql);
+		$result->execute();
 		$this->link->commit();
-		return $result;
+		return $this->link->rowCount();
 
 	}
 
 	public function update($table,$data,$where_key,$where_value) {
-		try {
-	
-			$sql = "UPDATE `" . $table . "` SET ";
-			
-			$count = count($data);
-			$i = 1;
-	                foreach ($data as $key=>$value) {
-				if ($i == $count) {
-					$sql .= $key . "= :" . $key . " ";;
-                        	}
-	                        else {
-					$sql .= $key . "= :" . $key . ", ";
-                	        }
+                try {
 
-                        	$i++;
-	                }
-			$sql .= "WHERE " . $where_key . "='" . $where_value . "' LIMIT 1";
-			$statement = $this->link->prepare($sql);
-			foreach ($data as $key=>$value) {
-				$statement->bindValue(":" . $key,$value);
-			}
-			$result = $statement->execute();
-			return $result;
-		}
-		catch(PDOException $e) {
-			echo "<br>Error: " . $e->getMessage();
-		}
+                        $sql = "UPDATE `" . $table . "` SET ";
 
+                        $count = count($data);
+                        $i = 1;
+                        foreach ($data as $key=>$value) {
+                                if ($i == $count) {
+                                        $sql .= $key . "= :" . $key . " ";;
+                                }
+                                else {
+                                        $sql .= $key . "= :" . $key . ", ";
+                                }
+
+                                $i++;
+                        }
+                        $sql .= "WHERE " . $where_key . "='" . $where_value . "' LIMIT 1";
+                        $statement = $this->link->prepare($sql);
+                        foreach ($data as $key=>$value) {
+                                $statement->bindValue(":" . $key,$value);
+                        }
+                        $result = $statement->execute();
+                        return $result;
+                }
+                catch(PDOException $e) {
+                        echo "<br>Error: " . $e->getMessage();
+                }
+
+
+        }
+
+	public function get_version() {
+		return $this->link->getAttribute(PDO::ATTR_SERVER_VERSION);
 
 	}
+
 }
 ?>
-
