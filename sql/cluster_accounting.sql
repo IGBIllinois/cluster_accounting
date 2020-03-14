@@ -105,7 +105,7 @@ CREATE TABLE data_dir (
         data_dir_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         data_dir_enabled BOOLEAN DEFAULT TRUE,
         data_dir_default BOOLEAN DEFAULT FALSE,
-        data_dir_data_cost_id INT REFERNCES data_cost(data_cost_id),
+        data_dir_data_cost_id INT REFERENCES data_cost(data_cost_id),
         PRIMARY KEY (data_dir_id)
 );
 
