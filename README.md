@@ -1,4 +1,5 @@
 # Cluster Accounting
+![Travis](https://api.travis-ci.com/IGBIllinois/cluster_accounting.svg?branch=devel)
 
 - Cluster Accounting records jobs submitted on an HPC cluster using Torque or SLURM.
 - Records data usage of the shared filesystem for billing
