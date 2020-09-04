@@ -12,10 +12,6 @@ elseif (isset($_GET['username'])) {
 else {
 	$user = new user($db,$ldap,$login_user->get_user_id());
 }
-if (!$login_user->permission($user_id)) {
-        echo "<div class='alert alert-error'>Invalid Permissions</div>";
-        exit;
-}
 
 $supervising_users_html = "";
 if ($user->is_supervisor()) {
