@@ -1,5 +1,6 @@
 {
 	"require": {
+		"php":	">=5.4",
 		"phpoffice/phpexcel": "1.8.1",
 		"components/jquery": "2.1.0",
 		"components/jqueryui": "1.10.4",

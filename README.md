@@ -1,5 +1,7 @@
 # Cluster Accounting
 
+[![Build Status](https://travis-ci.com/IGBIllinois/cluster_accounting.svg?branch=master)](https://travis-ci.com/IGBIllinois/cluster_accounting)
+
 - Cluster Accounting records jobs submitted on an HPC cluster using Torque or SLURM.
 - Records data usage of the shared filesystem for billing
 - Supports different prices for CPU, Memory, GPUs in different queues.
