@@ -70,6 +70,15 @@ $users_html = html::get_users_rows($all_users,$start,$count);
 	<?php echo $users_html; ?>
 	</tbody>
 </table>
+<?php
+if ($enabled) {
+	echo "<p>Number of Active Users: " . $num_users . "</p>";
+}
+else {
+	echo "<p>Number of Inactive Users: " . $num_users . "</p>"; 
+}
+
+?>
 <form class='form-inline' method='post' action='report.php'>
                 <select name='report_type' class='input-medium'>
                 <option value='xlsx'>Excel 2007</option>

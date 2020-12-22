@@ -116,8 +116,8 @@ $( "#end_date" ).datepicker({
 
 <h3>Search Jobs</h3>
 <div class='row'>
-<form class='span6 form-inline' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
-        <!--<div class='input-append'>-->
+<div class='span8'>
+<form class='form-inline' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
                 <input type='text' name='search' class='input-xlarge' placeholder='Search'
 			value='<?php if (isset($_GET['search'])) { echo $_GET['search']; } ?>' autocapitalize='none'>
 		<?php
@@ -131,9 +131,9 @@ $( "#end_date" ).datepicker({
 		<input class='input-small' type='text' name='end_date' id='end_date' placeholder='End Date'
 			value='<?php if (isset($end_date)) { echo $end_date; } ?>'>
                 <input type='submit' class='btn btn-primary' value='Search'>
-        <!--</div>-->
 </form>
-<div class='span6 btn-toolbar text-right'>
+</div>
+<div class='span4 btn-toolbar text-right'>
         <div class='btn-group'>
                 <a class='btn btn-primary' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array); ?>'>All Jobs</a>
                 <a class='btn btn-success' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array) . "&completed=1"; ?>'>Completed Jobs</a>

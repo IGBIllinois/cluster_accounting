@@ -75,6 +75,12 @@ class data_dir {
 	public function get_cost_type() {
 		return $this->cost_type;
 	}
+	public function get_enabled() {
+		return $this->enabled;
+	}
+	public function get_time_created() {
+		return $this->time_created;
+	}
 	public function enable() {
                 $sql = "UPDATE data_dir SET data_dir_enabled='1' ";
                 $sql .= "WHERE data_dir_id='" . $this->get_data_dir_id() . "' LIMIT 1";

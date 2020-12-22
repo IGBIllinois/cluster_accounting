@@ -41,10 +41,10 @@ $projects = $user->get_projects();
 $projects_html = "";
 foreach ($projects as $project) {
 	if ($project['project_default']) {
-		$projects_html .= "<tr><td></td><td>" . $project['project_name'] . " - default project</td></tr>";
+		$projects_html .= "<tr><td></td><td><a href='edit_project.php?project_id=" . $project['project_id'] . "'>" . $project['project_name'] . " - default project</a></td></tr>";
 	}
 	else {
-		$projects_html .= "<tr><td></td><td>" . $project['project_name'] . "</td></tr>";
+		$projects_html .= "<tr><td></td><td><a href='edit_project.php?project_id=" . $project['project_id'] . "'>" . $project['project_name'] . "</a></td></tr>";
 	}
 
 
@@ -103,7 +103,7 @@ foreach ($queues as $queue) {
                 }
                 else {
                         echo "<tr><td>Is Supervisor:</td><td><i class='icon-remove'></i></td></tr>";
-			echo "<tr><td>Supervisor's Name: </td><td>" . $user->get_supervisor_name() . "</td></tr>";
+			echo "<tr><td>Supervisor's Name: </td><td><a href='user.php?user_id=" . $user->get_supervisor_id() . "'>" . $user->get_supervisor_name() . "</a></td></tr>";
                 }
                 ?>
 

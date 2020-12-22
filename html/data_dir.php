@@ -35,6 +35,22 @@ require_once 'includes/header.inc.php';
 	<td><?php echo $data_dir->get_directory(); ?></td>
 </tr>
 <tr>
+	<td>Enabled</td>
+	<td><?php
+	if ($data_dir->get_enabled()) {
+		echo "<i class='icon-ok'></i>";
+	}
+	else {
+		echo "<i class='icon-remove'></i>";
+	}
+	?>
+	</td>
+</tr>
+<tr>
+	<td>Time Added</td>
+	<td><?php echo $data_dir->get_time_created(); ?></td>
+</tr>
+<tr>
 	<td>Currently Exists</td>
 	<td>
 	<?php
@@ -45,7 +61,7 @@ require_once 'includes/header.inc.php';
         	echo "<i class='icon-remove'></i>";
         }
 	?>
-</td>
+	</td>
 </tr>
 <tr>
 	<td>Project</td>

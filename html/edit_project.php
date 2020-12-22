@@ -85,6 +85,8 @@ foreach ($group_members as $member) {
 	Project -
 	<?php echo $project->get_name(); ?>
 </h3>
+
+<h5>Status: <?php if ($project->get_enabled()) { echo "<span class='text-success'>Enabled</span>"; } else { echo "<span class='text-error'>Disabled</span>"; } ?></h5>
 <table class='table table-bordered table-striped table-condensed'>
 	<thead>
 		<tr>
