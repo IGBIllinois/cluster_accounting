@@ -24,7 +24,6 @@ class slurm {
 		$exec .= "--starttime='" . $start_time . "' ";
 		$exec .= "--endtime='" . $end_time . "' ";
 		$exec .= "--state=" . self::SLURM_STATES;
-		echo $exec;
 		$exit_status = 1;
 		$output_array = array();
 		$output = exec($exec,$output_array,$exit_status);
