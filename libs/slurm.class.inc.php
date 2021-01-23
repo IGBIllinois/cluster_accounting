@@ -159,7 +159,12 @@ class slurm {
 		}
 		else {
 			$result = preg_split('#(?<=\d)(?=[a-z])#i', strtolower($mem));
-			$unit = $result[1];
+		
+			$unit = "";
+                        if (isset($result[1])) {
+                                $unit = $result[1];
+                        }
+	
 			$mem = $result[0];
 
 			switch ($unit) {
@@ -187,7 +192,7 @@ class slurm {
 					$bytes = $mem * 1099511627776;
 					break;
 				default:
-					$bytes =  0;
+					$bytes =  $mem;
 					break;
 			}
 		}

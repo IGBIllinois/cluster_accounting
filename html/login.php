@@ -24,10 +24,10 @@ function my_autoloader($class_name) {
 
 spl_autoload_register('my_autoloader');
 
-$db = new db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__);
-$ldap = new ldap(__LDAP_HOST__,__LDAP_SSL__,__LDAP_PORT__,__LDAP_BASE_DN__);
+$db = new \IGBIllinois\db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__);
+$ldap = new \IGBIllinois\ldap(__LDAP_HOST__,__LDAP_BASE_DN__,__LDAP_PORT__,__LDAP_SSL__,__LDAP_TLS__);
 
-$session = new session(__SESSION_NAME__);
+$session = new \IGBIllinois\session(__SESSION_NAME__);
 $message = "";
 $webpage = $dir = dirname($_SERVER['PHP_SELF']) . "/index.php";
 if ($session->get_var('webpage') != "") {
@@ -49,7 +49,7 @@ if (isset($_POST['login'])) {
 		$message .= "<div class='alert'>Please enter your password.</div>";
 	}
 	if ($error == false) {
-		$ldap = new ldap(__LDAP_HOST__,__LDAP_SSL__,__LDAP_PORT__,__LDAP_BASE_DN__);
+		$ldap = new \IGBIllinois\ldap(__LDAP_HOST__,__LDAP_BASE_DN__,__LDAP_PORT__,__LDAP_SSL__);
 		$login_user = new user($db,$ldap,0,$username);
 		$success = $login_user->authenticate($password);
 		if ($success) {
