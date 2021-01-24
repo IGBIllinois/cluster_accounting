@@ -257,9 +257,6 @@ class project {
 		$sql = "UPDATE projects SET project_enabled='0' ";
 		$sql .= "WHERE project_id='" . $this->get_project_id() . "' LIMIT 1";
 		$result = $this->db->non_select_query($sql);
-		$cfop_sql = "UPDATE cfops SET cfop_active='0' ";
-		$cfop_sql .= "WHERE cfop_project_id='" . $this->get_project_id() . "' ";
-		$cfop_result = $this->db->non_select_query($cfop_sql);
 		$this->enabled = 0;
 
 	}
