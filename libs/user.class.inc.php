@@ -287,7 +287,11 @@ class user {
 		if (count($supervising_users)) {
 			$message = "Unable to delete user.  User is supervising " . count($supervising_users) . " other users.";
 			$error = true;
-		}		
+		}
+		if (is_dir($this->default_data_dir()->get_directory())) {
+			$message = "Unable to delete user.  Home folder " . $this->default_data_dir()->get_directory() . " still exists.";
+			$error =true;
+		}
 		if (!$error) {
 			$sql = "UPDATE users SET user_enabled='0' WHERE user_id='" . $this->get_user_id() . "' LIMIT 1";
 			$this->enabled = false;
