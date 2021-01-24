@@ -8,7 +8,7 @@ cp conf/settings.inc.php.dist conf/settings.inc.php
 * Edit conf/settings.inc.php for your setup.
 
 ## General Settings
-* __TITLE__ - Title for your site
+* \_\_TITLE\_\_ - Title for your site
 * __ADMIN_EMAIL__ - Email address for the from field when email bills get sent out
 * __ENABLE_LOG__ - Enable logging 
 * __LOG_FILE__ - Path to log file
