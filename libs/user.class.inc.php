@@ -88,7 +88,6 @@ class user {
 				$this->default_project()->enable();
 				$this->default_data_dir()->enable();
 				$this->default_project()->set_cfop($bill_project,$cfop,$activity,$hide_cfop);
-				
 			}
 			else {
 				$full_name = $this->ldap->get_ldap_full_name($username);
@@ -110,7 +109,7 @@ class user {
 			}
 			return array('RESULT'=>true,
 					'MESSAGE'=>'User succesfully added.',
-					'user_id'=>$user_id);
+					'user_id'=>$this->get_user_id());
 		}
 
 	}
