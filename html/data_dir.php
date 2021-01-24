@@ -8,13 +8,18 @@ if (!$login_user->is_admin()) {
 if (isset($_GET['data_dir_id']) && (is_numeric($_GET['data_dir_id']))) {
 	$data_dir_id = $_GET['data_dir_id'];
 }
-
+$message = "";
 if (isset($_POST['remove_data_dir'])) {
 	$data_dir_id = $_POST['data_dir_id'];
 	$data_dir  = new data_dir($db,$data_dir_id);
 	if (!$data_dir->is_default()) {
-		$data_dir->disable();
-		header('Location: data_dir_custom.php');	
+		$result = $data_dir->disable();
+		if ($result['RESULT']) {
+			header('Location: data_dir_custom.php');	
+		}
+		else {
+			$message = "<div class='alert alert-error'>" . $result['MESSAGE'] . "</div>";
+		}
 	}
 
 }
@@ -28,7 +33,7 @@ require_once 'includes/header.inc.php';
 
 <h3>Data Directory - <?php echo $data_dir->get_directory(); ?></h3>
 
-<div class='span6'>
+<div class='row span6'>
 <table class='table table-bordered table-condensed'>
 <tr>
 	<td>Directory</td>
@@ -69,6 +74,8 @@ require_once 'includes/header.inc.php';
 </tr>
 
 </table>
+</div>
+<div class='row span6'>
 <?php 
 
 if (!$data_dir->is_default()) {
@@ -79,7 +86,12 @@ if (!$data_dir->is_default()) {
 	echo "</form>";
 
 }
+?>
+</div>
+<div class='row span6'>
+<?php
 
+if (isset($message)) { echo $message; } 
 ?>
 </div>
 <?php

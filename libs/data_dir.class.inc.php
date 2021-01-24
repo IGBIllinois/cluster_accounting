@@ -85,13 +85,22 @@ class data_dir {
 
 	}
 	public function disable() {
-		$sql = "UPDATE data_dir SET data_dir_enabled='0' ";
-		$sql .= "WHERE data_dir_id='" . $this->get_data_dir_id() . "' LIMIT 1";
-		$result = $this->db->non_select_query($sql);
-		if ($result) {
-			$this->enabled = 0;
+		$error = false;
+		$message = "";
+		if (is_dir($this->get_directory())) {
+                        $message = "Unable to delete directory.  Directory " . $this->get_directory() . " still exists.";
+                        $error = true;
+                }
+		if (!$error) {
+			$sql = "UPDATE data_dir SET data_dir_enabled='0' ";
+			$sql .= "WHERE data_dir_id='" . $this->get_data_dir_id() . "' LIMIT 1";
+			$result = $this->db->non_select_query($sql);
+			if ($result) {
+				$this->enabled = 0;
+				$message = "Successfully remove directory " . $this->get_directory() . ".";
+			}
 		}
-		return $result;
+		return array('RESULT'=>$result,'MESSAGE'=>$message);
 
 
 	}
