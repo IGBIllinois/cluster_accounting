@@ -13,18 +13,27 @@
 # Installation
 
 ## Prerequisites
-- PHP
+- Apache Web Server [https://httpd.apache.org/](https://httpd.apache.org/)
+- PHP >= 5.4
 - PHP Mysql
 - PHP LDAP
 - PHP XML
-
+- Composer [https://getcomposer.org/](https://getcomposer.org/)
+- Mysql/MariaDB >= 5.5
+- SLURM [https://slurm.schedmd.com/](https://slurm.schedmd.com/) or PBS Torque [https://adaptivecomputing.com/cherry-services/torque-resource-manager/](https://adaptivecomputing.com/cherry-services/torque-resource-manager/)
+- LDAP Server for authentication
 
 1.  Create an alias in apache configs that points to the html folder.  
 ```
 Alias /accounting /var/www/accounting/html
 ```
+2.  Create mysql database
+```
+CREATE DATABASE cluster_accounting CHARACTER SET utf8;
+```
 2.  Run sql/cluster_accounting.sql on the mysql server.
 ```
+
 mysql -u root -p cluster_accounting < sql/cluster_accounting.sql
 ```
 3.  Create a user/password on the mysql server which has select/insert/delete/update permissions on the cluster_accounting database.
@@ -32,7 +41,7 @@ mysql -u root -p cluster_accounting < sql/cluster_accounting.sql
 CREATE USER 'cluster_accounting'@'localhost' IDENTIFIED BY 'STRONG_PASSWORD';
 GRANT SELECT,INSERT,DELETE,UPDATE ON cluster_accounting.* to 'cluster_accounting'@'localhost';
 ```
-4.  Edit /conf/settings.inc.php to reflect your settings.
+4.  Edit /conf/settings.inc.php to reflect your settings.  Detailed list of settings is at [docs/config.md](docs/config.md)
 5.  Run composer to install php dependencies
 ```
 composer install
