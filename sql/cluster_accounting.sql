@@ -6,6 +6,7 @@ CREATE TABLE users (
 	user_full_name VARCHAR(50),
 	user_time_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	user_enabled BOOLEAN DEFAULT 1,
+	CONSTRAINT username UNIQUE(user_name),
 	PRIMARY KEY(user_id)
 );
 
