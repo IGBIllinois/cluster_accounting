@@ -150,8 +150,13 @@ class data_functions {
 			
 			$found_dirs = array();
 			$found_dirs = array_diff(scandir($dir), array('..','.'));
-			foreach ($found_dirs as &$value) {
-				$value = $dir . "/" . $value;
+			foreach ($found_dirs as $key=>&$value) {
+				if (is_link($dir . "/" . $value)) {
+					unset($found_dirs[$key]);
+				}
+				else {
+					$value = $dir . "/" . $value;
+				}
 			}
 			if (count($found_dirs)) {
 				$existing_dirs = array_merge($existing_dirs,$found_dirs);
