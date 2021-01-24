@@ -24,6 +24,7 @@ class slurm {
 		$exec .= "--starttime='" . $start_time . "' ";
 		$exec .= "--endtime='" . $end_time . "' ";
 		$exec .= "--state=" . self::SLURM_STATES;
+		echo $exec . "\n";
 		$exit_status = 1;
 		$output_array = array();
 		$output = exec($exec,$output_array,$exit_status);
@@ -105,7 +106,8 @@ class slurm {
 					'job_exec_hosts'=>$job_data['NodeList'],
 					'job_qsub_script'=>'',
         	                        'job_maxvmem'=>self::convert_memory($job_data['MaxVMSize']),
-					'job_gpu'=>$gpu
+					'job_gpu'=>$gpu,
+					'job_state'=>$job_data['State']
                 	);
 			return $job->create($job_insert,$ldap);
 		}

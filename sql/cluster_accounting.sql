@@ -81,6 +81,8 @@ CREATE TABLE jobs (
 	job_qsub_script TEXT,	
 	job_maxvmem BIGINT UNSIGNED,
 	job_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	job_gpu INT DEFAULT 0,
+	job_state VARCHAR(20) DEFAULT "",
 	PRIMARY KEY(job_id)
 );
 

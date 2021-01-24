@@ -41,6 +41,7 @@ class job {
 	private $job_script = "No Job Script Available";
 	private $job_script_exists = 0;
 	private $reserved_gpu;
+	private $job_state;
 	private $exit_status_codes = array('0'=>'JOB_EXEC_OK',
 			'-1'=>'JOB_EXEC_FAIL1',
 			'-2'=>'JOB_EXEC_FAIL2',
@@ -269,7 +270,10 @@ class job {
 		return $this->project;
 		
 	}
-	
+	public function get_job_state() {
+		return $this->job_state;
+		
+	}
 	public function get_exec_hosts() {
 		return $this->exec_hosts;
 	}
@@ -434,6 +438,7 @@ class job {
 			$this->project = new project($this->db,$result[0]['project_id']);
 			$this->set_exec_hosts_var($result[0]['exec_hosts']);
 			$this->reserved_gpu = $result[0]['gpu'];
+			$this->job_state = $result[0]['state'];
 			if ($result[0]['qsub_script']) {
 				$this->job_script = $result[0]['qsub_script'];
 				$this->job_script_exists = 1;
