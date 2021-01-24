@@ -41,7 +41,10 @@ mysql -u root -p cluster_accounting < sql/cluster_accounting.sql
 CREATE USER 'cluster_accounting'@'localhost' IDENTIFIED BY 'STRONG_PASSWORD';
 GRANT SELECT,INSERT,DELETE,UPDATE ON cluster_accounting.* to 'cluster_accounting'@'localhost';
 ```
-5.  Edit /conf/settings.inc.php to reflect your settings.  Detailed list of settings is at [docs/config.md](docs/config.md)
+5 Copy conf/settings.inc.php.dist to conf/settings.inc.php.  Detailed list of settings is at [docs/config.md](docs/config.md)
+```
+cp conf/settings.inc.php.dist conf/settings.inc.php
+```
 6.  Run composer to install php dependencies
 ```
 composer install
