@@ -11,7 +11,7 @@
 class slurm {
 
 	const SLURM_FORMAT = "State,JobID,User,JobName,Account,Partition,ExitCode,Submit,Start,End,Elapsed,ReqMem,MaxRSS,ReqCPUS,NodeList,MaxVMSize,TotalCPU,NTasks,NNodes,ReqGRES";
-	const SLURM_STATES = "CA,CD,F,NF,TO";
+	const SLURM_STATES = "CA,CD,F,TO,OOM";
 	const SLURM_DELIMITER = "|";
 	const SLURM_TIME_FORMAT = "%Y-%m-%d %H:%M:%s";
 
