@@ -223,6 +223,23 @@ class functions {
 		return false;
 	}
 
+	public static function get_webserver_version() {
+		if (isset($_SERVER['SERVER_SOFTWARE'])) {
+			return $_SERVER['SERVER_SOFTWARE'];
+		}
+		return "";
+
+	}
+
+	public static function get_php_extensions() {
+		$chunk_size = 13;
+		$extensions = get_loaded_extensions(); 
+		natcasesort($extensions);
+		$extensions_chunk = array_chunk($extensions,$chunk_size);
+		return $extensions_chunk;
+
+	}
+
 }
 
 ?>

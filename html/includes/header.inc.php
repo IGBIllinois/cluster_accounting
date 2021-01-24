@@ -69,7 +69,7 @@ require_once 'includes/main.inc.php';
 							
 						}
 						?>
-
+						<li><a href='about.php'>About</a></li>
 					</ul>
 				</div>
 			</div>

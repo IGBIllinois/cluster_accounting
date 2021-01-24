@@ -188,9 +188,18 @@ class db {
 		catch(PDOException $e) {
 			echo "<br>Error: " . $e->getMessage();
 		}
+	}
 
+	public function get_version() {
+		try {
+			return $this->link->getAttribute(\PDO::ATTR_SERVER_VERSION);
+		}
+		catch(\PDOException $e) {
+			echo $e->getMessage();
+		}
 
 	}
+
 }
 ?>
 

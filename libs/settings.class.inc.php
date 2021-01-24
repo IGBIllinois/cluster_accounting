@@ -75,6 +75,9 @@ class settings {
                 return false;
         }
 
+	public static function get_website_url() {
+		return __WEBSITE_URL__;
+	}
 }
 
 ?>
