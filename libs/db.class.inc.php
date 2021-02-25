@@ -21,11 +21,11 @@ class db {
 	private $database; //database name
 	private $username; //username to connect to the database
 	private $password; //password of the username
-
+	private $port;
 	////////////////Public Functions///////////
 
-	public function __construct($host,$database,$username,$password) {
-		$this->open($host,$database,$username,$password);
+	public function __construct($host,$database,$username,$password,$port = 3306) {
+		$this->open($host,$database,$username,$password,$port);
 
 
 	}
@@ -51,6 +51,7 @@ class db {
 			$this->database = $database;
 			$this->username = $username;
 			$this->password = $password;
+			$this->port = $port;
 		}
 		catch(PDOException $e) {
 			echo $e->getMessage();
