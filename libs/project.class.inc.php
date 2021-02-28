@@ -310,7 +310,7 @@ class project {
 		$sql .= "LEFT JOIN users ON users.user_id=projects.project_owner ";
 		$sql .= "LEFT JOIN cfops ON cfops.cfop_project_id=projects.project_id ";
 		$sql .= "WHERE project_id='" . $project_id . "' ";
-		$sql .= "AND cfops.cfop_active='1' LIMIT 1";	
+		$sql .= "AND cfops.cfop_active='1' LIMIT 1";
 		$result = $this->db->query($sql);
 		if ($result) {
 			$this->id = $result[0]['project_id'];

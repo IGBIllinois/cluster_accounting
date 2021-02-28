@@ -60,7 +60,6 @@ class job_functions {
                 $sql .= "users.user_name ";
 		$sql .= "HAVING ROUND(SUM(jobs.job_billed_cost),2) > 0.00 ";
                 $sql .= "ORDER BY `CFOP` ASC, `ACTIVITY CODE` ASC ";
-		echo $sql;
                 $job_result = $db->query($sql);
 
 		$total_bill = 0;
