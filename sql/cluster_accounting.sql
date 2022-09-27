@@ -1,9 +1,3 @@
-DROP DATABASE IF EXISTS cluster_accounting;
-CREATE DATABASE cluster_accounting
-	CHARACTER SET utf8;
-USE cluster_accounting;
-
-
 CREATE TABLE users (
 	user_id INT NOT NULL AUTO_INCREMENT,
 	user_admin BOOLEAN DEFAULT 0,
@@ -12,6 +6,7 @@ CREATE TABLE users (
 	user_full_name VARCHAR(50),
 	user_time_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	user_enabled BOOLEAN DEFAULT 1,
+	CONSTRAINT username UNIQUE(user_name),
 	PRIMARY KEY(user_id)
 );
 
@@ -30,11 +25,11 @@ CREATE TABLE projects (
 CREATE TABLE cfops(
 	cfop_id INT NOT NULL AUTO_INCREMENT,
 	cfop_project_id INT REFERENCES projects(project_id),
+	cfop_bill BOOLEAN DEFAULT 1,
 	cfop_value VARCHAR(22),
 	cfop_activity VARCHAR(6),
 	cfop_restricted BOOLEAN DEFAULT 0,
 	cfop_time_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	cfop_billtype ENUM('no_bill','cfop','custom'),
 	PRIMARY KEY(cfop_id)
 );
 
@@ -86,6 +81,8 @@ CREATE TABLE jobs (
 	job_qsub_script TEXT,	
 	job_maxvmem BIGINT UNSIGNED,
 	job_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	job_gpu INT DEFAULT 0,
+	job_state VARCHAR(20) DEFAULT "",
 	PRIMARY KEY(job_id)
 );
 
@@ -105,7 +102,6 @@ CREATE TABLE data_dir (
         data_dir_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         data_dir_enabled BOOLEAN DEFAULT TRUE,
         data_dir_default BOOLEAN DEFAULT FALSE,
-        data_dir_data_cost_id INT REFERENCES data_cost(data_cost_id),
         PRIMARY KEY (data_dir_id)
 );
 
@@ -113,7 +109,6 @@ CREATE TABLE data_usage (
 	data_usage_id INT NOT NULL AUTO_INCREMENT,
 	data_usage_project_id INT REFERENCES projects(project_id),
 	data_usage_data_dir_id INT REFERENCES data_dir(data_dir_id),
-	data_usage_data_cost_id INT REFERENCES data_cost(data_cost_id),
 	data_usage_cfop_id INT REFERENCES cfops(cfop_id),
 	data_usage_bytes BIGINT UNSIGNED,
 	data_usage_files BIGINT UNSIGNED,
@@ -138,6 +133,6 @@ CREATE TABLE data_bill (
 CREATE VIEW job_info AS
 SELECT jobs.job_id as id, IF(ISNULL(jobs.job_number_array),jobs.job_number, CONCAT(jobs.job_number,'[',jobs.job_number_array,']')) as job_number_full, jobs.job_number as job_number, jobs.job_number_array as job_number_array, jobs.job_name as job_name, jobs.job_slots as slots, jobs.job_submission_time as submission_time,jobs.job_start_time as start_time, jobs.job_end_time as end_time, TIME_TO_SEC(TIMEDIFF(jobs.job_end_time,jobs.job_start_time)) as elapsed_time, jobs.job_ru_wallclock as wallclock_time, jobs.job_cpu_time as cpu_time, jobs.job_total_cost as total_cost, jobs.job_billed_cost as billed_cost, jobs.job_reserved_mem as reserved_mem, jobs.job_used_mem as used_mem, jobs.job_maxvmem as maxvmem, job_queue_id as queue_id, jobs.job_exit_status as exit_status, jobs.job_exec_hosts as exec_hosts, jobs.job_qsub_script as qsub_script, jobs.job_project as submitted_project, TIME_TO_SEC(TIMEDIFF(jobs.job_start_time,jobs.job_submission_time)) as queued_time, users.user_id as user_id, users.user_name as username, projects.project_name as project_name, projects.project_id as project_id, cfops.cfop_value as cfop, cfops.cfop_activity as activity_code, queues.queue_name as queue_name FROM jobs LEFT JOIN users ON jobs.job_user_id=users.user_id LEFT JOIN projects ON projects.project_id=jobs.job_project_id LEFT JOIN queues ON queues.queue_id=jobs.job_queue_id LEFT JOIN cfops ON cfops.cfop_id=jobs.job_cfop_id LEFT JOIN queue_cost ON queue_cost.queue_cost_id=jobs.job_queue_cost_id;
 
+CREATE VIEW data_info AS
+SELECT data_usage.data_usage_id AS id,data_usage.data_usage_bytes AS bytes,data_usage.data_usage_time AS time,projects.project_name AS project_name,data_dir.data_dir_path AS path,cfops.cfop_value AS `cfop`,`cfops`.`cfop_activity` AS cfop_activity from data_usage left join projects on projects.project_id = data_usage.data_usage_project_id left join data_dir on data_dir.data_dir_id = data_usage.data_usage_data_dir_id left join cfops on cfops.cfop_id = data_usage.data_usage_cfop_id;
 
-CREATE INDEX job_user_id ON jobs(job_user_id);
-CREATE INDEX  job_end_time ON jobs(job_end_time);
