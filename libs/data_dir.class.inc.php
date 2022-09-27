@@ -192,7 +192,7 @@ class data_dir {
 
 	//get_dir_size_du()
 	//uses the du command to get directory size.
-        private function get_dir_size_du() {
+        public function get_dir_size_du() {
 		$result = 0;
 		if (file_exists($this->get_directory())) {
                 	$exec = "du --max-depth=0 " . $this->get_directory() . "/ | awk '{print $1}'";
@@ -200,7 +200,7 @@ class data_dir {
         	        $output_array = array();
                 	$output = exec($exec,$output_array,$exit_status);
 	                if (!$exit_status) {
-        	                $result = $output;
+				$result = round($output * self::kilobytes_to_bytes / self::gpfs_replication );
                 	}
 		}
                 return $result;

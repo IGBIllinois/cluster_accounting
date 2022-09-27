@@ -50,7 +50,15 @@ else {
 	$directories = data_functions::get_all_directories($db);
 	foreach ($directories as $directory) {
 			$data_dir = new data_dir($db,$directory['data_dir_id']);
-			$size = $data_dir->get_dir_size();
+
+			$size = 0;
+			//if /home/groups/hpcbio
+			if ($data_dir->get_data_dir_id() == 75) {
+				$size = $data_dir->get_dir_size_du();
+			}
+			else {
+				$size = $data_dir->get_dir_size();
+			}
 			if (!isset($options['dry-run'])) {
 				$result = $data_dir->add_usage($size);
 			}
