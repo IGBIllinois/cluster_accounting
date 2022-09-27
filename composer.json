@@ -12,6 +12,8 @@
 		"ext-ldap": "*",
 		"components/jquery": "3.6.0",
 		"components/jqueryui": "1.12.1",
+		"select2/select2": "4.0.13",
+		"intelogie/select2-bootstrap-theme": "dev-master",
 		"twbs/bootstrap": "v4.6.2",
 		"twig/twig": "v3.4.2",
 		"fortawesome/font-awesome": "5.15.4",
@@ -22,10 +24,14 @@
                 "mkdir -p html/vendor/components",
 		"mkdir -p html/vendor/twbs",
 		"mkdir -p html/vendor/fortawesome",
+		"mkdir -p html/vendor/select2",
+		"mkdir -p html/vendor/intelogie",
                 "cp -R vendor/twbs/bootstrap html/vendor/twbs/",
                 "cp -R vendor/components/jquery html/vendor/components/",
                 "cp -R vendor/components/jqueryui html/vendor/components/",
-		"cp -R vendor/fortawesome/font-awesome html/vendor/fortawesome/"
+		"cp -R vendor/fortawesome/font-awesome html/vendor/fortawesome/",
+		"cp -R vendor/select2/select2 html/vendor/select2",
+		"cp -R vendor/intelogie/select2-bootstrap-theme html/vendor/intelogie"
                 ]
 
         }

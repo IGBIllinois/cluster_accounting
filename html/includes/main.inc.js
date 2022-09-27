@@ -85,3 +85,7 @@ function enable_new_cfop() {
 
 	}
 }
+
+$.fn.select2.defaults.set( "theme", "bootstrap" );
+$.fn.select2.defaults.set( "width", null );
+

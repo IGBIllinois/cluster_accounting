@@ -50,7 +50,8 @@ elseif (isset($_POST['cancel_user'])) {
 
 //Code to get list of supervisors to choose from.
 $supervisors = user_functions::get_supervisors($db);
-$supervisors_html = "<select class='input-xlarge' name='supervisor_id' id='supervisors_input'>";
+$supervisors_html = "<select class='custom-select' name='supervisor_id' id='supervisors_input'>";
+$supervisors_html .= "<option></option>";
 $supervisors_html .= "<option value='-1'></option>";
 foreach ($supervisors as $supervisor) {
 	$supervisor_id = $supervisor['id'];
@@ -205,3 +206,10 @@ enable_supervisors();
 if (isset($message)) { echo $message; }
 require_once 'includes/footer.inc.php';
 ?>
+
+<script type="text/javascript">
+        $('#supervisors_input').select2({
+		'placeholder': "Select a Supervisor"
+        });
+</script>
+

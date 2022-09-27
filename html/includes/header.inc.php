@@ -13,13 +13,14 @@ require_once 'includes/main.inc.php';
 <script src='vendor/components/jqueryui/jquery-ui.min.js' type='text/javascript'></script>
 <script src="vendor/twbs/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
 <script src='vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js' type='text/javascript'></script>
-
+<script type="text/javascript" src='vendor/select2/select2/dist/js/select2.min.js'></script>
 <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 
 <link rel='stylesheet' href='vendor/components/jqueryui/themes/base/jquery-ui.css'>
 <link rel="stylesheet" type="text/css" href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="vendor/fortawesome/font-awesome/css/all.min.css">
-
+<link rel="stylesheet" href="vendor/select2/select2/dist/css/select2.min.css" type="text/css" />
+<link rel="stylesheet" href="vendor/intelogie/select2-bootstrap-theme/dist/select2-bootstrap.min.css" type="text/css" />
 <title><?php echo __TITLE__; ?></title>
 
 </head>

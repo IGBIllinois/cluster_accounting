@@ -64,7 +64,8 @@ elseif ($login_user->is_supervisor()) {
 $user_list_html = "";
 
 if (count($user_list) > 1) {
-        $user_list_html = "<select class='custom-select custom-select-sm' name='user_id'>";
+        $user_list_html = "<select class='custom-select' name='user_id' id='user_id_input'>";
+	$user_list_html .= "<option></option>";
 	if ($login_user->is_admin()) {
 		$user_list_html .= "<option value='0'>All Users</option>";
 	}
@@ -200,3 +201,8 @@ $( "#end_date" ).datepicker({
 
 require_once 'includes/footer.inc.php';
 ?>
+<script type="text/javascript">
+        $('#user_id_input').select2({
+                placeholder: 'Select a Supervisor'
+        });
+</script>
