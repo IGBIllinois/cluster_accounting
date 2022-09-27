@@ -16,7 +16,12 @@ function my_autoloader($class_name) {
 
 spl_autoload_register('my_autoloader');
 
-$db = new \IGBIllinois\db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__);
+try {
+	$db = new \IGBIllinois\db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__);
+} 
+catch (\PDOExecption $e) {
+	echo "error";
+}
 $ldap = new \IGBIllinois\ldap(__LDAP_HOST__,__LDAP_BASE_DN__,__LDAP_PORT__,__LDAP_SSL__,__LDAP_TLS__);
 
 require_once 'includes/session.inc.php';

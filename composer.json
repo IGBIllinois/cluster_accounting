@@ -7,6 +7,9 @@
         ],
 	"require": {
 		"php":	">=7.2",
+		"ext-pdo": "*",
+		"ext-mysqlnd": "*",
+		"ext-ldap": "*",
 		"components/jquery": "3.4.1",
 		"components/jqueryui": "1.12.1",
 		"twbs/bootstrap": "v4.4.1",
