@@ -18,9 +18,13 @@
 - PHP XML
 
 
-1.  Create an alias in apache configs that points to the html folder.  
+1.  Add apache config to apache configuration to point to html directory
 ```
 Alias /accounting /var/www/accounting/html
+<Location /accounting>
+	AllowOverride None
+	Require all granted
+</Location>
 ```
 2.  Run sql/cluster_accounting.sql on the mysql server.
 ```
