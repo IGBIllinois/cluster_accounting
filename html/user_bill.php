@@ -47,7 +47,7 @@ if ($login_user->is_admin()) {
 }
 $user_list_html = "";
 if (count($user_list)) {
-	$user_list_html = "<label>User: </label><select class='input-medium' name='user_id'>";
+	$user_list_html = "<label>User: </label><select class='custom-select' name='user_id'>";
 	if ((!isset($_GET['user_id'])) || ($_GET['user_id'] == $login_user->get_user_id())) {
                 $user_list_html .= "<option value='" . $login_user->get_user_id(). "' selected='selected'>";
                 $user_list_html .= $login_user->get_username() . "</option>";
@@ -71,7 +71,7 @@ if (count($user_list)) {
 }
 
 //////Year////////
-$year_html = "<select class='input-small' name='year'>";
+$year_html = "<select class='custom-select' name='year'>";
 for ($i=2007; $i<=date("Y");$i++) {
 	if ($i == $year) {
 		$year_html .= "<option value='$i' selected='true'>$i</option>";
@@ -83,7 +83,7 @@ $year_html .= "</select>";
 
 ///////Month///////
 $month_array = array('01','02','03','04','05','06','07','08','09','10','11','12');
-$month_html = "<select class='input-small' name='month'>";
+$month_html = "<select class='custom-select' name='month'>";
 foreach ($month_array as $month_number) {
 	if ($month_number == $month) {
 		$month_html .= "<option value='" . $month_number . "' selected='true'>" . $month_number . "</option>";
@@ -211,8 +211,8 @@ $self_url = $_SERVER['PHP_SELF'] . "?" . http_build_query($get_vars);
         <input type='hidden' name='start_date'
                 value='<?php echo $start_date; ?>'> <input type='hidden'
                 name='end_date' value='<?php echo $end_date; ?>'> <input type='hidden'
-                name='user_id' value='<?php echo $user_id;?>'> <select
-                name='report_type' class='input-medium'>
+                name='user_id' value='<?php echo $user_id;?>'>
+	<select name='report_type' class='custom-select'>
                 <option value='xlsx'>Excel 2007</option>
                 <option value='csv'>CSV</option>
         </select> <input class='btn btn-primary' type='submit'

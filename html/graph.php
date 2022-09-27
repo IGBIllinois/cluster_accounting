@@ -34,7 +34,7 @@ switch ($graph_type) {
 		$xaxis = "month_name";
 		$yaxis = "num_jobs";
 		$title = "Jobs Per Month";
-		cluster_graph::bar_graph($data,$xaxis,$yaxis,$title);
+		\IGBIllinois\graphs::bar_graph($data,$xaxis,$yaxis,$title);
 		break;
 
 	//Billed Cost Per Month	
@@ -44,7 +44,7 @@ switch ($graph_type) {
 		$xaxis = "month_name";
 		$yaxis = "billed_cost";
 	        $data = $stats->get_job_billed_cost_per_month($year);
-		cluster_graph::bar_graph($data,$xaxis,$yaxis,$title);
+		\IGBIllinois\graphs::bar_graph($data,$xaxis,$yaxis,$title);
 		break;
 
 	//Total Cost Per Month
@@ -54,7 +54,7 @@ switch ($graph_type) {
 		$title = "Total Job Cost Per Month";
 		$xaxis = "month_name";
 		$yaxis = "total_cost";
-		cluster_graph::bar_graph($data,$xaxis,$yaxis,$title);
+		\IGBIllinois\graphs::bar_graph($data,$xaxis,$yaxis,$title);
 		break;
 
 	case 'top_job_users':
@@ -69,7 +69,7 @@ switch ($graph_type) {
         	        $i++;
 	        }
         	$title = "Top User Jobs";
-	        cluster_graph::pie_graph($data,$title);
+	        \IGBIllinois\graphs::pie_graph($data,$title);
 		break;
 
 	case 'users_top_total_cost':
@@ -84,7 +84,7 @@ switch ($graph_type) {
         	        $i++;
 	        }
         	$title = "User's Top Job Total Cost";
-	        cluster_graph::pie_graph($data,$title);
+	        \IGBIllinois\graphs::pie_graph($data,$title);
 		break;
 
 
@@ -100,7 +100,7 @@ switch ($graph_type) {
 	                $i++;
         	}
 	        $title = "User's Top Job Billed Cost";
-        	cluster_graph::pie_graph($data,$title);
+        	\IGBIllinois\graphs::pie_graph($data,$title);
 		break;
 
 	case 'user_total_cost_per_month':
@@ -109,7 +109,7 @@ switch ($graph_type) {
 	        $data = $stats->get_job_total_cost_per_month($year,$user_id);
 		$xaxis = "month_name";
 		$yaxis = "total_cost";
-        	cluster_graph::bar_graph($data,$xaxis,$yaxis,$title);
+        	\IGBIllinois\graphs::bar_graph($data,$xaxis,$yaxis,$title);
 		break;
 
 
@@ -119,7 +119,7 @@ switch ($graph_type) {
 	        $data = $stats->get_job_billed_cost_per_month($year,$user_id);
 		$xaxis = "month_name";
 		$yaxis = "billed_cost";
-        	cluster_graph::bar_graph($data,$xaxis,$yaxis,$title);
+        	\IGBIllinois\graphs::bar_graph($data,$xaxis,$yaxis,$title);
 		break;
 
 	case 'user_num_jobs_per_month':
@@ -128,7 +128,7 @@ switch ($graph_type) {
 		$xaxis = "month_name";
 		$yaxis = "num_jobs";
 	        $data = $stats->get_jobs_per_month($year,$user_id);
-        	cluster_graph::bar_graph($data,$xaxis,$yaxis,$title);
+        	\IGBIllinois\graphs::bar_graph($data,$xaxis,$yaxis,$title);
 		break;
 
 
@@ -138,7 +138,7 @@ switch ($graph_type) {
 		$xaxis = "month_name";
 		$yaxis = "terabyte";
 		$title = "Total Data Usage Per Month (Terabytes)";
-		cluster_graph::bar_graph($data,$xaxis,$yaxis,$title);
+		\IGBIllinois\graphs::bar_graph($data,$xaxis,$yaxis,$title);
 		break;
 
 
@@ -157,7 +157,7 @@ switch ($graph_type) {
                 	$data[$i]['value'] = $row['terabyte'];
 	                $i++;
         	}
-	        cluster_graph::pie_graph($data,$title);
+	        \IGBIllinois\graphs::pie_graph($data,$title);
 		break;
 
 

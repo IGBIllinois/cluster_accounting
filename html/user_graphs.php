@@ -34,7 +34,7 @@ $end_date = $year . "1231";
 $get_array = array('year'=>$year,'graph_type'=>$graph_type,'user_id'=>$user_id);
 $graph_image = "<img src='graph.php?" . http_build_query($get_array) . "'>";
 
-$graph_form = "<select name='graph_type'>";
+$graph_form = "<select class='custom-select' name='graph_type'>";
 
 foreach ($graph_type_array as $graph) {
         $graph_form .= "<option value='" . $graph['type'] . "' ";
@@ -48,7 +48,7 @@ foreach ($graph_type_array as $graph) {
 
 $graph_form .= "</select>";
 
-$year_form = "<select name='year' class='input-small'>";
+$year_form = "<select name='year' class='custom-select'>";
 for ($i=2010;$i<=date('Y');$i++) {
 	if ($i == $year) {
 		$year_form .= "<option value='" . $i . "' selected='selected'>" . $i . "</option>";
@@ -69,7 +69,7 @@ if ($login_user->is_admin()) {
 }
 $user_list_html = "";
 if (count($user_list)) {
-        $user_list_html = "<select class='input-small' name='user_id'>";
+        $user_list_html = "<select class='custom-select' name='user_id'>";
         if ((!isset($_GET['user_id'])) || ($_GET['user_id'] == $login_user->get_user_id())) {
                 $user_list_html .= "<option value='" . $login_user->get_user_id(). "' selected='selected'>";
                 $user_list_html .= $login_user->get_username() . "</option>";

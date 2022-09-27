@@ -57,7 +57,7 @@ $graph_image = "<img src='graph.php?" . http_build_query($get_array) . "'>";
 
 $graph_form = "<form class='form-inline' name='select_graph' id='select_graph' method='post' action='" . $_SERVER['PHP_SELF'];
 $graph_form .= "?year=" . $year . "'>";
-$graph_form .= "<select name='graph_type' onChange='document.select_graph.submit();'>";
+$graph_form .= "<select class='custom-select' name='graph_type' onChange='document.select_graph.submit();'>";
 
 foreach ($graph_type_array as $graph) {
         $graph_form .= "<option value='" . $graph['type'] . "' ";

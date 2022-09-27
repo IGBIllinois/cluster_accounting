@@ -34,7 +34,7 @@ else {
 }
 
 $graph_form = "<form class='form-inline' name='select_graph' id='select_graph' method='post' action='stats_monthly.php?start_date=" . $start_date . "&end_date=" . $end_date . "'>";
-$graph_form .= "<select name='graph_type' onChange='document.select_graph.submit();'>";
+$graph_form .= "<select class='custom-select' name='graph_type' onChange='document.select_graph.submit();'>";
 
 if ($graph_type == "users_jobs") {
         $graph_form .= "<option value='user_jobs' selected='selected'>User's Jobs</option>";

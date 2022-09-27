@@ -59,10 +59,10 @@ foreach ($previous_cfops as $cfops) {
 $users = user_functions::get_users($db);
 $owner_html = "";
 if ($project->get_default()) {
-	$owner_html = "<select name='owner' id='owner_input' class='input' readonly='readonly'>";
+	$owner_html = "<select class='custom-select' name='owner' id='owner_input' readonly='readonly'>";
 }
 else {
-	$owner_html = "<select name='owner' id='owner_input' class='input' readonly='readonly'>";
+	$owner_html = "<select class='custom-select' name='owner' id='owner_input' readonly='readonly'>";
 }
 foreach ($users as $owner) {
 	if ($owner['user_name'] == $project->get_owner()) {
