@@ -10,8 +10,6 @@
 		"components/jquery": "3.4.1",
 		"components/jqueryui": "1.12.1",
 		"twbs/bootstrap": "v4.4.1",
-		"pear/mail_mime": "1.10.4",
-		"pear/mail": "1.4.1",
 		"twig/twig": "v3.0.3",
 		"fortawesome/font-awesome": "5.11.2",
 		"igbillinois/igbillinois-php": "dev-main"
