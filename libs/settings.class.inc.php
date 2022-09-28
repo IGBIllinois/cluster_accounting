@@ -2,6 +2,19 @@
 
 class settings {
 
+	private const ENABLE_LOG = false;
+	private const LDAP_HOST = "localhost";
+	private const LDAP_PORT = 389;
+	private const LDAP_BASE_DN = "";
+	private const LDAP_SSL = false;
+	private const LDAP_TLS = false;
+	private const LDAP_BIND_USER = "";
+	private const LDAP_BIND_PASS = "";
+	private const SESSION_TIMEOUT = 300;
+	private const SESSION_NAME = "PHPSESSID";
+	private const MYSQL_HOST = "localhost";
+	private const MYSQL_PORT = 3306;
+	private const MYSQL_SSL = false;
 
 	public static function get_reserve_processor_factor() {
 		return __RESERVE_PROCESSORS_FACTOR__;
@@ -89,6 +102,10 @@ class settings {
 		$contents = file_get_contents($css); 
 		return file_get_contents($css);
 
+	}
+
+	public static function get_website_url() {
+		return WEBSITE_URL;
 	}
 }
 

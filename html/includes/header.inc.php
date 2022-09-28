@@ -63,6 +63,7 @@ require_once 'includes/main.inc.php';
 							echo "<li class='nav-item'><a class='nav-link' href='add_data_dir.php'>Add Data Directory</a></li>";
 							echo "<li class='nav-item'><a class='nav-link' href='data_cost.php'>Data Cost</a></li>";
 							echo "<li class='nav-item'><a class='nav-link' href='verification.php'>Verify Users and Directories</a></li>";
+							echo "<li class='nav-item'><a class='nav-link' href='about.php'>About</a></li>";
 							
 						}
 						?>
