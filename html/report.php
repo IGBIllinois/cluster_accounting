@@ -86,13 +86,10 @@ elseif (isset($_POST['create_data_custom_report'])) {
 
 switch ($type) {
 	case 'csv':
-		report::create_csv_report($data,$filename);
+		\IGBIllinois\report::create_csv_report($data,$filename);
 		break;
-	case 'xls':
-	      	report::create_excel_2003_report($data,$filename);
-                break;
 	case 'xlsx':
-		report::create_excel_2007_report($data,$filename);
+		\IGBIllinois\report::create_excel_2007_report($data,$filename);
 		break;
 }
 ?>
