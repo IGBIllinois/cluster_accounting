@@ -37,14 +37,6 @@ class torque {
                                 unset($parameters[$key]);
                         }
                 }
-                //If galaxy user,then parse the user from the jobname and then remove email from jobname
-                if ($parameters['user'] == settings::get_galaxy_user()) {
-                        $start_pos = strrpos($parameters['jobname'],"[") + 1;
-                        $end_pos = strrpos($parameters['jobname'],"_illinois_edu");
-                        $length = $end_pos - $start_pos;
-                        $parameters['user'] = substr($parameters['jobname'],$start_pos,$length);
-                        $parameters['jobname'] = substr($parameters['jobname'],0,$start_pos - 1);
-                }
 
                 //Set Accounting/Project String to username if user didn't specify one with qsub.
                 if (!isset($parameters['account'])) {

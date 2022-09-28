@@ -16,9 +16,6 @@ class settings {
 
 	}
 	
-	public static function get_galaxy_user() {
-		return __GALAXY_USER__;
-	}
 	public static function get_admin_email() {
 		return __ADMIN_EMAIL__;
 	}
