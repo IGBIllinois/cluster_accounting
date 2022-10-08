@@ -16,8 +16,26 @@ function my_autoloader($class_name) {
 
 spl_autoload_register('my_autoloader');
 
-$db = new \IGBIllinois\db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__);
-$ldap = new \IGBIllinois\ldap(__LDAP_HOST__,__LDAP_BASE_DN__,__LDAP_PORT__,__LDAP_SSL__,__LDAP_TLS__);
+date_default_timezone_set(settings::get_timezone());
+
+$db = new \IGBIllinois\db(settings::get_mysql_host(),
+			settings::get_mysql_database(),
+			settings::get_mysql_user(),
+			settings::get_mysql_password(),
+			settings::get_mysql_ssl(),
+			settings::get_mysql_port()
+			);
+
+$ldap = new \IGBIllinois\ldap(settings::get_ldap_host(),
+                        settings::get_ldap_base_dn(),
+                        settings::get_ldap_port(),
+                        settings::get_ldap_ssl(),
+                        settings::get_ldap_tls());
+if (settings::get_ldap_bind_user() != "") {
+	$ldap->bind(settings::get_ldap_bind_user(),settings::get_ldap_bind_password());
+}
+
+$log = new \IGBIllinois\log(settings::get_log_enabled(),settings::get_logfile());
 
 require_once 'includes/session.inc.php';
 ?>

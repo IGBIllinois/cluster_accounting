@@ -34,9 +34,9 @@ require_once 'includes/header.inc.php';
 		<tr><td>LDAP_SSL</td><td><?php if (settings::get_ldap_ssl()) { echo "TRUE"; } else { echo "FALSE"; } ?></td></tr>
 		<tr><td>LDAP_TLS</td><td><?php if (settings::get_ldap_tls()) { echo "TRUE"; } else { echo "FALSE"; } ?></td></tr>
 		<tr><td>LDAP_PORT</td><td><?php echo settings::get_ldap_port(); ?></td></tr>
-		<tr><td>MYSQL_HOST</td><td><?php echo MYSQL_HOST; ?></td></tr>
-		<tr><td>MYSQL_DATABASE</td><td><?php echo MYSQL_DATABASE; ?></td></tr>
-		<tr><td>MYSQL_USER</td><td><?php echo MYSQL_USER; ?></td></tr>
+		<tr><td>MYSQL_HOST</td><td><?php echo settings::get_mysql_host(); ?></td></tr>
+		<tr><td>MYSQL_DATABASE</td><td><?php echo settings::get_mysql_database(); ?></td></tr>
+		<tr><td>MYSQL_USER</td><td><?php echo settings::get_mysql_user(); ?></td></tr>
 		<tr><td>SESSION_NAME</td><td><?php echo settings::get_session_name(); ?></td></tr>
 		<tr><td>SESSION_TIMEOUT</td><td><?php echo settings::get_session_timeout(); ?></td></tr>
 	</tbody>

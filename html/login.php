@@ -24,10 +24,18 @@ function my_autoloader($class_name) {
 
 spl_autoload_register('my_autoloader');
 
-$db = new \IGBIllinois\db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__);
-$ldap = new \IGBIllinois\ldap(__LDAP_HOST__,__LDAP_BASE_DN__,__LDAP_PORT__,__LDAP_SSL__,__LDAP_TLS__);
 
-$session = new \IGBIllinois\session(__SESSION_NAME__);
+$db = new \IGBIllinois\db(settings::get_mysql_host(),
+			settings::get_mysql_database(),
+			settings::get_mysql_user(),
+			settings::get_mysql_password(),
+			settings::get_mysql_ssl(),
+			settings::get_mysql_port()
+			);
+
+//$ldap = new \IGBIllinois\ldap(__LDAP_HOST__,__LDAP_BASE_DN__,__LDAP_PORT__,__LDAP_SSL__,__LDAP_TLS__);
+
+$session = new \IGBIllinois\session(settings::get_session_name());
 $message = "";
 $webpage = $dir = dirname($_SERVER['PHP_SELF']) . "/index.php";
 if ($session->get_var('webpage') != "") {
@@ -49,7 +57,14 @@ if (isset($_POST['login'])) {
 		$message .= "<div class='alert'>Please enter your password.</div>";
 	}
 	if ($error == false) {
-		$ldap = new \IGBIllinois\ldap(__LDAP_HOST__,__LDAP_BASE_DN__,__LDAP_PORT__,__LDAP_SSL__);
+		$ldap = new \IGBIllinois\ldap(settings::get_ldap_host(),
+			settings::get_ldap_base_dn(),
+			settings::get_ldap_port(),
+			settings::get_ldap_ssl(),
+			settings::get_ldap_tls());
+		if (settings::get_ldap_bind_user() != "") {
+			$ldap->bind(settings::get_ldap_bind_user(),settings::get_ldap_bind_password());
+		}
 		$login_user = new user($db,$ldap,0,$username);
 		$success = $login_user->authenticate($password);
 		if ($success) {
@@ -84,12 +99,12 @@ if (isset($_POST['login'])) {
 <link rel="stylesheet" type="text/css" href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="vendor/fortawesome/font-awesome/css/all.min.css">
 <script src="vendor/twbs/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
-<title><?php echo __TITLE__; ?></title>
+<title><?php echo settings::get_title(); ?></title>
 </head>
 <body OnLoad="document.login.username.focus();" style='padding-top: 70px; padding-bottom: 60px;'>
 <nav class='navbar fixed-top navbar-dark bg-dark'>
-	<a class="navbar-brand py-0" href="#"><?php echo __TITLE__; ?></a>
-	<span class="navbar-text py-0">Version <?php echo __VERSION__; ?></span>
+	<a class="navbar-brand py-0" href="#"><?php echo settings::get_title(); ?></a>
+	<span class="navbar-text py-0">Version <?php echo settings::get_version(); ?></span>
 </nav>
 	<p>
 	

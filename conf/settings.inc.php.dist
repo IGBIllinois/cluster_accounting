@@ -10,35 +10,44 @@
 //
 ////////////////////////////////////
 
-define("__TITLE__","Biocluster Accounting, University of Illinois Urbana-Champaign");
-define("__MYSQL_HOST__","");
-define("__MYSQL_USER__","");
-define("__MYSQL_PASSWORD__","");
-define("__MYSQL_DATABASE__","");
-define("__LDAP_HOST__","");
-define("__LDAP_BASE_DN__","");
-define("__LDAP_PEOPLE_OU__","");
-define("__LDAP_GROUP_OU__","");
-define("__LDAP_BIND_USER__","");
-define("__LDAP_BIND_PASS__","");
-define("__LDAP_SSL__",false);
-define("__LDAP_TLS__",false);
-define("__LDAP_PORT__",389);
-define("__JOB_SCHEDULER__","");
-define("__TORQUE_ACCOUNTING__","/var/spool/torque/server_priv/accounting/");
-define("__TORQUE_JOBS_LOG__","/var/spool/torque/job_logs/");
+define("TITLE","Cluster Accounting");
+define("TIMEZONE","UTC");
+define("MYSQL_HOST","");
+define("MYSQL_USER","");
+define("MYSQL_PASSWORD","");
+define("MYSQL_DATABASE","");
+define("LDAP_HOST","");
+define("LDAP_BASE_DN","");
+define("LDAP_PEOPLE_OU","");
+define("LDAP_GROUP_OU","");
+define("LDAP_BIND_USER","");
+define("LDAP_BIND_PASS","");
+define("LDAP_SSL",false);
+define("LDAP_TLS",false);
+define("LDAP_PORT",389);
+define("JOB_SCHEDULER","");
+define("TORQUE_ACCOUNTING","/var/spool/torque/server_priv/accounting/");
+define("TORQUE_JOBS_LOG","/var/spool/torque/job_logs/");
 
-define("__ADMIN_EMAIL__","");
-define("__SESSION_NAME__","cluster_accounting");
-define("__SESSION_TIMEOUT__",3600);
+/////////Email Settings///////////
+define("SMTP_HOST","localhost");
+define("SMTP_PORT",25);
+define("SMTP_USERNAME","");
+define("SMTP_PASSWORD","");
+define("FROM","");
+define("TO","");
+define("ADMIN_EMAIL","");
 
-define("__DATA_MIN_BILL__",1.00);
-define("__RESERVE_PROCESSORS_FACTOR__",0.1);
-define("__RESERVE_MEMORY_FACTOR__",0.1);
-define("__ROOT_DATA_DIR__","/home/a-m /home/n-z /home/labs /home/groups /home/themes");
+define("SESSION_NAME","cluster_accounting");
+define("SESSION_TIMEOUT",3600);
 
-define("__LOG_FILE__","");
-define("__ENABLE_LOG__",false);
-define("__BOA_CFOP__",'');
-define ('__PASSWORD_RESET_URL__','');
+define("DATA_MIN_BILL",1.00);
+define("RESERVE_PROCESSORS_FACTOR",0.1);
+define("RESERVE_MEMORY_FACTOR",0.1);
+define("ROOT_DATA_DIR","");
+
+define("LOG_FILE","");
+define("ENABLE_LOG",false);
+define("BOA_CFOP",'');
+define('PASSWORD_RESET_URL','');
 ?>

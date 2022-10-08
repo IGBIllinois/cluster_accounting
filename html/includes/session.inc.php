@@ -11,7 +11,7 @@
 //						//
 //////////////////////////////////////////////////
 
-$session = new \IGBIllinois\session(__SESSION_NAME__);
+$session = new \IGBIllinois\session(settings::get_session_name());
 $login_user = "";
 //If not logged in
 if (!($session->get_var('login'))) {
@@ -25,7 +25,7 @@ if (!($session->get_var('login'))) {
 	exit();
 }
 //If session timeout is reach
-elseif (time() > $session->get_var('timeout') + __SESSION_TIMEOUT__) {
+elseif (time() > $session->get_var('timeout') + settings::get_session_timeout()) {
 	header('Location: logout.php');
 }
 //If IP address is different

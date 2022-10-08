@@ -21,14 +21,14 @@ require_once 'includes/main.inc.php';
 <link rel="stylesheet" type="text/css" href="vendor/fortawesome/font-awesome/css/all.min.css">
 <link rel="stylesheet" href="vendor/select2/select2/dist/css/select2.min.css" type="text/css" />
 <link rel="stylesheet" href="vendor/intelogie/select2-bootstrap-theme/dist/select2-bootstrap.min.css" type="text/css" />
-<title><?php echo __TITLE__; ?></title>
+<title><?php echo settings::get_title(); ?></title>
 
 </head>
 
 <body style='padding-top: 70px; padding-bottom: 60px;'>
 <nav class='navbar fixed-top navbar-dark bg-dark'>
-	<a class='navbar-brand py-0' href='#'><?php echo __TITLE__; ?></a>
-	<span class='navbar-text py-0'>Version <?php echo __VERSION__; ?>&nbsp;
+	<a class='navbar-brand py-0' href='#'><?php echo settings::get_title(); ?></a>
+	<span class='navbar-text py-0'>Version <?php echo settings::get_version(); ?>&nbsp;
 		<a class='btn btn-danger btn-small' role="button" href='logout.php'>Logout</a>
 	</span>
 </nav>
