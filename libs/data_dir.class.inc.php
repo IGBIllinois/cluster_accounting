@@ -10,11 +10,7 @@ class data_dir {
 	private $time_created;
 	private $enabled;
 	private $default;
-
 	const precentile = 0.95;
-	const gpfs_replication = 2;
-	const gpfs_mmpolicy_du = "/usr/local/bin/mmpolicy-du.pl";
-	const kilobytes_to_bytes = "1024";
 
 	public function __construct($db,$data_dir_id = 0) {
 		$this->db = $db;
@@ -139,92 +135,10 @@ class data_dir {
 
 	}
         public function get_dir_size() {
-
-                $result = false;
-		$filesystem_type = $this->get_filesystem_type();
-		switch ($filesystem_type) {
-			case "ceph":
-				$result = $this->get_dir_size_rbytes();
-				break;
-
-			case "gpfs":
-				$result = $this->get_dir_size_gpfs();
-				break;
-			default:
-				$result = $this->get_dir_size_du();
-				break;
-
-
-		}
-                return $result;
+		$data_usage = \IGBIllinois\data_usage($this->get_directory());
+		return $data_usage->get_dir_size();
         }
 
-	public function get_filesystem_type() {
-		$result = false;
-		if (file_exists($this->get_directory())) {
-			$exec = "stat --file-system --printf=%T " . $this->get_directory();
-	                $exit_status = 1;
-        	        $output_array = array();
-                	$output = exec($exec,$output_array,$exit_status);
-	                if (!$exit_status) {
-        	                $result = $output;
-                	}
-		}
-		return $result;
-
-	}
-	//get_dir_size_rbytes()
-	//uses the rbytes field in ls or stat command to get directory size
-	//ceph uses this field to store the directory size
-	private function get_dir_size_rbytes() {
-		//$exec = "ls -ld " . $this->get_directory() . " | awk '{print $5}'";
-		$exec = "stat --printf=%s " . $this->get_directory();
-		$exit_status = 1;
-		$output_array = array();
-		$output = exec($exec,$output_array,$exit_status);
-		if (!$exit_status) {
-			$result = $output;
-		}
-		return $result;
-
-
-	}
-
-	//get_dir_size_du()
-	//uses the du command to get directory size.
-        public function get_dir_size_du() {
-		$result = 0;
-		if (file_exists($this->get_directory())) {
-                	$exec = "du --max-depth=0 " . $this->get_directory() . "/ | awk '{print $1}'";
-	                $exit_status = 1;
-        	        $output_array = array();
-                	$output = exec($exec,$output_array,$exit_status);
-	                if (!$exit_status) {
-				$result = round($output * self::kilobytes_to_bytes / self::gpfs_replication );
-                	}
-		}
-                return $result;
-
-
-        }
-
-	private function get_dir_size_gpfs() {
-
-		$result = 0;
-                if (file_exists($this->get_directory())) {
-                        $exec = "source /etc/profile; ";
-			$exec .= self::gpfs_mmpolicy_du . " " . $this->get_directory() . "/ | awk '{print $1}'";
-                        $exit_status = 1;
-                        $output_array = array();
-                        $output = exec($exec,$output_array,$exit_status);
-                        if (!$exit_status) {
-                                $result = round($output * self::kilobytes_to_bytes / self::gpfs_replication );
-                        }
-                }
-
-		return $result;
-
-	}	
 	private function data_dir_exists($directory) {
 		$sql = "SELECT count(1) as count FROM data_dir ";
 		$sql .= "WHERE data_dir_path LIKE '" . $directory . "%' ";
