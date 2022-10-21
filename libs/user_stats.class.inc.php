@@ -65,7 +65,7 @@ class user_stats {
 			$this->generic_query();	
 		}
 		$avg_elapsed_time = $this->generic_results[0]['avg_elapsed_time'];
-		if (!$avg_elapased_time) {
+		if (!$avg_elapsed_time) {
 			$avg_elapsed_time = "00:00:00";
 		}
 		return $avg_elapsed_time;

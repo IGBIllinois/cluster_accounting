@@ -13,7 +13,6 @@ class project {
 	private $billtype;
 	private $cfop;
 	private $cfop_activity;
-	private $time;
 	private $enabled;
 	private $default;
 	private $time_created;
@@ -254,13 +253,14 @@ class project {
 		$sql .= "WHERE project_id='" . $this->get_project_id() . "' LIMIT 1";
 		$result = $this->db->non_select_query($sql);
 		$this->enabled = 1;
+		return $result;
 	}
 	public function disable() {
 		$sql = "UPDATE projects SET project_enabled='0' ";
 		$sql .= "WHERE project_id='" . $this->get_project_id() . "' LIMIT 1";
 		$result = $this->db->non_select_query($sql);
 		$this->enabled = 0;
-
+		return $result;
 	}
 
 	public static function verify_cfop($cfop) {

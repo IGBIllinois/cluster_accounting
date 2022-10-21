@@ -18,13 +18,9 @@ class job {
 	private $end_time;
 	private $queued_time;
 	private $elapsed_time;
-	private $elapsed_time_hours;
 	private $wallclock_time;
-	private $wallclock_time_hours;
 	private $cpu_time;
-	private $cpu_time_hours;
 	private $slots;
-	private $cpu;
 	private $reserved_mem;
 	private $used_mem;
 	private $maxvmem;
@@ -293,7 +289,6 @@ class job {
 
 	public function set_billed_cost($cost) {
 		$verify_cost = $this->verify_cost($cost);
-		$bill_project = $this->get_project()->get_bill_project();
 		$valid = true;
 		$message = "";
 		if (!$verify_cost['RESULT']) {

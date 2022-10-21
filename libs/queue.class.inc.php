@@ -11,7 +11,6 @@ class queue {
 	private $name;
 	private $ldap_group;
 	private $description;
-	private $submission_time = 0;
 	private $enabled;
 	private $cpu_cost;
 	private $mem_cost;

@@ -127,7 +127,7 @@ class data_functions {
 
 
 		$total_bill = 0;
-		foreach ($data_result as $num => $values) {
+		foreach ($data_result as $values) {
                         $total_bill += $values['COST'];
                 }
 

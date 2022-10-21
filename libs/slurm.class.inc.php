@@ -26,7 +26,7 @@ class slurm {
 		$exec .= "--state=" . self::SLURM_STATES;
 		$exit_status = 1;
 		$output_array = array();
-		$output = exec($exec,$output_array,$exit_status);
+		exec($exec,$output_array,$exit_status);
 		$job_data = array();
 		$startMemory = memory_get_usage();
 		foreach ($output_array as $job_array) {
@@ -42,7 +42,7 @@ class slurm {
 			$job_number = $job['JobID'];
 			if (!strpos($job_number ,".batch")) {
 				
-				foreach ($accounting as $key=>$value) {
+				foreach ($accounting as $value) {
 					if ($value['JobID'] == $job_number . ".batch") {
 						$job['MaxRSS'] = $value['MaxRSS'];
 						$job['MaxVMSize'] = $value['MaxVMSize'];

@@ -64,7 +64,7 @@ class job_functions {
                 $job_result = $db->query($sql);
 
 		$total_bill = 0;
-		foreach ($job_result as $num => $values) {
+		foreach ($job_result as $values) {
 			$total_bill += $values['COST'];
 		}
 		$first_row = array(array('DATE'=>$month . "/" . $year,

@@ -261,7 +261,6 @@ class data_dir {
 
                 $project = new project($this->db,$this->get_project_id());
 
-                $data_cost = new data_cost($this->db);
                 if ($project->get_bill_project()) {
                 }
                 else {

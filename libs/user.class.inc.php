@@ -12,8 +12,6 @@ class user {
 	private $enabled;
 	private $time_created;
 	private $ldap;
-	private $default_project; //default project object
-	private $default_data_dir; //default data_dir object
 	private $email;
 	private $admin;
 	private $default_project_id;
@@ -592,18 +590,6 @@ class user {
 		$result = $this->db->query($sql);
 		return $result[0]['count'];
 
-	}
-	private function get_disable_user_id($username) {
-
-		
-		$sql = "SELECT user_id FROM users WHERE user_name='" . $username . "' AND user_enabled='0'";
-		$result = $this->db->query($sql);
-		if (count($result)) {
-			return $result[0]['user_id'];
-		}
-		else {
-			return false;
-		}
 	}
 
 	private function get_user_rdn() {

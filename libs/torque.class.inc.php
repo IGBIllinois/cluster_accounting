@@ -207,8 +207,6 @@ class torque {
         private static function fix_job_script($xml_string) {
                 $job_script_start = "<job_script>";
                 $job_script_end = "</job_script>";
-		$search = array('&','>','<','"');
-                $replace = array('&amp;','&gt;','&lt;','&quot;');
 		$pointer = 0;
 		do { 	
 			$pointer = strpos($xml_string,$job_script_start,$pointer);
@@ -219,8 +217,6 @@ class torque {
 				$length = $stop - $pointer - 1;
 	        	        $substring = substr($xml_string,$pointer,$length);
 				$formatted_substring = htmlspecialchars($substring,ENT_QUOTES,'UTF-8');
-				//$formatted_substring = htmlentities($substring);
-				//$formatted_substring = str_replace($search,$replace,$substring);
 				$formatted_length = strlen($formatted_substring);
         	                $xml_string = substr_replace($xml_string,$formatted_substring,$pointer,$length);
 				$pointer = $pointer + $formatted_length + strlen($job_script_end) + 1;
@@ -234,7 +230,7 @@ class torque {
 		return $xml_string;
 
         }
-	public static function add_torque_script($db,$ldap,$job_data,$job_log_xml) {
+	public static function add_torque_script($db,$job_data,$job_log_xml) {
                 list(,$status,$job_number,$parameters_string) = explode(";",$job_data);
 
                 if ($status == "E") {
