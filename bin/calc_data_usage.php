@@ -36,50 +36,56 @@ $longopts = array(
 
 //Following code is to test if the script is being run from the command line or the apache server.
 if (php_sapi_name() != 'cli') {
-	echo "Error: This script can only be run from the command line.";
+	exit("Error: This script can only be run from the command line.");
 }
-else {
-	$year = date("Y",strtotime("-1 month"));
-	$month = date("m",strtotime("-1 month"));
-
-	$options = getopt($shortopts,$longopts);
-        if (isset($options['h']) || isset($options['help'])) {
-                echo $output_command;
-                exit;
-        }
-	if ((isset($options['y']) || isset($options['year'])) 
-		&& (isset($options['m']) || isset($options['month']))) {
-		echo "here";
-		if (isset($options['y'])) {
-			$year = $options['y'];
-		}
-		elseif (isset($options['year'])) {
-			$year = $options['year'];
-		}
-		if (isset($options['m'])) {
-			$month = $options['m'];
-		}
-		elseif (isset($options['month'])) {
-			$month = $options['month'];
-		}
+	
+$year = date("Y",strtotime("-1 month"));
+$month = date("m",strtotime("-1 month"));
+$options = getopt($shortopts,$longopts);
+if (isset($options['h']) || isset($options['help'])) {
+	echo $output_command;
+	exit;
+}
+if ((isset($options['y']) || isset($options['year'])) 
+	&& (isset($options['m']) || isset($options['month']))) {
+	if (isset($options['y'])) {
+		$year = $options['y'];
 	}
-	$db = new db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__);
-
-	$directories = data_functions::get_all_directories($db);
-        foreach ($directories as $directory) {
-                        $data_dir = new data_dir($db,$directory['data_dir_id']);
-			$data_usage = $data_dir->get_usage($month,$year);
-			$count = count($data_usage);
-			$sum = 0;
-			foreach ($data_usage as $usage) {
-				$sum += $usage['data_usage_bytes'];
-			}
-			$average = round($sum / $count);
-			$result = $data_dir->add_data_bill($month,$year,$average);
-			functions::log($result['MESSAGE']);
-        }
-	
-	
+	elseif (isset($options['year'])) {
+		$year = $options['year'];
+	}
+	if (isset($options['m'])) {
+		$month = $options['m'];
+	}
+	elseif (isset($options['month'])) {
+		$month = $options['month'];
+	}
 }
+
+$db = new \IGBIllinois\db(settings::get_mysql_host(),
+                        settings::get_mysql_database(),
+                        settings::get_mysql_user(),
+                        settings::get_mysql_password(),
+                        settings::get_mysql_ssl(),
+                        settings::get_mysql_port()
+                        );
+
+$log = new \IGBIllinois\log(settings::get_log_enabled(),settings::get_logfile());
+
+$directories = data_functions::get_all_directories($db);
+foreach ($directories as $directory) {
+	$data_dir = new data_dir($db,$directory['data_dir_id']);
+	$data_usage = $data_dir->get_usage($month,$year);
+	$count = count($data_usage);
+	$sum = 0;
+	foreach ($data_usage as $usage) {
+		$sum += $usage['data_usage_bytes'];
+	}
+	$average = round($sum / $count);
+	$result = $data_dir->add_data_bill($month,$year,$average);
+	$log->send_log($result['MESSAGE']);
+}
+	
+	
 
 ?>

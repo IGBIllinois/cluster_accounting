@@ -25,20 +25,29 @@ require_once 'includes/header.inc.php';
 		<tr><th>Setting</th><th>Value</th></tr>
 	</thead>
 	<tbody>
-		<tr><td>ENABLE_LOG</td><td><?php if (settings::get_log_enabled()) { echo "TRUE"; } else { echo "FALSE"; } ?></td></tr>
+		<tr><td>ENABLE_LOG</td><td><?php echo settings::get_log_enabled() ? "true" : "false"; ?></td></tr>
 		<tr><td>LOG_FILE</td><td><?php echo settings::get_logfile(); ?></td></tr>
 		<tr><td>TIMEZONE</td><td><?php echo settings::get_timezone(); ?></td></tr>
 		<tr><td>LDAP_HOST</td><td><?php echo settings::get_ldap_host(); ?></td></tr>
 		<tr><td>LDAP_BASE_DN</td><td><?php echo settings::get_ldap_base_dn(); ?></td></tr>
 		<tr><td>LDAP_GROUP</td><td><?php echo settings::get_ldap_group(); ?></td></tr>	
-		<tr><td>LDAP_SSL</td><td><?php if (settings::get_ldap_ssl()) { echo "TRUE"; } else { echo "FALSE"; } ?></td></tr>
-		<tr><td>LDAP_TLS</td><td><?php if (settings::get_ldap_tls()) { echo "TRUE"; } else { echo "FALSE"; } ?></td></tr>
+		<tr><td>LDAP_SSL</td><td><?php echo settings::get_ldap_ssl() ? "true" : "false"; ?></td></tr>
+		<tr><td>LDAP_TLS</td><td><?php echo settings::get_ldap_tls() ? "true" : "false"; ?></td></tr>
+		<tr><td>LDAP_BIND_USER</td><td></php echo settings::get_ldap_bind_user(); ?></td></tr>
 		<tr><td>LDAP_PORT</td><td><?php echo settings::get_ldap_port(); ?></td></tr>
 		<tr><td>MYSQL_HOST</td><td><?php echo settings::get_mysql_host(); ?></td></tr>
 		<tr><td>MYSQL_DATABASE</td><td><?php echo settings::get_mysql_database(); ?></td></tr>
 		<tr><td>MYSQL_USER</td><td><?php echo settings::get_mysql_user(); ?></td></tr>
+		<tr><td>MYSQL_PORT</td><td><?php echo settings::get_mysql_port(); ?></td></tr>
+		<tr><td>MYSQL_SSL</td><td><?php echo settings::get_mysql_ssl() ? "true" : "false"; ?></td></tr>
+		<tr><td>SMTP_HOST</td><td><?php echo settings::get_smtp_host(); ?></td></tr>
+		<tr><td>SMTP_PORT</td><td><?php echo settings::get_smtp_port(); ?></td></tr>
+		<tr><td>SMTP_USERNAME</td><td><?php echo settings::get_smtp_username(); ?></td></tr>
+		<tr><td>FROM</td><td><?php echo settings::get_from_email(); ?></td></tr>
+		<tr><td>FROM_NAME</td><td><?php echo settings::get_from_name(); ?></td></tr>
 		<tr><td>SESSION_NAME</td><td><?php echo settings::get_session_name(); ?></td></tr>
 		<tr><td>SESSION_TIMEOUT</td><td><?php echo settings::get_session_timeout(); ?></td></tr>
+		<tr><td>JOB_SCHEDULER</td><td><?php echo settings::get_job_scheduler(); ?></td></tr>
 	</tbody>
 	</table>
 

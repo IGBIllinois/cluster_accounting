@@ -14,6 +14,7 @@ function my_autoloader($class_name) {
 	}
 }
 
+
 spl_autoload_register('my_autoloader');
 
 date_default_timezone_set(settings::get_timezone());

@@ -263,6 +263,21 @@ class settings {
                 return false;
 
         }
+
+	public static function get_from_email() {
+		if (defined("FROM")) {
+			return FROM;
+		}
+	}
+	public static function get_from_name() {
+		if (defined("FROM_NAME")) {
+			return FROM_NAME;
+		}
+		return "";
+
+	}
+
+
 }
 
 ?>

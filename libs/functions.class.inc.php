@@ -172,40 +172,6 @@ class functions {
 
 	}
 
-	public static function get_torque_job_dir() {
-		return __TORQUE_JOBS_LOG__;
-
-	}
-
-	public static function log($message) {
-                $current_time = date('Y-m-d H:i:s');
-                $full_msg = $current_time . ": " . $message . "\n";
-		
-                if (self::log_enabled()) {
-                        file_put_contents(self::get_log_file(),$full_msg,FILE_APPEND | LOCK_EX);
-                }
-		if (php_sapi_name() == "cli") {
-	                echo $full_msg;
-		}
-
-        }
-
-        public static function get_log_file() {
-                if (!file_exists(__LOG_FILE__)) {
-                        touch(__LOG_FILE__);
-                }
-                return __LOG_FILE__;
-
-        }
-
-        public static function log_enabled() {
-                return __ENABLE_LOG__;
-        }
-
-	public static function get_job_scheduler() {
-		return __JOB_SCHEDULER__;
-	}
-
 	public static function verify_date($inDate) {
 		$format = "Y-m-d H:i:s";
 		$date = DateTime::createFromFormat($format,$inDate);
