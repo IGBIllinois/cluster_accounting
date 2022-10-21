@@ -10,8 +10,6 @@ class data_dir {
 	private $time_created;
 	private $enabled;
 	private $default;
-	private $data_cost_id;
-	private $cost_type;
 
 	const precentile = 0.95;
 	const gpfs_replication = 2;
@@ -31,7 +29,7 @@ class data_dir {
 	public function __destruct() {
 	}
 	
-	public function create($project_id,$directory,$default = 0,$data_cost_id=5) {
+	public function create($project_id,$directory,$default = 0) {
 		$directory = $this->format_directory($directory);
 		$this->project = new project($this->db,$project_id);
 
@@ -46,9 +44,9 @@ class data_dir {
 			return array('RESULT'=>false,"MESSAGE"=>$message);
 		}
 		else {
-			$sql = "INSERT INTO data_dir(data_dir_project_id,data_dir_path,data_dir_default,data_dir_data_cost_id) ";
+			$sql = "INSERT INTO data_dir(data_dir_project_id,data_dir_path,data_dir_default) ";
 			$sql .= "VALUES('" . $this->project->get_project_id() . "','" . $directory . "'";
-			$sql .= ",'" . $default . "','" . $data_cost_id . "')";
+			$sql .= ",'" . $default . "')";
 			$result = $this->db->insert_query($sql);
 			return array('RESULT'=>true,
 					"data_dir_id"=>$result,
@@ -69,11 +67,11 @@ class data_dir {
 		return $this->project_id;
 	}
 	
-	public function get_data_cost_id() {
-		return $this->data_cost_id;
+	public function get_enabled() {
+		return $this->enabled;
 	}
-	public function get_cost_type() {
-		return $this->cost_type;
+	public function get_time_created() {
+		return $this->time_created;
 	}
 	public function enable() {
                 $sql = "UPDATE data_dir SET data_dir_enabled='1' ";
@@ -87,20 +85,28 @@ class data_dir {
 
 	}
 	public function disable() {
-		$sql = "UPDATE data_dir SET data_dir_enabled='0' ";
-		$sql .= "WHERE data_dir_id='" . $this->get_data_dir_id() . "' LIMIT 1";
-		$result = $this->db->non_select_query($sql);
-		if ($result) {
-			$this->enabled = 0;
+		$error = false;
+		$message = "";
+		if (is_dir($this->get_directory())) {
+                        $message = "Unable to delete directory.  Directory " . $this->get_directory() . " still exists.";
+                        $error = true;
+                }
+		if (!$error) {
+			$sql = "UPDATE data_dir SET data_dir_enabled='0' ";
+			$sql .= "WHERE data_dir_id='" . $this->get_data_dir_id() . "' LIMIT 1";
+			$result = $this->db->non_select_query($sql);
+			if ($result) {
+				$this->enabled = 0;
+				$message = "Successfully remove directory " . $this->get_directory() . ".";
+			}
 		}
-		return $result;
+		return array('RESULT'=>$result,'MESSAGE'=>$message);
 
 
 	}
 	
 	private function get_data_dir() {
 		$sql = "SELECT * FROM data_dir ";
-		$sql .= "LEFT JOIN data_cost ON data_cost.data_cost_id=data_dir.data_dir_data_cost_id ";
 		$sql .= "WHERE data_dir_id='" . $this->id . "' ";
 		$sql .= "LIMIT 1";
 		$result = $this->db->query($sql);
@@ -110,8 +116,6 @@ class data_dir {
 			$this->project_id = $result[0]['data_dir_project_id'];
 			$this->enabled = $result[0]['data_dir_enabled'];
 			$this->default = $result[0]['data_dir_default'];
-			$this->data_cost_id = $result[0]['data_dir_data_cost_id'];
-			$this->cost_type = $result[0]['data_cost_type'];
 			return true;
 		}
 		return false;
@@ -188,7 +192,7 @@ class data_dir {
 
 	//get_dir_size_du()
 	//uses the du command to get directory size.
-        private function get_dir_size_du() {
+        public function get_dir_size_du() {
 		$result = 0;
 		if (file_exists($this->get_directory())) {
                 	$exec = "du --max-depth=0 " . $this->get_directory() . "/ | awk '{print $1}'";
@@ -196,7 +200,7 @@ class data_dir {
         	        $output_array = array();
                 	$output = exec($exec,$output_array,$exit_status);
 	                if (!$exit_status) {
-        	                $result = $output;
+				$result = round($output * self::kilobytes_to_bytes / self::gpfs_replication );
                 	}
 		}
                 return $result;
@@ -257,7 +261,7 @@ class data_dir {
 
                 $project = new project($this->db,$this->get_project_id());
 
-                $data_cost = new data_cost($this->db,$this->get_data_cost_id());
+                $data_cost = new data_cost($this->db);
                 if ($project->get_bill_project()) {
                 }
                 else {
@@ -265,7 +269,6 @@ class data_dir {
                 $insert_array = array('data_usage_data_dir_id'=>$this->get_data_dir_id(),
                                 'data_usage_project_id'=>$project->get_project_id(),
                                 'data_usage_cfop_id'=>$project->get_cfop_id(),
-                                'data_usage_data_cost_id'=>$this->get_data_cost_id(),
                                 'data_usage_bytes'=>$bytes,
                                 'data_usage_files'=>$files
                                 );
@@ -317,8 +320,8 @@ class data_dir {
 		}
 		else {
 	                $project = new project($this->db,$this->get_project_id());
-	
-        	        $data_cost = new data_cost($this->db,$this->get_data_cost_id());
+			$data_cost_result = data_functions::get_current_data_cost_by_type($this->db,'standard');
+        	        $data_cost = new data_cost($this->db,$data_cost_result['id']);
 			$total_cost = $data_cost->calculate_cost($bytes);
 			$billed_cost = 0;
 			if ($project->get_bill_project()) {
@@ -327,7 +330,7 @@ class data_dir {
         	        $insert_array = array('data_bill_data_dir_id'=>$this->get_data_dir_id(),
                 	                'data_bill_project_id'=>$project->get_project_id(),
                         	        'data_bill_cfop_id'=>$project->get_cfop_id(),
-                                	'data_bill_data_cost_id'=>$this->get_data_cost_id(),
+                                	'data_bill_data_cost_id'=>$data_cost_result['id'],
 	                                'data_bill_avg_bytes'=>$bytes,
 					'data_bill_total_cost'=>$total_cost,
 					'data_bill_billed_cost'=>$billed_cost,
