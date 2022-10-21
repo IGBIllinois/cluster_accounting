@@ -26,26 +26,35 @@ Alias /accounting /var/www/accounting/html
 	Require all granted
 </Location>
 ```
-2.  Run sql/cluster_accounting.sql on the mysql server.
+2.  Create mysql database
+```
+CREATE DATABASE cluster_accounting CHARACTER SET utf8;
+```
+
+3.  Run sql/cluster_accounting.sql on the mysql server.
 ```
 mysql -u root -p cluster_accounting < sql/cluster_accounting.sql
 ```
-3.  Create a user/password on the mysql server which has select/insert/delete/update permissions on the cluster_accounting database.
+4.  Create a user/password on the mysql server which has select/insert/delete/update permissions on the cluster_accounting database.
 ```
 CREATE USER 'cluster_accounting'@'localhost' IDENTIFIED BY 'STRONG_PASSWORD';
 GRANT SELECT,INSERT,DELETE,UPDATE ON cluster_accounting.* to 'cluster_accounting'@'localhost';
 ```
-4.  Edit /conf/settings.inc.php to reflect your settings.
-5.  Run composer to install php dependencies
+5.  Copy conf/settings.inc.php.dist to conf/settings.inc.php.  Detailed list of settings is at [docs/config.md](docs/config.md)
+```
+cp conf/settings.inc.php.dist conf/settings.inc.php
+```
+
+6.  Run composer to install php dependencies
 ```
 composer install
 ```
-6.  To enable cron to upload jobs and data, add conf/cron.conf to /etc/cron.d/
+7.  To enable cron to upload jobs and data, add conf/cron.conf to /etc/cron.d/
 ```
 cp /var/www/accounting/conf/cron.dist /var/www/accounting/conf/cron
 ln -s /var/www/accounting/conf/cron /etc/cron.d/cluster_accounting
 ```
-7.  If you enabled logging, add logrotate script to /etc/logrotate.d
+8.  If you enabled logging, add logrotate script to /etc/logrotate.d
 ```
 cp /var/www/accounting/conf/log_rotate.conf.dist /var/www/accounting/conf/log_rotate.conf
 ln -s /var/www/accounting/conf/log_rotate.conf /etc/logrotate.d/accounting

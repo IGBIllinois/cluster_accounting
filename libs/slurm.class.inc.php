@@ -10,7 +10,7 @@
 
 class slurm {
 
-	const SLURM_FORMAT = "State,JobID,User,JobName,Account,Partition,ExitCode,Submit,Start,End,Elapsed,ReqMem,MaxRSS,ReqCPUS,NodeList,MaxVMSize,TotalCPU,NTasks,NNodes,ReqGRES";
+	const SLURM_FORMAT = "State,JobID,User,JobName,Account,Partition,ExitCode,Submit,Start,End,Elapsed,ReqMem,MaxRSS,ReqCPUS,NodeList,MaxVMSize,TotalCPU,NTasks,NNodes,AllocGRES";
 	const SLURM_STATES = "CA,CD,F,NF,TO";
 	const SLURM_DELIMITER = "|";
 	const SLURM_TIME_FORMAT = "%Y-%m-%d %H:%M:%s";
@@ -84,8 +84,8 @@ class slurm {
 			}
 			
 			$gpu = 0;
-			if (isset($job_data['ReqGRES'])) {
-				$gpu = substr($job_data['ReqGRES'],strpos($job_data['ReqGRES'],':') +1 );
+			if (isset($job_data['AllocGRES'])) {
+				$gpu = substr($job_data['AllocGRES'],strpos($job_data['AllocGRES'],':') +1 );
 			}
                 	//creates array that gets submitted to the job.class.inc.php with the required information
 	                $job_insert = array('job_number'=>$job_data['JobID'],
