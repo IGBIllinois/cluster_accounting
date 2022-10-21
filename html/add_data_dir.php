@@ -33,7 +33,7 @@ foreach ($projects as $project) {
 	
 }
 ?>
-<div class='col-md-6 col-lg-6 col-xl-6'>
+<div class='col-sm-4 col-md-4 col-lg-4 col-xl-4'>
 <form class='form' method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>' name='form'>
 	<fieldset>
 		<legend>Add Data Directory</legend>
@@ -60,5 +60,9 @@ foreach ($projects as $project) {
 
 <?php
 if (isset($result['MESSAGE'])) { echo $result['MESSAGE']; }
+?>
+</div>
+
+<?php 
 require_once 'includes/footer.inc.php';
 ?>

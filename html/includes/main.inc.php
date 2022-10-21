@@ -1,15 +1,15 @@
 <?php
 
-$include_paths = array('../libs');
+$include_paths = array(__DIR__ . '/../../libs');
 
 set_include_path(get_include_path() . ":" . implode(':',$include_paths));
-require_once '../conf/app.inc.php';
-require_once '../conf/settings.inc.php';
+require_once __DIR__ . '/../../conf/app.inc.php';
+require_once __DIR__ . '/../../conf/settings.inc.php';
 
-require_once '../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 function my_autoloader($class_name) {
-	if(file_exists("../libs/" . $class_name . ".class.inc.php")) {
+	if(file_exists(__DIR__ . "/../../libs/" . $class_name . ".class.inc.php")) {
 		require_once $class_name . '.class.inc.php';
 	}
 }

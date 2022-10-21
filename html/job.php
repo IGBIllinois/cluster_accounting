@@ -55,8 +55,8 @@ $exec_host_html .= "</table>";
 	<?php echo $job->get_full_job_number(); ?>
 	Details
 </h3>
-<div class='row span12'>
-<div class='span8'>
+<div class='row'>
+<div class='col-sm-6 col-md-6 col-lg-6 col-xl-6'>
 <table class='table table-bordered table-sm table-striped'>
 	<tr>
 		<td>Job Number:</td>
@@ -179,12 +179,13 @@ $exec_host_html .= "</table>";
 
 </table>
 </div>
-<div class='span4'>
+<div class='col-sm-2 col-md-2 col-lg-2 col-xl-2'>
 <?php echo $exec_host_html; ?>
 
 </div>
 </div>
-<div class='row span12'>
+<div class='row'>
+<div class='col-sm-4 col-md-4 col-lg-4 col-xl-4'>
 <?php
 if ($job->get_used_mem() * settings::get_reserve_memory_factor() > $job->get_reserved_mem()) {
 	echo "<div class='alert alert-error span8'>Please reserve the appropriate amount of memory.</div>";
@@ -200,7 +201,9 @@ if (!strpos($job->get_job_script(),'module load') && $job->get_job_script_exists
 }
 ?>
 </div>
-<div class='row span12'>
+</div>
+<div class='row'>
+<div class='col-sm-4 col-md-4 col-lg-4 col-xl-4'>
 <?php if (isset($_SERVER['HTTP_REFERER'])) {
 	echo "<a href='" . $_SERVER['HTTP_REFERER'] . "' class='btn btn-primary'>Back</a> ";
 
@@ -215,6 +218,7 @@ if ($login_user->is_admin()) {
 }
 
 ?>
+</div>
 </div>
 </div>
 

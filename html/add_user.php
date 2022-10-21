@@ -72,6 +72,7 @@ $supervisors_html .= "</select>";
 ?>
 
 <h3>Add User</h3>
+<div class='col-sm-4 col-md-4 col-lg-4 col-xl-4'>
 <form class='form-horizontal' method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>'
 	name='form'>
 	<fieldset>
@@ -204,6 +205,11 @@ enable_supervisors();
 </script>
 <?php
 if (isset($message)) { echo $message; }
+
+?>
+</div>
+
+<?php 
 require_once 'includes/footer.inc.php';
 ?>
 

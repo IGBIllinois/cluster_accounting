@@ -24,6 +24,7 @@ elseif (isset($_POST['cancel_queue'])) {
 
 
 ?>
+<div class='col-sm-4 col-md-4 col-lg-4 col-xl-4'>
 
 <form class='form' method='post'
         action='<?php echo $_SERVER['PHP_SELF']; ?>'>
@@ -77,7 +78,10 @@ elseif (isset($_POST['cancel_queue'])) {
 <?php
 
 if (isset($result['MESSAGE'])) { echo $result['MESSAGE']; }
+?>
+</div>
 
+<?php
 
 require_once 'includes/footer.inc.php';
 ?>

@@ -28,7 +28,7 @@ require_once 'includes/header.inc.php';
 
 <h3>Data Directory - <?php echo $data_dir->get_directory(); ?></h3>
 
-<div class='span6'>
+<div class='col-sm-6 col-md-6 col-lg-6 col-xl-6'>
 <table class='table table-bordered table-sm'>
 <tr>
 	<td>Directory</td>

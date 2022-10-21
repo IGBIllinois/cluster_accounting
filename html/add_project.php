@@ -37,6 +37,7 @@ elseif (isset($_POST['cancel_project'])) {
 
 $users = user_functions::get_users($db);
 $owner_html = "<select name='owner' id='owner_input' class='form-control custom-select'>";
+$owner_html .= "<option></option>";
 foreach ($users as $owner) {
 	if ((isset($_POST['owner'])) && ($_POST['owner'] == $owner['user_id'])) {
 		$owner_html .= "<option value='" . $owner['user_id'] . "' selected='selected'>" . $owner['user_name'] . "</option>";
@@ -49,7 +50,7 @@ foreach ($users as $owner) {
 $owner_html .= "</select>";
 ?>
 <h3>Add Project</h3>
-
+<div class='col-sm-4 col-md-4 col-lg-4 col-xl-4'>
 <form class='form' name='form' method='post'
 	action='<?php echo $_SERVER['PHP_SELF']; ?>'>
 	<fieldset>
@@ -122,7 +123,15 @@ $owner_html .= "</select>";
 if (isset($result['MESSAGE'])) {
 	echo $result['MESSAGE'];
 }
-
-
+?>
+</div>
+<?php
 require_once 'includes/footer.inc.php';
 ?>
+
+<script type="text/javascript">
+        $('#owner_input').select2({
+                'placeholder': "Select a Owner"
+        });
+</script>
+

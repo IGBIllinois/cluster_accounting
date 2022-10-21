@@ -64,6 +64,7 @@ foreach ($queues as $queue) {
 
 
 ?>
+<div class='col-sm-6 col-md-6 col-lg-6 col-xl-6'>
 <div class='row'>
 <table class='table table-striped table-bordered table-sm'>
 	<tr>
@@ -151,6 +152,7 @@ if (isset($result['MESSAGE'])) {
 	echo "<div class='alert alert-error'>" . $result['MESSAGE'] . "</div>"; 
 }
 ?>
+</div>
 </div>
 <?php 
 require_once 'includes/footer.inc.php'; 

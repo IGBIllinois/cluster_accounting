@@ -58,12 +58,14 @@ foreach ($previous_cfops as $cfops) {
 }
 $users = user_functions::get_users($db);
 $owner_html = "";
+
 if ($project->get_default()) {
 	$owner_html = "<select class='custom-select' name='owner' id='owner_input' readonly='readonly'>";
 }
 else {
-	$owner_html = "<select class='custom-select' name='owner' id='owner_input' readonly='readonly'>";
+	$owner_html = "<select class='custom-select' name='owner' id='owner_input'>";
 }
+$owner_html .= "<option></option>";
 foreach ($users as $owner) {
 	if ($owner['user_name'] == $project->get_owner()) {
 		$owner_html .= "<option value='" . $owner['user_id'] . "' selected='selected'>" . $owner['user_name'] . "</option>";
@@ -82,9 +84,10 @@ foreach ($group_members as $member) {
 
 ?>
 <h3>
-	Project -
-	<?php echo $project->get_name(); ?>
+	Project - <?php echo $project->get_name(); ?>
 </h3>
+
+<div class='col-sm-6 col-md-6 col-lg-6 col-xl-6'>
 <table class='table table-bordered table-striped table-sm'>
 	<thead>
 		<tr>
@@ -204,6 +207,18 @@ enable_project_bill();
 if (isset($result['MESSAGE'])) {
 	echo $result['MESSAGE'];
 }
-
+?>
+</div>
+<?php
 require_once 'includes/footer.inc.php';
 ?>
+
+<script type='text/javascript'>
+enable_project_bill();
+
+$('#owner_input').select2({
+	'placeholder': "Select a Owner"
+});
+
+</script>
+

@@ -34,15 +34,19 @@ else {
         	echo "<div class='alert alert-error span8'>Please use the module command in your job script.</div>";
 	}
 ?>
-<div class='row span11'>
+<div class='row'>
+<div class='col-sm-8 col-md-8 col-lg-8 col-xl-8'>
 <?php
 	echo "<pre class='prettyprint linenums span11'>" . $job->get_job_script() . "</pre>";
 ?>
 </div>
-<div class='row span10'>
-<a href='job.php?job=<?php echo $job->get_full_job_number(); ?>' class='btn btn-primary'>Back</a>
 </div>
 
+<div class='row'>
+<div class='col-sm-8 col-md-8 col-lg-8 col-xl-8'>
+<a href='job.php?job=<?php echo $job->get_full_job_number(); ?>' class='btn btn-primary'>Back</a>
+</div>
+</div>
 <?php
 
 require_once 'includes/footer.inc.php';

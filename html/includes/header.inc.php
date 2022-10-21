@@ -8,12 +8,12 @@ require_once 'includes/main.inc.php';
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<script src='includes/main.inc.js' type='text/javascript'></script>
 <script src='vendor/components/jquery/jquery.min.js' type='text/javascript'></script>
 <script src='vendor/components/jqueryui/jquery-ui.min.js' type='text/javascript'></script>
 <script src="vendor/twbs/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
 <script src='vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js' type='text/javascript'></script>
 <script type="text/javascript" src='vendor/select2/select2/dist/js/select2.min.js'></script>
+<script src='includes/main.inc.js' type='text/javascript'></script>
 <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 
 <link rel='stylesheet' href='vendor/components/jqueryui/themes/base/jquery-ui.css'>

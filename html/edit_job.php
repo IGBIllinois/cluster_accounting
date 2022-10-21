@@ -96,7 +96,8 @@ $edit_cfop_html .= "</select>";
 	<?php echo $job->get_full_job_number(); ?>
 	Details
 </h3>
-<div class='span8'>
+<div class='row'>
+<div class='col-sm-6 col-md-6 col-lg-6 col-xl-6'>
 <form method='post' name='form' action='<?php echo $_SERVER['PHP_SELF'] . "?job=" . $job->get_full_job_number(); ?>'>
 <table class='table table-bordered table-sm table-striped'>
         <tr>
@@ -206,6 +207,10 @@ $edit_cfop_html .= "</select>";
 		<td>&nbsp</td>
         </tr>
 </table>
+</div>
+</div>
+<div class='row'>
+<div class='col-sm-6 col-md-6 col-lg-6 col-xl-6'>
 <h4>Update CFOP</h4>
 
 <?php echo $edit_cfop_html; ?>
@@ -247,7 +252,8 @@ $edit_cfop_html .= "</select>";
                         </div>
                 </div>
 
-
+</div>
+</div>
 <div class='row'>
 <br>&nbsp
 <br>&nbsp
