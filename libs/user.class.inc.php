@@ -238,6 +238,15 @@ class user {
 		return $user_projects;
 
 	}
+
+	public function get_owned_projects() {
+                $sql = "SELECT * FROM projects ";
+                $sql .= "WHERE project_owner='" . $this->get_user_id() . "' ";
+                $sql .= "AND project_enabled='1'";
+                $result = $this->db->query($sql);
+                return $result;
+        }
+
 	public function is_project_member($project) {
 		$user_projects = $this->get_projects();
 		foreach ($user_projects as $user_project) {
@@ -292,6 +301,15 @@ class user {
 			$message = "Unable to delete user.  User is supervising " . count($supervising_users) . " other users.";
 			$error = true;
 		}		
+		if (is_dir($this->default_data_dir()->get_directory())) {
+                        $message = "Unable to delete user.  Home folder " . $this->default_data_dir()->get_directory() . " still exists.";
+                        $error = true;
+                }
+                if (count($this->get_owned_projects()) > 1) {
+                        $message = "Unable to delete user.  User is the owner of active projects";
+                        $error = true;
+                }
+
 		if (!$error) {
 			$sql = "UPDATE users SET user_enabled='0' WHERE user_id='" . $this->get_user_id() . "' LIMIT 1";
 			$this->enabled = false;

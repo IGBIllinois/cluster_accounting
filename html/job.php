@@ -83,6 +83,10 @@ $exec_host_html .= "</table>";
 		<td><?php echo $job->get_queue_name(); ?></td>
 	</tr>
 	<tr>
+                <td>Job State:</td>
+                <td><?php echo $job->get_job_state(); ?></td>
+        </tr
+	<tr>
 		<td>Exit Status:</td>
 		<td><?php echo $job->get_exit_status(); ?></td>
 	</tr>

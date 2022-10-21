@@ -11,7 +11,7 @@
 class slurm {
 
 	const SLURM_FORMAT = "State,JobID,User,JobName,Account,Partition,ExitCode,Submit,Start,End,Elapsed,ReqMem,MaxRSS,ReqCPUS,NodeList,MaxVMSize,TotalCPU,NTasks,NNodes,AllocGRES";
-	const SLURM_STATES = "CA,CD,F,NF,TO";
+	const SLURM_STATES = "CA,CD,F,TO,OOM";
 	const SLURM_DELIMITER = "|";
 	const SLURM_TIME_FORMAT = "%Y-%m-%d %H:%M:%s";
 
@@ -59,8 +59,7 @@ class slurm {
 
 
 	public static function add_accounting($db,$ldap,$job_data) {
-
-		if (!strpos($job_data['JobID'],".batch") && !strpos($job_data['JobID'],".0")) {
+		if (!strpos($job_data['JobID'],".batch") && !strpos($job_data['JobID'],".0") && !strpos($job_data['JobID'],".extern")){
 			$job = new job($db);
 			if ($job_data['Account'] == "") {
 				$job_data['Account'] = $job_data['User'];
@@ -84,9 +83,10 @@ class slurm {
 			}
 			
 			$gpu = 0;
-			if (isset($job_data['AllocGRES'])) {
+			if (isset($job_data['AllocGRES']) && ($job_data['AllocGRES'] != "")) {
 				$gpu = substr($job_data['AllocGRES'],strpos($job_data['AllocGRES'],':') +1 );
 			}
+		
                 	//creates array that gets submitted to the job.class.inc.php with the required information
 	                $job_insert = array('job_number'=>$job_data['JobID'],
         	                        'job_user'=>$job_data['User'],
@@ -105,7 +105,8 @@ class slurm {
 					'job_exec_hosts'=>$job_data['NodeList'],
 					'job_qsub_script'=>'',
         	                        'job_maxvmem'=>self::convert_memory($job_data['MaxVMSize']),
-					'job_gpu'=>$gpu
+					'job_gpu'=>$gpu,
+					'job_state'=>$job_data['State']
                 	);
 			return $job->create($job_insert,$ldap);
 		}
@@ -159,12 +160,10 @@ class slurm {
 		}
 		else {
 			$result = preg_split('#(?<=\d)(?=[a-z])#i', strtolower($mem));
-		
 			$unit = "";
-                        if (isset($result[1])) {
-                                $unit = $result[1];
-                        }
-	
+			if (isset($result[1])) {
+				$unit = $result[1];
+			}
 			$mem = $result[0];
 
 			switch ($unit) {
