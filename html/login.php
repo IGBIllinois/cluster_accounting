@@ -50,11 +50,11 @@ if (isset($_POST['login'])) {
 	$error = false;
 	if ($username == "") {
 		$error = true;
-		$message .= "<div class='alert'>Please enter your username.</div>";
+		$message .= "<div class='alert alert-danger'>Please enter your username.</div>";
 	}
 	if ($password == "") {
 		$error = true;
-		$message .= "<div class='alert'>Please enter your password.</div>";
+		$message .= "<div class='alert alert-danger'>Please enter your password.</div>";
 	}
 	if ($error == false) {
 		$ldap = new \IGBIllinois\ldap(settings::get_ldap_host(),
@@ -81,7 +81,7 @@ if (isset($_POST['login'])) {
 
 		}
 		else {
-			$message .= "<div class='alert'>Invalid username or password.  Please try again. </div>";
+			$message .= "<div class='alert alert-danger'>Invalid username or password.  Please try again. </div>";
 		}
 	}
 }
@@ -101,7 +101,7 @@ if (isset($_POST['login'])) {
 <script src="vendor/twbs/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
 <title><?php echo settings::get_title(); ?></title>
 </head>
-<body OnLoad="document.login.username.focus();" style='padding-top: 70px; padding-bottom: 60px;'>
+<body class='d-flex flex-column min-vh-100' OnLoad="document.login.username.focus();" style='padding-top: 70px; padding-bottom: 60px;'>
 <nav class='navbar fixed-top navbar-dark bg-dark'>
 	<a class="navbar-brand py-0" href="#"><?php echo settings::get_title(); ?></a>
 	<span class="navbar-text py-0">Version <?php echo settings::get_version(); ?></span>
@@ -110,7 +110,9 @@ if (isset($_POST['login'])) {
 	
 <div class='container'>
 	<div class='col-md-6 col-lg-6 col-xl-6 offset-md-3 offset-lg-3 offset-xl-3'>
-
+		<div class='card'>
+			<div class='card-header bg-light'>Login</div>
+		<div class='card-body'>
 		<form class='form' role='form' action='login.php' method='post' name='login'>
 			<div class='form-group-row'>	
 				<label class='col-form-label' for='username'>Username:</label> 
@@ -134,28 +136,22 @@ if (isset($_POST['login'])) {
 
 				</div>
 			</div>
-					
+			<br>		
 			<div class='form-group-row'>
 				<button type='submit' name='login' class='btn btn-primary'>Login</button>
-				<?php if (settings::get_password_reset_url()) {
-					echo "<a class='pull-right' href='" . settings::get_password_reset_url() . "'>Forgot Password?</a>";
+				<div class='float-right'><?php if (settings::get_password_reset_url()) {
+					echo "<a class='pull-right' target='_blank' href='" . settings::get_password_reset_url() . "'>Forgot Password?</a>";
 				}
 				?>
+				</div>
 			</div>
 		</form>
+		</div>
+		</div>
 
 		<p>
 		<?php if (isset($message)) { echo $message; } ?>
 	</div>
 </div>
-<footer class='footer'>
-	<div class='container'>
-		<p class='text-center'>
-        	<br><em>Computer & Network Resource Group - Carl R. Woese Institute for Genomic Biology</em>
-	        <br><span class='text-muted'><strong><em>If you have any questions, please email us at <a href='help@igb.illinois.edu'>help@igb.illinois.edu</a></em></strong>
-        	<br><em><a href='https://www.vpaa.uillinois.edu/resources/web_privacy'>University of Illinois System Web Privacy Notice</a></em>
-	        <br><em>&copy 2012-<?php echo date('Y'); ?> University of Illinois Board of Trustees</em>
-		</p>
-	</div>
-</footer>
 
+<?php require_once 'includes/footer.inc.php'; ?>

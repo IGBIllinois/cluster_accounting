@@ -72,34 +72,26 @@ $supervisors_html .= "</select>";
 ?>
 
 <h3>Add User</h3>
-<div class='col-sm-4 col-md-4 col-lg-4 col-xl-4'>
-<form class='form-horizontal' method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>'
-	name='form'>
-	<fieldset>
+<div class='col-sm-6 col-md-6 col-lg-6 col-xl-6'>
+<form method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>' name='form'>
 		<hr>
 		<h4>User Information</h4>
-		<div class='control-group'>
+		<div class='form-group'>
 			<label class='control-label' for='username_input'>Username:</label>
-			<div class='controls'>
-				<input type='text' name='new_username' id='username_input'
-					value='<?php if (isset($_POST['new_username'])) { echo $_POST['new_username']; } ?>'>
-			</div>
+			<input class='form-control' type='text' name='new_username' id='username_input'
+				value='<?php if (isset($_POST['new_username'])) { echo $_POST['new_username']; } ?>'>
 		</div>
-		<div class='control-group'>
-			<label class='control-label' for='admin_input'>Is Administrator:</label>
-			<div class='controls'>
-				<input type='checkbox' name='is_admin' id='is_admin_input'
-					<?php if (isset($_POST['is_admin'])) { echo "checked='checked'"; } ?>>
-			</div>
+		<div class='form-group'>
+			<input class='form-check-input' type='checkbox' name='is_admin' id='is_admin_input'
+				<?php if (isset($_POST['is_admin'])) { echo "checked='checked'"; } ?>>
+			<label class='form-check-label' for='is_admin_input'>Is Administrator:</label>
 		</div>
-		<div class='control-group'>
-			<label class='control-label' for='is_supervisor_input'>Is Supervisor</label>
-			<div class='controls'>
-				<input type='checkbox' name='is_supervisor' id='is_supervisor_input'
-					onClick='enable_supervisors();' <?php if (isset($_POST['is_supervisor'])) { echo "checked='checked'"; } ?>>
-			</div>
+		<div class='form-group'>
+			<input class='form-check-input' type='checkbox' name='is_supervisor' id='is_supervisor_input'
+				onClick='enable_supervisors();' <?php if (isset($_POST['is_supervisor'])) { echo "checked='checked'"; } ?>>
+			<label class='form-check-label' for='is_supervisor_input'>Is Supervisor</label>
 		</div>
-		<div class='control-group'>
+		<div class='form-group'>
 			<label class='control-label' for='supervisor_input'>Supervisor:</label>
 			<div class='controls'>
 				<?php echo $supervisors_html; ?>
@@ -107,66 +99,65 @@ $supervisors_html .= "</select>";
 		</div>
 		<hr>
 		<h4>Default Project Billing</h4>
-		<div class='tabbable'>
-			<ul class='nav nav-tabs'>
-				<li class='active'><a href='#bill1' data-toggle='tab'>CFOP</a></li>
-				<li><a href='#bill2' data-toggle='tab'>Custom Billing</a></li>
-				<li><a href='#bill3' data-toggle='tab'>Do Not Bill</a></li>
-			</ul>
-
-			<div class='tab-content'>
-
+		<nav>
+			<div class='nav nav-tabs' role='tablist'>
+				<button class='nav-link active' data-toggle='tab' data-target='#nav-cfop' type='button'>CFOP</button>
+				<button class='nav-link' data-toggle='tab' data-target='#nav-custom' type='button'>Custom Billing</button>
+				<button class='nav-link' data-toggle='tab' data-target='#nav-nobill' type='button'>Do Not Bill</button>
+			</div>
+		</nav>
+		<div class='tab-content'>
 		<!--------------------------------CFOP-------------------------->
-		<div class='tab-pane active' id='bill1'>
-			<div class='control-group'>
-                        <label class='control-label' for='cfop_input'>CFOP:</label>
-                        <div class='controls'>
-                                <input class='input-mini' type='text' name='cfop_1' id='cfop_input'
+			<div class='tab-panel fade show active' id='nav-cfop' role='tabpanel'>	
+				<div class='form-group'>
+                        	<label for='cfop_input'>CFOP:</label>
+				<div class='form-row'>
+				<div class='col-2'>
+                                <input class='form-control' type='text' name='cfop_1' id='cfop_input'
                                         maxlength='1' onKeyUp='cfop_advance_1()'
                                         value='<?php if (isset($_POST['cfop_1'])) { echo $_POST['cfop_1']; } ?>'>
-                                - <input class='input-mini' type='text' name='cfop_2'
+				</div>
+				<div class='col-3'>
+                                - <input class='form-control' type='text' name='cfop_2'
                                         id='cfop_input' maxlength='6' onKeyUp='cfop_advance_2()'
                                         value='<?php if (isset($_POST['cfop_2'])) { echo $_POST['cfop_2']; } ?>'>
-                                - <input class='input-mini' type='text' name='cfop_3'
+				</div>
+				<div class='col-3'>
+                                - <input class='form-control' type='text' name='cfop_3'
                                         id='cfop_input' maxlength='6' onKeyUp='cfop_advance_3()'
                                         value='<?php if (isset($_POST['cfop_3'])) { echo $_POST['cfop_3']; } ?>'>
-                                - <input class='input-mini' type='text' name='cfop_4'
+				</div>
+				<div class='col-3'>
+                                - <input class='form-control' type='text' name='cfop_4'
                                         id='cfop_input' maxlength='6'
                                         value='<?php if (isset($_POST['cfop_4'])) { echo $_POST['cfop_4']; } ?>'>
-                        </div>
-                	</div>
-
-                	<div class='control-group'>
-                        <label class='control-label' for='activity_input'>Activity Code
+				</div>
+                		</div>
+				</div>
+                		<div class='form-group'>
+	                        <label for='activity_input'>Activity Code
                                 (optional):</label>
-                        <div class='controls'>
-                                <input class='input-mini' type='text' name='activity' maxlength='6'
+				<div class='col-4'>
+                                <input class='form-control' type='text' name='activity' maxlength='6'
                                         id='activity_input'
                                         value='<?php if (isset($_POST['activity'])) { echo $_POST['activity']; } ?>'>
-                        </div>
-	                </div>
-
-        	        <div class='control-group'>
-                        <label class='control-label' for='hide_cfop_input'>Hide CFOP From User:</label>
-                        <div class='controls'>
+	                	</div>
+				</div>
+        	        	<div class='form-group'>
+                        	<label for='hide_cfop_input'>Hide CFOP From User:</label>
                                 <input type='checkbox' name='hide_cfop' <?php if (isset($_POST['hide_cfop'])) { echo "checked='checked'"; } ?>>
-                        </div>
-                	</div>
-		</div>
-
-
+                		</div>
+			</div>
 		<!-----------------Custom Billing------------------->
 
-			<div class='tab-pane' id='bill2'>
-				<div class='control-group'>
-					<label class='control-label' style='min-width: 200px' for='custom_bill_description'>Custom Bill Description: &nbsp;
+			<div class='tab-panel fade' id='nav-custom' role='tabpanel'>
+				<div class='form-group'>
+					<label style='min-width: 200px' for='custom_bill_description'>Custom Bill Description: &nbsp;
 						<br>(e.g. Check, Personal Credit Card, Government Credit Card) &nbsp;
 					</label>
-					<div class='controls'>
-						<textarea rows='5' style="min-width: 800px" id='custom_bill_description' name='custom_bill_description'>
-							<?php if (isset($_POST['custom_bill_description'])) { echo $_POST['custom_bill_description']; } ?>
-						</textarea>
-					</div>
+					<textarea rows='5' style="min-width: 800px" id='custom_bill_description' name='custom_bill_description'>
+						<?php if (isset($_POST['custom_bill_description'])) { echo $_POST['custom_bill_description']; } ?>
+					</textarea>
 
 				</div>
 			</div>	
@@ -175,13 +166,11 @@ $supervisors_html .= "</select>";
 
 
 		<!------------------Do Not Bill----------------->
-			<div class='tab-pane' id='bill3'>
-		                <div class='control-group'>
-        		                <label class='control-label' style='min-width: 200px' for='bill_project_input'>Do not bill default project: &nbsp</label>
-		                        <div class='controls'>
+			<div class='tab-panel fade' id='nav-nobill' role='tabpanel'>
+		                <div class='form-group'>
+        		                <label style='min-width: 200px' for='bill_project_input'>Do not bill default project: &nbsp</label>
                 		                <input type='checkbox' id='bill_project_input' name='bill_project'
                                 	        onClick='enable_project_bill();' <?php if (isset($_POST['bill_project'])) { echo "checked='checked'"; } ?>>
-                        		</div>
 				</div>
 
 			</div>
@@ -197,7 +186,6 @@ $supervisors_html .= "</select>";
 					name='cancel_user' value='Cancel'>
 			</div>
 		</div>
-	</fieldset>
 </form>
 <script type='text/javascript'>
 enable_supervisors();

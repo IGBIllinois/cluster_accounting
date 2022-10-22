@@ -25,7 +25,7 @@ require_once 'includes/main.inc.php';
 
 </head>
 
-<body style='padding-top: 70px; padding-bottom: 60px;'>
+<body class='d-flex flex-column min-vh-100' style='padding-top: 70px; padding-bottom: 60px;'>
 <nav class='navbar fixed-top navbar-dark bg-dark'>
 	<a class='navbar-brand py-0' href='#'><?php echo settings::get_title(); ?></a>
 	<span class='navbar-text py-0'>Version <?php echo settings::get_version(); ?>&nbsp;
