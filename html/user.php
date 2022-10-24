@@ -64,7 +64,9 @@ foreach ($queues as $queue) {
 
 
 ?>
-<div class='col-sm-6 col-md-6 col-lg-6 col-xl-6'>
+<h3>User Information</h3>
+<hr>
+<div class='col-sm-8 col-md-8 col-lg-8 col-xl-8'>
 <div class='row'>
 <table class='table table-striped table-bordered table-sm'>
 	<tr>

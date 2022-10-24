@@ -93,14 +93,14 @@ class html {
 		                        	$job_name = $job_name . "...";
 	        		        }
 
-				        $jobs_html .= "<td><a href='job.php?job=" . $jobs[$i]['job_number_full'] . "'>";
-					$jobs_html .= $jobs[$i]['job_number_full'] . "</a></td>";
 					if ($jobs[$i]['exit_status'] == "0:0") {
-						$jobs_html .= "<td><span class='badge badge-success'>&nbsp</span></td>";
+						$jobs_html .= "<td><span class='badge badge-pill badge-success'>&nbsp</span></td>";
 					}
 					elseif ($jobs[$i]['exit_status'] != "0:0") {
-						$jobs_html .= "<td><span class='badge badge-important'>&nbsp</span></td>";
+						$jobs_html .= "<td><span class='badge bage-pill badge-important'>&nbsp</span></td>";
 					}
+					$jobs_html .= "<td><a href='job.php?job=" . $jobs[$i]['job_number_full'] . "'>";
+                                        $jobs_html .= $jobs[$i]['job_number_full'] . "</a></td>";
 			        	$jobs_html .= "<td>" . $jobs[$i]['username'] . "</td>";
 			        	$jobs_html .= "<td>" . $job_name . "</td>";
 				        $jobs_html .= "<td>" . $jobs[$i]['project'] . "</td>";

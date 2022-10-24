@@ -91,60 +91,27 @@ if (count($user_list) > 1) {
 }
 
 ?>
- <script>
- $(function() {
-$( "#start_date" ).datepicker({
-		maxDate: "+1w",
-		minDate: new Date(2010,1-1,1),
-		changeYear: true,
-		changeMonth: true,
-		dateFormat: "yy-mm-dd",
-
-		});
-$( "#end_date" ).datepicker({
-                maxDate: "+1w",
-                minDate: new Date(2010,1-1,1),
-                changeYear: true,
-                changeMonth: true,
-		dateFormat: "yy-mm-dd",
-		});
-
-});
-
-</script>
-
-
 
 <h3>Search Jobs</h3>
 <div class='row'>
-<div class='col-md-6 col-lg-6 col-xl-6'>
-<form class='form-inline' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
-	<div class='form-group'>
+<div class='col-sm-8 col-md-8 col-lg-8 col-xl-8'>
+	<form class='form-inline' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
                 <input type='text' name='search' class='form-control form-control-sm' placeholder='Search'
 			value='<?php if (isset($_GET['search'])) { echo $_GET['search']; } ?>' autocapitalize='none'>
-	</div>
-	<div class='form-group'>
 		<?php
 			if ($login_user->is_admin() || $login_user->is_supervisor()) {
 				echo $user_list_html;
 			}
 
 		?>
-	</div>
-	<div class='form-group'>
 		<input class='form-control form-control-sm' type='text' name='start_date' id='start_date' placeholder='Start Date'
 			value='<?php if (isset($start_date)) { echo $start_date; } ?>'>
-	</div>
-	<div class='form-group'>
 		<input class='form-control form-control-sm' type='text' name='end_date' id='end_date' placeholder='End Date'
 			value='<?php if (isset($end_date)) { echo $end_date; } ?>'>
-	</div>
-	<div class='form-group'>
                 <input type='submit' class='btn btn-primary btn-sm' value='Search'>
-	</div>
-</form>
+	</form>
 </div>
-<div class='col-md-6 col-lg-6 col-xl-6 float-right'>
+<div class='col-sm-4 col-md-4 col-lg-4 col-xl-4'>
         <div class='btn-group' role='group'>
                 <a class='btn btn-sm btn-primary' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array); ?>'>All Jobs</a>
                 <a class='btn btn-sm btn-success' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array) . "&completed=1"; ?>'>Completed Jobs</a>
@@ -153,18 +120,21 @@ $( "#end_date" ).datepicker({
 
 </div>
 </div>
+<br>
 <div class='row'>
-	<ul class='list-group list-group-horizontal list-group-flush'>
-		<li class='list-group-item'><span class='badge badge-success'>&nbsp</span> Completed Job</li>
-		<li class='list-group-item'><span class='badge badge-danger'>&nbsp</span> Failed Job</li>
-	</ul> 
+	<div class='col-sm-4 col-md-5 col-lg-4 col-xl-4'>
+	<ul class='list-inline'>
+		<li class='list-inline-item'><span class='badge badge-pill badge-success'>&nbsp</span> Completed Job</li>
+		<li class='list-inline-item'><span class='badge badge-pill badge-danger'>&nbsp</span> Failed Job</li>
+	</ul>
+	</div> 
 </div>
 <div class='row'>
 <table class='table table-sm table-bordered table-striped'>
         <thead>
                 <tr>
+			<th></th>
 			<th>Job Number</th>
-			<th>Status</th>
 			<th>Username</th>
                         <th>Job Name</th>
                         <th>Project</th>
@@ -177,6 +147,11 @@ $( "#end_date" ).datepicker({
         </thead>
         <?php echo $jobs_html; ?>
 </table>
+</div>
+<div class='row justify-content-center'>
+<?php echo $pages_html; ?>
+</div>
+<div class='row'>
 <form class='form-inline' method='post' action='report.php'>
 	<input type='hidden' name='search' value='<?php echo $search; ?>'>
         <input type='hidden' name='start_date' value='<?php echo $start_date; ?>'> 
@@ -194,15 +169,34 @@ $( "#end_date" ).datepicker({
                 name='job_report' value='Download Detailed Report'>
 	
 </form>
-
-<?php echo $pages_html; ?>
 </div>
+
 <?php
 
 require_once 'includes/footer.inc.php';
 ?>
 <script type="text/javascript">
-        $('#user_id_input').select2({
-                placeholder: 'Select a Supervisor'
-        });
+
+$(function() {
+$( "#start_date" ).datepicker({
+                maxDate: "+1w",
+                minDate: new Date(2010,1-1,1),
+                changeYear: true,
+                changeMonth: true,
+                dateFormat: "yy-mm-dd",
+
+                });
+$( "#end_date" ).datepicker({
+                maxDate: "+1w",
+                minDate: new Date(2010,1-1,1),
+                changeYear: true,
+                changeMonth: true,
+                dateFormat: "yy-mm-dd",
+                });
+
+});
+
+$('#user_id_input').select2({
+	placeholder: 'Select a Supervisor'
+});
 </script>

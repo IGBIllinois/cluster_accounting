@@ -10,7 +10,7 @@ class project {
 	private $name;
 	private $ldap_group;
 	private $description;
-	private $billtype;
+	private $bill_project;
 	private $cfop;
 	private $cfop_activity;
 	private $enabled;
@@ -177,9 +177,10 @@ class project {
 	public function get_default() {
 		return $this->default;
 	}
-	public function get_billtype() {
-		return $this->billtype;
-	}
+	public function get_bill_project() {
+                return $this->bill_project;
+        }
+
 	public function get_cfop() {
 		return $this->cfop;
 	}
@@ -319,7 +320,7 @@ class project {
 			$this->name = $result[0]['project_name'];
 			$this->description = $result[0]['project_description'];
 			$this->ldap_group = $result[0]['project_ldap_group'];
-			$this->billtype = $result[0]['cfop_billtype'];
+			$this->bill_project = $result[0]['cfop_bill'];
 			$this->cfop = $result[0]['cfop_value'];
 			$this->cfop_activity = $result[0]['cfop_activity'];
 			$this->time_created = $result[0]['cfop_time_created'];
@@ -344,4 +345,5 @@ class project {
 			$this->get_project($result[0]['project_id']);
 		}
 	}
+
 }

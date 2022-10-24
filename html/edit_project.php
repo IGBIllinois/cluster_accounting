@@ -83,85 +83,125 @@ foreach ($group_members as $member) {
 }
 
 ?>
-<h3>
-	Project - <?php echo $project->get_name(); ?>
-</h3>
-
-<div class='col-sm-6 col-md-6 col-lg-6 col-xl-6'>
+<h3>Project - <?php echo $project->get_name(); ?></h3>
+<hr>
 <table class='table table-bordered table-striped table-sm'>
 	<thead>
-		<tr>
-			<th>Project Members</th>
-		</tr>
+		<tr><th>Project Members</th></tr>
 	</thead>
 	<?php echo $group_members_html; ?>
 </table>
-<form class='form-horizontal' name='form' method='post'
-	action='<?php echo $_SERVER['PHP_SELF']; ?>?project_id=<?php echo $project->get_project_id(); ?>'>
-	<input type='hidden' name='project_id'
-		value='<?php echo $project->get_project_id(); ?>'>
-	<fieldset>
-		<legend>Edit Project</legend>
-		<div class='control-group'>
-			<label class='control-label' for='ldap_group_input'>LDAP Group: </label>
-			<div class='controls'>
-				<input type='text' name='ldap_group' id='ldap_group_input'
+
+<h4>Edit Project</h4>
+<hr>
+<div class='col-sm-8 col-md-8 col-lg-8 col-xl-8'>
+<form name='form' method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>?project_id=<?php echo $project->get_project_id(); ?>'>
+	<input type='hidden' name='project_id' value='<?php echo $project->get_project_id(); ?>'>
+		<div class='form-group row'>
+			<label class='col-sm-4 form-label' for='ldap_group_input'>LDAP Group: </label>
+			<div class='col-sm-8'>
+				<input class='form-control' type='text' name='ldap_group' id='ldap_group_input'
 				<?php if ($project->get_default()) { echo "readonly='readonly'"; } ?>
 					value='<?php echo $project->get_ldap_group(); ?>'>
 			</div>
 		</div>
-		<div class='control-group'>
-			<label class='control-label' for='owner_input'>Owner: </label>
-			<div class='controls'>
+		<div class='form-group row'>
+			<label class='col-sm-4 form-label' for='owner_input'>Owner: </label>
+			<div class='col-sm-8'>
 				<?php echo $owner_html; ?>
 			</div>
 		</div>
-		<div class='control-group'>
-			<label class='control-label' for='description_input'>Description: </label>
-			<div class='controls'>
-				<input type='text' name='description' id='description_input'
+		<div class='form-group row'>
+			<label class='col-sm-4 form-label' for='description_input'>Description: </label>
+			<div class='col-sm-8'>
+				<input class='form-control' type='text' name='description' id='description_input'
 				<?php if ($project->get_default()) { echo "readonly='readonly'"; } ?>
 					value='<?php echo $project->get_description(); ?>'>
 			</div>
 		</div>
-		<div class='control-group'>
-			<label class='control-label' for='bill_project_input'>Do not bill
-				project:</label>
-			<div class='controls'>
-				<input type='checkbox' name='bill_project'
-				<?php if (!$project->get_bill_project()) { echo "checked='checked'"; } ?>
-					onClick='enable_project_bill();'>
-			</div>
-		</div>
-		<div class='control-group'>
-			<label class='control-label' for='cfop_input'>CFOP:</label>
-			<div class='controls'>
-				<input class='input-mini' type='text' name='cfop_1' id='cfop_input'
-					maxlength='1' onKeyUp='cfop_advance_1()'
-					value='<?php echo $project->get_cfop_college(); ?>'> - <input
-					class='input-mini' type='text' name='cfop_2' id='cfop_input'
-					maxlength='6' onKeyUp='cfop_advance_2()'
-					value='<?php echo $project->get_cfop_fund(); ?>'> - <input
-					class='input-mini' type='text' name='cfop_3' id='cfop_input'
-					maxlength='6' onKeyUp='cfop_advance_3()'
-					value='<?php echo $project->get_cfop_organization(); ?>'> - <input
-					class='input-mini' type='text' name='cfop_4' id='cfop_input'
-					maxlength='6' value='<?php echo $project->get_cfop_program(); ?>'>
-			</div>
-		</div>
-		<div class='control-group'>
-			<label class='control-label' for='activity_input'>Activity Code: </label>
-			<div class='controls'>
-				<input class='input-mini' type='text' name='activity' maxlength='6'
-					id='activity_input'
-					value='<?php echo $project->get_activity_code(); ?>'>
-			</div>
-		</div>
-		<div class='control-group'>
-                        <label class='control-label' for='hide_cfop_input'>Hide CFOP From User:</label>
-                        <div class='controls'>
-                                <input type='checkbox' name='hide_cfop' <?php if (isset($_POST['hide_cfop'])) { echo "checked='checked'"; } ?>>
+
+		<nav>
+                        <div class='nav nav-tabs' role='tablist'>
+                                <a class='nav-item nav-link active' data-toggle='tab' data-target='#nav-cfop' type='button'>CFOP</a>
+                                <a class='nav-item nav-link' data-toggle='tab' data-target='#nav-custom' type='button'>Custom Billing</a>
+                                <a class='nav-item nav-link' data-toggle='tab' data-target='#nav-nobill' type='button'>Do Not Bill</a>
                         </div>
+                </nav>
+		<div class='tab-content'>
+                <!--------------------------------CFOP-------------------------->
+                        <div class='tab-pane fade show active' id='nav-cfop' role='tabpanel'>
+                                <br>
+                                <div class='form-group row'>
+                                        <label class='col-sm-3 col-form-label' for='cfop_input'>CFOP:</label>
+                                        <div class='col-sm-1'>
+                                        <input class='form-control' type='text' name='cfop_1' id='cfop_input'
+                                                maxlength='1' onKeyUp='cfop_advance_1()'
+                                                value='<?php if (isset($_POST['cfop_1'])) { echo $_POST['cfop_1']; } ?>'>
+                                        </div>
+                                -
+                                <div class='col-sm-2'>
+                                <input class='form-control' type='text' name='cfop_2'
+                                        id='cfop_input' maxlength='6' onKeyUp='cfop_advance_2()'
+                                        value='<?php if (isset($_POST['cfop_2'])) { echo $_POST['cfop_2']; } ?>'>
+                                </div>
+                                -
+                                <div class='col-sm-2'>
+                                <input class='form-control' type='text' name='cfop_3'
+                                        id='cfop_input' maxlength='6' onKeyUp='cfop_advance_3()'
+                                        value='<?php if (isset($_POST['cfop_3'])) { echo $_POST['cfop_3']; } ?>'>
+                                </div>
+                                -
+                                <div class='col-sm-2'>
+                                <input class='form-control' type='text' name='cfop_4'
+                                        id='cfop_input' maxlength='6'
+                                        value='<?php if (isset($_POST['cfop_4'])) { echo $_POST['cfop_4']; } ?>'>
+                                </div>
+                                </div>
+                                <div class='form-group row'>
+                                        <label class='col-sm-3 col-form-label' for='activity_input'>Activity Code (optional):</label>
+                                        <div class='col-sm-2'>
+                                                <input class='form-control' type='text' name='activity' maxlength='6'
+                                                id='activity_input' value='<?php if (isset($_POST['activity'])) { echo $_POST['activity']; } ?>'>
+                                        </div>
+                                </div>
+                                <div class='form-group row'>
+                                        <div class='col-sm-9 offset-sm-3'>
+                                        <div clas='form-check'>
+                                                <input class='form-check-input' type='checkbox' name='hide_cfop' id='hide_cfop_input' <?php if (isset($_POST['hide_cfop'])) { echo "checked='checked'"; } ?>>
+                                                <label class='form-check-label' for='hide_cfop_input'>Hide CFOP From User</label>
+                                        </div>
+                                        </div>
+                                </div>
+                        </div>
+                <!-----------------Custom Billing------------------->
+
+                        <div class='tab-pane fade' id='nav-custom' role='tabpanel'>
+                                <br>
+                                <div class='form-group'>
+                                        <label class='col-form-label' style='min-width: 200px' for='custom_bill_description'>Custom Bill Description: &nbsp;
+                                                <br>(e.g. Check, Personal Credit Card, Government Credit Card) &nbsp;
+                                        </label>
+                                        <textarea class='form-control' rows='5' cols='80' id='custom_bill_description'
+                                                name='custom_bill_description'><?php if (isset($_POST['custom_bill_description'])) { echo $_POST['custom_bill_description']; } ?></textarea>
+
+                                </div>
+                        </div>
+                <!------------------Do Not Bill----------------->
+                        <div class='tab-pane fade' id='nav-nobill' role='tabpanel'>
+                                <br>
+                                <div class='form-group row'>
+                                        <div class='col-sm-9 offset-sm-3'>
+                                        <div class='form-check'>
+                                                <input class='form-check-input' type='checkbox' id='bill_project_input' name='bill_project'
+                                                onClick='enable_project_bill();' <?php if (isset($_POST['bill_project'])) { echo "checked='checked'"; } ?>>
+                                                <label class='form-check-label' style='min-width: 200px' for='bill_project_input'>Do not bill default project: &nbsp</label>
+                                        </div>
+                                        </div>
+                                </div>
+
+                        </div>
+
+
                 </div>
 
 		<div class='control-group'>
@@ -174,10 +214,11 @@ foreach ($group_members as $member) {
 			} ?>
 			</div>
 		</div>
-	</fieldset>
 </form>
+</div>
 <hr>
-<h3>Previous CFOPs</h3>
+<h4>Previous CFOPs</h4>
+<hr>
 <table class='table table-striped table-sm table-bordered'>
         <thead>
                 <tr>
@@ -199,17 +240,12 @@ foreach ($group_members as $member) {
 
 ?>
 
-<script type='text/javascript'>
-enable_project_bill();
-</script>
 
 <?php
 if (isset($result['MESSAGE'])) {
 	echo $result['MESSAGE'];
 }
-?>
-</div>
-<?php
+
 require_once 'includes/footer.inc.php';
 ?>
 

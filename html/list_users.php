@@ -38,7 +38,7 @@ $users_html = html::get_users_rows($all_users,$start,$count);
 
 
 ?>
-<h3>List of Users</h3>
+<h3>List of Users - <?php echo $enabled ? "Active" : "Deactived"; ?></h3>
 <div class='row'>
 	<form class='form-inline' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
         	<div class='form-group'>
@@ -48,8 +48,8 @@ $users_html = html::get_users_rows($all_users,$start,$count);
 	        </div>
 	</form>
         <div class='btn-group pull-right ml-auto' role='group'>
-                <a class='btn btn-light' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&enabled=1"; ?>'>Active</a>
-                <a class='btn btn-light' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&enabled=0"; ?>'>Deactived</a>
+                <a class='btn btn-primary' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&enabled=1"; ?>'>Active</a>
+                <a class='btn btn-warning' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&enabled=0"; ?>'>Deactived</a>
         </div>
 
 </div>

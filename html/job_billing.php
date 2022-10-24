@@ -43,21 +43,22 @@ $stats = new statistics($db);
 
 ?>
 <h3>Job Billing Monthly Reports - <?php echo $month_name . " " . $year; ?></h3>
-<ul class='pager'>
-        <li class='previous'><a href='<?php echo $url_navigation['back_url']; ?>'>Previous Month</a></li>
+<div class='card'>
+<ul class='list-group list-group-horizontal'>
+        <li class='list-group-item'><a href='<?php echo $url_navigation['back_url']; ?>'>Previous Month</a></li>
 
         <?php
                 $next_month = strtotime('+1 day', strtotime($end_date));
                 $today = mktime(0,0,0,date('m'),date('d'),date('y'));
                 if ($next_month > $today) {
-                        echo "<li class='next disabled'><a href='#'>Next Month</a></li>";
+                        echo "<li class='list-group-item disabled'><a href='#'>Next Month</a></li>";
                 }
                 else {
-                        echo "<li class='next'><a href='" . $url_navigation['forward_url'] . "'>Next Month</a></li>";
+                        echo "<li class='list-group-item'><a href='" . $url_navigation['forward_url'] . "'>Next Month</a></li>";
                 }
         ?>
 </ul>
-
+</div>
 <table class='table table-striped table-sm table-bordered'>
 	<thead>
 		<tr>
@@ -84,15 +85,14 @@ $stats = new statistics($db);
 </table>
 <br>
 <form class='form-inline' action='report.php' method='post'>
-	<input type='hidden' name='month' value='<?php echo $month; ?>'> <input
-		type='hidden' name='year' value='<?php echo $year; ?>'> <select
-		name='report_type' class='input-medium'>
+	<input type='hidden' name='month' value='<?php echo $month; ?>'>
+	<input type='hidden' name='year' value='<?php echo $year; ?>'>
+	<select name='report_type' class='form-control custom-select'>
 		<option value='xlsx'>Excel 2007</option>
 		<option value='csv'>CSV</option>
-	</select> <input class='btn btn-primary' type='submit'
-		name='create_job_report' value='Download Report'>
-	<input class='btn btn-primary' type='submit'
-                name='create_job_boa_report' value='Download BOA Report'>
+	</select>&nbsp;
+	<input class='btn btn-primary' type='submit' name='create_job_report' value='Download Report'>&nbsp;
+	<input class='btn btn-primary' type='submit' name='create_job_boa_report' value='Download BOA Report'>
 
 </form>
 <?php

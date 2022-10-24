@@ -3,6 +3,8 @@ require_once 'includes/main.inc.php';
 require_once 'includes/header.inc.php';
 
 ?>
+<h3>About</h3>
+<hr>
 <div class='col-sm-8 col-md-8 col-lg-8 col-xl-8'>
 	<table class='table table-bordered table-sm'>
 		<tbody>

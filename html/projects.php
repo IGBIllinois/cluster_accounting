@@ -84,6 +84,7 @@ $users = user_functions::get_users($db);
 
 ?>
 <h3>Projects</h3>
+<hr>
 <div class='row'>
 	<form class='form-inline' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
 		<div class='form-group'>
@@ -94,9 +95,9 @@ $users = user_functions::get_users($db);
 		</div>
 	</form>
 	<div class='btn-group pull-right ml-auto' role='group' aria-label='test'>
-		<a class='btn btn-light' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&custom=ALL"; ?>'>All Projects</a>
-		<a class='btn btn-light' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&custom=CUSTOM"; ?>'>Custom Projects</a>
-		<a class='btn btn-light' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&custom=DEFAULT"; ?>'>User Projects</a>
+		<a class='btn btn-primary' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&custom=ALL"; ?>'>All Projects</a>
+		<a class='btn btn-secondary' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&custom=CUSTOM"; ?>'>Custom Projects</a>
+		<a class='btn btn-info' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&custom=DEFAULT"; ?>'>User Projects</a>
 	</div>
 
 </div>
@@ -118,8 +119,27 @@ $users = user_functions::get_users($db);
 	<?php echo $projects_html; ?>
 </table>
 </div>
+<div class='row'>
 <?php echo $pages_html; ?>
+</div>
+<div class='row'>
+<div class='row'>
+<form class='form-inline' method='post' action='report.php'>
+        <input type='hidden' name='search' value='<?php echo $search; ?>'>
+        <div class='form-group'>
+        <select class='custom-select custom-select-sm' name='report_type'>
+                <option value='xlsx'>Excel 2007</option>
+                <option value='csv'>CSV</option>
+        </select>
+        </div>
+        &nbsp;
+        <input class='btn btn-primary btn-sm' type='submit'
+                name='project_report' value='Download Projects Report'>
 
+</form>
+</div>
+
+</div>
 <div class='row'>
 <?php
 if (isset($result['MESSAGE'])) {

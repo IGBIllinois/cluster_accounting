@@ -71,7 +71,7 @@ if (count($user_list)) {
 }
 
 //////Year////////
-$year_html = "<select class='custom-select' name='year'>";
+$year_html = "";
 for ($i=2007; $i<=date("Y");$i++) {
 	if ($i == $year) {
 		$year_html .= "<option value='$i' selected='true'>$i</option>";
@@ -79,11 +79,10 @@ for ($i=2007; $i<=date("Y");$i++) {
 	else { $year_html .= "<option value='$i'>$i</option>";
 	}
 }
-$year_html .= "</select>";
 
 ///////Month///////
 $month_array = array('01','02','03','04','05','06','07','08','09','10','11','12');
-$month_html = "<select class='custom-select' name='month'>";
+$month_html = "";
 foreach ($month_array as $month_number) {
 	if ($month_number == $month) {
 		$month_html .= "<option value='" . $month_number . "' selected='true'>" . $month_number . "</option>";
@@ -91,8 +90,6 @@ foreach ($month_array as $month_number) {
 	else { $month_html .= "<option value='" . $month_number . "'>" . $month_number . "</option>";
 	}
 }
-$month_html .= "</select>";
-
 
 $user = new user($db,$ldap,$user_id);
 $jobs = $user->get_jobs_summary($start_date,$end_date);
@@ -144,21 +141,25 @@ $get_vars = array('user_id'=>$user_id,
 $self_url = $_SERVER['PHP_SELF'] . "?" . http_build_query($get_vars);
 
 ?>
-
-<form class='form-inline' action='<?php echo $_SERVER['PHP_SELF']; ?>'
-	method='get'>
-
+<h3>User Bill - <?php echo $month_name . " " . $year; ?></h3>
+<hr>
+<form class='form-inline' action='<?php echo $_SERVER['PHP_SELF']; ?>' method='get'>
 	<?php if ($login_user->is_admin() || $login_user->is_supervisor()) {
 		echo $user_list_html;
 
-		} ?>
-	<label>Month: </label>
+		} 
+	?>&nbsp;
+	<label class='form-label' for='month'>Month: </label>&nbsp;
+	<select class='custom-select' name='month' id='month'>	
 	<?php echo $month_html; ?>
-	<label>Year: </label>
+	</select>&nbsp;
+	<label for='year' >Year: </label>&nbsp;
+	<select class='custom-select' name='year' id='year'>
 	<?php echo $year_html; ?>
+	</select>&nbsp;
 	<input class='btn btn-primary' type='submit' value='Get Bill'>
 </form>
-<h4>User Bill - <?php echo $month_name . " " . $year; ?></h4>
+<br>
 <table class='table table-sm table-striped table-bordered'>
 
 	<tr>
@@ -169,6 +170,9 @@ $self_url = $_SERVER['PHP_SELF'] . "?" . http_build_query($get_vars);
 		<td>Username:</td>
 		<td><?php echo $user->get_username(); ?></td>
 	</tr>
+	<tr>
+		<td>Supervisor</td>
+		<td><?php echo $user->get_supervisor_name(); ?></td>
 	<tr>
 		<td>Billing Dates:</td>
 		<td><?php echo functions::get_pretty_date($start_date); ?> - <?php echo functions::get_pretty_date($end_date); ?>
@@ -208,16 +212,16 @@ $self_url = $_SERVER['PHP_SELF'] . "?" . http_build_query($get_vars);
 	<?php echo $data_html; ?>
 </table>
 <form class='form-inline' method='post' action='report.php'>
-        <input type='hidden' name='start_date'
-                value='<?php echo $start_date; ?>'> <input type='hidden'
-                name='end_date' value='<?php echo $end_date; ?>'> <input type='hidden'
-                name='user_id' value='<?php echo $user_id;?>'>
+	<input type='hidden' name='start_date' value='<?php echo $start_date; ?>'>
+	<input type='hidden' name='end_date' value='<?php echo $end_date; ?>'>
+	<input type='hidden' name='user_id' value='<?php echo $user_id;?>'>
 	<select name='report_type' class='custom-select'>
                 <option value='xlsx'>Excel 2007</option>
                 <option value='csv'>CSV</option>
-        </select> <input class='btn btn-primary' type='submit'
-                name='user_job_report' value='Download Cluster Usage Report'>
+        </select>&nbsp;
+	<input class='btn btn-primary' type='submit' name='user_job_report' value='Download Cluster Usage Report'>
 </form>
+<br>
 <form class='form-inline' method='post' action='<?php echo $self_url; ?>'>
 	<input class='btn btn-primary' type='submit'
 		name='email_bill' value='Email Bill to User'>

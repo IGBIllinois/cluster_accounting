@@ -25,22 +25,24 @@ foreach ($cluster_users as $cluster_user) {
 }
 ?>
 <h3>Verify Users and Directories</h3>
-<div class='row span4'>
+<hr>
+<div class='row'>
+<div class='col-sm-6 col-md-6 col-lg-6 col-xl-6'>
 <h4>Users</h4>
 <p>These users have access to the biocluster but are not in the accounting program<p>
 
-<table class='table table-sm table-bordered'>
+<table class='table table-striped table-sm table-bordered'>
 <?php echo $users_html;  ?>
 </table>
 </div>
-<div class='row span4'>
+<div class='col-sm-6 col-md-6 col-lg-6 col-xl-6'>
 <h4>Directories</h4>
 <p>These directories are on the storage system but are not being monitored by the accounting program</p>
-<table class='table table-sm table-bordered'>
+<table class='table table-striped table-sm table-bordered'>
 <?php echo $dirs_html; ?>
 </table>
 </div>
-
+</div>
 <?php
 
 require_once 'includes/footer.inc.php';

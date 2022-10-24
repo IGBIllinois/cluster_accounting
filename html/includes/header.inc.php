@@ -71,4 +71,4 @@ require_once 'includes/main.inc.php';
 
 					</ul>
 			</div>
-			<div class='col-sm-10 col-md-10 col-lg-10 col-xl-10'>
+			<div class='col-sm-9 col-md-9 col-lg-9 col-xl-9'>

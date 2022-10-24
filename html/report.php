@@ -24,6 +24,11 @@ elseif (isset($_POST['job_report'])) {
         $data = job_functions::get_jobs($db,$_POST['user_id'],$_POST['search'],$_POST['completed'],$_POST['start_date'],$_POST['end_date']);
 }
 
+elseif (isset($_POST['project_report'])) {
+	$type= $_POST['report_type'];
+	$filename = "project-report." . $type;
+	$data = functions::get_projects($db,$custom,$_POST['search']);
+}
 
 elseif (isset($_POST['create_data_report'])) {
 	$month = $_POST['month'];

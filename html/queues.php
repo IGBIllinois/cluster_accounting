@@ -53,7 +53,7 @@ foreach ($queues as $queue) {
 ?>
 
 <h3>Queues</h3>
-
+<hr>
 <?php echo $queue_html;
 
 

@@ -34,6 +34,7 @@ foreach ($data_costs as $data_cost) {
 }
 ?>
 <h3>Data Cost</h3>
+<hr>
 		<?php echo $data_costs_html; ?>
 
 <?php

@@ -10,7 +10,8 @@ require_once 'includes/header.inc.php';
 
 ?>
 
-<h4>Log</h4>
+<h3>View Log</h3>
+<hr>
 <textarea class='form-control' rows='50' readonly><?php echo $log_contents; ?></textarea>
 
 <?php
