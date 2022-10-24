@@ -20,7 +20,7 @@ require_once 'includes/main.inc.php';
 <link rel="stylesheet" type="text/css" href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="vendor/fortawesome/font-awesome/css/all.min.css">
 <link rel="stylesheet" href="vendor/select2/select2/dist/css/select2.min.css" type="text/css" />
-<link rel="stylesheet" href="vendor/intelogie/select2-bootstrap-theme/dist/select2-bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" href="vendor/ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.min.css" type="text/css" />
 <title><?php echo settings::get_title(); ?></title>
 
 </head>

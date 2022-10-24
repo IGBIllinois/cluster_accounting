@@ -73,44 +73,51 @@ $supervisors_html .= "</select>";
 
 <h3>Add User</h3>
 <hr>
-<div class='col-sm-6 col-md-6 col-lg-6 col-xl-6'>
 <form method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>' name='form'>
-		<h4>User Information</h4>
-		<br>
-		<div class='form-group row'>
-			<label class='col-sm-4 control-label' for='username_input'>Username:</label>
-			<div class='col-sm-8'>
-			<input class='form-control' type='text' name='new_username' id='username_input'
-				value='<?php if (isset($_POST['new_username'])) { echo $_POST['new_username']; } ?>'>
-			</div>
+<div class='card'>
+<div class='card-header'>User Information</div>
+<div class='card-body'>
+<br>
+<div class='col-sm-8 col-md-8 col-lg-8 col-xl-8'>
+	<div class='form-group row'>
+		<label class='col-sm-4 col-form-label' for='username_input'>Username:</label>
+		<div class='col-sm-8'>
+		<input class='form-control' type='text' name='new_username' id='username_input'
+			value='<?php if (isset($_POST['new_username'])) { echo $_POST['new_username']; } ?>'>
 		</div>
-		<div class='form-group row'>
-			<div class='col-sm-8 offset-sm-4'>
-			<div class='form-check'>
-			<input class='form-check-input' type='checkbox' name='is_admin' id='is_admin_input'
-				<?php if (isset($_POST['is_admin'])) { echo "checked='checked'"; } ?>>
-			<label class='form-check-label' for='is_admin_input'>Is Administrator</label>
-			</div>
-			</div>
+	</div>
+	<div class='form-group row'>
+		<div class='col-sm-8 offset-sm-4'>
+		<div class='form-check'>
+		<input class='form-check-input' type='checkbox' name='is_admin' id='is_admin_input'
+			<?php if (isset($_POST['is_admin'])) { echo "checked='checked'"; } ?>>
+		<label class='form-check-label' for='is_admin_input'>Is Administrator</label>
 		</div>
-		<div class='form-group row'>
-			<div class='col-sm-8 offset-sm-4'>
-			<div class='form-check'>
-			<input class='form-check-input' type='checkbox' name='is_supervisor' id='is_supervisor_input'
-				onClick='enable_supervisors();' <?php if (isset($_POST['is_supervisor'])) { echo "checked='checked'"; } ?>>
-			<label class='form-check-label' for='is_supervisor_input'>Is Supervisor</label>
-			</div>
-			</div>
 		</div>
-		<div class='form-group row'>
-			<label class='col-sm-4 control-label' for='supervisor_input'>Supervisor:</label>
-			<div class='col-sm-8'>
-				<?php echo $supervisors_html; ?>
-			</div>
+	</div>
+	<div class='form-group row'>
+		<div class='col-sm-8 offset-sm-4'>
+		<div class='form-check'>
+		<input class='form-check-input' type='checkbox' name='is_supervisor' id='is_supervisor_input'
+			onClick='enable_supervisors();' <?php if (isset($_POST['is_supervisor'])) { echo "checked='checked'"; } ?>>
+		<label class='form-check-label' for='is_supervisor_input'>Is Supervisor</label>
 		</div>
-		<br>
-		<hr>
-		<h4>Default Project Billing</h4>
+		</div>
+	</div>
+	<div class='form-group row'>
+		<label class='col-sm-4 col-form-label' for='supervisor_input'>Supervisor:</label>
+		<div class='col-sm-8'>
+			<?php echo $supervisors_html; ?>
+		</div>
+	</div>
+</div>
+</div>
+</div>
+<br>
+<div class='card'>
+<div class='card-header'>Default Project Billing</div>
+<div class='card-body'> 
+	<div class='col-sm-8 col-md-8 col-lg-8 col-xl-8'>
 		<nav>
 			<div class='nav nav-tabs' role='tablist'>
 				<a class='nav-item nav-link active' data-toggle='tab' data-target='#nav-cfop' type='button'>CFOP</a>
@@ -194,19 +201,17 @@ $supervisors_html .= "</select>";
 	
 
                 </div>
-	
-		<hr>
-		<div class='form-group row'>
-			<div class='col-sm-12'>
-				<input class='btn btn-primary' type='submit' name='add_user' value='Add User'>&nbsp;
-				<input class='btn btn-warning' type='submit' name='cancel_user' value='Cancel'>
-			</div>
+</div>
+</div>
+</div>	
+<br>
+	<div class='form-group row'>
+		<div class='col-sm-12'>
+			<input class='btn btn-primary' type='submit' name='add_user' value='Add User'>&nbsp;
+			<input class='btn btn-warning' type='submit' name='cancel_user' value='Cancel'>
 		</div>
+	</div>
 </form>
-<script type='text/javascript'>
-enable_supervisors();
-
-</script>
 <?php
 if (isset($message)) { echo $message; }
 
@@ -218,8 +223,11 @@ require_once 'includes/footer.inc.php';
 ?>
 
 <script type="text/javascript">
-        $('#supervisors_input').select2({
+$(document).ready(function() { 
+	enable_supervisors();
+	$('#supervisors_input').select2({
 		'placeholder': "Select a Supervisor"
-        });
+	});
+});
 </script>
 

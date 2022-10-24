@@ -66,7 +66,8 @@ $graph_form .= "</select></form>";
         ?>
 </ul>
 <?php echo $graph_form; ?>
-<div class='row span12'>
+<br>
+<div class='row'>
 <?php echo $graph_image; ?>
 </div>
 <?php

@@ -186,8 +186,11 @@ require_once 'includes/footer.inc.php';
 ?>
 
 <script type="text/javascript">
+$(document).ready(function() {
         $('#owner_input').select2({
                 'placeholder': "Select a Owner"
         });
+});
+
 </script>
 

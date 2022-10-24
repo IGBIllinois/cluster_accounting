@@ -81,47 +81,49 @@ require_once 'includes/header.inc.php';
 
 ?>
 <h3>Edit User</h3>
-<div class='col-sm-4 col-md-4 col-lg-4 col-xl-4'>
-<form class='form' method='post' action='<?php echo $_SERVER['PHP_SELF'] . "?user_id=" . $user_id; ?>'
-	name='form'>
+<hr>
+<div class='col-sm-6 col-md-6 col-lg-6 col-xl-6'>
+<form method='post' action='<?php echo $_SERVER['PHP_SELF'] . "?user_id=" . $user_id; ?>' name='form'>
 	<input type='hidden' name='user_id' value='<?php echo $user_id; ?>'>
-		<div class='form-group row'>
-			<label class='col-form-label' for='username_input'>Username:</label>
-			<div class='col-sm-10'>
-				<input type='text' readonly class='form-control-plaintext' value="<?php echo $user->get_username(); ?>">
-			</div>
+	<div class='form-group row'>
+		<label class='col-sm-4 col-form-label' for='username_input'>Username:</label>
+		<div class='col-sm-8'>
+			<input class='form-control-plaintext' type='text' readonly value="<?php echo $user->get_username(); ?>">
 		</div>
-		<div class='form-group row'>
-			<label class='col-form-label' for='admin_input'>Is Administrator:</label>
-			<div class='col-sm-10'>
-				<input type='checkbox' name='is_admin' id='is_admin_input'
-					<?php if ($user->is_admin()) { echo "checked='checked'"; } ?>>
-			</div>
+	</div>
+	<div class='form-group row'>
+		<div class='col-sm-8 offset-sm-4'>
+		<div clas='form-check'>
+			<input class='form-check-input' type='checkbox' name='is_admin' id='is_admin_input'
+				<?php echo $user->is_admin() ? "checked" : "";  ?>>
+			<label class='form-check-label' for='is_admin_input'>Is Administrator</label>
 		</div>
-		<div class='form-group row'>
-			<label class='col-form-label' for='is_supervisor_input'>Is Supervisor</label>
-			<div class='col-sm-10'>
-				<input type='checkbox' name='is_supervisor' id='is_supervisor_input'
-					onClick='enable_supervisors();' <?php if ($user->is_supervisor()) { echo "checked='checked'"; } ?>>
-			</div>
 		</div>
-		<div class='form-group row'>
-			<label class='col-form-label' for='supervisor_input'>Supervisor:</label>
-			<div class='col-sm-10'>
-				<?php echo $supervisors_html; ?>
-			</div>
+	</div>
+	<div class='form-group row'>
+		<div class='col-sm-8 offset-sm-4'>
+		<div clas='form-check'>
+			<input class='form-check-input' type='checkbox' name='is_supervisor' id='is_supervisor_input'
+				onClick='enable_supervisors();' <?php echo $user->is_supervisor() ? "checked" : ""; ?>>
+			<label class='form-check-label' for='is_supervisor_input'>Is Supervisor</label>
 		</div>
-		<div class='form-group row'>
-			<div class='col-sm-10'>
-				<input class='btn btn-primary' type='submit' name='edit_user'
-					value='Edit User'> 
-				<input class='btn btn-danger' type='submit' name='delete_user' value='Delete User'
-				onClick='return (confirm_disable_user());'>
+		</div>	
+	</div>
+	<div class='form-group row'>
+		<label class='col-sm-4 col-form-label' for='supervisor_input'>Supervisor:</label>
+		<div class='col-sm-8'>
+			<?php echo $supervisors_html; ?>
+		</div>
+	</div>
 
-			<input class='btn btn-warning' type='submit'
-					name='cancel_user' value='Cancel'>
-			</div>
+	<div class='form-group row'>
+		<div class='col-sm-8'>
+			<input class='btn btn-primary' type='submit' name='edit_user' value='Edit User'> 
+			<input class='btn btn-danger' type='submit' name='delete_user' value='Delete User'
+				onClick='return (confirm_disable_user());'>
+			<input class='btn btn-warning' type='submit' name='cancel_user' value='Cancel'>
 		</div>
+	</div>
 </form>
 
 <?php
@@ -134,9 +136,10 @@ require_once 'includes/footer.inc.php';
 ?>
 
 <script type="text/javascript">
+$(document).ready(function() {
 	enable_supervisors();
-
 	$('#supervisors_input').select2({
 		placeholder: 'Select a Supervisor'
 	});
+});
 </script>

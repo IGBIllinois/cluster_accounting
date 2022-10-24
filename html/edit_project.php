@@ -92,9 +92,10 @@ foreach ($group_members as $member) {
 	<?php echo $group_members_html; ?>
 </table>
 
-<h4>Edit Project</h4>
-<hr>
+<div class='card'>
+<div class='card-header'>Edit Project</div>
 <div class='col-sm-8 col-md-8 col-lg-8 col-xl-8'>
+<br>
 <form name='form' method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>?project_id=<?php echo $project->get_project_id(); ?>'>
 	<input type='hidden' name='project_id' value='<?php echo $project->get_project_id(); ?>'>
 		<div class='form-group row'>
@@ -215,10 +216,13 @@ foreach ($group_members as $member) {
 			</div>
 		</div>
 </form>
+<br>
 </div>
-<hr>
-<h4>Previous CFOPs</h4>
-<hr>
+</div>
+<br>
+<div class='card'>
+<div class='card-header'>Previous CFOPs</div>
+<div class='card-body'>
 <table class='table table-striped table-sm table-bordered'>
         <thead>
                 <tr>
@@ -232,7 +236,8 @@ foreach ($group_members as $member) {
 
 
 </table>
-
+</div>
+</div>
 <?php if (isset($_SERVER['HTTP_REFERER'])) {
         echo "<a href='" . $_SERVER['HTTP_REFERER'] . "' class='btn btn-primary'>Back</a>";
 
@@ -250,11 +255,11 @@ require_once 'includes/footer.inc.php';
 ?>
 
 <script type='text/javascript'>
-enable_project_bill();
-
-$('#owner_input').select2({
-	'placeholder': "Select a Owner"
+$(document).ready(function() {
+	enable_project_bill();
+	$('#owner_input').select2({
+		'placeholder': "Select a Owner"
+	});
 });
-
 </script>
 

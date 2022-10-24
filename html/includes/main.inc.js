@@ -86,6 +86,6 @@ function enable_new_cfop() {
 	}
 }
 
-$.fn.select2.defaults.set( "theme", "bootstrap" );
-$.fn.select2.defaults.set( "width", null );
+$.fn.select2.defaults.set( "theme", "bootstrap4" );
+$.fn.select2.defaults.set( "width", "resolve" );
 

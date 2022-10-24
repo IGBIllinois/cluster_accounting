@@ -119,13 +119,14 @@ $users = user_functions::get_users($db);
 	<?php echo $projects_html; ?>
 </table>
 </div>
-<div class='row'>
+<div class='row justify-content-center'>
 <?php echo $pages_html; ?>
 </div>
 <div class='row'>
 <div class='row'>
 <form class='form-inline' method='post' action='report.php'>
         <input type='hidden' name='search' value='<?php echo $search; ?>'>
+	<input type='hidden' name='custom' value='<?php echo $custom; ?>'>
         <div class='form-group'>
         <select class='custom-select custom-select-sm' name='report_type'>
                 <option value='xlsx'>Excel 2007</option>

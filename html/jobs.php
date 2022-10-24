@@ -176,27 +176,26 @@ if (count($user_list) > 1) {
 require_once 'includes/footer.inc.php';
 ?>
 <script type="text/javascript">
-
-$(function() {
-$( "#start_date" ).datepicker({
+$(function() { 
+	$( "#start_date" ).datepicker({
                 maxDate: "+1w",
                 minDate: new Date(2010,1-1,1),
                 changeYear: true,
                 changeMonth: true,
                 dateFormat: "yy-mm-dd",
-
-                });
-$( "#end_date" ).datepicker({
+	});
+	$( "#end_date" ).datepicker({
                 maxDate: "+1w",
                 minDate: new Date(2010,1-1,1),
                 changeYear: true,
                 changeMonth: true,
                 dateFormat: "yy-mm-dd",
-                });
-
+	});
 });
 
-$('#user_id_input').select2({
-	placeholder: 'Select a Supervisor'
+$(document).ready(function() {
+	$('#user_id_input').select2({
+		placeholder: 'Select a Supervisor'
+	});
 });
 </script>
