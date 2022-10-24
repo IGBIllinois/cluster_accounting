@@ -51,7 +51,8 @@ require_once 'includes/header.inc.php';
 	<td>Project</td>
 	<td><a href='edit_project.php?project_id=<?php echo $data_dir->get_project_id(); ?>'><?php echo $project->get_name(); ?></a></td>
 </tr>
-
+<tr><td>Time Added to Database</td><td><?php echo $data_dir->get_time_created(); ?></td></tr>
+<tr><td>Default Directory</td><td><?php echo $data_dir->is_default() ? "<i class='fas fa-check'>" : "<i class='fas fa-times'>"; ?></td></tr>
 </table>
 <?php 
 
