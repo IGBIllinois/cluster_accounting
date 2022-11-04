@@ -79,15 +79,14 @@ require_once 'includes/header.inc.php';
 </table>
 
 <form class='form-inline' action='report.php' method='post'>
-        <input type='hidden' name='month' value='<?php echo $month; ?>'> <input
-                type='hidden' name='year' value='<?php echo $year; ?>'> <select
-                name='report_type' class='input-medium'>
+        <input type='hidden' name='month' value='<?php echo $month; ?>'>
+	<input type='hidden' name='year' value='<?php echo $year; ?>'>
+	<select class='custom-select' name='report_type'>
                 <option value='xlsx'>Excel 2007</option>
                 <option value='csv'>CSV</option>
-        </select> <input class='btn btn-primary' type='submit'
-                name='create_data_report' value='Download Full Report'>
-	<input class='btn btn-primary' type='submit'
-		name='create_data_boa_report' value='Download BOA Report'>
+        </select>&nbsp;
+	<input class='btn btn-primary' type='submit' name='create_data_report' value='Download Full Report'>&nbsp;
+	<input class='btn btn-primary' type='submit' name='create_data_boa_report' value='Download BOA Report'>
 </form>
 
 <?php

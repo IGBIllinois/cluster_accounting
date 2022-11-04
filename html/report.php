@@ -7,8 +7,8 @@ if (isset($_POST['create_job_report'])) {
 	$year = $_POST['year'];
 	$type = $_POST['report_type'];
 	$data = job_functions::get_jobs_bill($db,$month,$year);
-	$server_name = settings::get_server_name();
-	$filename = $server_name . "-job-" . $month . "-" . $year . "." . $type; 
+	$prefix = settings::get_report_prefix();
+	$filename = $prefix . "-job-" . $month . "-" . $year . "." . $type; 
 }
 
 elseif (isset($_POST['user_job_report'])) {

@@ -53,4 +53,5 @@ define("LOG_FILE","");
 define("ENABLE_LOG",false);
 define("BOA_CFOP",'');
 define('PASSWORD_RESET_URL','');
+define('REPORT_PREFIX','Report');
 ?>

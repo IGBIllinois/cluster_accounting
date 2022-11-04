@@ -51,6 +51,7 @@ require_once 'includes/header.inc.php';
 		<tr><td>SESSION_NAME</td><td><?php echo settings::get_session_name(); ?></td></tr>
 		<tr><td>SESSION_TIMEOUT</td><td><?php echo settings::get_session_timeout(); ?></td></tr>
 		<tr><td>JOB_SCHEDULER</td><td><?php echo settings::get_job_scheduler(); ?></td></tr>
+		<tr><td>REPORT_PREFIX</td><td><?php echo settings::get_report_prefix(); ?></td></tr>
 	</tbody>
 	</table>
 </div>

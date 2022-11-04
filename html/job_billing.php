@@ -72,17 +72,19 @@ require_once 'includes/header.inc.php';
 			<th>Activity Code</th>
 		</tr>
 	</thead>
+	<tbody>
 	<?php echo $jobs_html; ?>
 	<tr>
 		<td>Monthly Total Cost:</td>
-		<td colspan='5'>$<?php echo $stats->get_total_cost($start_date,$end_date,true); ?>
+		<td colspan='7'>$<?php echo $stats->get_total_cost($start_date,$end_date,true); ?>
 		</td>
 	</tr>
 	<tr>
 		<td>Monthly Billed  Cost:</td>
-		<td colspan='5'>$<?php echo $stats->get_total_billed_cost($start_date,$end_date,true); ?>
+		<td colspan='7'>$<?php echo $stats->get_total_billed_cost($start_date,$end_date,true); ?>
 		</td>
 	</tr>
+	</tbody>
 </table>
 <br>
 <form class='form-inline' action='report.php' method='post'>

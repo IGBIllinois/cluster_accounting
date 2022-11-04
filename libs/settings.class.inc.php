@@ -18,6 +18,7 @@ class settings {
 	private const TIMEZONE = "UTC";
 	private const SMTP_PORT = 25;
 	private const SMTP_HOST = "localhost";
+	private const REPORT_PREFIX = "Report";
 
 	public static function get_version() {
                 return VERSION;
@@ -277,7 +278,13 @@ class settings {
 
 	}
 
+	public static function get_report_prefix() {
+		if (defined("REPORT_PREFIX")) {
+			return REPORT_PREFIX;
+		}
+		return self::REPORT_PREFIX;
 
+	}
 }
 
 ?>
