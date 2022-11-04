@@ -68,16 +68,13 @@ class data_stats {
                 $result = $db->query($sql);
                 return statistics::get_month_array($result,"month","terabyte");
         }
-        public static function get_project_usage($db,$start_date,$end_date,$directory_type = 0) {
+        public static function get_project_usage($db,$start_date,$end_date) {
                 $sql = "SELECT projects.project_name as project, ";
                 $sql .= "ROUND(SUM(data_bill.data_bill_avg_bytes)/" . self::bytes_per_terabyte . ",2) as terabyte ";
                 $sql .= "FROM data_bill ";
                 $sql .= "LEFT JOIN data_cost ON data_cost.data_cost_id=data_bill.data_bill_data_cost_id ";
                 $sql .= "LEFT JOIN projects ON projects.project_id=data_bill.data_bill_project_id ";
 		$sql .= "WHERE data_bill_date BETWEEN '" . $start_date . "' AND '" . $end_date . "' ";
-                if ($directory_type) {
-                        $sql .= "AND data_cost.data_cost_type='" . $directory_type . "' ";
-                }
                 $sql .= "GROUP BY project ";
                 $sql .= "ORDER BY terabyte DESC ";
                 return $db->query($sql);

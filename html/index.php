@@ -7,15 +7,11 @@ $public_queues_html = html::get_queue_rows($public_queues);
 $private_queues = functions::get_queues($db,'PRIVATE');
 $private_queues_html = html::get_queue_rows($private_queues);
 
-$data_costs = data_functions::get_data_costs($db);
-$data_html = "";
-foreach ($data_costs as $value) {
-	$data_html .= "<tr>";
-	$data_html .= "<td>" . $value['type'] . "</td>";
-	$data_html .= "<td>$" . $value['cost'] . "</td>";
-	$data_html .= "</tr>";
+$data_cost = data_functions::get_current_data_cost($db);
+$data_html .= "<tr>";
+$data_html .= "<td>$" . $data_cost->get_formatted_cost() . "</td>";
+$data_html .= "</tr>";
 
-}
 
 require_once 'includes/header.inc.php';
 ?>
@@ -64,7 +60,6 @@ require_once 'includes/header.inc.php';
 <p><table class='table table-bordered table-sm table-striped'>
 	<thead>
 		<tr>
-			<th>Type</th>
 			<th>Cost (Terabytes per month)</th>
 		</tr>
 	</thead>

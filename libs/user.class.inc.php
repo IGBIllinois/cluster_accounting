@@ -191,7 +191,6 @@ class user {
 	public function get_data_summary($month,$year) {
 		$sql = "SELECT data_dir.data_dir_path as directory, ";
 		$sql .= "data_cost.data_cost_value as data_cost_value, ";
-		$sql .= "data_cost.data_cost_type as data_cost_type, ";
 		$sql .= "projects.project_name as project, ";
 		$sql .= "ROUND((data_bill.data_bill_avg_bytes / 1099511627776),4) as terabytes, ";
 		$sql .= "ROUND(data_bill.data_bill_total_cost,2) as total_cost, ";

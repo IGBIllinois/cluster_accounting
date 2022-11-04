@@ -88,7 +88,6 @@ CREATE TABLE jobs (
 
 CREATE TABLE data_cost(
 	data_cost_id INT NOT NULL AUTO_INCREMENT,
-	data_cost_type VARCHAR(255),
 	data_cost_value DECIMAL(30,7),
 	data_cost_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	data_cost_enabled BOOLEAN DEFAULT TRUE,
