@@ -10,7 +10,7 @@
 
 class slurm {
 
-	const SLURM_FORMAT = "State,JobID,User,JobName,Account,Partition,ExitCode,Submit,Start,End,Elapsed,ReqMem,MaxRSS,ReqCPUS,NodeList,MaxVMSize,TotalCPU,NTasks,NNodes,AllocGRES";
+	const SLURM_FORMAT = "State,JobID,User,JobName,Account,Partition,ExitCode,Submit,Start,End,Elapsed,ReqMem,MaxRSS,ReqCPUS,NodeList,MaxVMSize,TotalCPU,NTasks,NNodes,AllocTRES";
 	const SLURM_STATES = "CA,CD,F,TO,OOM";
 	const SLURM_DELIMITER = "|";
 	const SLURM_TIME_FORMAT = "%Y-%m-%d %H:%M:%s";
@@ -32,7 +32,7 @@ class slurm {
 		foreach ($output_array as $job_array) {
 			array_push($job_data,array_combine(explode(",",self::SLURM_FORMAT),explode(self::SLURM_DELIMITER,$job_array)));
 		}
-		functions::log(memory_get_usage() - $startMemory . " bytes");
+		//functions::log(memory_get_usage() - $startMemory . " bytes");
 		return self::format_slurm_accounting($job_data);
 	}
 
@@ -110,6 +110,7 @@ class slurm {
                 	);
 			return $job->create($job_insert,$ldap);
 		}
+		return array('RESULT'=> 0);
 	        
 	}
 	//convert_to_seconds() - converts DD:HH:MM:SS

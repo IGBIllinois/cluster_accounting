@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php 
 chdir(dirname(__FILE__));
 
@@ -56,23 +57,36 @@ $log->send_log("Data Usage: Start");
 $directories = data_functions::get_all_directories($db);
 foreach ($directories as $directory) {
 	$data_dir = new data_dir($db,$directory['data_dir_id']);
-	$size = $data_dir->get_dir_size();
-	if (!isset($options['dry-run'])) {
-		$result = $data_dir->add_usage($size);
+	$level = \IGBIllinois\log::NOTICE;
+	try {
+		$data_usage = new \IGBIllinois\data_usage($data_dir->get_directory());
+		$size = $data_usage->get_dir_size();
+
+		if (!isset($options['dry-run'])) {
+			$result = $data_dir->add_usage($size);
+		}
+		else {
+			$result['RESULT'] = true;
+				
+		}	
+		if (($result['RESULT']) && (!isset($options['dry-run']))) {
+			$message = "Data Usage: Directory: " . $data_dir->get_directory() . " Size: " . data_functions::bytes_to_gigabytes($size) . "GB sucessfully added";
+			
+		}
+		elseif (isset($options['dry-run'])) {
+			$message = "DRY-RUN: Data Usage: Directory: " . $data_dir->get_directory() . " Size: " . data_functions::bytes_to_gigabytes($size) . "GB sucessfully added.";
+		}
+		else {
+			$message = "Data Usage: Directory: " . $data_dir->get_directory() . " failed adding to database";
+			$level = \IGBIllinois\log::ERROR;
+		}
 	}
-	else {
-		$result['RESULT'] = true;
-	}	
-	if (($result['RESULT']) && (!isset($options['dry-run']))) {
-		$message = "Data Usage: Directory: " . $data_dir->get_directory() . " Size: " . data_functions::bytes_to_gigabytes($size) . "GB sucessfully added";
-	}
-	elseif (isset($options['dry-run'])) {
-		$message = "DRY-RUN: Data Usage: Directory: " . $data_dir->get_directory() . " Size: " . data_functions::bytes_to_gigabytes($size) . "GB sucessfully added.";
-	}
-	else {
-		$message = "ERROR: Data Usage: Directory: " . $data_dir->get_directory() . " failed adding to database";
-	}
-	$log->send_log($message);
+        catch (Exception $e) {
+                $message = $e->getMessage();
+		$level = \IGBIllinois\log::ERROR;
+
+        }
+	$log->send_log($message,$level);
 }
 
 $end_time = microtime(true);

@@ -140,14 +140,15 @@ class job {
 						'job_id'=>$job_id,'MESSAGE'=>"Job Number: " . $job_number . " - User: " . $job_data['job_user'] . " - Successfully added to database");
 				}
 				else {
-					return array('RESULT'=>false,
+					return array('RESULT'=>0,
 						'MESSAGE'=>'ERROR: Error adding job ' . $job_number);
 				}
 				
 			}
 		}
 		else {
-			return array('RESULT'=>false);
+			return array('RESULT'=>0,
+				'MESSAGE'=> "Job Number: " . $job_number . " already exists in database");
 		}
 
 	}

@@ -33,7 +33,7 @@ class data_dir {
 
 		if ($this->data_dir_exists($directory)) {
 			$error = true;
-			$message .= "<div class='alert'>Directory " . $directory . " is already in the database</div>";
+			$message .= "<div class='alert alert-danger'>Directory " . $directory . " is already in the database</div>";
 		}
 
 		if ($error) {
@@ -134,11 +134,7 @@ class data_dir {
 		return is_dir($this->get_directory());
 
 	}
-        public function get_dir_size() {
-		$data_usage = \IGBIllinois\data_usage($this->get_directory());
-		return $data_usage->get_dir_size();
-        }
-
+	
 	private function data_dir_exists($directory) {
 		$sql = "SELECT count(1) as count FROM data_dir ";
 		$sql .= "WHERE data_dir_path LIKE '" . $directory . "%' ";

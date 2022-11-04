@@ -48,7 +48,7 @@ elseif (isset($_POST['delete_user'])) {
                 header("Location: list_users.php");
         }
 	else {
-		$message = "<div class='alert alert-error'>" . $result['MESSAGE'] . "</div>";
+		$message = "<div class='alert alert-danger'>" . $result['MESSAGE'] . "</div>";
 	}
 }
 

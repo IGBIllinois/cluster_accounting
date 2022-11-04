@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php 
 chdir(dirname(__FILE__));
 
@@ -15,11 +16,13 @@ require_once '../conf/settings.inc.php';
 require_once '../vendor/autoload.php';
 
 //Command parameters
-$output_command = "data.php Inserts data usage into database\n";
+$output_command = "calc_bill.php Calculates Data and Job Billing\n";
 $output_command .= "Defaults to previous month\n";
 $output_command .= "Usage: php data.php \n";
 $output_command .= "	-y, --year		Year (YYYY)\n";
 $output_command .= "	-m, --month		Month (MM)\n";
+$output_command .= "	-d, --data		Calculate Data Only\n";
+$output_command .= "	-j, --jobs		Calculate Jobs Only\n";
 $output_command .= "	-h, --help              Display help menu\n";
 
 //Parameters
@@ -27,11 +30,15 @@ $shortopts = "";
 $shortopts .= "h";
 $shortopts .= "y:";
 $shortopts .= "m:";
+$shortopts .= "d";
+$shortopts .= "j";
 
 $longopts = array(
         "help",
 	"year::",
-	"month::"
+	"month::",
+	"data",
+	"jobs",
 );
 
 //Following code is to test if the script is being run from the command line or the apache server.

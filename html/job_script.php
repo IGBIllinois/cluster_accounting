@@ -6,7 +6,7 @@ if (isset($_GET['user_id']) && (is_numeric($_GET['user_id']))) {
 }
 
 if (!$login_user->permission($user_id)) {
-        echo "<div class='alert alert-error'>Invalid Permissions</div>";
+        echo "<div class='alert alert-danger'>Invalid Permissions</div>";
         exit;
 }
 
@@ -31,13 +31,13 @@ else {
 <h3>Job Script - <?php echo $job->get_full_job_number(); ?></h3>
 <?php
 	if (!strpos($job->get_job_script(),'module load') && $job->get_job_script_exists()) {
-        	echo "<div class='alert alert-error span8'>Please use the module command in your job script.</div>";
+        	echo "<div class='alert alert-danger'>Please use the module command in your job script.</div>";
 	}
 ?>
 <div class='row'>
 <div class='col-sm-8 col-md-8 col-lg-8 col-xl-8'>
 <?php
-	echo "<pre class='prettyprint linenums span11'>" . $job->get_job_script() . "</pre>";
+	echo "<pre class='prettyprint linenums'>" . $job->get_job_script() . "</pre>";
 ?>
 </div>
 </div>

@@ -39,29 +39,29 @@ class project {
 		$activity = strtoupper($activity);
 		if (!$this->verify_project_name($name)) {
 			$error = true;
-			$message .= "<div class='alert'>Please enter a valid project name.</div>";
+			$message .= "<div class='alert alert-danger'>Please enter a valid project name.</div>";
 		}
 
 		if (!$this->verify_ldap_group($ldap_group)) {
 			$error = true;
-			$message .= "<div class='alert'>Please enter a valid LDAP group.</div>";
+			$message .= "<div class='alert alert-danger'>Please enter a valid LDAP group.</div>";
 		}
 		if ($description == "") {
 			$error = true;
-			$message .= "<div class='alert'>Please enter a project description.</div>";
+			$message .= "<div class='alert alert-danger'>Please enter a project description.</div>";
 		}
 		if ($owner_id == "") {
 			$error = true;
-			$message .= "<div class='alert'>Please enter a project owner.</div>";
+			$message .= "<div class='alert alert-danger'>Please enter a project owner.</div>";
 		}
 		if (!$this->verify_cfop($cfop) && $bill_project) {
 			$error = true;
-			$message .= "<div class='alert'>Please enter valid CFOP.</div>";
+			$message .= "<div class='alert alert-danger'>Please enter valid CFOP.</div>";
 		}
 
 		if (!$this->verify_activity_code($activity) && $bill_project) {
 			$error = true;
-			$message .= "<div class='alert'>Please enter a valid activity code.</div>";
+			$message .= "<div class='alert alert-danger'>Please enter a valid activity code.</div>";
 		}
 
 		if ($error) {
@@ -78,7 +78,7 @@ class project {
 			$this->id = $this->db->build_insert("projects",$project_array);
 			$this->set_cfop($bill_project,$cfop,$activity,$hide_cfop);
 			return array('RESULT'=>true,
-					'MESSAGE'=>"<div class='alert'>Project successfully created.</div>",
+					'MESSAGE'=>"<div class='alert alert-success'>Project successfully created.</div>",
 					'project_id'=>$this->id);
 		}
 
@@ -92,17 +92,17 @@ class project {
 			$message = "";
 	                if (!$this->verify_cfop($cfop) && ($bill_project)) {
         	                $error = true;
-                	        $message = "<div class='alert alert-error'>Please verify CFOP</div>";
+                	        $message = "<div class='alert alert-danger'>Please verify CFOP</div>";
 
 	                }	
         	        if (!$this->verify_activity_code($activity) && ($bill_project)) {
                 	        $error = true;
-                        	$message .= "<div class='alert alert-error'>Please verify activity code</div>";
+                        	$message .= "<div class='alert alert-danger'>Please verify activity code</div>";
 	                }
 			if (!$error) {
 				$result = $this->set_cfop($bill_project,$cfop,$activity,$hide_cfop);
 				return array('RESULT'=>true,
-					'MESSAGE'=>"<div class='alert'>Project successfully updated.</div>",
+					'MESSAGE'=>"<div class='alert alert-success'>Project successfully updated.</div>",
 					'cfop_id'=>$result);
 			}
 			else {
@@ -117,15 +117,15 @@ class project {
 			$message = "";
                 	if (!$this->verify_ldap_group($ldap_group)) {
                         	$error = true;
-	                        $message .= "<div class='alert'>Please enter a valid LDAP group.</div>";
+	                        $message .= "<div class='alert alert-danger'>Please enter a valid LDAP group.</div>";
         	        }
                 	if ($description == "") {
                         	$error = true;
-	                        $message .= "<div class='alert'>Please enter a project description.</div>";
+	                        $message .= "<div class='alert alert-danger'>Please enter a project description.</div>";
         	        }
                 	if ($owner_id == "") {
                         	$error = true;
-	                        $message .= "<div class='alert'>Please enter a project owner.</div>";
+	                        $message .= "<div class='alert alert-danger'>Please enter a project owner.</div>";
         	        }
 			if (!$error) {
 				$sql = "UPDATE projects set project_ldap_group='" . $ldap_group . "', ";
@@ -134,7 +134,7 @@ class project {
 				$this->db->non_select_query($sql);
 				$this->get_project();
 				return array('RESULT'=>true,
-					'MESSAGE'=>"<div class='alert'>Project successfully updated.</div>",
+					'MESSAGE'=>"<div class='alert alert-success'>Project successfully updated.</div>",
 					'project_id'=>$this->get_project_id());
 			}
 			else {

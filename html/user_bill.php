@@ -31,7 +31,7 @@ if (isset($_POST['email_bill'])) {
 		$message = "<div class='alert alert-success'>" . $email_result['MESSAGE'] . "</div>";
 	}
 	else {
-		$message = "<div class='alert alert-error'>" . $email_result['MESSAGE'] . "</div>";
+		$message = "<div class='alert alert-danger'>" . $email_result['MESSAGE'] . "</div>";
 	}
 }
 $end_date = date('Ymd',strtotime('-1 second',strtotime('+1 month',strtotime($start_date))));

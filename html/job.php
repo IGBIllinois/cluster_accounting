@@ -7,7 +7,7 @@ if (isset($_GET['user_id']) && (is_numeric($_GET['user_id']))) {
 }
 
 if (!$login_user->permission($user_id)) {
-        echo "<div class='alert alert-error'>Invalid Permissions</div>";
+        echo "<div class='alert alert-danger'>Invalid Permissions</div>";
         exit;
 }
 
@@ -30,7 +30,7 @@ if (isset($_GET['job'])) {
 
 }
 else { 
-	echo "<div class='alert alert-error'>This job does not exist. Completed jobs will be entered in the accounting software every hour.</div>";
+	echo "<div class='alert alert-warning'>This job does not exist. Completed jobs will be entered in the accounting software every hour.</div>";
 	exit;
 
 }
@@ -188,16 +188,16 @@ $exec_host_html .= "</table>";
 <div class='col-sm-4 col-md-4 col-lg-4 col-xl-4'>
 <?php
 if ($job->get_used_mem() * settings::get_reserve_memory_factor() > $job->get_reserved_mem()) {
-	echo "<div class='alert alert-error span8'>Please reserve the appropriate amount of memory.</div>";
+	echo "<div class='alert alert-danger'>Please reserve the appropriate amount of memory.</div>";
 }
 if ($job->get_cpu_time() * settings::get_reserve_processor_factor() > ($job->get_elapsed_time() * $job->get_slots())) {
-	echo "<div class='alert alert-error span8'>Please reserve the appropriate amount of processors.</div>";
+	echo "<div class='alert alert-danger'>Please reserve the appropriate amount of processors.</div>";
 }
 if ($job->get_submitted_project() !== $job->get_project()->get_name()) {
-	echo "<div class='alert alert-error span8'>Please use the correct project when submitting jobs.  This job was charged to your default project.</div>";
+	echo "<div class='alert alert-danger'>Please use the correct project when submitting jobs.  This job was charged to your default project.</div>";
 }
 if (!strpos($job->get_job_script(),'module load') && $job->get_job_script_exists()) {
-	echo "<div class='alert alert-error span8'>Please use the module command in your qsub script.</div>";
+	echo "<div class='alert alert-danger'>Please use the module command in your qsub script.</div>";
 }
 ?>
 </div>

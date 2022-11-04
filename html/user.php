@@ -13,7 +13,7 @@ else {
 	$user = new user($db,$ldap,$login_user->get_user_id());
 }
 if (!$login_user->permission($user_id)) {
-        echo "<div class='alert alert-error'>Invalid Permissions</div>";
+        echo "<div class='alert alert-danger'>Invalid Permissions</div>";
         exit;
 }
 
@@ -143,15 +143,15 @@ if ($login_user->is_admin()) {
 	echo "<a class='btn btn-primary' href='edit_project.php?project_id=" .
 			$user->default_project()->get_project_id() . "'>";
 	echo "<i class='fas fa-edit'></i>Edit User Project</a>";
-	echo "<a class='btn btn-primary' href='edit_user.php?user_id=" . $user->get_user_id() . "'><i class='fas fa-user-edit'></i>Edit User</a>";
-	echo "<a class='btn btn-info' href='user_bill.php?user_id=" . $user->get_user_id() . "'>User Bill</a>";
-	echo "<a class='btn btn-success' href='jobs.php?user_id=" . $user->get_user_id() . "'>User Jobs</a>";
+	echo "<a class='btn btn-primary' href='edit_user.php?user_id=" . $user->get_user_id() . "'><i class='fas fa-user-edit'></i>&nbsp;Edit User</a>";
+	echo "<a class='btn btn-info' href='user_bill.php?user_id=" . $user->get_user_id() . "'><i class='fas fa-money-bill'></i>&nbsp;User Bill</a>";
+	echo "<a class='btn btn-success' href='jobs.php?user_id=" . $user->get_user_id() . "'><i class='fas fa-file-alt'></i>&nbsp;User Jobs</a>";
 	echo "</div></div>";
 	echo "</form>";
 }
 
 if (isset($result['MESSAGE'])) { 
-	echo "<div class='alert alert-error'>" . $result['MESSAGE'] . "</div>"; 
+	echo "<div class='alert alert-danger'>" . $result['MESSAGE'] . "</div>"; 
 }
 ?>
 </div>

@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 
 chdir(dirname(__FILE__));
@@ -145,7 +146,7 @@ switch(settings::get_job_scheduler()) {
 			}
 		}
 
-		$msg = $number_new_jobs . " cluster jobs added to accounting database "
+		$msg = $number_new_jobs . " cluster jobs added to accounting database ";
 		$msg .= "from file " . __TORQUE_ACCOUNTING__ .  $torque_date;
 		break;
 

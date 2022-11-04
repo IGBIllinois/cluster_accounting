@@ -96,7 +96,7 @@ if (count($user_list) > 1) {
 <div class='row'>
 <div class='col-sm-8 col-md-8 col-lg-8 col-xl-8'>
 	<form class='form-inline' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
-                <input type='text' name='search' class='form-control form-control-sm' placeholder='Search'
+                <input type='text' name='search' class='form-control' placeholder='Search'
 			value='<?php if (isset($_GET['search'])) { echo $_GET['search']; } ?>' autocapitalize='none'>
 		<?php
 			if ($login_user->is_admin() || $login_user->is_supervisor()) {
@@ -104,18 +104,18 @@ if (count($user_list) > 1) {
 			}
 
 		?>
-		<input class='form-control form-control-sm' type='text' name='start_date' id='start_date' placeholder='Start Date'
+		<input class='form-control' type='text' name='start_date' id='start_date' placeholder='Start Date'
 			value='<?php if (isset($start_date)) { echo $start_date; } ?>'>
-		<input class='form-control form-control-sm' type='text' name='end_date' id='end_date' placeholder='End Date'
+		<input class='form-control' type='text' name='end_date' id='end_date' placeholder='End Date'
 			value='<?php if (isset($end_date)) { echo $end_date; } ?>'>
-                <input type='submit' class='btn btn-primary btn-sm' value='Search'>
+                <input type='submit' class='btn btn-primary' value='Search'>
 	</form>
 </div>
 <div class='col-sm-4 col-md-4 col-lg-4 col-xl-4'>
         <div class='btn-group' role='group'>
-                <a class='btn btn-sm btn-primary' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array); ?>'>All Jobs</a>
-                <a class='btn btn-sm btn-success' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array) . "&completed=1"; ?>'>Completed Jobs</a>
-                <a class='btn btn-sm btn-danger' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array) . "&completed=0"; ?>'>Failed Jobs</a>
+                <a class='btn btn-primary' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array); ?>'>All Jobs</a>
+                <a class='btn btn-success' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array) . "&completed=1"; ?>'>Completed Jobs</a>
+                <a class='btn btn-danger' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array) . "&completed=0"; ?>'>Failed Jobs</a>
         </div>
 
 </div>

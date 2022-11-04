@@ -29,7 +29,7 @@ require_once 'includes/main.inc.php';
 <nav class='navbar fixed-top navbar-dark bg-dark'>
 	<a class='navbar-brand py-0' href='#'><?php echo settings::get_title(); ?></a>
 	<span class='navbar-text py-0'>Version <?php echo settings::get_version(); ?>&nbsp;
-		<a class='btn btn-danger btn-small' role="button" href='logout.php'>Logout</a>
+		<a class='btn btn-danger btn-sm' role="button" href='logout.php'>Logout</a>
 	</span>
 </nav>
 <p>

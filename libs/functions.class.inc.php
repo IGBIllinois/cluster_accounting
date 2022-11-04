@@ -157,7 +157,7 @@ class functions {
 				$output .= "<div class='alert alert-success'>" . $message['MESSAGE'] . "</div>";
 			}
 			else {
-				$output .= "<div class='alert alert-error'>" . $message['MESSAGE'] . "</div>";
+				$output .= "<div class='alert alert-danger'>" . $message['MESSAGE'] . "</div>";
 			}
 		}
 		return $output;

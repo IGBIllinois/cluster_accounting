@@ -238,6 +238,7 @@ foreach ($group_members as $member) {
 </table>
 </div>
 </div>
+<br>
 <?php if (isset($_SERVER['HTTP_REFERER'])) {
         echo "<a href='" . $_SERVER['HTTP_REFERER'] . "' class='btn btn-primary'>Back</a>";
 

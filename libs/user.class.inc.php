@@ -42,35 +42,35 @@ class user {
 		//Verify Username
 		if ($username == "") {
 			$error = true;
-			$message = "<div class='alert'>Please enter a username</div>";
+			$message = "<div class='alert alert-danger'>Please enter a username</div>";
 		}
 		elseif (preg_match('/[A-Z]/',$username)) {
 			$error = true;
-			$message = "<div class='alert'>Username can only be lowercase</div>";
+			$message = "<div class='alert alert-danger'>Username can only be lowercase</div>";
 		}
 		elseif ($this->get_user_exist($username)) {
 			$error = true;
-			$message .= "<div class='alert'>User already exists in database</div>";
+			$message .= "<div class='alert alert-danger'>User already exists in database</div>";
 		}
 		elseif (!$this->ldap->is_ldap_user($username)) {
 			$error = true;
-			$message = "<div class='alert'>User does not exist in LDAP database.</div>";
+			$message = "<div class='alert alert-danger'>User does not exist in LDAP database.</div>";
 		}
 
 		if ($supervisor_id == "-1") {
 			$error = true;
-			$message .= "<div class='alert'>Please select a supervisor.</div>";
+			$message .= "<div class='alert alert-danger'>Please select a supervisor.</div>";
 		}
 		//Verify CFOP/Activty Code
 		$project = new project($this->db);
 		if (!$project->verify_cfop($cfop) && $bill_project) {
 			$error = true;
-			$message .= "<div class='alert'>Invalid CFOP.</div>";
+			$message .= "<div class='alert alert-danger'>Invalid CFOP.</div>";
 		}
 
 		if (!$project->verify_activity_code($activity) && $bill_project) {
 			$error = true;
-			$message .= "<div class='alert'>Invalid Activity Code.</div>";
+			$message .= "<div class='alert alert-danger'>Invalid Activity Code.</div>";
 		}
 
 		//If Errors, return with error messages

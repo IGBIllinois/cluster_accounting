@@ -47,30 +47,30 @@ class queue {
 		$message = "";
 		if(!$this->verify_queue_name($name)) {
 			$errors = true;
-			$message .= "<div class='alert alert-warning'>Please enter a valid queue name.</div>";
+			$message .= "<div class='alert alert-danger'>Please enter a valid queue name.</div>";
 		}
 		if ($description == "") {
 			$errors = true;
-			$message .= "<div class='alert alert-warning'>Please enter a queue description.</div>";
+			$message .= "<div class='alert alert-danger'>Please enter a queue description.</div>";
 
 		}
 		if (!$this->verify_ldap_group($ldap_group)) {
 			$errors = true;
-			$message .= "<div class='alert alert-warning'>Please enter valid LDAP group.</div>";
+			$message .= "<div class='alert alert-danger'>Please enter valid LDAP group.</div>";
 
 		}
 		if (!is_numeric($cpu)) {
 			$errors = true;
-			$message .= "<div class='alert alert-warning'>Please enter valid CPU cost.</div>";
+			$message .= "<div class='alert alert-danger'>Please enter valid CPU cost.</div>";
 		}
 		if (!is_numeric($mem)) {
 			$errors = true;
-			$message .= "<div class='alert alert-warning'>Please enter valid memory cost.</div>";
+			$message .= "<div class='alert alert-danger'>Please enter valid memory cost.</div>";
 
 		}
 		if (!is_numeric($gpu)) {
 			$errors = true;
-			$message .= "<div class='alert alert-warning'>Please enter valid GPU cost.</div>";
+			$message .= "<div class='alert alert-danger'>Please enter valid GPU cost.</div>";
 		}
 		if ($errors == 0) {
 			$queue_array = array('queue_name'=>$name,
@@ -163,17 +163,17 @@ class queue {
 
 		if (($cpu_cost == "") || (!is_numeric($cpu_cost))) {
 			$errors = true;
-			$message .= "<div class='alert'>Please enter a valid processor cost.</div>";
+			$message .= "<div class='alert alert-danger'>Please enter a valid processor cost.</div>";
 		}
 
 		if (($mem_cost == "") || (!is_numeric($mem_cost))) {
 			$errors = true;
-			$message .= "<div class='alert'>Please enter a valid memory cost.</div>";
+			$message .= "<div class='alert alert-danger'>Please enter a valid memory cost.</div>";
 		}
 
 		if (($gpu_cost == "") || (!is_numeric($gpu_cost))) {
 			$errors = true;
-			$message .= "<div class='alert'>Please enter a valid GPU cost.</div>";
+			$message .= "<div class='alert alert-danger'>Please enter a valid GPU cost.</div>";
 		}
 
 		if ($errors) {
