@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
 
 if (!$login_user->is_admin()) {
         exit;
@@ -36,6 +36,7 @@ $user_count = 0;
 
 $users_html = html::get_users_rows($all_users,$start,$count);
 
+require_once 'includes/header.inc.php';
 
 ?>
 <h3>List of Users - <?php echo $enabled ? "Active" : "Deactived"; ?></h3>

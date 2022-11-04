@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
 
 if (!$login_user->is_admin()) {
         exit;
@@ -49,6 +49,8 @@ foreach ($queues as $queue) {
 	$queue_html .= "</table></form>";
 	$queue_html .= "<br>";
 }
+
+require_once 'includes/header.inc.php';
 
 ?>
 

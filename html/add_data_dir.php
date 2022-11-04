@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
 
 
 if (!$login_user->is_admin()) {
@@ -32,6 +32,8 @@ foreach ($projects as $project) {
 	
 	
 }
+
+require_once 'includes/header.inc.php';
 ?>
 <h3>Add Data Directory</h3>
 <hr>

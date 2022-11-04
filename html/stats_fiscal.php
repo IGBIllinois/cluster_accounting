@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
 
 if (!$login_user->is_admin()) {
         exit;
@@ -72,6 +72,8 @@ foreach ($graph_type_array as $graph) {
 $graph_form .= "</select>";
 
 $stats = new statistics($db);
+
+require_once 'includes/header.inc.php';
 
 ?>
 <h3>Fiscal Stats - <?php echo $year; ?></h3>

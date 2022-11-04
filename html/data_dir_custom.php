@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
 
 if (!$login_user->is_admin()) {
         exit;
@@ -19,7 +19,7 @@ $pages_html = html::get_pages_html($pages_url,$num_dirs,$start,$count);
 $directories = data_functions::get_directories($db,$custom,$start,$count);
 $dir_html = $dir_html = html::get_data_dir_rows($directories);
 
-
+require_once 'includes/header.inc.php';
 	
 ?>
 <h3>List of Directories</h3>

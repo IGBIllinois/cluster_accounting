@@ -42,7 +42,7 @@ class queue {
 	//$description - string - queue description
 	//returns array with id of new queue
 	//Creates new queue
-	public function create($name,$description,$ldap_group,$cpu,$mem,$gpu) {
+	public function create($name,$description,$ldap_group,$cpu,$mem,$gpu,$ldap) {
 		$errors = false;
 		$message = "";
 		if(!$this->verify_queue_name($name)) {
@@ -54,7 +54,7 @@ class queue {
 			$message .= "<div class='alert alert-danger'>Please enter a queue description.</div>";
 
 		}
-		if (!$this->verify_ldap_group($ldap_group)) {
+		if (!$this->verify_ldap_group($ldap,$ldap_group)) {
 			$errors = true;
 			$message .= "<div class='alert alert-danger'>Please enter valid LDAP group.</div>";
 
@@ -221,9 +221,7 @@ class queue {
 
 	}
 
-	public function verify_ldap_group($ldap_group) {
-		$ldap = new ldap(__LDAP_HOST__,__LDAP_SSL__,__LDAP_PORT__,__LDAP_BASE_DN__);
-
+	public function verify_ldap_group($ldap,$ldap_group) {
 		if (($ldap_group == "") || ($ldap->get_group_exists($ldap_group))) {
 			return true;
 		}

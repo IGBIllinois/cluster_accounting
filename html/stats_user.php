@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
 
 $user_id = $login_user->get_user_id();
 if (isset($_GET['user_id']) && (is_numeric($_GET['user_id']))) {
@@ -51,6 +51,8 @@ if ($graph_type == "users_billed_cost") {
 }
 else { $graph_form .= "<option value='users_billed_cost'>Users Billed Cost</option>";
 }
+
+require_once 'includes/header.inc.php';
 
 ?>
 

@@ -1,6 +1,5 @@
 <?php
-require_once 'includes/header.inc.php';
-require_once 'includes/session.inc.php';
+require_once 'includes/main.inc.php';
 
 $public_queues = functions::get_queues($db,'PUBLIC');
 $public_queues_html = html::get_queue_rows($public_queues);
@@ -17,6 +16,8 @@ foreach ($data_costs as $value) {
 	$data_html .= "</tr>";
 
 }
+
+require_once 'includes/header.inc.php';
 ?>
 <div class='jumbotron col-sm-10 col-md-10 col-lg-10 col-xl-10'>
 	<h1 class='display-4'>

@@ -1,5 +1,6 @@
 <?php
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
+
 $user_id = $login_user->get_user_id();
 if (isset($_GET['user_id']) && (is_numeric($_GET['user_id']))) {
         $user_id = $_GET['user_id'];
@@ -26,7 +27,7 @@ else {
 
 }
 
-
+require_once 'includes/header.inc.php';
 ?>
 <h3>Job Script - <?php echo $job->get_full_job_number(); ?></h3>
 <?php

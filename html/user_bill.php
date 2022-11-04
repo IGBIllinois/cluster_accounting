@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
 
 $user_id = $login_user->get_user_id();
 if (isset($_GET['user_id']) && (is_numeric($_GET['user_id']))) {
@@ -139,6 +139,8 @@ $get_vars = array('user_id'=>$user_id,
 	'year'=>$year);
 
 $self_url = $_SERVER['PHP_SELF'] . "?" . http_build_query($get_vars);
+
+require_once 'includes/header.inc.php';
 
 ?>
 <h3>User Bill - <?php echo $month_name . " " . $year; ?></h3>

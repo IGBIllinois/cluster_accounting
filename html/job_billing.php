@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
 
 if (!$login_user->is_admin()) {
         exit;
@@ -41,6 +41,7 @@ foreach ($jobs as $job) {
 
 $stats = new statistics($db);
 
+require_once 'includes/header.inc.php';
 ?>
 <h3>Job Billing Monthly Reports - <?php echo $month_name . " " . $year; ?></h3>
 <div class='card'>

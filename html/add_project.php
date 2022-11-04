@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
 
 if (!$login_user->is_admin()) {
         exit;
@@ -48,6 +48,8 @@ foreach ($users as $owner) {
 
 }
 $owner_html .= "</select>";
+
+require_once 'includes/header.inc.php';
 ?>
 <h3>Add Project</h3>
 <hr>

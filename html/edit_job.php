@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
 
 if (!$login_user->is_admin()) {
         exit;
@@ -88,6 +88,7 @@ foreach ($all_cfops as $cfop) {
 
 }
 
+require_once 'includes/header.inc.php';
 ?>
 <h3>
 	Job #
@@ -217,9 +218,11 @@ foreach ($all_cfops as $cfop) {
 
 <div class='col-sm-6 col-md-6 col-lg-6 col-xl-6'>
 <h4>Update CFOP</h4>
+<div class='form-group row'>
 <select class='custom-select' name='new_cfop' id='new_cfop' onChange='enable_new_cfop();'>
 <?php echo $edit_cfop_html; ?>
 </select>
+</div>
 <br>
 <div class='form-group row'>
 	<label class='col-sm-3 col-form-label' for='cfop_input'>CFOP:</label>

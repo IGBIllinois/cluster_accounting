@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
 
 $user_id = 0;
 $user = "";
@@ -61,7 +61,7 @@ foreach ($queues as $queue) {
 
 }
 
-
+require_once 'includes/header.inc.php';
 
 ?>
 <h3>User Information</h3>

@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
 
 if (!$login_user->is_admin()) {
         exit;
@@ -57,6 +57,9 @@ foreach ($graph_type_array as $graph) {
 }
 
 $graph_form .= "</select>";
+
+require_once 'includes/header.inc.php';
+
 ?>
 
 <h3>Monthly Stats - <?php echo $month_name . " " . $year; ?></h3>

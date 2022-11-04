@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
 
 if (!$login_user->is_admin()) {
         exit;
@@ -20,9 +20,9 @@ $users_html = "";
 foreach ($cluster_users as $cluster_user) {
 	$users_html .= "<tr><td>" . $cluster_user . "</td></tr>";
 	
-	
-	
 }
+
+require_once 'includes/header.inc.php';
 ?>
 <h3>Verify Users and Directories</h3>
 <hr>

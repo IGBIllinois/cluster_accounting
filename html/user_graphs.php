@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
 
 $graph_type_array[0]['type'] = 'user_num_jobs_per_month';
 $graph_type_array[0]['title'] = 'Jobs Per Month';
@@ -93,8 +93,7 @@ if (count($user_list)) {
         $user_list_html .= "</select>";
 }
 
-
-
+require_once 'includes/header.inc.php';
 
 ?>
 <h3>User Stats - <?php echo $year; ?></h3>

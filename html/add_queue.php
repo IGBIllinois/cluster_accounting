@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
 
 if (!$login_user->is_admin()) {
         exit;
@@ -11,7 +11,7 @@ if (isset($_POST['new_queue'])) {
                 $var = trim(rtrim($var));
         }
         $queue = new queue($db);
-        $result = $queue->create($_POST['name'],$_POST['description'],$_POST['ldap_group'],$_POST['cpu_cost'],$_POST['mem_cost'],$_POST['gpu_cost']);
+        $result = $queue->create($_POST['name'],$_POST['description'],$_POST['ldap_group'],$_POST['cpu_cost'],$_POST['mem_cost'],$_POST['gpu_cost'],$ldap);
         if($result['RESULT']) {
                 unset($_POST);
         }
@@ -22,7 +22,7 @@ elseif (isset($_POST['cancel_queue'])) {
 
 }
 
-
+require_once 'includes/header.inc.php';
 ?>
 <h3>Add Queue</h3>
 <hr>
@@ -46,18 +46,24 @@ elseif (isset($_POST['cancel_queue'])) {
 	</div>
 	<div class='form-group'>
 		<label for='cpu_input'>CPU Cost (per second): </label>
+		<div class='input-group'><div class='input-group-prepend'><div class='input-group-text'>$</div></div>
 		<input class='form-control' type='text' name='cpu_cost' id='cpu_input'
 			value='<?php if (isset($_POST['cpu_cost'])) { echo $_POST['cpu_cost']; } ?>'>
+		</div>
 	</div>
 	<div class='form-group'>
 		<label for='mem_input'>Memory Cost (per gigabyte): </label>
+		<div class='input-group'><div class='input-group-prepend'><div class='input-group-text'>$</div></div>
 		<input class='form-control' type='text' name='mem_cost' id='mem_input'
 			value='<?php if (isset($_POST['mem_cost'])) { echo $_POST['mem_cost']; } ?>'>
+		</div>
 	</div>
 	<div class='form-group'>
 		<label for='gpu_input'>GPU Cost (per second): </label>
+		<div class='input-group'><div class='input-group-prepend'><div class='input-group-text'>$</div></div>
 		<input class='form-control' type='text' name='gpu_cost' id='gpu_input'
 			value='<?php if (isset($_POST['gpu_cost'])) { echo $_POST['gpu_cost']; } ?>'>
+		</div>
 	</div>
 	<div class='form-group'>
 		<input class='btn btn-primary' type='submit' name='new_queue' value='Create Queue'>

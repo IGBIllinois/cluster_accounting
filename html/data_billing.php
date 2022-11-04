@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
 
 if (!$login_user->is_admin()) {
         exit;
@@ -34,6 +34,7 @@ foreach ($data_bill as $value) {
 	}
 }
 
+require_once 'includes/header.inc.php';
 ?>
 <h3>Data Billing Monthly Report - <?php echo $month_name . " " . $year; ?></h3>
 <ul class='pager'>

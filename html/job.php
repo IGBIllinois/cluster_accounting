@@ -1,6 +1,7 @@
 <?php
 
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
+
 $user_id = $login_user->get_user_id();
 if (isset($_GET['user_id']) && (is_numeric($_GET['user_id']))) {
         $user_id = $_GET['user_id'];
@@ -49,6 +50,8 @@ else {
 	$exec_host_html .= "<tr><td>No Data</td></tr>";
 }
 $exec_host_html .= "</table>";
+
+require_once 'includes/header.inc.php';
 ?>
 <h3>
 	Job #

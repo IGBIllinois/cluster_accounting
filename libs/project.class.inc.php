@@ -33,7 +33,7 @@ class project {
 	public function __destruct() {
 	}
 
-	public function create($name,$ldap_group,$description,$default,$bill_project,$owner_id,$cfop = "",$activity = "",$hide_cfop = 0) {
+	public function create($name,$ldap_group,$description,$default,$bill_project,$owner_id,$cfop = "",$activity = "",$hide_cfop = 0,$ldap) {
 		$error = false;
 		$message = "";
 		$activity = strtoupper($activity);
@@ -42,7 +42,7 @@ class project {
 			$message .= "<div class='alert alert-danger'>Please enter a valid project name.</div>";
 		}
 
-		if (!$this->verify_ldap_group($ldap_group)) {
+		if (!$this->verify_ldap_group($ldap,$ldap_group)) {
 			$error = true;
 			$message .= "<div class='alert alert-danger'>Please enter a valid LDAP group.</div>";
 		}
@@ -286,8 +286,7 @@ class project {
 		return false;
 
 	}
-	public function verify_ldap_group($ldap_group) {
-		$ldap = new ldap(__LDAP_HOST__,__LDAP_SSL__,__LDAP_PORT__,__LDAP_BASE_DN__);
+	public function verify_ldap_group($ldap,$ldap_group) {
 
 		if (!($ldap_group == "") && ($ldap->get_group_exists($ldap_group))) {
 			return true;

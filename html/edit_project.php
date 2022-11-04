@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
 
 if (!$login_user->is_admin()) {
         exit;
@@ -82,6 +82,7 @@ foreach ($group_members as $member) {
 	$group_members_html .= "<tr><td>" . $member . "</td></tr>";
 }
 
+require_once 'includes/header.inc.php';
 ?>
 <h3>Project - <?php echo $project->get_name(); ?></h3>
 <hr>
