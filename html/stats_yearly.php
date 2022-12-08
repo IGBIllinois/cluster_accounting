@@ -5,10 +5,9 @@ if (!$login_user->is_admin()) {
         exit;
 }
 
+$year = date('Y');
 if (isset($_GET['year'])) {
 	$year = $_GET['year'];
-}
-else { $year = date('Y');
 }
 
 $previous_year = $year - 1;

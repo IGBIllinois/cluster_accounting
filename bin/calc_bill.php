@@ -48,6 +48,9 @@ if (php_sapi_name() != 'cli') {
 	
 $year = date("Y",strtotime("-1 month"));
 $month = date("m",strtotime("-1 month"));
+$calc_data = true;
+$calc_jobs = true;
+
 $options = getopt($shortopts,$longopts);
 if (isset($options['h']) || isset($options['help'])) {
 	echo $output_command;
@@ -78,7 +81,7 @@ $db = new \IGBIllinois\db(settings::get_mysql_host(),
                         );
 
 $log = new \IGBIllinois\log(settings::get_log_enabled(),settings::get_logfile());
-
+/*
 $directories = data_functions::get_all_directories($db);
 foreach ($directories as $directory) {
 	$data_dir = new data_dir($db,$directory['data_dir_id']);
@@ -92,7 +95,15 @@ foreach ($directories as $directory) {
 	$result = $data_dir->add_data_bill($month,$year,$average);
 	$log->send_log($result['MESSAGE']);
 }
-	
-	
+*/
+
+$enabled = 0;
+$jobs_bill = job_functions::get_jobs_bill_new($db,$month,$year);
+
+$bill_date = $year . "-" . $month . "-01 00:00:00";
+foreach ($jobs_bill as $job_info) {
+	$job_info['date'] = $bill_date;
+	job_bill::add_job_usage($db,$job_info);
+}
 
 ?>

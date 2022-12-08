@@ -34,11 +34,13 @@ class functions {
 	}
 
 
-	public static function get_projects($db,$custom = 'ALL', $search = '', $start=0,$count=0) {
+	public static function get_projects($db,$enabled = 1, $custom = 'ALL', $search = '', $start=0,$count=0) {
 
 		$search = strtolower(trim(rtrim($search)));
 		$where_sql = array();
-		array_push($where_sql,"project_enabled='1' ");
+		if ($enabled) {
+			array_push($where_sql,"project_enabled='1' ");
+		}
 		array_push($where_sql,"cfops.cfop_active='1' ");
 	
 		$sql = "SELECT projects.*,cfops.*, users.user_name as owner ";
@@ -51,8 +53,6 @@ class functions {
 		}
 		elseif ($custom == 'DEFAULT') {
 			array_push($where_sql,"project_default='1' ");
-		}
-		elseif ($custom == 'ALL') {
 		}
 
                 if ($search != "" ) {
@@ -143,13 +143,6 @@ class functions {
 		return $result[0]['count'];
 	}
 
-
-	public static function get_pretty_date($date) {
-		return substr($date,0,4) . "/" . substr($date,4,2) . "/" . substr($date,6,2);
-
-	}
-
-
 	public static function output_message($messages) {
 		$output = "";
 		foreach ($messages as $message) {
@@ -170,13 +163,6 @@ class functions {
 		$sql .= "LIMIT 1";
 		return $db->query($sql);
 
-	}
-
-	public static function verify_date($inDate) {
-		$format = "Y-m-d H:i:s";
-		$date = DateTime::createFromFormat($format,$inDate);
-		return $date && ($date->format($format) === $inDate);
-		
 	}
 
 	public static function recursive_array_search($needle,$haystack) {

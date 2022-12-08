@@ -17,7 +17,10 @@ class user_functions {
         	$search = strtolower(trim(rtrim($search)));
 	        $where_sql = array();
 	
-        	$sql = "SELECT users.* FROM users ";
+        	$sql = "SELECT users.*,supervisors.user_name as supervisor_user_name, ";
+		$sql .= "supervisors.user_full_name as supervisor_full_name ";
+		$sql .= "FROM users ";
+		$sql .= "LEFT JOIN users as supervisors ON supervisors.user_id=users.user_supervisor ";
 	        array_push($where_sql,"users.user_enabled='" . $enabled . "'");
 
         	if ($search != "" ) {

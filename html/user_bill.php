@@ -11,16 +11,14 @@ if (!$login_user->permission($user_id)) {
         exit;
 }
 
+$year = date('Y');
+$month = date('m');
+$start_date = date('Ym') . "01";
 
 if (isset($_GET['month']) && isset($_GET['year'])) {
 	$year = $_GET['year'];
 	$month = $_GET['month'];
 	$start_date = $year . $month . "01";
-}
-else {
-	$year = date('Y');
-	$month = date('m');
-	$start_date = date('Ym') . "01";
 }
 
 $user = new user($db,$ldap,$user_id);
@@ -176,7 +174,7 @@ require_once 'includes/header.inc.php';
 		<td><?php echo $user->get_supervisor_name(); ?></td>
 	<tr>
 		<td>Billing Dates:</td>
-		<td><?php echo functions::get_pretty_date($start_date); ?> - <?php echo functions::get_pretty_date($end_date); ?>
+		<td><?php echo \IGBIllinois\Helper\date_helper::get_pretty_date($start_date); ?> - <?php echo \IGBIllinois\Helper\date_helper::get_pretty_date($end_date); ?>
 		</td>
 	</tr>
 </table>

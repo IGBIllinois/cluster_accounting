@@ -88,7 +88,7 @@ CREATE TABLE jobs (
 
 CREATE TABLE data_cost(
 	data_cost_id INT NOT NULL AUTO_INCREMENT,
-	data_cost_value DECIMAL(30,7),
+	data_cost_value DECIMAL(30,2),
 	data_cost_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	data_cost_enabled BOOLEAN DEFAULT TRUE,
 	PRIMARY KEY (data_cost_id)
@@ -128,6 +128,19 @@ CREATE TABLE data_bill (
         PRIMARY KEY(data_bill_id)
 );
 
+CREATE TABLE job_bill (
+        job_bill_id INT NOT NULL AUTO_INCREMENT,
+        job_bill_user_id INT REFERENCES users(user_id),
+        job_bill_project_id INT REFERENCES projects(project_id),
+        job_bill_cfop_id INT REFERENCES cfops(cfop_id),
+        job_bill_queue_id INT REFERENCES queues(queue_id),
+        job_bill_queue_cost_id INT REFERENCES queue_cost(queue_cost_id),
+        job_bill_date TIMESTAMP,
+        job_bill_num_jobs INT,
+        job_bill_total_cost DECIMAL(30,7),
+        job_bill_billed_cost DECIMAL(30,7),
+        PRIMARY KEY (job_bill_id)
+);
 
 CREATE VIEW job_info AS
 SELECT jobs.job_id as id, IF(ISNULL(jobs.job_number_array),jobs.job_number, CONCAT(jobs.job_number,'[',jobs.job_number_array,']')) as job_number_full, jobs.job_number as job_number, jobs.job_number_array as job_number_array, jobs.job_name as job_name, jobs.job_slots as slots, jobs.job_submission_time as submission_time,jobs.job_start_time as start_time, jobs.job_end_time as end_time, TIME_TO_SEC(TIMEDIFF(jobs.job_end_time,jobs.job_start_time)) as elapsed_time, jobs.job_ru_wallclock as wallclock_time, jobs.job_cpu_time as cpu_time, jobs.job_total_cost as total_cost, jobs.job_billed_cost as billed_cost, jobs.job_reserved_mem as reserved_mem, jobs.job_used_mem as used_mem, jobs.job_maxvmem as maxvmem, job_queue_id as queue_id, jobs.job_exit_status as exit_status, jobs.job_exec_hosts as exec_hosts, jobs.job_qsub_script as qsub_script, jobs.job_project as submitted_project, TIME_TO_SEC(TIMEDIFF(jobs.job_start_time,jobs.job_submission_time)) as queued_time, users.user_id as user_id, users.user_name as username, projects.project_name as project_name, projects.project_id as project_id, cfops.cfop_value as cfop, cfops.cfop_activity as activity_code, queues.queue_name as queue_name FROM jobs LEFT JOIN users ON jobs.job_user_id=users.user_id LEFT JOIN projects ON projects.project_id=jobs.job_project_id LEFT JOIN queues ON queues.queue_id=jobs.job_queue_id LEFT JOIN cfops ON cfops.cfop_id=jobs.job_cfop_id LEFT JOIN queue_cost ON queue_cost.queue_cost_id=jobs.job_queue_cost_id;

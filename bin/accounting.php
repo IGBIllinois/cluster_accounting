@@ -69,7 +69,7 @@ elseif ( ((isset($options['previous-hour'])) || (isset($options['previous-day'])
 //start-time is selected
 if (isset($options['start-time'])) {
 	$start_time = $options['start-time'];
-	if (!functions::verify_date($start_time)) {
+	if (!\IGBIllinois\Helper\date_helper::verify_date($start_time)) {
 		exit("Invalid start-time date format.\n");
 	}
 }
@@ -77,7 +77,7 @@ if (isset($options['start-time'])) {
 //end-time is selected
 if (isset($options['end-time'])) {
 	$end_time = $options['end-time'];
-	if (!functions::verify_date($end_time)) {
+	if (!\IGBIllinois\Helper\date_helper::verify_date($end_time)) {
 		exit("Invalid end-time date format.\n");
 	}
 

@@ -25,7 +25,7 @@ require_once 'includes/header.inc.php';
 <tr><th>Cost (per TB)</th><th>Time Set</th></tr>
 </thead>
 <tr>
-<td>$<?php echo $data_cost->get_formatted_cost(); ?></td>
+<td>$<?php echo $data_cost->get_cost(); ?></td>
 <td><?php echo $data_cost->get_time_created(); ?></td>
 </tr>
 <tr><td><div class='input-group'><div class='input-group-prepend'><div class='input-group-text'>$</div></div><input class='form-control' type='text' name='cost'></div></td>

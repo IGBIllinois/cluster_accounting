@@ -398,13 +398,13 @@ class user {
 		
 			$user_stats = new user_stats($this->db,$this->get_user_id(),$start_date,$end_date);
 
-			$subject = "Biocluster Accounting Bill - " . functions::get_pretty_date($start_date) . "-" . functions::get_pretty_date($end_date);
+			$subject = "Biocluster Accounting Bill - " . \IGBIllinois\Helper\date_helper::get_pretty_date($start_date) . "-" . \IGBIllinois\Helper\date_helper::get_pretty_date($end_date);
 			$to = $this->get_email();
 
 			$twig_variables = array(
         	                'css' => settings::get_email_css_contents(),
-                	        'start_date' => functions::get_pretty_date($start_date),
-                        	'end_date' => functions::get_pretty_date($end_date),
+                	        'start_date' => \IGBIllinois\Helper\date_helper::get_pretty_date($start_date),
+                        	'end_date' => \IGBIllinois\Helper\date_helper::get_pretty_date($end_date),
 	                        'full_name' => $this->get_full_name(),
         	                'username' => $this->get_username(),
 				'num_jobs' => $user_stats->get_num_jobs(),

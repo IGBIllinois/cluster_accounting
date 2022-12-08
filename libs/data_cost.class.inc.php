@@ -29,9 +29,6 @@ class data_cost {
 	public function get_cost() {
 		return $this->cost;
 	}
-	public function get_formatted_cost() {
-		return number_format($this->get_cost(),2);
-	}
 	public function get_time_created() {
 		return $this->time_created;
 	}
@@ -94,3 +91,5 @@ class data_cost {
 		return $bytes / self::bytes_to_terabytes;
 	}
 }
+
+?>

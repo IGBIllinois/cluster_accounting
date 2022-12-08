@@ -16,13 +16,12 @@ $start = 0;
 if (isset($_GET['start']) && is_numeric($_GET['start'])) {
         $start = $_GET['start'];
 }
+
+$start_date = date('Y-m') . "-01";
+$end_date = date('Y-m-d',strtotime('-1 second',strtotime('+1 month',strtotime($start_date))));
 if (isset($_GET['start_date']) && isset($_GET['end_date'])) {
         $start_date = $_GET['start_date'];
         $end_date = $_GET['end_date'];
-}
-else {
-        $start_date = date('Y-m') . "-01";
-        $end_date = date('Y-m-d',strtotime('-1 second',strtotime('+1 month',strtotime($start_date))));
 }
 
 $jobs = array();

@@ -9,7 +9,7 @@ $private_queues_html = html::get_queue_rows($private_queues);
 
 $data_cost = data_functions::get_current_data_cost($db);
 $data_html .= "<tr>";
-$data_html .= "<td>$" . $data_cost->get_formatted_cost() . "</td>";
+$data_html .= "<td>$" . $data_cost->get_cost() . "</td>";
 $data_html .= "</tr>";
 
 

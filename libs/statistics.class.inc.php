@@ -18,15 +18,19 @@ class statistics {
 
 
 	public function get_total_cost($start_date,$end_date,$format = 0) {
-		$sql = "SELECT ROUND(SUM(job_total_cost),2) AS total_cost ";
-		$sql .= "FROM jobs ";
-		$sql .= "WHERE DATE(job_end_time) BETWEEN '" . $start_date . "' AND '" . $end_date . "'";
-		$result = $this->db->query($sql);
+		$sql = "SELECT ROUND(SUM(job_bill_total_cost),2) AS total_cost ";
+		$sql .= "FROM job_bill ";
+		$sql .= "WHERE DATE(job_bill_date) BETWEEN :start_date AND :end_date";
+		$parameters = array(
+			':start_date'=>$start_date->format("Y-m-d H:i:s"),
+			':end_date'=>$end_date->format("Y-m-d H:i:s")
+		);
+		$result = $this->db->query($sql,$parameters);
 		$total_cost = $result[0]['total_cost'];
 		if ($result[0]['total_cost'] == "") {
 			$total_cost = "0.00";
 		}
-		if ($format == true) {
+		if ($format) {
 			$total_cost = number_format($total_cost,2);
 		}
 		return $total_cost;
@@ -34,16 +38,19 @@ class statistics {
 
 
 	public function get_total_billed_cost($start_date,$end_date,$format = 0) {
-		$sql = "SELECT ROUND(SUM(job_billed_cost),2) AS billed_cost ";
-		$sql .= "FROM jobs ";
-		$sql .= "WHERE DATE(job_end_time) BETWEEN '" . $start_date . "' AND '" . $end_date . "'";
-		
-		$result = $this->db->query($sql);
+		$sql = "SELECT ROUND(SUM(job_bill_billed_cost),2) AS billed_cost ";
+		$sql .= "FROM job_bill ";
+		$sql .= "WHERE DATE(job_bill_date) BETWEEN :start_date AND :end_date";
+		$parameters = array(
+                        ':start_date'=>$start_date->format("Y-m-d H:i:s"),
+                        ':end_date'=>$end_date->format("Y-m-d H:i:s")
+                );
+		$result = $this->db->query($sql,$parameters);
 		$billed_cost = $result[0]['billed_cost'];
 		if ($result[0]['billed_cost'] == "") {
 			$billed_cost = "0.00";
 		}
-		if ($format == true) {
+		if ($format) {
 			$billed_cost = number_format($billed_cost,2);
 		}
 		return $billed_cost;

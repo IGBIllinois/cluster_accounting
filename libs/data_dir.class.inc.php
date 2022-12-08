@@ -252,3 +252,5 @@ class data_dir {
 	}
 
 }
+
+?>

@@ -172,5 +172,17 @@ class data_functions {
                 return round($bytes / self::convert_gigabytes,3);
         }
 
+	public static function get_minimal_year($db) {
+                $sql = "SELECT MIN(YEAR(data_bill_date)) as year ";
+                $sql .= "FROM data_bill ";
+                $result = $db->query($sql);
+                if (count($result)) {
+                        return $result[0]['year'];
+                }
+                return date('Y');
+
+        }
+
 }
+
 ?>

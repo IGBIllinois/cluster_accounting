@@ -57,7 +57,8 @@ $get_array = array('search'=>$search,
                 'custom'=>$custom);
 $pages_url = $_SERVER['PHP_SELF'] . "?" . http_build_query($get_array);
 $pages_html = html::get_pages_html($pages_url,$num_projects,$start,$count);
-$projects = functions::get_projects($db,$custom,$search,$start,$count);
+$enabled = 1;
+$projects = functions::get_projects($db,$enabled,$custom,$search,$start,$count);
 $projects_html = "";
 
 foreach ($projects as $project) {
