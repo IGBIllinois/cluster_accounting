@@ -152,10 +152,16 @@ class user {
 		$sql .= "LEFT JOIN queues ON queues.queue_id=jobs.job_queue_id ";
 		$sql .= "LEFT JOIN projects ON projects.project_id=jobs.job_project_id ";
 		$sql .= "LEFT JOIN cfops ON cfops.cfop_id=jobs.job_cfop_id ";
-		$sql .= "WHERE DATE(jobs.job_end_time) BETWEEN '" . $start_date ."' AND '" . $end_date . "' ";
-		$sql .= "AND jobs.job_user_id='". $this->get_user_id() . "' ";
+		$sql .= "WHERE DATE(jobs.job_end_time) BETWEEN :start_date AND :end_date ";
+		$sql .= "AND jobs.job_user_id=:user_id ";
 		$sql .= "GROUP BY jobs.job_queue_id, jobs.job_cfop_id, jobs.job_user_id";
-		$result = $this->db->query($sql);
+		$parameters = array(
+			':user_id'=>$this->get_user_id(),
+			':start_date'=> $start_date,
+			':end_date'=>$end_date
+		);
+		
+		$result = $this->db->query($sql,$parameters);
 		foreach($result as $key=>$value) {
 			if ($value['total_cost'] == 0.00) {
 				$result[$key]['total_cost'] = 0.01;
@@ -180,9 +186,14 @@ class user {
 		$sql .= "FROM jobs ";
 		$sql .= "LEFT JOIN queues ON queues.queue_id=jobs.job_queue_id ";
 		$sql .= "LEFT JOIN projects ON projects.project_id=jobs.job_project_id ";
-		$sql .= "WHERE DATE(jobs.job_end_time) BETWEEN '" . $start_date ."' AND '" . $end_date . "' ";
-		$sql .= "AND jobs.job_user_id='". $this->get_user_id() . "' ";
-		$result = $this->db->query($sql);
+		$sql .= "WHERE DATE(jobs.job_end_time) BETWEEN :start_date AND :end_date ";
+		$sql .= "AND jobs.job_user_id=:user_id ";
+		$parameters = array(
+			':user_id'=> $this->get_user_id(),
+                        ':start_date'=> $start_date,
+                        ':end_date'=>$end_date
+                );
+		$result = $this->db->query($sql,$parameters);
 		return $result;
 
 
@@ -203,10 +214,15 @@ class user {
 		$sql .= "LEFT JOIN data_dir ON data_dir.data_dir_id=data_bill.data_bill_data_dir_id ";
 		$sql .= "LEFT JOIN cfops ON cfops.cfop_id=data_bill.data_bill_cfop_id ";
 		$sql .= "LEFT JOIN data_cost ON data_cost.data_cost_id=data_bill.data_bill_data_cost_id ";
-		$sql .= "WHERE projects.project_owner='" . $this->get_user_id() . "' ";
-		$sql .= "AND YEAR(data_bill.data_bill_date)='" . $year . "' ";
-	        $sql .= "AND MONTH(data_bill.data_bill_date)='" . $month . "' ";
-		return $this->db->query($sql);
+		$sql .= "WHERE projects.project_owner=:owner ";
+		$sql .= "AND YEAR(data_bill.data_bill_date)=:year ";
+	        $sql .= "AND MONTH(data_bill.data_bill_date)=:month ";
+		$parameters = array(
+			':owner'=>$this->get_user_id(),
+			':month'=>$month,
+			':year'=>$year
+		);
+		return $this->db->query($sql,$parameters);
 		
 	}
 	public function default_project() {
@@ -238,10 +254,12 @@ class user {
 
 	public function get_owned_projects() {
                 $sql = "SELECT * FROM projects ";
-                $sql .= "WHERE project_owner='" . $this->get_user_id() . "' ";
+                $sql .= "WHERE project_owner=:owner ";
                 $sql .= "AND project_enabled='1'";
-                $result = $this->db->query($sql);
-                return $result;
+		$parameters = array (
+			':owner'=>$this->get_user_id()
+		);
+                return $this->db->query($sql,$parameters);
         }
 
 	public function is_project_member($project) {
@@ -285,7 +303,10 @@ class user {
 
 	}
 	public function enable() {
-		$sql = "UPDATE users SET user_enabled='1' WHERE user_id='" . $this->get_user_id() . "' LIMIT 1";
+		$sql = "UPDATE users SET user_enabled='1' WHERE user_id=:user_id LIMIT 1";
+		$parameters = array (
+			":user_id"=>$this->get_user_id()
+		);
 		$this->db->non_select_query($sql);
 		$this->enabled = true;
 		return true;
@@ -308,7 +329,10 @@ class user {
                 }
 
 		if (!$error) {
-			$sql = "UPDATE users SET user_enabled='0' WHERE user_id='" . $this->get_user_id() . "' LIMIT 1";
+			$sql = "UPDATE users SET user_enabled='0' WHERE user_id=:user_id LIMIT 1";
+			$parameters = array( 
+				":user_id"=>$this->get_user_id()
+			);
 			$this->enabled = false;
 			$this->db->non_select_query($sql);
 			$this->default_project()->disable();
@@ -323,24 +347,33 @@ class user {
 
 	}
 	public function set_supervisor($supervisor_id) {
-		$sql = "UPDATE users SET user_supervisor='" . $supervisor_id . "' WHERE user_id='" . $this->get_user_id() . "'";
-		$this->db->non_select_query($sql);
+		$sql = "UPDATE users SET user_supervisor=:supervisor_id WHERE user_id=:user_id";
+		$parameters = array(
+			':supervisor_id'=>$supervisor_id,
+			':user_id'=>$this->get_user_id()
+		);
+		$this->db->non_select_query($sql,$parameters);
 		//gets supervisors username
-		$supervisor_sql = "SELECT user_name FROM users WHERE user_id='" . $supervisor_id . "' LIMIT 1";
-		$result = $this->db->query($supervisor_sql);
+		$supervisor_sql = "SELECT user_name FROM users WHERE user_id=:supervisor_id LIMIT 1";
+		$supervisor_parameters = array(
+			':supervisor_id'=>$supervisor_id
+		);
+		$result = $this->db->query($supervisor_sql,$supervisor_parameters);
 
 		$this->supervisor_id = $supervisor_id;
 		$this->supervisor_name = $result[0]['user_name'];;
-		$this->db->non_select_query($sql);
 		return true;
 	}
 	public function get_supervising_users() {
 		if ($this->is_supervisor()) {
 			$sql = "SELECT users.* ";
 			$sql .= "FROM users ";
-			$sql .= "WHERE user_supervisor='" . $this->get_user_id() . "' AND user_enabled='1' ";
+			$sql .= "WHERE user_supervisor=:supervisor_id AND user_enabled='1' ";
 			$sql .= "AND user_admin='0' ORDER BY user_name ASC";
-			return $this->db->query($sql);
+			$parameters = array(
+				':supervisor_id'=>$this->get_user_id()
+			);
+			return $this->db->query($sql,$parameters);
 		}
 		return array();
 	}
@@ -355,14 +388,19 @@ class user {
         }
 	
 	public function set_admin($admin) {
-		$sql = "UPDATE users SET user_admin='" . $admin . "' ";
-		$sql .= "WHERE user_id='" . $this->get_user_id() . "' LIMIT 1";
-		$result = $this->db->non_select_query($sql);
+		$sql = "UPDATE users SET user_admin=:admin ";
+		$sql .= "WHERE user_id=:user_id LIMIT 1";
+		$parameters = array(
+			':admin'=>$admin,
+			':user_id'=>$this->get_user_id()
+		);
+		$result = $this->db->non_select_query($sql,$parameters);
 		if ($result) {
 			$this->admin = $admin;
 		}
 		return $result;
 	}
+
 	//is_supervising_user()
 	//$user_id - user id to test if you are the supervisor
 	//returns true if user is supervising the respected user, false otherwise
@@ -370,9 +408,12 @@ class user {
 		if ($this->is_supervisor()) {
 			$sql = "SELECT user_supervisor as supervisor_id ";
 			$sql .= "FROM users ";
-			$sql .= "WHERE user_id='" . $user_id . "' AND user_enabled='1' ";
+			$sql .= "WHERE user_id=:user_id AND user_enabled='1' ";
 			$sql .= "LIMIT 1";
-			$result = $this->db->query($sql);
+			$parameters = array(
+				':user_id'=>$user_id
+			);
+			$result = $this->db->query($sql,$parameters);
 			if ($result[0]['supervisor_id'] == $this->get_user_id()) {
 				return TRUE;
 			}
@@ -545,8 +586,11 @@ class user {
 		$this->get_user();
 	}
 	private function load_by_username($username) {
-		$sql = "SELECT user_id FROM users WHERE user_name = '" . $username . "' LIMIT 1";
-		$result = $this->db->query($sql);
+		$sql = "SELECT user_id FROM users WHERE user_name=:username LIMIT 1";
+		$parameters = array(
+			':username'=>$username
+		);
+		$result = $this->db->query($sql,$parameters);
 		if (isset($result[0]['user_id'])) {
 			$this->id = $result[0]['user_id'];
 			$this->get_user();
@@ -562,10 +606,13 @@ class user {
 		$sql .= "LEFT JOIN users AS supervisor ON supervisor.user_id=users.user_supervisor ";
 		$sql .= "LEFT JOIN projects ON projects.project_owner=users.user_id ";
 		$sql .= "LEFT JOIN data_dir ON data_dir.data_dir_project_id=projects.project_id ";
-		$sql .= "WHERE users.user_id='" . $this->id . "' ";
+		$sql .= "WHERE users.user_id=:user_id ";
 		$sql .= "AND projects.project_default='1' ";
 		$sql .= "AND data_dir.data_dir_default='1' LIMIT 1";
-		$result = $this->db->query($sql);
+		$parameters = array(
+			':user_id'=>$this->get_user_id()
+		);
+		$result = $this->db->query($sql,$parameters);
 		if (count($result)) {
 			$this->user_name = $result[0]['user_name'];
 			$this->admin = $result[0]['user_admin'];
@@ -585,8 +632,11 @@ class user {
 	}
 	private function get_user_exist($username) {
 
-		$sql = "SELECT COUNT(1) as count FROM users WHERE user_name='" . $username . "' AND user_enabled='1'";
-		$result = $this->db->query($sql);
+		$sql = "SELECT COUNT(1) as count FROM users WHERE user_name=:username AND user_enabled='1'";
+		$parameters = array(
+			':username'=>$username
+		);
+		$result = $this->db->query($sql,$parameters);
 		return $result[0]['count'];
 
 	}
@@ -604,9 +654,13 @@ class user {
         }
 
 	private function is_disabled($username) {
-		$sql = "SELECT count(1) as count FROM users WHERE user_name='" . $username . "' ";
+		$sql = "SELECT count(1) as count FROM users WHERE user_name=:username ";
 		$sql .= "AND user_enabled='0' LIMIT 1";
-		$result = $this->db->query($sql);
+
+		$parameters = array(
+                        ':username'=>$username
+                );
+		$result = $this->db->query($sql,$parameters);
 		if ($result[0]['count']) {
 			return true;
 		}
