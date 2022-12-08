@@ -99,10 +99,14 @@ class queue {
 		}
 		elseif ($submission_time != 0) {
 			$sql = "SELECT queue_cost_id FROM queue_cost ";
-			$sql .= "WHERE queue_cost_queue_id='" . $this->get_queue_id() . "' ";
-			$sql .= "AND queue_cost_time_created<='" . $submission_time . "' ";
+			$sql .= "WHERE queue_cost_queue_id=:queue_id ";
+			$sql .= "AND queue_cost_time_created<=:submission_time ";
 			$sql .= "ORDER BY queue_cost_time_created DESC LIMIT 1";
-			$result = $this->db->query($sql);
+			$parameters = array(
+				':queue_id'=>$this->get_queue_id(),
+				':submission_time'=>$submission_time
+			);
+			$result = $this->db->query($sql,$parameters);
 			return $result[0]['queue_cost_id'];	
 		}
 	}
@@ -197,8 +201,9 @@ class queue {
 	//enable()
 	//enables the queue
 	public function enable() {
-		$sql = "UPDATE queues SET queue_enabled='1' WHERE queue_id='" . $this->get_queue_id() . "' LIMIT 1";
-		$this->db->non_select_query($sql);
+		$sql = "UPDATE queues SET queue_enabled='1' WHERE queue_id=:queue_id LIMIT 1";
+		$parameters = array(':queue_id'=>$this->get_queue_id());
+		$this->db->non_select_query($sql,$parameters);
 		$this->enabled = true;
 		return true;
 	}
@@ -206,9 +211,11 @@ class queue {
 	//disable()
 	//disables the queue
 	public function disable() {
-		$sql = "UPDATE queues SET queue_enabled='0' WHERE queue_id='" . $this->get_queue_id() . "' LIMIT 1";
+		$sql = "UPDATE queues SET queue_enabled='0' WHERE queue_id=:queue_id LIMIT 1";
+		$parameters = array(':queue_id'=>$this->get_queue_id());
+		$this->db->non_select_query($sql,$parameters);
 		$this->enabled = false;
-		$this->db->non_select_query($sql);
+		return true;
 		return true;
 
 	}
@@ -242,9 +249,10 @@ class queue {
 		$sql = "SELECT queue_cost_mem as memory, queue_cost_cpu as cpu, ";
 		$sql .= "queue_cost_gpu as gpu, queue_cost_time_created as time ";
 		$sql .= "FROM queue_cost ";
-		$sql .= "WHERE queue_cost_queue_id='" . $this->get_queue_id() . "'";
+		$sql .= "WHERE queue_cost_queue_id=:queue_id ";
 		$sql .= "ORDER BY queue_cost_time_created ASC ";
-		return $this->db->query($sql);
+		$parameters = array(':queue_id'=>$this->get_queue_id());
+		return $this->db->query($sql,$parameters);
 
 	}
 	////////////////Private Functions//////////
@@ -260,8 +268,9 @@ class queue {
 	//loads queue object with queue name
 	private function load_by_name($queue_name,$date) {
 		$sql = "SELECT queue_id FROM queues ";
-		$sql .= "WHERE queue_name='" . $queue_name . "' LIMIT 1";
-		$result = $this->db->query($sql);
+		$sql .= "WHERE queue_name=:queue_name LIMIT 1";
+		$parameters = array(':queue_name'=>$queue_name);
+		$result = $this->db->query($sql,$parameters);
 		if ($result) {
 			$this->get_queue($result[0]['queue_id'],$date);
 		}
@@ -276,10 +285,14 @@ class queue {
 		$sql = "SELECT queues.*,queue_cost.* ";
 		$sql .= "FROM queues ";
 		$sql .= "LEFT JOIN queue_cost ON queue_cost.queue_cost_queue_id=queues.queue_id ";
-		$sql .= "WHERE queues.queue_id='" . $queue_id . "' ";
-		$sql .= "AND queue_cost_time_created<='" . $date . "' ";
+		$sql .= "WHERE queues.queue_id=:queue_id ";
+		$sql .= "AND queue_cost_time_created<=:cost_time_created ";
 		$sql .= "ORDER BY queue_cost.queue_cost_time_created DESC LIMIT 1";
-		$result = $this->db->query($sql);
+		$parameters = array(
+			':queue_id'=>$queue_id,
+			':cost_time_created'=>$date
+		);
+		$result = $this->db->query($sql,$parameters);
 		if ($result) {
 			$this->id = $result[0]['queue_id'];
 			$this->name = $result[0]['queue_name'];
@@ -291,6 +304,7 @@ class queue {
 			$this->time_created = $result[0]['queue_cost_time_created'];
 			$this->enabled = $result[0]['queue_enabled'];
 			$this->queue_cost_id = $result[0]['queue_cost_id'];
+
 		}
 		else { return false;
 		}

@@ -139,29 +139,28 @@ class user {
 	public function get_time_created() {
 		return $this->time_created;
 	}
-	public function get_jobs_summary($start_date,$end_date) {
+	public function get_jobs_summary($month,$year) {
 
-		$sql = "SELECT ROUND(SUM(jobs.job_total_cost),2) as total_cost, ";
-		$sql .= "ROUND(SUM(jobs.job_billed_cost),2) as billed_cost, ";
-		$sql .= "COUNT(1) as num_jobs, ";
-		$sql .= "queues.queue_name as queue, ";
-		$sql .= "projects.project_name as project, ";
-		$sql .= "cfops.cfop_value as cfop, cfops.cfop_activity as activity, ";
-		$sql .= "cfops.cfop_restricted as cfop_restricted ";
-		$sql .= "FROM jobs ";
-		$sql .= "LEFT JOIN queues ON queues.queue_id=jobs.job_queue_id ";
-		$sql .= "LEFT JOIN projects ON projects.project_id=jobs.job_project_id ";
-		$sql .= "LEFT JOIN cfops ON cfops.cfop_id=jobs.job_cfop_id ";
-		$sql .= "WHERE DATE(jobs.job_end_time) BETWEEN :start_date AND :end_date ";
-		$sql .= "AND jobs.job_user_id=:user_id ";
-		$sql .= "GROUP BY jobs.job_queue_id, jobs.job_cfop_id, jobs.job_user_id";
-		$parameters = array(
+                $sql .= "SELECT projects.project_name as 'project', ";
+                $sql .= "queues.queue_name as 'queue', ";
+                $sql .= "ROUND(job_bill.job_bill_total_cost,2) as 'total_cost', ";
+                $sql .= "ROUND(job_bill.job_bill_billed_cost,2) as 'billed_cost', ";
+                $sql .= "cfops.cfop_value as 'cfop', ";
+                $sql .= "cfops.cfop_activity as 'activity' ";
+                $sql .= "FROM job_bill ";
+                $sql .= "LEFT JOIN projects ON projects.project_id=job_bill.job_bill_project_id ";
+                $sql .= "LEFT JOIN cfops ON cfops.cfop_id=job_bill.job_bill_cfop_id ";
+                $sql .= "LEFT JOIN queue_cost ON queue_cost.queue_cost_id=job_bill.job_bill_queue_cost_id ";
+                $sql .= "LEFT JOIN queues ON queues.queue_id=job_bill.job_bill_queue_id ";
+                $sql .= "WHERE (YEAR(job_bill.job_bill_date)=:year AND month(job_bill.job_bill_date)=:month) ";
+		$sql .= "AND job_bill_user_id=:user_id ";
+                $parameters = array(
 			':user_id'=>$this->get_user_id(),
-			':start_date'=> $start_date,
-			':end_date'=>$end_date
+			':year'=>$year,
+			':month'=>$month
 		);
-		
-		$result = $this->db->query($sql,$parameters);
+                $result = $this->db->query($sql,$parameters);
+
 		foreach($result as $key=>$value) {
 			if ($value['total_cost'] == 0.00) {
 				$result[$key]['total_cost'] = 0.01;

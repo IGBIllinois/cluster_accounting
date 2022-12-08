@@ -45,7 +45,7 @@ if ($login_user->is_admin()) {
 }
 $user_list_html = "";
 if (count($user_list)) {
-	$user_list_html = "<label>User: </label><select class='custom-select' name='user_id'>";
+	$user_list_html = "<label>User: </label><select class='custom-select' name='user_id' id='user_input'>";
 	if ((!isset($_GET['user_id'])) || ($_GET['user_id'] == $login_user->get_user_id())) {
                 $user_list_html .= "<option value='" . $login_user->get_user_id(). "' selected='selected'>";
                 $user_list_html .= $login_user->get_username() . "</option>";
@@ -90,7 +90,7 @@ foreach ($month_array as $month_number) {
 }
 
 $user = new user($db,$ldap,$user_id);
-$jobs = $user->get_jobs_summary($start_date,$end_date);
+$jobs = $user->get_jobs_summary($month,$year);
 $jobs_html = "";
 if (count($jobs) > 0) {
 	foreach($jobs as $job) {
@@ -170,7 +170,7 @@ require_once 'includes/header.inc.php';
 		<td><?php echo $user->get_username(); ?></td>
 	</tr>
 	<tr>
-		<td>Supervisor</td>
+		<td>Supervisor:</td>
 		<td><?php echo $user->get_supervisor_name(); ?></td>
 	<tr>
 		<td>Billing Dates:</td>
@@ -229,3 +229,13 @@ require_once 'includes/header.inc.php';
 if (isset($message)) { echo $message; }
 
 require_once 'includes/footer.inc.php'; ?>
+
+<script type='text/javascript'>
+$(document).ready(function() {
+        $('#user_input').select2({
+                'placeholder': "Select a User"
+        });
+});
+
+</script>
+

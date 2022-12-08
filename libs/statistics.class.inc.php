@@ -61,8 +61,12 @@ class statistics {
 
 		$sql = "SELECT count(1) as count ";
 		$sql .= "FROM jobs ";
-		$sql .= "WHERE DATE(job_end_time) BETWEEN '" . $start_date . "' AND '" . $end_date . "'";
-		$result = $this->db->query($sql);
+		$sql .= "WHERE DATE(job_end_time) BETWEEN :start_date AND :end_date";
+		$parameters = array(
+			':start_date'=>$start_date,
+			':end_date'=>$end_date
+		);
+		$result = $this->db->query($sql.$parameters);
 		$num_jobs = $result[0]['count'];
 		if ($format == 1) {
 			$num_jobs = number_format($num_jobs,0);
@@ -71,52 +75,71 @@ class statistics {
 	}
 	public function get_number_jobs_by_user($start_date,$end_date,$user_id) {
 		$sql = "SELECT count(1) as count FROM jobs ";
-		$sql .= "WHERE DATE(jobs.job_end_time) BETWEEN '" . $start_date . "' AND '" . $end_date . "' ";
-		$sql .= "AND jobs.job_user_id='" . $user_id . "'";
-		$result = $this->db->query($sql);
+		$sql .= "WHERE DATE(jobs.job_end_time) BETWEEN :start_date AND :end_date ";
+		$sql .= "AND jobs.job_user_id=:user_id";
+		$parameters = array(
+                        ':start_date'=>$start_date,
+                        ':end_date'=>$end_date,
+			':user_id'=>$user_id
+                );
+		$result = $this->db->query($sql,$parameters);
 		return $result[0]['count'];
 	}
 
 	public function get_jobs_per_month($year,$user_id = 0) {
+		$parameters = array(
+                        ':year'=>$year
+                );
+
 		$sql = "SELECT MONTH(jobs.job_end_time) as month,  ";
 		$sql .= "count(1) as num_jobs ";
 		$sql .= "FROM jobs ";
-		$sql .= "WHERE YEAR(jobs.job_end_time)='" . $year . "' ";
+		$sql .= "WHERE YEAR(jobs.job_end_time)=:year ";
 		if ($user_id) {
-                        $sql .= "AND jobs.job_user_id='" . $user_id . "' ";
+                        $sql .= "AND jobs.job_user_id=:user_id ";
+			$parameters[':user_id'] = $user_id;
                 }
 		$sql .= "GROUP BY MONTH(jobs.job_end_time) ";
 		$sql .= "ORDER BY MONTH(jobs.job_end_time) ASC";
-		$result = $this->db->query($sql);
+		$result = $this->db->query($sql,$parameters);
 		
 		return $this->get_month_array($result,"month","num_jobs");
 	}
 	
 	public function get_job_billed_cost_per_month($year,$user_id = 0) {
+		$parameters = array(
+                        ':year'=>$year
+                );
                 $sql = "SELECT MONTH(job_end_time) as month,ROUND(SUM(job_billed_cost),2) as billed_cost ";
                 $sql .= "FROM jobs ";
-                $sql .= "WHERE YEAR(job_end_time)='" . $year . "' ";
+                $sql .= "WHERE YEAR(job_end_time)=:year ";
                 if ($user_id) {
-                        $sql .= "AND jobs.job_user_id='" . $user_id . "' ";
+                        $sql .= "AND jobs.job_user_id=:user_id ";
+			$parameters[':user_id'] = $user_id;
                 }
 
                 $sql .= "GROUP BY MONTH(job_end_time)";
 		$sql .= "ORDER BY MONTH(job_end_time) ASC";
-                $result = $this->db->query($sql);
+                $result = $this->db->query($sql,$parameters);
 		return $this->get_month_array($result,"month","billed_cost");
 
 
 	}
         public function get_job_total_cost_per_month($year,$user_id = 0) {
+		$parameters = array(
+                        ':year'=>$year
+                );
+
                 $sql = "SELECT MONTH(job_end_time) as month,ROUND(SUM(job_total_cost),2) as total_cost ";
                 $sql .= "FROM jobs ";
-                $sql .= "WHERE YEAR(job_end_time)='" . $year . "' ";
+                $sql .= "WHERE YEAR(job_end_time)=:year ";
                 if ($user_id) {
-                        $sql .= "AND jobs.job_user_id='" . $user_id . "' ";
+                        $sql .= "AND jobs.job_user_id=:user_id ";
+			$parameters[':user_id'] = $user_id;
                 }
 
                 $sql .= "GROUP BY MONTH(job_end_time)";
-                $result = $this->db->query($sql);
+                $result = $this->db->query($sql,$parameters);
                 return $this->get_month_array($result,"month","total_cost");
 
 
@@ -125,8 +148,12 @@ class statistics {
 	public function get_longest_job($start_date,$end_date) {
 		$sql = "SELECT SEC_TO_TIME(MAX(TIME_TO_SEC(jobs.job_ru_wallclock))) as max_job_length ";
 		$sql .= "FROM jobs ";
-		$sql .= "WHERE DATE(job_end_time) BETWEEN '" . $start_date . "' AND '" . $end_date . "'";
-		$result = $this->db->query($sql);
+		$sql .= "WHERE DATE(job_end_time) BETWEEN :start_date AND :end_date";
+		$parameters = array(
+			':start_date'=>$start_date,
+			':end_date'=>$end_date
+		);
+		$result = $this->db->query($sql,$parameters);
 		$max_job_length = $result[0]['max_job_length'];
 		if (!$max_job_length) {
 			$max_job_length = "00:00:00";
@@ -137,8 +164,12 @@ class statistics {
 	public function get_avg_job($start_date,$end_date) {
 		$sql = "SELECT SEC_TO_TIME(ROUND(AVG(TIME_TO_SEC(jobs.job_ru_wallclock)))) as avg_job_length ";
 		$sql .= "FROM jobs ";
-		$sql .= "WHERE DATE(job_end_time) BETWEEN '" . $start_date . "' AND '" . $end_date . "'";
-		$result = $this->db->query($sql);
+		$sql .= "WHERE DATE(job_end_time) BETWEEN :start_date AND :end_date";
+		$parameters = array(
+			':start_date'=>$start_date,
+                        ':end_date'=>$end_date
+		);
+		$result = $this->db->query($sql,$parameters);
 		$avg_job_length = $result[0]['avg_job_length'];
 		if (!$avg_job_length) {
 			$avg_job_length = "00:00:00";
@@ -155,8 +186,13 @@ class statistics {
 	public function get_avg_wait($start_date,$end_date) {
 		$sql = "SELECT SEC_TO_TIME(ROUND(AVG(TIME_TO_SEC(TIMEDIFF(job_start_time,job_submission_time))))) AS avg_wait ";
 		$sql .= "FROM jobs ";
-		$sql .= "WHERE DATE(job_end_time) BETWEEN '" . $start_date . "' AND '" . $end_date . "'";
-		$result = $this->db->query($sql);
+		$sql .= "WHERE DATE(job_end_time) BETWEEN :start_date AND :end_date";
+		$parameters = array(
+                        ':start_date'=>$start_date,
+                        ':end_date'=>$end_date
+                );
+
+		$result = $this->db->query($sql,$parameters);
 		$avg_wait = $result[0]['avg_wait'];
 		if (!$avg_wait) {
 			$avg_wait = "00:00:00";
