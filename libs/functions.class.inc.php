@@ -159,9 +159,12 @@ class functions {
 
 	public static function get_cfop($db,$cfop_id) {
 		$sql = "SELECT * FROM cfops ";
-		$sql .= "WHERE cfop_id='" . $cfop_id . "' ";
+		$sql .= "WHERE cfop_id=:cfop_id ";
 		$sql .= "LIMIT 1";
-		return $db->query($sql);
+		$parameters = array(
+			':cfop_id'=>$cfop_id
+		);
+		return $db->query($sql,$parameters);
 
 	}
 

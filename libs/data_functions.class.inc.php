@@ -10,13 +10,15 @@ class data_functions {
 		$sql .= "FROM data_dir ";
 		$sql .= "LEFT JOIN projects ON projects.project_id=data_dir.data_dir_project_id ";
 		$sql .= "WHERE data_dir_enabled='1' ";
-		$sql .= "AND data_dir_default='" . $default . "' ";
-	
+		$sql .= "AND data_dir_default=:default ";	
 		$sql .= "ORDER BY data_dir.data_dir_path ASC ";
 		if ($count != 0) {
 			$sql .= "LIMIT " . $start . "," . $count;
 		}
-		$result = $db->query($sql);
+		$parameters = array(
+			':default'=>$default
+		);
+		$result = $db->query($sql,$parameters);
 	
 		for ($i=0;$i<count($result);$i++) {
 			if (is_dir($result[$i]['data_dir_path'])) {
@@ -34,8 +36,8 @@ class data_functions {
                 $sql .= "FROM data_dir ";
                 $sql .= "LEFT JOIN projects ON projects.project_id=data_dir.data_dir_project_id ";
                 $sql .= "WHERE data_dir_enabled='1' ";
-
                 $sql .= "ORDER BY data_dir.data_dir_path ASC ";
+
                 $result = $db->query($sql);
 
                 for ($i=0;$i<count($result);$i++) {
@@ -53,8 +55,11 @@ class data_functions {
 	public static function get_num_directories($db,$default = 1) {
 		$sql = "SELECT count(1) as count FROM data_dir ";
 		$sql .= "WHERE data_dir_enabled='1' ";
-		$sql .= "AND data_dir_default='" . $default . "'";
-		$result = $db->query($sql);
+		$sql .= "AND data_dir_default=:default";
+		$parameters = array(
+			':default'=>$default
+		);
+		$result = $db->query($sql,$parameters);
 		return $result[0]['count'];
 	}
 
@@ -85,11 +90,16 @@ class data_functions {
         	$sql .= "LEFT JOIN projects ON projects.project_id=data_bill.data_bill_project_id ";
 	        $sql .= "LEFT JOIN data_dir ON data_dir.data_dir_id=data_bill.data_bill_data_dir_id ";
         	$sql .= "LEFT JOIN data_cost ON data_cost_id=data_bill_data_cost_id ";
-	        $sql .= "WHERE YEAR(data_bill.data_bill_date)='" . $year . "' ";
-        	$sql .= "AND MONTH(data_bill.data_bill_date)='" . $month . "' ";
-	        $sql .= "AND ROUND(data_bill.data_bill_total_cost,2)>'" . $minimum_bill . "' ";
+	        $sql .= "WHERE YEAR(data_bill.data_bill_date)=:year ";
+        	$sql .= "AND MONTH(data_bill.data_bill_date)=:month ";
+	        $sql .= "AND ROUND(data_bill.data_bill_total_cost,2)>:minimal_bill ";
 		$sql .= "ORDER BY Directory ASC";
-        	return $db->query($sql);
+		$parameters = array(
+			':month'=>$month,
+			':year'=>$year,
+			':minimal_bill'=>$minimal_bill
+		);
+        	return $db->query($sql,$parameters);
 	}
 
         public static function get_data_boa_bill($db,$month,$year,$minimal_bill = 0.00) {
@@ -104,11 +114,16 @@ class data_functions {
                 $sql .= "LEFT JOIN projects ON projects.project_id=data_bill.data_bill_project_id ";
                 $sql .= "LEFT JOIN data_dir ON data_dir.data_dir_id=data_bill.data_bill_data_dir_id ";
                 $sql .= "LEFT JOIN data_cost ON data_cost_id=data_bill_data_cost_id ";
-                $sql .= "WHERE YEAR(data_bill.data_bill_date)='" . $year . "' ";
-                $sql .= "AND MONTH(data_bill.data_bill_date)='" . $month . "' ";
-                $sql .= "AND ROUND(data_bill.data_bill_billed_cost,2)>'" . $minimal_bill . "' ";
+                $sql .= "WHERE YEAR(data_bill.data_bill_date)=:year ";
+                $sql .= "AND MONTH(data_bill.data_bill_date)=:month ";
+                $sql .= "AND ROUND(data_bill.data_bill_billed_cost,2)>:minimal_bill ";
                 $sql .= "ORDER BY `CFOP` ASC, `ACTIVITY CODE` ASC";
-		$data_result = $db->query($sql);
+		$parameters = array(
+                        ':month'=>$month,
+                        ':year'=>$year,
+                        ':minimal_bill'=>$minimal_bill
+                );
+		$data_result = $db->query($sql,$parameters);
 
 
 		$total_bill = 0;

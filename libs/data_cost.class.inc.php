@@ -48,8 +48,11 @@ class data_cost {
 	}
 	public function enable() {
 		$sql = "UPDATE data_cost SET data_cost_enabled='1' ";
-		$sql .= "WHERE data_cost_id='" . $this->get_id() . "' LIMIT 1";
-		$result = $this->db->non_select_query($sql);
+		$sql .= "WHERE data_cost_id=:data_cost_id LIMIT 1";
+		$parameters = array(
+			':data_cost_id'=>$this->get_id()
+		);
+		$result = $this->db->non_select_query($sql,$parameters);
 		if ($result) {
 			$this->enabled = 1;
 		}
@@ -57,8 +60,11 @@ class data_cost {
 	}
 	public function disable() {
 		$sql = "UPDATE data_cost SET data_cost_enabled='0' ";
-		$sql .= "WHERE data_cost_id='" . $this->get_id() . "' LIMIT 1";
-		$result = $this->db->non_select_query($sql);
+		$sql .= "WHERE data_cost_id=:data_cost_id LIMIT 1";
+		$parameters = array(
+			':data_cost_id'=>$this->get_id()
+		);
+		$result = $this->db->non_select_query($sql,$parameters);
 		if ($result) {
 			$this->enabled = 0;
 		}
@@ -75,7 +81,10 @@ class data_cost {
 	
 	private function get_data_cost($data_cost_id) {
 		$sql = "SELECT * FROM data_cost ";
-		$sql .= "WHERE data_cost_id='" . $data_cost_id . "' LIMIT 1";
+		$sql .= "WHERE data_cost_id=:data_cost_id LIMIT 1";
+		$parameters = array(
+			':data_cost_id'=>$data_cost_id
+		);
 		$result = $this->db->query($sql);
 		if ($result) {
 			$this->id = $result[0]['data_cost_id'];

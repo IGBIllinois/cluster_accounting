@@ -26,11 +26,11 @@ class job_bill {
                 $sql .= "jobs.job_project_id, ";
                 $sql .= "jobs.job_queue_id, ";
 		$sql .= "users.user_name ";
-		$params = array(':project_id'=>$project_id,
+		$parameters = array(':project_id'=>$project_id,
 			':month'=>$month,
 			':year'=>$year
 		);
-                $result = $db->query($sql,$params);
+                $result = $db->query($sql,$parameters);
                 return $result;
 	}
 
@@ -40,7 +40,7 @@ class job_bill {
 		$sql .= "job_bill_queue_id, job_bill_queue_cost_id, job_bill_date,";
 		$sql .= "job_bill_num_jobs,job_bill_total_cost,job_bill_billed_cost) ";
 		$sql .= "VALUES(:user_id,:project_id,:cfop_id,:queue_id,:queue_cost_id,:date,:num_jobs,:total_cost,:billed_cost) ";
-		$params = array(':user_id'=>$job_info['user_id'],
+		$parameters = array(':user_id'=>$job_info['user_id'],
 			':project_id'=>$job_info['project_id'],
 			':cfop_id'=>$job_info['cfop_id'],
 			':queue_id'=>$job_info['queue_id'],
@@ -50,7 +50,7 @@ class job_bill {
 			':total_cost'=>$job_info['total_cost'],
 			':billed_cost'=>$job_info['billed_cost']
 		);
-		$result = $db->insert_query($sql,$params);
+		$result = $db->insert_query($sql,$parameters);
 		return $result;
 
 	}

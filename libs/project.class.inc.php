@@ -128,10 +128,16 @@ class project {
 	                        $message .= "<div class='alert alert-danger'>Please enter a project owner.</div>";
         	        }
 			if (!$error) {
-				$sql = "UPDATE projects set project_ldap_group='" . $ldap_group . "', ";
-				$sql .= "project_description='" . $description . "',project_owner='" . $owner_id . "' ";
-				$sql .= "WHERE project_id='" . $this->get_project_id() . "'";
-				$this->db->non_select_query($sql);
+				$sql = "UPDATE projects set project_ldap_group=:ldap_group, ";
+				$sql .= "project_description=:description,project_owner=:owner_id ";
+				$sql .= "WHERE project_id=:project_id";
+				$parameters = array(
+					':ldap_group'=>$ldap_group,
+					':description'=>$description,
+					':owner_id'=>$owner_id,
+					':project_id'=>$this->get_project_id()
+				);
+				$this->db->non_select_query($sql,$parameters);
 				$this->get_project();
 				return array('RESULT'=>true,
 					'MESSAGE'=>"<div class='alert alert-success'>Project successfully updated.</div>",
@@ -147,11 +153,15 @@ class project {
 
 	public function get_cfop_id_by_date($inDate) {
 		$sql = "SELECT cfop_id FROM cfops ";
-		$sql .= "WHERE cfop_project_id='" . $this->get_project_id() . "' ";
-		$sql .= "AND cfop_time_created<'" . $inDate . "' ";
+		$sql .= "WHERE cfop_project_id=:project_id ";
+		$sql .= "AND cfop_time_created<:time_created ";
 		$sql .= "ORDER BY cfop_time_created DESC ";
 		$sql .= "LIMIT 1";
-		$result = $this->db->query($sql);
+		$parameters = array(
+			':project_id'=>$this->get_project_id(),
+			':time_created'=>$inDate
+		);
+		$result = $this->db->query($sql,$parameters);
 		if (count($result)) {
 			return $result[0]['cfop_id'];
 		}
@@ -227,8 +237,11 @@ class project {
 	}
 	public function set_cfop($bill_project,$cfop,$activity,$hide_cfop = 0) {
 		$sql = "UPDATE cfops SET cfop_active='0' ";
-		$sql .= "WHERE cfop_project_id='" . $this->get_project_id() . "' ";
-		$this->db->non_select_query($sql);
+		$sql .= "WHERE cfop_project_id=:project_id ";
+		$parameters = array(
+			':project_id'=>$this->get_project_id()
+		);
+		$this->db->non_select_query($sql,$parameters);
 		$active = 1;
 		$cfop_billtype = 'no_bill';
 		if (!$bill_project) {
@@ -251,15 +264,21 @@ class project {
 
 	public function enable() {
 		$sql = "UPDATE projects SET project_enabled='1' ";
-		$sql .= "WHERE project_id='" . $this->get_project_id() . "' LIMIT 1";
-		$result = $this->db->non_select_query($sql);
+		$sql .= "WHERE project_id=:project_id LIMIT 1";
+		$parameters = array(
+                        ':project_id'=>$this->get_project_id()
+                );
+		$result = $this->db->non_select_query($sql,$parameters);
 		$this->enabled = 1;
 		return $result;
 	}
 	public function disable() {
 		$sql = "UPDATE projects SET project_enabled='0' ";
-		$sql .= "WHERE project_id='" . $this->get_project_id() . "' LIMIT 1";
-		$result = $this->db->non_select_query($sql);
+		$sql .= "WHERE project_id=:project_id LIMIT 1";
+		$parameters = array(
+                        ':project_id'=>$this->get_project_id()
+                );
+		$result = $this->db->non_select_query($sql,$parameters);
 		$this->enabled = 0;
 		return $result;
 	}
@@ -297,9 +316,12 @@ class project {
 
 	public function get_all_cfops() {
 		$sql = "SELECT * FROM cfops ";
-		$sql .= "WHERE cfop_project_id='" . $this->get_project_id() . "' ";
+		$sql .= "WHERE cfop_project_id=:project_id ";
 		$sql .= "ORDER BY cfop_time_created DESC";
-		return $this->db->query($sql);
+		$parameters = array(
+                        ':project_id'=>$this->get_project_id()
+                );
+		return $this->db->query($sql,$parameters);
 
 
 	}
@@ -311,9 +333,12 @@ class project {
 		$sql .= "FROM projects ";
 		$sql .= "LEFT JOIN users ON users.user_id=projects.project_owner ";
 		$sql .= "LEFT JOIN cfops ON cfops.cfop_project_id=projects.project_id ";
-		$sql .= "WHERE project_id='" . $project_id . "' ";
-		$sql .= "AND cfops.cfop_active='1' LIMIT 1";	
-		$result = $this->db->query($sql);
+		$sql .= "WHERE project_id=:project_id ";
+		$sql .= "AND cfops.cfop_active='1' LIMIT 1";
+		$parameters = array(
+                        ':project_id'=>$this->get_project_id()
+                );
+		$result = $this->db->query($sql,$parameters);
 		if ($result) {
 			$this->id = $result[0]['project_id'];
 			$this->name = $result[0]['project_name'];
@@ -338,8 +363,11 @@ class project {
 	}
 	private function load_by_name($project_name) {
 		$sql = "SELECT project_id FROM projects ";
-		$sql .= "WHERE project_name = '" . $project_name . "' LIMIT 1";
-		$result = $this->db->query($sql);
+		$sql .= "WHERE project_name=:project_name LIMIT 1";
+		$parameters = array(
+			':project_name'=>$project_name
+		);
+		$result = $this->db->query($sql,$parameters);
 		if (isset($result[0]['project_id'])) {
 			$this->get_project($result[0]['project_id']);
 		}
