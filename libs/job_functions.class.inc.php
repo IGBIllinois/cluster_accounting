@@ -2,7 +2,7 @@
 
 class job_functions {
 
-	const completed_exit_status = "0:0";
+	private const COMPLETED_EXIT_STATUS = "0:0";
 
 	public static function get_jobs_bill($db,$month,$year) {
 	
@@ -123,11 +123,11 @@ class job_functions {
 	        }	
 
 		if ($completed == 0) {
-			array_push($where_sql, "exit_status<>'" . self::completed_exit_status . "' ");
+			array_push($where_sql, "exit_status<>'" . self::COMPLETED_EXIT_STATUS . "' ");
 
 		}
 		elseif ($completed == 1) {
-			array_push($where_sql, "exit_status='" . self::completed_exit_status . "' ");
+			array_push($where_sql, "exit_status='" . self::COMPLETED_EXIT_STATUS . "' ");
 		}
         	$sql = "SELECT id as id, ";
 		$sql .= "job_number_full, ";
@@ -191,11 +191,11 @@ class job_functions {
                         array_push($where_sql, "DATE(end_time) BETWEEN '" . $start_date . "' AND '" . $end_date . "' ");
                 }
 		if ($completed == 0) {
-                        array_push($where_sql, "exit_status<>'" . self::completed_exit_status . "' ");
+                        array_push($where_sql, "exit_status<>'" . self::COMPLETED_EXIT_STATUS . "' ");
 
                 }
                 elseif ($completed == 1) {
-                        array_push($where_sql, "exit_status='" . self::completed_exit_status . "' ");
+                        array_push($where_sql, "exit_status='" . self::COMPLETED_EXIT_STATUS . "' ");
                 }
 
                 $sql = "SELECT count(1) as count ";

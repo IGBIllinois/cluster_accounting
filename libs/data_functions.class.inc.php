@@ -2,8 +2,8 @@
 
 class data_functions {
 
-        const convert_terabytes = 1099511627776;
-        const convert_gigabytes = 1073741824;
+        private const CONVERT_TERABYTES = 1099511627776;
+        private const CONVERT_GIGABYTES = 1073741824;
 
 	public static function get_directories($db,$default = 1,$start,$count) {
 		$sql = "SELECT data_dir.*, projects.project_name, projects.project_id ";
@@ -180,11 +180,11 @@ class data_functions {
 	}
 
 	public static function bytes_to_terabytes($bytes = 0) {
-                return round($bytes / self::convert_terabytes,3);
+                return round($bytes / self::CONVERT_TERABYTES,3);
 
         }
         public static function bytes_to_gigabytes($bytes = 0) {
-                return round($bytes / self::convert_gigabytes,3);
+                return round($bytes / self::CONVERT_GIGABYTES,3);
         }
 
 	public static function get_minimal_year($db) {

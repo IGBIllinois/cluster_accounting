@@ -1,7 +1,6 @@
 <?php
 class data_stats {
 
-	const bytes_per_terabyte = 1099511627776;
 	public static function get_total_cost($db,$start_date,$end_date,$format = 0) {
 	        $sql = "SELECT SUM(data_bill_total_cost) as total_cost ";
         	$sql .= "FROM data_bill ";

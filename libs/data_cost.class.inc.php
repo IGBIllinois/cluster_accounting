@@ -9,7 +9,7 @@ class data_cost {
 	private $time_created;
 	private $enabled;
 
-	const bytes_to_terabytes = 1099511627776;	
+	private const BYTES_TO_TERABYTES = 1099511627776;	
 
 	////////////////Public Functions///////////
 	
@@ -97,7 +97,7 @@ class data_cost {
 	}
 	
 	private function convert_terabytes($bytes) {
-		return $bytes / self::bytes_to_terabytes;
+		return $bytes / self::BYTES_TO_TERABYTES;
 	}
 }
 

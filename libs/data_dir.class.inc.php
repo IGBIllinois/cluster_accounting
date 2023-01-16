@@ -10,7 +10,7 @@ class data_dir {
 	private $time_created;
 	private $enabled;
 	private $default;
-	const precentile = 0.95;
+	private const PERCENTILE = 0.95;
 
 	public function __construct($db,$data_dir_id = 0) {
 		$this->db = $db;
@@ -230,7 +230,7 @@ class data_dir {
 			}
 			$result = array_merge($empty_array,$result);	
 		}
-		$slice = round(count($result)*self::precentile,0,PHP_ROUND_HALF_DOWN);
+		$slice = round(count($result)*self::PERCENTILE,0,PHP_ROUND_HALF_DOWN);
 		return array_slice($result,0,$slice);
 	}
 

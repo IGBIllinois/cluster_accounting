@@ -8,6 +8,7 @@ class user_stats {
 	private $start_date;
 	private $end_date;
 	private $generic_results = array();
+
 	////////////////Public Functions///////////
 	public function __construct($db,$user_id,$start_date,$end_date) {
 		$this->db = $db;

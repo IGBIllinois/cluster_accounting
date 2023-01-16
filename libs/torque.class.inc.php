@@ -10,7 +10,7 @@
 
 class torque {
 
-	const MAX_JOB_SCRIPT_LENGTH = 65535;
+	private const MAX_JOB_SCRIPT_LENGTH = 65535;
 
 	public static function add_accounting($db,$ldap,$job_data,$job_log_xml) {
 		list(,$status,$job_number,$parameters_string) = explode(";",$job_data);

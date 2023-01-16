@@ -17,7 +17,7 @@ class user {
 	private $default_project_id;
 	private $default_data_dir_id;
 	
-	const USER_BILL_TWIG = "user_bill.html.twig";
+	private const USER_BILL_TWIG = "user_bill.html.twig";
 	
 	////////////////Public Functions///////////
 

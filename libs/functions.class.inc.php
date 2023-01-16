@@ -2,7 +2,7 @@
 
 class functions {
 
-	const SECS_IN_DAY = 86400;
+	private const SECS_IN_DAY = 86400;
 
 	public static function get_queues($db,$selection = 'ALL') {
         	$sql = "SELECT queues.queue_id as queue_id, ";
@@ -30,7 +30,7 @@ class functions {
 			$sql .= "AND queue_ldap_group!='' ";
 		}
 		$parameters = array (
-			':secs_in_day'=>$self::SECS_IN_DAY
+			':secs_in_day'=>self::SECS_IN_DAY
 		);
 	        $sql .= "ORDER BY queues.queue_name ASC";
         	return $db->query($sql,$parameters);
