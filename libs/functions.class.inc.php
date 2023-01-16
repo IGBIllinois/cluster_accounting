@@ -2,7 +2,7 @@
 
 class functions {
 
-	const secs_in_day = 86400;
+	const SECS_IN_DAY = 86400;
 
 	public static function get_queues($db,$selection = 'ALL') {
         	$sql = "SELECT queues.queue_id as queue_id, ";
@@ -12,11 +12,11 @@ class functions {
 		$sql .= "queues.queue_time_created as time_created, ";
 		$sql .= "a.queue_cost_id as cost_id, ";
 		$sql .= "a.queue_cost_mem as cost_memory_secs, ";
-		$sql .= "a.queue_cost_mem * " . self::secs_in_day . " as cost_memory_day, ";
+		$sql .= "a.queue_cost_mem * :secs_in_day as cost_memory_day, ";
 		$sql .= "a.queue_cost_cpu as cost_cpu_secs, ";
-		$sql .= "a.queue_cost_cpu * " . self::secs_in_day . " as cost_cpu_day, ";
+		$sql .= "a.queue_cost_cpu * :secs_in_day as cost_cpu_day, ";
 		$sql .= "a.queue_cost_gpu as cost_gpu_secs, ";
-		$sql .= "a.queue_cost_gpu * " . self::secs_in_day . " as cost_gpu_day ";
+		$sql .= "a.queue_cost_gpu * :secs_in_day as cost_gpu_day ";
 	        $sql .= "FROM queues ";
 		$sql .= "LEFT JOIN (SELECT * FROM queue_cost n ";
 		$sql .= "WHERE queue_cost_time_created=(SELECT MAX(queue_cost_time_created) ";
@@ -29,8 +29,11 @@ class functions {
 		elseif ($selection == 'PRIVATE') {
 			$sql .= "AND queue_ldap_group!='' ";
 		}
+		$parameters = array (
+			':secs_in_day'=>$self::SECS_IN_DAY
+		);
 	        $sql .= "ORDER BY queues.queue_name ASC";
-        	return $db->query($sql);
+        	return $db->query($sql,$parameters);
 	}
 
 
@@ -82,8 +85,6 @@ class functions {
 
                 }
 
-
-		//$sql .= "GROUP BY projects.project_id ";
 		$sql .= "ORDER BY projects.project_name ASC ";
 		if ($count != 0) {
 			$sql .= "LIMIT " . $start . "," . $count;
