@@ -109,12 +109,12 @@ require_once 'includes/header.inc.php';
 
         <tr>
                 <td>Total Cost:</td>
-                <td colspan='6'>$<?php echo data_stats::get_total_cost($db,$start_date,$end_date,1); ?>
+                <td colspan='6'>$<?php echo data_stats::get_total_cost($db,$selected_month,$selected_month,1); ?>
                 </td>
 	</tr>
 	<tr>
 		<td>Billed Cost:</td>
-		<td colspan='6'>$<?php echo data_stats::get_billed_cost($db,$start_date,$end_date,1); ?>
+		<td colspan='6'>$<?php echo data_stats::get_billed_cost($db,$selected_month,$selected_month,1); ?>
         </tr>
 
 </table>

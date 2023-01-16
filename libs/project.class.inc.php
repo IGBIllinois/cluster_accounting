@@ -336,7 +336,7 @@ class project {
 		$sql .= "WHERE project_id=:project_id ";
 		$sql .= "AND cfops.cfop_active='1' LIMIT 1";
 		$parameters = array(
-                        ':project_id'=>$this->get_project_id()
+                        ':project_id'=>$project_id
                 );
 		$result = $this->db->query($sql,$parameters);
 		if ($result) {

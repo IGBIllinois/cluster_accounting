@@ -112,7 +112,7 @@ class data_dir {
 	}
 	
 	private function get_data_dir() {
-		$sql = "SELECT * FROM data_dir ";
+		$sql = "SELECT data_dir.* FROM data_dir ";
 		$sql .= "WHERE data_dir_id=:data_dir_id ";
 		$sql .= "LIMIT 1";
 		$parameters = array(

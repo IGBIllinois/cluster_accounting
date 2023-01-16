@@ -20,7 +20,6 @@ if (isset($_POST['remove_data_dir'])) {
 }
 $data_dir = new data_dir($db,$data_dir_id);
 $project = new project($db,$data_dir->get_project_id());
-
 require_once 'includes/header.inc.php';
 
 ?>

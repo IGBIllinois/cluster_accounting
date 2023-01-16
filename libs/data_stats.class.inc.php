@@ -7,8 +7,8 @@ class data_stats {
         	$sql .= "FROM data_bill ";
 	        $sql .= "WHERE data_bill_date BETWEEN :start_date AND :end_date ";
 		$parameters = array(
-			':start_date'=>$start_date,
-			':end_date'=>$end_date
+			':start_date'=>$start_date->format("Y-m-d H:i:s"),
+			':end_date'=>$end_date->format("Y-m-d H:i:s")
 		);
 	        $result = $db->query($sql,$parameters);
 		$cost = 0;
@@ -26,8 +26,8 @@ class data_stats {
                 $sql .= "FROM data_bill ";
 		$sql .= "WHERE data_bill_date BETWEEN :start_date AND :end_date ";
 		$parameters = array(
-                        ':start_date'=>$start_date,
-                        ':end_date'=>$end_date
+                        ':start_date'=>$start_date->format("Y-m-d H:i:s"),
+                        ':end_date'=>$end_date->format("Y-m-d H:i:s")
                 );
                 $result = $db->query($sql,$parameters);
                 $cost = 0;
@@ -71,10 +71,10 @@ class data_stats {
                 $sql .= "GROUP BY project ";
                 $sql .= "ORDER BY terabyte DESC ";
 		$parameters = array(
-			':start_date'=>$start_date,
-			':end_date'=>$end_date
+			':start_date'=>$start_date->format("Y-m-d H:i:s"),
+			':end_date'=>$end_date->format("Y-m-d H:i:s")
 		);
-                return $db->query($sql);
+                return $db->query($sql,$parameters);
         }
 	public static function get_top_data_usage($db,$start_date,$end_date,$top) {
                 $data_usage = self::get_project_usage($db,$start_date,$end_date);

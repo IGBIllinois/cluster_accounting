@@ -21,10 +21,15 @@
 </head>
 
 <body class='d-flex flex-column min-vh-100' style='padding-top: 70px; padding-bottom: 60px;'>
+<?php require_once __DIR__ . '/about.inc.php'; ?>
 <nav class='navbar fixed-top navbar-dark bg-dark'>
 	<a class='navbar-brand py-0' href='#'><?php echo settings::get_title(); ?></a>
 	<span class='navbar-text py-0'>Version <?php echo settings::get_version(); ?>&nbsp;
-		<a class='btn btn-danger btn-sm' role="button" href='logout.php'>Logout</a>
+	<?php if ($login_user->is_admin()) {
+		echo "<button type='button' class='btn btn-sm btn-secondary' data-toggle='modal' data-target='#aboutModal'><i class='fas fa-info-circle'></i> About</button>";
+	}
+	?>
+		<a class='btn btn-danger btn-sm' role="button" href='logout.php'><i class='fas fa-sign-out-alt'></i>Logout</a>
 	</span>
 </nav>
 <p>
@@ -57,7 +62,6 @@
 					echo "<li class='nav-item'><a class='nav-link' href='data_cost.php'>Data Cost</a></li>";
 					echo "<li class='nav-item'><a class='nav-link' href='verification.php'>Verify Users and Directories</a></li>";
 					echo "<li class='nav-item'><a class='nav-link' href='log.php'>View Log</a></li>";
-					echo "<li class='nav-item'><a class='nav-link' href='about.php'>About</a></li>";
 				} ?>
 			</ul>
 		</div>

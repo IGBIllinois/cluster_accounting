@@ -1,11 +1,19 @@
 <?php
-require_once 'includes/main.inc.php';
-require_once 'includes/header.inc.php';
+if (!$login_user->is_admin()) {
+	return;
+}
 
 ?>
-<h3>About</h3>
-<hr>
-<div class='col-sm-8 col-md-8 col-lg-8 col-xl-8'>
+<div class='modal fade' id='aboutModal' tabindex='-1' role='dialog' aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class='modal-dialog modal-lg' role='document'>
+        <div class='modal-content'>
+        <div class='modal-header'>
+                <h5 class='modal-title'>About</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+        </div>
+<div class='modal-body'>
+
 	<table class='table table-bordered table-sm'>
 		<tbody>
 		<tr><td>Code Website</td></td><td><a href='<?php echo settings::get_website_url(); ?>' target='_blank'><?php echo settings::get_website_url(); ?></a></td></tr>
@@ -56,9 +64,6 @@ require_once 'includes/header.inc.php';
 	</table>
 </div>
 
-
-
-<?php
-
-require_once 'includes/footer.inc.php';
-?>
+</div>
+</div>
+</div>

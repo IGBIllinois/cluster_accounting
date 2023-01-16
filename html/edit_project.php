@@ -222,7 +222,7 @@ require_once 'includes/header.inc.php';
 </div>
 <br>
 <div class='card'>
-<div class='card-header'>Previous CFOPs</div>
+<div class='card-header'>Previous Billings</div>
 <div class='card-body'>
 <table class='table table-striped table-sm table-bordered'>
         <thead>

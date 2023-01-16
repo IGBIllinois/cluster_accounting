@@ -1,6 +1,8 @@
 <?php
 require_once 'includes/graph_main.inc.php';
 
+$top_count = 6;
+
 $start_date = "";
 $end_date = "";
 $year = date('Y');
@@ -12,6 +14,8 @@ elseif (isset($_GET['start_date']) && isset($_GET['end_date'])) {
 
         $start_date = $_GET['start_date'];
         $end_date = $_GET['end_date'];
+	$start_date_obj = DateTime::createFromFormat("Ymd H:i:s",$start_date. " 00:00:00"); 
+	$end_date_obj = DateTime::createFromFormat("Ymd H:i:s",$end_date. " 00:00:00");
 }
 
 $user_id = 0;
@@ -59,7 +63,7 @@ switch ($graph_type) {
 
 	case 'top_job_users':
 	        $stats = new statistics($db);
-        	$jobs = $stats->get_top_job_users($start_date,$end_date,6);
+        	$jobs = $stats->get_top_job_users($start_date_obj,$end_date_obj,$top_count);
 	        $data = array();
         	$i = 0;
  	       foreach ($jobs as $row)
@@ -74,7 +78,7 @@ switch ($graph_type) {
 
 	case 'users_top_total_cost':
 		$stats = new statistics($db);
-        	$jobs = $stats->get_top_cost_users($start_date,$end_date,6);
+        	$jobs = $stats->get_top_cost_users($start_date_obj,$end_date_obj,$top_count);
 	        $data = array();
         	$i = 0;
 	        foreach ($jobs as $row)
@@ -90,7 +94,7 @@ switch ($graph_type) {
 
 	case 'users_top_billed_cost':
  	       $stats = new statistics($db);
-	        $jobs = $stats->get_top_billed_cost_users($start_date,$end_date,6);
+	        $jobs = $stats->get_top_billed_cost_users($start_date_obj,$end_date_obj,$top_count);
         	$data = array();
 	        $i = 0;
         	foreach ($jobs as $row)
@@ -146,9 +150,8 @@ switch ($graph_type) {
 	//Top 5 Data Users
 	case 'top_data_usage':
 
-		$top = 6;
 		$title = "Top Data Usage";
-		$result = data_stats::get_top_data_usage($db,$start_date,$end_date,$top);
+		$result = data_stats::get_top_data_usage($db,$start_date_obj,$end_date_obj,$top_count);
 		$data = array();
 	        $i = 0;
         	foreach ($result as $row)

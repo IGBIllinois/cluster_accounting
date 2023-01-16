@@ -77,7 +77,7 @@ class data_functions {
 		return false;
 	}
 
-	public static function get_data_bill($db,$month,$year,$minimum_bill = 0.00) {
+	public static function get_data_bill($db,$month,$year,$minimal_bill = 0.00) {
 		$sql = "SELECT data_dir.data_dir_path as 'Directory', ";
 	        $sql .= "ROUND(data_bill.data_bill_avg_bytes / 1099511627776,3) as 'Terabytes', ";
         	$sql .= "ROUND(data_cost.data_cost_value,2) as 'Rate ($/Terabyte)', ";
