@@ -12,13 +12,12 @@ if (isset($_POST['update_cost'])) {
 }
 
 $data_cost = data_functions::get_current_data_cost($db);
-
 require_once 'includes/header.inc.php';
 ?>
 <h3>Data Cost</h3>
 <hr>
 <div class='col-sm-4 col-md-4 col-lg-4 col-xl-4'>
-<form class='form' method='post' action='" . $_SERVER['PHP_SELF'] . "'>
+<form class='form' method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>'>
 <input type='hidden' name='data_cost_id' value='<?php echo $data_cost->get_id(); ?>'>
 <table class='table table-bordered table-striped table-sm'>
 <thead><th colspan='2'></th>

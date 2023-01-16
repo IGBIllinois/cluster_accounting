@@ -85,7 +85,7 @@ class data_cost {
 		$parameters = array(
 			':data_cost_id'=>$data_cost_id
 		);
-		$result = $this->db->query($sql);
+		$result = $this->db->query($sql,$parameters);
 		if ($result) {
 			$this->id = $result[0]['data_cost_id'];
 			$this->cost = $result[0]['data_cost_value'];
