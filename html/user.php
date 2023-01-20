@@ -110,7 +110,7 @@ require_once 'includes/header.inc.php';
                 }
                 else {
                         echo "<tr><td>Is Supervisor:</td><td><i class='fas fa-times'></i></td></tr>";
-			echo "<tr><td>Supervisor's Name: </td><td>" . $user->get_supervisor_name() . "</td></tr>";
+			echo "<tr><td>Supervisor's Name: </td><td><a href='user.php?user_id=" . $user->get_supervisor_id() . "'>" . $user->get_supervisor_name() . "</a></td></tr>";
                 }
                 ?>
 

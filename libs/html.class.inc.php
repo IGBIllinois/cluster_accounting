@@ -178,7 +178,7 @@ class html {
 					$users_html .= "<td><i class='fas fa-check'></i></td>";
 				}
 				else {
-					$users_html .= "<td><i class='fas fa-check'><i></td>";
+					$users_html .= "<td><i class='fas fa-times'><i></td>";
 				}
                 		$users_html .= "</tr>";
 			}
