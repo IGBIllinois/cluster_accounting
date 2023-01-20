@@ -132,7 +132,7 @@ class job {
 				$job_data['job_user_id'] = $user->get_user_id();
 				$job_data['job_project_id'] = $this->project->get_project_id();
 				$job_data['job_queue_id'] = $this->queue->get_queue_id();
-				$job_data['job_cfop_id'] = $this->project->get_cfop_id_by_date($job_data['job_start_time']);
+				$job_data['job_cfop_id'] = $this->project->get_cfop_id();
 				$job_data['job_queue_cost_id'] = $this->queue->get_queue_cost_id();
 				$job_id = $this->db->build_insert("jobs",$job_data);
 				if ($job_id) {

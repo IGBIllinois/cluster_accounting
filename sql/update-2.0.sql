@@ -16,3 +16,10 @@ DELETE FROM data_cost WHERE data_cost_type<>'standard';
 ALTER TABLE data_cost DROP COLUMN data_cost_type;
 
 ALTER TABLE data_cost MODIFY COLUMN data_cost_value DECIMAL(30,2);
+
+ALTER TABLE cfops ADD cfop_billtype ENUM('no_bill','cfop','custom') AFTER cfop_project_id;
+ALTER TABLE cfops ADD cfop_custom_description VARCHAR(255) AFTER cfop_activity;
+UPDATE cfops SET cfop_billtype='no_bill' WHERE cfop_bill=0;
+UPDATE cfops SET cfop_billtype='cfop' WHERE cfop_bill=1;
+ALTER TABLE cfops DROP COLUMN cfop_bill;
+
