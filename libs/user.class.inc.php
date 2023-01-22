@@ -15,10 +15,9 @@ class user {
 	private $email;
 	private $admin;
 	private $default_project_id;
-	private $default_data_dir_id;
-	
+	private $default_data_dir_id;	
 	private const USER_BILL_TWIG = "user_bill.html.twig";
-	
+
 	////////////////Public Functions///////////
 
 	public function __construct(&$db,&$ldap,$id = 0,$username = "") {
@@ -34,19 +33,20 @@ class user {
 	}
 	public function __destruct() {
 	}
-	public function create($username,$supervisor_id,$admin,$bill_project,$cfop = "",$activity = "",$hide_cfop = 0) {
+	public function create($username,$supervisor_id,$admin,$cfop_billtype,$cfop = "",$activity = "",$hide_cfop = 0,$custom_bill_description = "") {
 		$username = trim(rtrim($username));
 		
 
 		$error = false;
 		//Verify Username
+		$message = "";
 		if ($username == "") {
 			$error = true;
-			$message = "<div class='alert alert-danger'>Please enter a username</div>";
+			$message .= "<div class='alert alert-danger'>Please enter a username</div>";
 		}
 		elseif (preg_match('/[A-Z]/',$username)) {
 			$error = true;
-			$message = "<div class='alert alert-danger'>Username can only be lowercase</div>";
+			$message .= "<div class='alert alert-danger'>Username can only be lowercase</div>";
 		}
 		elseif ($this->get_user_exist($username)) {
 			$error = true;
@@ -54,7 +54,7 @@ class user {
 		}
 		elseif (!$this->ldap->is_ldap_user($username)) {
 			$error = true;
-			$message = "<div class='alert alert-danger'>User does not exist in LDAP database.</div>";
+			$message .= "<div class='alert alert-danger'>User does not exist in LDAP database.</div>";
 		}
 
 		if ($supervisor_id == "-1") {
@@ -62,17 +62,15 @@ class user {
 			$message .= "<div class='alert alert-danger'>Please select a supervisor.</div>";
 		}
 		//Verify CFOP/Activty Code
-		$project = new project($this->db);
-		if (!$project->verify_cfop($cfop) && $bill_project) {
+		if (!\IGBIllinois\cfop::verify_format($cfop,$activity) && $cfop_billtype == project::BILLTYPE_CFOP) {
 			$error = true;
 			$message .= "<div class='alert alert-danger'>Invalid CFOP.</div>";
 		}
 
-		if (!$project->verify_activity_code($activity) && $bill_project) {
+		if (($cfop_billtype == project::BILLTYPE_CUSTOM) && ($custom_bill_description == ""))  {
 			$error = true;
-			$message .= "<div class='alert alert-danger'>Invalid Activity Code.</div>";
+			$message .= "<div class='alert alert-danger'>Please enter a custom bill description</div>";
 		}
-
 		//If Errors, return with error messages
 		if ($error) {
 			return array('RESULT'=>false,
@@ -88,7 +86,7 @@ class user {
 				$this->set_supervisor($supervisor_id);
 				$this->default_project()->enable();
 				$this->default_data_dir()->enable();
-				$this->default_project()->set_cfop($bill_project,$cfop,$activity,$hide_cfop);
+				$this->default_project()->set_cfop($cfop_billtype,$cfop,$activity,$hide_cfop,$custom_bill_description);
 				
 			}
 			else {
@@ -104,7 +102,8 @@ class user {
 				$this->load_by_id($user_id);
 				$description = "default";
 				$default = 1;
-				$project->create($username,$username,$description,$default,$bill_project,$user_id,$cfop,$activity,$hide_cfop);
+				$project = new project($this->db);
+				$project->create($this->ldap,$username,$username,$description,$default,$cfop_billtype,$user_id,$cfop,$activity,$hide_cfop,$custom_bill_description);
 				$data_dir = new data_dir($this->db);
 				$default = 1;
 				$data_dir->create($project->get_project_id(),$home_dir,$default);

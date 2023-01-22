@@ -10,13 +10,18 @@ class project {
 	private $name;
 	private $ldap_group;
 	private $description;
-	private $bill_project;
+	private $cfop_billtype;
 	private $cfop;
 	private $cfop_activity;
 	private $enabled;
 	private $default;
 	private $time_created;
 	private $cfop_id;
+
+	public const BILLTYPE_CFOP = "cfop";
+        public const BILLTYPE_CUSTOM = "custom";
+        public const BILLTYPE_NO_BILL = "no_bill";
+
 	////////////////Public Functions///////////
 
 	public function __construct($db,$project_id = 0,$project_name = "") {
@@ -33,7 +38,7 @@ class project {
 	public function __destruct() {
 	}
 
-	public function create($name,$ldap_group,$description,$default,$bill_project,$owner_id,$cfop = "",$activity = "",$hide_cfop = 0,$ldap) {
+	public function create($ldap,$name,$ldap_group,$description,$default,$cfop_billtype,$owner_id,$cfop = "",$activity = "",$hide_cfop = 0,$custom_bill_description = "") {
 		$error = false;
 		$message = "";
 		$activity = strtoupper($activity);
@@ -54,14 +59,9 @@ class project {
 			$error = true;
 			$message .= "<div class='alert alert-danger'>Please enter a project owner.</div>";
 		}
-		if (!$this->verify_cfop($cfop) && $bill_project) {
+		if (!\IGBIllinois\cfop::verify_format($cfop,$activity) && $bill_project) {
 			$error = true;
 			$message .= "<div class='alert alert-danger'>Please enter valid CFOP.</div>";
-		}
-
-		if (!$this->verify_activity_code($activity) && $bill_project) {
-			$error = true;
-			$message .= "<div class='alert alert-danger'>Please enter a valid activity code.</div>";
 		}
 
 		if ($error) {
@@ -76,7 +76,7 @@ class project {
 					'project_default'=>$default
 				);
 			$this->id = $this->db->build_insert("projects",$project_array);
-			$this->set_cfop($bill_project,$cfop,$activity,$hide_cfop);
+			$this->set_cfop($cfop_billtype,$cfop,$activity,$hide_cfop,$custom_bill_description);
 			return array('RESULT'=>true,
 					'MESSAGE'=>"<div class='alert alert-success'>Project successfully created.</div>",
 					'project_id'=>$this->id);
@@ -84,21 +84,17 @@ class project {
 
 	}
 
-	public function edit($ldap_group,$description,$bill_project,$owner_id,$cfop = "",$activity = "",$hide_cfop = 0) {
+	public function edit($ldap_group,$description,$cfop_billtype,$owner_id,$cfop = "",$activity = "",$hide_cfop = 0,$custom_bill_description = "") {
 		if (($cfop != $this->get_cfop()) || ($activity != $this->get_activity_code()) ||
 				($bill_project != $this->get_bill_project())) {
 
 	                $error = false;
 			$message = "";
-	                if (!$this->verify_cfop($cfop) && ($bill_project)) {
+	                if (!\IGBIllinois\cfop::verify_format($cfop,$activity) && ($bill_project)) {
         	                $error = true;
                 	        $message = "<div class='alert alert-danger'>Please verify CFOP</div>";
 
 	                }	
-        	        if (!$this->verify_activity_code($activity) && ($bill_project)) {
-                	        $error = true;
-                        	$message .= "<div class='alert alert-danger'>Please verify activity code</div>";
-	                }
 			if (!$error) {
 				$result = $this->set_cfop($bill_project,$cfop,$activity,$hide_cfop);
 				return array('RESULT'=>true,
@@ -187,8 +183,8 @@ class project {
 	public function get_default() {
 		return $this->default;
 	}
-	public function get_bill_project() {
-                return $this->bill_project;
+	public function get_billtype() {
+                return $this->cfop_billtype;
         }
 
 	public function get_cfop() {
@@ -235,7 +231,7 @@ class project {
 		}
 		return false;
 	}
-	public function set_cfop($bill_project,$cfop,$activity,$hide_cfop = 0) {
+	public function set_cfop($cfop_billtype,$cfop,$activity,$hide_cfop = 0,$custom_bill_description = "") {
 		$sql = "UPDATE cfops SET cfop_active='0' ";
 		$sql .= "WHERE cfop_project_id=:project_id ";
 		$parameters = array(
@@ -243,19 +239,34 @@ class project {
 		);
 		$this->db->non_select_query($sql,$parameters);
 		$active = 1;
-		$cfop_billtype = 'no_bill';
-		if (!$bill_project) {
-			$cfop = "";
-			$activity = "";
-			$hide_cfop = 0;
-			$cfop_billtype = "cfop";
+
+		switch ($cfop_billtype) {
+			case self::BILLTYPE_CFOP:
+				$custom_bill_description = "";
+				break;
+			case self::BILLTYPE_CUSTOM:
+				$cfop = "";
+				$activity = "";
+				$hide_cfop = 0;
+				break;
+			case self::BILLTYPE_NO_BILL:
+				$cfop = "";
+				$activity = "";
+				$hide_cfop = 0;
+				$custom_bill_description = "";
+				break;
+
+
 		}
+		
 		$insert_array = array('cfop_project_id'=>$this->get_project_id(),
 				'cfop_billtype'=>$cfop_billtype,
 				'cfop_value'=>$cfop,
 				'cfop_activity'=>$activity,
 				'cfop_active'=>$active,
-				'cfop_restricted'=>$hide_cfop);
+				'cfop_restricted'=>$hide_cfop,
+				'cfop_custom_description'=>$custom_bill_description
+				);
 		return $this->db->build_insert("cfops",$insert_array);
 
 
@@ -281,21 +292,6 @@ class project {
 		$result = $this->db->non_select_query($sql,$parameters);
 		$this->enabled = 0;
 		return $result;
-	}
-
-	public static function verify_cfop($cfop) {
-		if (preg_match('^[1-9]{1}-[0-9]{6}-[0-9]{6}-[0-9]{6}$^',$cfop)) {
-			return true;
-		}
-		return false;
-	}
-
-	public static function verify_activity_code($activity) {
-		if ((strlen($activity) == 0) || (preg_match('^[a-zA-Z0-9]^',$activity)
-				&& (strlen($activity) <= 6))) {
-			return true;
-		}
-		return false;
 	}
 
 	public static function verify_project_name($name) {
@@ -345,7 +341,7 @@ class project {
 			$this->name = $result[0]['project_name'];
 			$this->description = $result[0]['project_description'];
 			$this->ldap_group = $result[0]['project_ldap_group'];
-			$this->bill_project = $result[0]['cfop_bill'];
+			$this->cfop_billtype = $result[0]['cfop_billtype'];
 			$this->cfop = $result[0]['cfop_value'];
 			$this->cfop_activity = $result[0]['cfop_activity'];
 			$this->time_created = $result[0]['cfop_time_created'];

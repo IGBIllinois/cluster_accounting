@@ -7,9 +7,8 @@ if (!$login_user->is_admin()) {
 
 $message = "";
 if (isset($_POST['add_user'])) {
-	foreach($_POST as $var) {
-		$var = trim(rtrim($var));
-	}
+	$_POST = array_map('trim',$_POST);
+		
 	$admin = 0;
 	if (isset($_POST['is_admin'])) {
 		$admin = 1;
@@ -22,20 +21,42 @@ if (isset($_POST['add_user'])) {
 		$supervisor_id = $_POST['supervisor_id'];
 	}
 
-	//determines if the project will be billed.
-	$user = new user($db,$ldap);
-	$bill_project = 1;
-	if (isset($_POST['bill_project'])) {
-		$bill_project = 0;
-	}
-	
 	$hide_cfop = 0;
-	if (isset($_POST['hide_cfop'])) {
-		$hide_cfop = 1;
-	}
 	$cfop = $_POST['cfop_1'] . "-" . $_POST['cfop_2'] . "-" . $_POST['cfop_3'] . "-" . $_POST['cfop_4'];
+	switch ($_POST['cfop_billtype']) {
+		case 'cfop':
+			if (isset($_POST['hide_cfop'])) {
+				$hide_cfop = 1;
+			}
+			unset($_POST['custom_bill_description']);	
+			break;
+		case 'custom':
+			unset($_POST['cfop_1']);
+			unset($_POST['cfop_2']);
+			unset($_POST['cfop_3']);
+			unset($_POST['cfop_4']);
+			unset($_POST['activity']);
+			unset($_POST['hide_cfop']);
+			break;
 
-	$result = $user->create($_POST['new_username'],$supervisor_id,$admin,$bill_project,$cfop,$_POST['activity'],$hide_cfop);
+		case 'no_bill':
+			unset($_POST['cfop_1']);
+                        unset($_POST['cfop_2']);
+                        unset($_POST['cfop_3']);
+                        unset($_POST['cfop_4']);
+                        unset($_POST['activity']);
+                        unset($_POST['hide_cfop']);
+			unset($_POST['custom_bill_description']);
+			break;
+
+
+
+
+
+	}
+
+	$user = new user($db,$ldap);
+	$result = $user->create($_POST['new_username'],$supervisor_id,$admin,$_POST['cfop_billtype'],$cfop,$_POST['activity'],$hide_cfop,$_POST['custom_bill_description']);
 
 	if ($result['RESULT'] == true) {
 		header("Location: user.php?user_id=" . $result['user_id']);
@@ -119,7 +140,7 @@ require_once 'includes/header.inc.php';
 <div class='card-body'> 
 	<div class='col-sm-8 col-md-8 col-lg-8 col-xl-8'>
 		<nav>
-			<div class='nav nav-tabs' role='tablist'>
+			<div class='nav nav-tabs' role='tablist' id='billing_tab'>
 				<a class='nav-item nav-link active' data-toggle='tab' data-target='#nav-cfop' type='button'>CFOP</a>
 				<a class='nav-item nav-link' data-toggle='tab' data-target='#nav-custom' type='button'>Custom Billing</a>
 				<a class='nav-item nav-link' data-toggle='tab' data-target='#nav-nobill' type='button'>Do Not Bill</a>
@@ -179,7 +200,7 @@ require_once 'includes/header.inc.php';
 					<label class='col-form-label' style='min-width: 200px' for='custom_bill_description'>Custom Bill Description: &nbsp;
 						<br>(e.g. Check, Personal Credit Card, Government Credit Card) &nbsp;
 					</label>
-					<textarea class='form-control' rows='5' cols='80' id='custom_bill_description' 
+					<textarea class='form-control' rows='5' cols='80' maxlength='255' id='custom_bill_description' 
 						name='custom_bill_description'><?php if (isset($_POST['custom_bill_description'])) { echo $_POST['custom_bill_description']; } ?></textarea>
 
 				</div>
@@ -189,11 +210,7 @@ require_once 'includes/header.inc.php';
 				<br>
 		                <div class='form-group row'>
 					<div class='col-sm-9 offset-sm-3'>
-					<div class='form-check'>
-                		                <input class='form-check-input' type='checkbox' id='bill_project_input' name='bill_project'
-                                	        onClick='enable_project_bill();' <?php if (isset($_POST['bill_project'])) { echo "checked='checked'"; } ?>>
-						<label class='form-check-label' style='min-width: 200px' for='bill_project_input'>Do not bill default project: &nbsp</label>
-					</div>
+						<p>Selecting 'Do Not Bill' will not enabling billing for this user</p>
 					</div>
 				</div>
 
@@ -207,6 +224,7 @@ require_once 'includes/header.inc.php';
 <br>
 	<div class='form-group row'>
 		<div class='col-sm-12'>
+			<input type='hidden' name='cfop_billtype' id='cfop_billtype' value='<?php if (isset($_POST['cfop_billtype'])) { echo $_POST['cfop_billtype']; } ?>'>
 			<input class='btn btn-primary' type='submit' name='add_user' value='Add User'>&nbsp;
 			<input class='btn btn-warning' type='submit' name='cancel_user' value='Cancel'>
 		</div>
@@ -228,6 +246,10 @@ $(document).ready(function() {
 	$('#supervisors_input').select2({
 		'placeholder': "Select a Supervisor"
 	});
+
+	set_cfop_billtype_tab();
+	set_cfop_billtype_value();
+
 });
 </script>
 

@@ -16,19 +16,43 @@ elseif (isset($_POST['edit_project'])) {
 		$var = trim(rtrim($var));
 	}
 	$project = new project($db,$_POST['project_id']);
-	$bill_project = 1;
-	if (isset($_POST['bill_project'])) {
-		$bill_project = 0;
-	}
+	$hide_cfop = 0;
+        $cfop = $_POST['cfop_1'] . "-" . $_POST['cfop_2'] . "-" . $_POST['cfop_3'] . "-" . $_POST['cfop_4'];
+        
+	switch ($_POST['cfop_billtype']) {
+                case 'cfop':
+                        if (isset($_POST['hide_cfop'])) {
+                                $hide_cfop = 1;
+                        }
+                        unset($_POST['custom_bill_description']);
+                        break;
+                case 'custom':
+                        unset($_POST['cfop_1']);
+                        unset($_POST['cfop_2']);
+                        unset($_POST['cfop_3']);
+                        unset($_POST['cfop_4']);
+                        unset($_POST['activity']);
+                        unset($_POST['hide_cfop']);
+                        break;
 
-        $hide_cfop = 0;
-        if (isset($_POST['hide_cfop'])) {
-                $hide_cfop = 1;
+                case 'no_bill':
+                        unset($_POST['cfop_1']);
+                        unset($_POST['cfop_2']);
+                        unset($_POST['cfop_3']);
+                        unset($_POST['cfop_4']);
+                        unset($_POST['activity']);
+                        unset($_POST['hide_cfop']);
+                        unset($_POST['custom_bill_description']);
+                        break;
+
+
+
+
+
         }
 
-	$cfop = $_POST['cfop_1'] . "-" . $_POST['cfop_2'] . "-" . $_POST['cfop_3'] . "-" . $_POST['cfop_4'];
 	$result = $project->edit($_POST['ldap_group'],$_POST['description'],
-			$bill_project,$_POST['owner'],$cfop,$_POST['activity'],$hide_cfop);
+			$_POST['cfop_billtype'],$_POST['owner'],$cfop,$_POST['activity'],$hide_cfop,$_POST['custom_bill_description']);
 
 }
 
@@ -43,15 +67,10 @@ else {
 $previous_cfops = $project->get_all_cfops();
 $previous_cfops_html = "";
 foreach ($previous_cfops as $cfops) {
-	$previous_cfops_html .= "<tr><td>" . $cfops['cfop_value'] . "</td>";
+	$previous_cfops_html .= "<tr><td>" . $cfops['cfop_billtype'] . "</td>";
+	$previous_cfops_html .= "<td>" . $cfops['cfop_value'] . "</td>";
 	$previous_cfops_html .= "<td>" . $cfops['cfop_activity'] . "</td>";
-	if ($cfops['cfop_bill'] == '1') {
-		$previous_cfops_html .= "<td><i class='fas fa-check'></i></td>";
-	}
-	else {
-		$previous_cfops_html .= "<td><i class='fas fa-times'></i></td>";
-                                }
-
+	$previous_cfops_html .= "<td>" . $cfops['cfop_custom_description'] . "</td>";
 	$previous_cfops_html .= "<td>" . $cfops['cfop_time_created'] . "</td>";
 
 
@@ -86,13 +105,18 @@ require_once 'includes/header.inc.php';
 ?>
 <h3>Project - <?php echo $project->get_name(); ?></h3>
 <hr>
+<div class='card'>
+<div class='card-header'>Project Members</div>
+<div class='col-sm-12 col-md-12 col-lg-12 col-xl-12'>
+<br>
 <table class='table table-bordered table-striped table-sm'>
-	<thead>
-		<tr><th>Project Members</th></tr>
-	</thead>
+	<tbody>
 	<?php echo $group_members_html; ?>
+	</tbody>
 </table>
-
+</div>
+</div>
+<br>
 <div class='card'>
 <div class='card-header'>Edit Project</div>
 <div class='col-sm-8 col-md-8 col-lg-8 col-xl-8'>
@@ -123,7 +147,7 @@ require_once 'includes/header.inc.php';
 		</div>
 
 		<nav>
-                        <div class='nav nav-tabs' role='tablist'>
+                        <div class='nav nav-tabs' role='tablist' id='billing_tab'>
                                 <a class='nav-item nav-link active' data-toggle='tab' data-target='#nav-cfop' type='button'>CFOP</a>
                                 <a class='nav-item nav-link' data-toggle='tab' data-target='#nav-custom' type='button'>Custom Billing</a>
                                 <a class='nav-item nav-link' data-toggle='tab' data-target='#nav-nobill' type='button'>Do Not Bill</a>
@@ -193,11 +217,7 @@ require_once 'includes/header.inc.php';
                                 <br>
                                 <div class='form-group row'>
                                         <div class='col-sm-9 offset-sm-3'>
-                                        <div class='form-check'>
-                                                <input class='form-check-input' type='checkbox' id='bill_project_input' name='bill_project'
-                                                onClick='enable_project_bill();' <?php if (isset($_POST['bill_project'])) { echo "checked='checked'"; } ?>>
-                                                <label class='form-check-label' style='min-width: 200px' for='bill_project_input'>Do not bill default project: &nbsp</label>
-                                        </div>
+						<p>Selecting 'Do Not Bill' will not enabling billing for this user</p>
                                         </div>
                                 </div>
 
@@ -205,14 +225,13 @@ require_once 'includes/header.inc.php';
 
 
                 </div>
-
-		<div class='control-group'>
-			<div class='controls'>
-				<input class='btn btn-primary' type='submit' name='edit_project'
-					value='Edit Project'>
+		<br>
+		<div class='form-group row'>
+                        <div class='col-sm-8'>
+				<input type='hidden' name='cfop_billtype' id='cfop_billtype' value='<?php if (isset($_POST['cfop_billtype'])) { echo $_POST['cfop_billtype']; } ?>'>
+				<input class='btn btn-primary' type='submit' name='edit_project' value='Edit Project'>
 				<?php if (!$project->get_default()) {
-					echo "<input class='btn btn-danger' type='submit'
-					name='delete_project' value='Delete Project'>";
+					echo "<input class='btn btn-danger' type='submit' name='delete_project' value='Delete Project'>";
 			} ?>
 			</div>
 		</div>
@@ -227,9 +246,10 @@ require_once 'includes/header.inc.php';
 <table class='table table-striped table-sm table-bordered'>
         <thead>
                 <tr>
+			<th>Bill Type</th>
                         <th>CFOP</th>
                         <th>Activity Code</th>
-                        <th>Bill Project</th>
+			<th>Custom Bill Description</th>
                         <th>Date Added</th>
                 </tr>
         </thead>
@@ -258,10 +278,12 @@ require_once 'includes/footer.inc.php';
 
 <script type='text/javascript'>
 $(document).ready(function() {
-	enable_project_bill();
 	$('#owner_input').select2({
 		'placeholder': "Select a Owner"
 	});
+
+	set_cfop_billtype_tab();
+        set_cfop_billtype_value();
 });
 </script>
 

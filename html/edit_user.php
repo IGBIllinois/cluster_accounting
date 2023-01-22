@@ -12,9 +12,7 @@ if (isset($_GET['user_id'])) {
 }
 $message = "";
 if (isset($_POST['edit_user'])) {
-	foreach($_POST as $var) {
-		$var = trim(rtrim($var));
-	}
+	$_POST = array_map('trim',$_POST);
 	$admin = 0;
 	if (isset($_POST['is_admin'])) {
 		$admin = 1;

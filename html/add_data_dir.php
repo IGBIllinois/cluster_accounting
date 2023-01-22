@@ -7,9 +7,7 @@ if (!$login_user->is_admin()) {
 }
 
 if (isset($_POST['add_dir'])) {
-	foreach($_POST as $var) {
-		$var = trim(rtrim($var));
-	}
+	$_POST = array_map('trim',$_POST);
 	$data_dir = new data_dir($db);
 	$default = 0;
 	$result = $data_dir->create($_POST['project_id'],$_POST['directory'],$default);

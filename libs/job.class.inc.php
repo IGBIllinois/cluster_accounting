@@ -361,13 +361,9 @@ class job {
 	public function set_new_cfop($cfop,$activity,$hide_cfop) {
 		$valid = 1;
 		$message = "";
-		if (!project::verify_cfop($cfop)) {
+		if (!\IGBIllinois\cfop::verify_format($cfop,$activity)) {
 			$message .= "Invalid CFOP";
 			$valid =0;
-		}
-		if (!project::verify_activity_code($activity)) {
-			$message .= "Invalid Acivity Code";
-			$valid = 0;
 		}
 		if ($valid) {
 

@@ -10,20 +10,42 @@ if (isset($_POST['add_project'])) {
 	}
 
 	$project = new project($db);
+	$default = 0;
+	$hide_cfop = 0;
+        $cfop = $_POST['cfop_1'] . "-" . $_POST['cfop_2'] . "-" . $_POST['cfop_3'] . "-" . $_POST['cfop_4'];
+        switch ($_POST['cfop_billtype']) {
+                case 'cfop':
+                        if (isset($_POST['hide_cfop'])) {
+                                $hide_cfop = 1;
+                        }
+                        unset($_POST['custom_bill_description']);
+                        break;
+                case 'custom':
+                        unset($_POST['cfop_1']);
+                        unset($_POST['cfop_2']);
+                        unset($_POST['cfop_3']);
+                        unset($_POST['cfop_4']);
+                        unset($_POST['activity']);
+                        unset($_POST['hide_cfop']);
+                        break;
 
-	if (isset($_POST['bill_project'])) {
-		$bill_project = 0;
-		$default = 0;
-		$result = $project->create($_POST['name'],$_POST['ldap_group'],
-					$_POST['description'],$default,$bill_project,$_POST['owner']);
-	}
-	else {
-		$bill_project = 1;
-		$default = 0;
-		$cfop = $_POST['cfop_1'] . "-" . $_POST['cfop_2'] . "-" . $_POST['cfop_3'] . "-" . $_POST['cfop_4'];
-		$result = $project->create($_POST['name'],$_POST['ldap_group'],$_POST['description'],
-					$default,$bill_project,$_POST['owner'],$cfop,$_POST['activity']);
-	}
+                case 'no_bill':
+                        unset($_POST['cfop_1']);
+                        unset($_POST['cfop_2']);
+                        unset($_POST['cfop_3']);
+                        unset($_POST['cfop_4']);
+                        unset($_POST['activity']);
+                        unset($_POST['hide_cfop']);
+                        unset($_POST['custom_bill_description']);
+                        break;
+
+
+
+
+
+        }
+	$result = $project->create($ldap,$_POST['name'],$_POST['ldap_group'],$_POST['description'],
+				$default,$_POST['cfop_billtype'],$_POST['owner'],$cfop,$_POST['activity'],$_POST['custom_bill_description']);
 
 	if ($result['RESULT']) {
 		unset($_POST);
@@ -85,7 +107,7 @@ require_once 'includes/header.inc.php';
 		</div>
 		<br>
                 <nav>
-                        <div class='nav nav-tabs' role='tablist'>
+                        <div class='nav nav-tabs' role='tablist' id='billing_tab'>
                                 <a class='nav-item nav-link active' data-toggle='tab' data-target='#nav-cfop' type='button'>CFOP</a>
                                 <a class='nav-item nav-link' data-toggle='tab' data-target='#nav-custom' type='button'>Custom Billing</a>
                                 <a class='nav-item nav-link' data-toggle='tab' data-target='#nav-nobill' type='button'>Do Not Bill</a>
@@ -155,11 +177,7 @@ require_once 'includes/header.inc.php';
                                 <br>
                                 <div class='form-group row'>
                                         <div class='col-sm-9 offset-sm-3'>
-                                        <div class='form-check'>
-                                                <input class='form-check-input' type='checkbox' id='bill_project_input' name='bill_project'
-                                                onClick='enable_project_bill();' <?php if (isset($_POST['bill_project'])) { echo "checked='checked'"; } ?>>
-                                                <label class='form-check-label' style='min-width: 200px' for='bill_project_input'>Do not bill default project: &nbsp</label>
-                                        </div>
+						<p>Selecting 'Do Not Bill' will not enabling billing for this user</p>
                                         </div>
                                 </div>
 
@@ -171,6 +189,7 @@ require_once 'includes/header.inc.php';
 		<br>
 		<div class='form-group row'>
 			<div class='col-sm-8'>
+				<input type='hidden' name='cfop_billtype' id='cfop_billtype' value='<?php if (isset($_POST['cfop_billtype'])) { echo $_POST['cfop_billtype']; } ?>'>
 				<input class='btn btn-primary' type='submit' name='add_project'
 					value='Add Project'> <input class='btn btn-warning' type='submit'
 					name='cancel_project' value='Cancel'>
@@ -192,6 +211,9 @@ $(document).ready(function() {
         $('#owner_input').select2({
                 'placeholder': "Select a Owner"
         });
+
+	set_cfop_billtype_tab();
+        set_cfop_billtype_value();
 });
 
 </script>
