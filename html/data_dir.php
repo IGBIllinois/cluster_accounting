@@ -52,6 +52,8 @@ require_once 'includes/header.inc.php';
 </tr>
 <tr><td>Time Added to Database</td><td><?php echo $data_dir->get_time_created(); ?></td></tr>
 <tr><td>Default Directory</td><td><?php echo $data_dir->is_default() ? "<i class='fas fa-check'>" : "<i class='fas fa-times'>"; ?></td></tr>
+<tr><td>Latest Size (TB)</td><td><?php echo $data_dir->get_latest_size(); ?></td></tr>
+<tr><td>Latest Size Time</td><td><?php echo $data_dir->get_latest_size_date(); ?></td</tr>
 </table>
 <?php 
 
@@ -65,6 +67,7 @@ if (!$data_dir->is_default()) {
 }
 
 ?>
+
 </div>
 <?php
 

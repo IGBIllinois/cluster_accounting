@@ -36,6 +36,7 @@ require_once 'includes/header.inc.php';
 			<th>Directory</th>
 			<th>Currently Exists</th>
 			<th>Project</th>
+			<th>Terabytes</th>
 			<th>Time Created</th>
 		</tr>
 	</thead>

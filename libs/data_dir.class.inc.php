@@ -10,6 +10,9 @@ class data_dir {
 	private $time_created;
 	private $enabled;
 	private $default;
+	private $latest_size = 0;
+	private $latest_size_date;
+
 	private const PERCENTILE = 0.95;
 
 	public function __construct($db,$data_dir_id = 0) {
@@ -73,6 +76,13 @@ class data_dir {
 	public function get_time_created() {
 		return $this->time_created;
 	}
+
+	public function get_latest_size() {
+		return $this->latest_size;
+	}
+	public function get_latest_size_date() {
+		return $this->latest_size_date;
+	}
 	public function enable() {
                 $sql = "UPDATE data_dir SET data_dir_enabled='1' ";
                 $sql .= "WHERE data_dir_id=:data_dir_id LIMIT 1";
@@ -112,11 +122,16 @@ class data_dir {
 	}
 	
 	private function get_data_dir() {
-		$sql = "SELECT data_dir.* FROM data_dir ";
+		$sql = "SELECT data_dir.*, ";
+		$sql .= "ROUND(du.data_usage_bytes / :terabytes,3) as terabytes,du.data_usage_time as data_usage_time ";
+		$sql .= "FROM data_dir ";
+		$sql .= "LEFT JOIN (SELECT MAX(data_usage.data_usage_time) as data_usage_time, data_usage.data_usage_data_dir_id, data_usage.data_usage_bytes FROM data_usage WHERE data_usage.data_usage_data_dir_id=:data_dir_id) as du ";
+                $sql .= "ON du.data_usage_data_dir_id=data_dir.data_dir_id ";
 		$sql .= "WHERE data_dir_id=:data_dir_id ";
 		$sql .= "LIMIT 1";
 		$parameters = array(
-			':data_dir_id'=>$this->get_data_dir_id()
+			':data_dir_id'=>$this->get_data_dir_id(),
+			':terabytes'=>data_functions::CONVERT_TERABYTES
 		);
 		$result = $this->db->query($sql,$parameters);
 		if ($result) {
@@ -125,6 +140,8 @@ class data_dir {
 			$this->project_id = $result[0]['data_dir_project_id'];
 			$this->enabled = $result[0]['data_dir_enabled'];
 			$this->default = $result[0]['data_dir_default'];
+			$this->latest_size = $result[0]['terabytes'];
+			$this->latest_size_date = $result[0]['data_usage_time'];
 			return true;
 		}
 		return false;
