@@ -15,7 +15,7 @@ elseif (isset($_GET['start_date']) && isset($_GET['end_date'])) {
         $start_date = $_GET['start_date'];
         $end_date = $_GET['end_date'];
 	$start_date_obj = DateTime::createFromFormat("Ymd H:i:s",$start_date. " 00:00:00"); 
-	$end_date_obj = DateTime::createFromFormat("Ymd H:i:s",$end_date. " 00:00:00");
+	$end_date_obj = DateTime::createFromFormat("Ymd H:i:s",$end_date. " 23:59:59");
 }
 
 $user_id = 0;
@@ -165,6 +165,15 @@ switch ($graph_type) {
 
 
 	case 'data_usage_daily':
+		$title = "Daily Data Usage (TBs)";
+		$xaxis = "date";
+		$yaxis = "terabytes";
+		$data_dir_id = $_GET['data_dir_id'];
+		$data_dir = new data_dir($db,$data_dir_id);
+		$data = $data_dir->get_usage_range($start_date_obj,$end_date_obj);
+		$i = 0;
+
+		\IGBIllinois\graphs::bar_graph($data,$xaxis,$yaxis,$title);
 		break;
 
 }

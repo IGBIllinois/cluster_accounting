@@ -6,12 +6,9 @@ class data_functions {
         public const CONVERT_GIGABYTES = 1073741824;
 
 	public static function get_directories($db,$default = 1,$start,$count) {
-		$sql = "SELECT data_dir.*, projects.project_name, projects.project_id, ";
-		$sql .= "ROUND(du.data_usage_bytes / :terabytes,3) as terabytes ";
+		$sql = "SELECT data_dir.*, projects.project_name, projects.project_id ";
 		$sql .= "FROM data_dir ";
 		$sql .= "LEFT JOIN projects ON projects.project_id=data_dir.data_dir_project_id ";
-		$sql .= "LEFT JOIN (SELECT MAX(data_usage_time), data_usage.data_usage_data_dir_id, data_usage.data_usage_bytes FROM data_usage GROUP BY data_usage.data_usage_data_dir_id) as du ";
-		$sql .= "ON du.data_usage_data_dir_id=data_dir.data_dir_id ";
 		$sql .= "WHERE data_dir_enabled='1' ";
 		$sql .= "AND data_dir_default=:default ";	
 		$sql .= "ORDER BY data_dir.data_dir_path ASC ";
@@ -19,8 +16,7 @@ class data_functions {
 			$sql .= "LIMIT " . $start . "," . $count;
 		}
 		$parameters = array(
-			':default'=>$default,
-			':terabytes'=>self::CONVERT_TERABYTES
+			':default'=>$default
 		);
 		$result = $db->query($sql,$parameters);
 	

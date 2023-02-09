@@ -125,7 +125,8 @@ class data_dir {
 		$sql = "SELECT data_dir.*, ";
 		$sql .= "ROUND(du.data_usage_bytes / :terabytes,3) as terabytes,du.data_usage_time as data_usage_time ";
 		$sql .= "FROM data_dir ";
-		$sql .= "LEFT JOIN (SELECT MAX(data_usage.data_usage_time) as data_usage_time, data_usage.data_usage_data_dir_id, data_usage.data_usage_bytes FROM data_usage WHERE data_usage.data_usage_data_dir_id=:data_dir_id) as du ";
+		$sql .= "LEFT JOIN (SELECT data_usage.data_usage_time, data_usage.data_usage_data_dir_id, data_usage.data_usage_bytes ";
+		$sql .= "FROM data_usage WHERE data_usage.data_usage_data_dir_id=:data_dir_id ORDER BY data_usage.data_usage_time DESC LIMIT 1) as du ";
                 $sql .= "ON du.data_usage_data_dir_id=data_dir.data_dir_id ";
 		$sql .= "WHERE data_dir_id=:data_dir_id ";
 		$sql .= "LIMIT 1";
@@ -250,6 +251,22 @@ class data_dir {
 		$slice = round(count($result)*self::PERCENTILE,0,PHP_ROUND_HALF_DOWN);
 		return array_slice($result,0,$slice);
 	}
+
+	public function get_usage_range($start_date,$end_date) {
+                $sql = "SELECT ROUND(data_usage_bytes / :terabytes,3) as terabytes, ";
+		$sql .= "DATE_FORMAT(data_usage_time,'%Y-%m-%d') as date FROM data_usage ";
+                $sql .= "LEFT JOIN data_dir ON data_dir_id=data_usage_data_dir_id ";
+                $sql .= "WHERE data_usage_time BETWEEN :start_date AND :end_date ";
+                $sql .= "AND data_usage_data_dir_id=:data_dir_id ";
+                $sql .= "ORDER BY data_usage_time ASC";
+                $parameters = array(
+                        ':data_dir_id'=>$this->get_data_dir_id(),
+                        ':start_date'=>$start_date->format("Y-m-d H:i:s"),
+                        ':end_date'=>$end_date->format("Y-m-d H:i:s"),
+			':terabytes'=>data_functions::CONVERT_TERABYTES
+                );
+                return $this->db->query($sql,$parameters);
+        }
 
 	public function add_data_bill($month,$year,$bytes) {
 		$bill_date = $year . "-" . $month . "-01 00:00:00";

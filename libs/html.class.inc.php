@@ -226,7 +226,6 @@ class html {
         		$dir_html .= "<td>" . $directory_exists . "</td>";
 		        $dir_html .= "<td><a href='edit_project.php?project_id=";
 			$dir_html .= $directory['project_id'] ."'>" .  $directory['project_name'] . "</a></td>";
-			$dir_html .= "<td>" . $directory['terabytes'] . "</td>";
         		$dir_html .= "<td>" .  $directory['data_dir_time'] . "</td>";
 		        $dir_html .= "</tr>";
 
