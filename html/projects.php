@@ -63,18 +63,12 @@ $projects_html = "";
 
 foreach ($projects as $project) {
 
-	if ($project['cfop_bill']) {
-		$project_bill = "<i class='fas fa-check'></i>";
-	}
-	else {
-		$project_bill = "<i class='fas fa-times'></i>";
-	}
 	$projects_html .= "<tr>";
 	$projects_html .= "<td><a href='edit_project.php?project_id=" . $project['project_id'] . "'>" . $project['project_name'] . "</a></td>";
 	$projects_html .= "<td>" . $project['owner'] . "</td>";
 	$projects_html .= "<td>" . $project['project_ldap_group'] . "</td>";
 	$projects_html .= "<td>" . $project['project_description'] . "</td>";
-	$projects_html .= "<td>" . $project_bill . "</td>";
+	$projects_html .= "<td>" . $project['cfop_billtype'] . "</td>";
 	$projects_html .= "<td>" . $project['cfop_value'] . "</td>";
 	$projects_html .= "<td>" . $project['cfop_activity'] . "</td>";
 	$projects_html .= "<td>" . $project['cfop_time_created'] . "</td>";
@@ -113,7 +107,7 @@ require_once 'includes/header.inc.php';
 			<th>Owner</th>
 			<th>LDAP Group</th>
 			<th>Description</th>
-			<th>Bill</th>
+			<th>Bill Type</th>
 			<th>CFOP</th>
 			<th>Activity Code</th>
 			<th>Time Set</th>

@@ -77,14 +77,15 @@ class data_functions {
 		return false;
 	}
 
-	public static function get_data_bill($db,$month,$year,$minimal_bill = 0.00) {
+	public static function get_data_bill($db,$month,$year) {
 		$sql = "SELECT data_dir.data_dir_path as 'Directory', ";
-	        $sql .= "ROUND(data_bill.data_bill_avg_bytes / 1099511627776,3) as 'Terabytes', ";
+	        $sql .= "ROUND(data_bill.data_bill_avg_bytes / :terabytes,3) as 'Terabytes', ";
         	$sql .= "ROUND(data_cost.data_cost_value,2) as 'Rate ($/Terabyte)', ";
         	$sql .= "ROUND(data_bill.data_bill_total_cost,2) as 'Total Cost', ";
 	        $sql .= "ROUND(data_bill.data_bill_billed_cost,2) as 'Billed Cost', ";
         	$sql .= "projects.project_name as 'Project', ";
-	        $sql .= "cfops.cfop_value as 'CFOP', cfops.cfop_activity as 'Activity Code' ";
+	        $sql .= "cfops.cfop_value as 'CFOP', cfops.cfop_activity as 'Activity Code', ";
+		$sql .= "cfops.cfop_billtype as 'Bill Type' ";
         	$sql .= "FROM data_bill ";
 	        $sql .= "LEFT JOIN cfops ON cfops.cfop_id=data_bill.data_bill_cfop_id ";
         	$sql .= "LEFT JOIN projects ON projects.project_id=data_bill.data_bill_project_id ";
@@ -92,12 +93,11 @@ class data_functions {
         	$sql .= "LEFT JOIN data_cost ON data_cost_id=data_bill_data_cost_id ";
 	        $sql .= "WHERE YEAR(data_bill.data_bill_date)=:year ";
         	$sql .= "AND MONTH(data_bill.data_bill_date)=:month ";
-	        $sql .= "AND ROUND(data_bill.data_bill_total_cost,2)>:minimal_bill ";
 		$sql .= "ORDER BY Directory ASC";
 		$parameters = array(
 			':month'=>$month,
 			':year'=>$year,
-			':minimal_bill'=>$minimal_bill
+			':terabytes'=>data_functions::CONVERT_TERABYTES
 		);
         	return $db->query($sql,$parameters);
 	}
@@ -116,11 +116,12 @@ class data_functions {
                 $sql .= "LEFT JOIN data_cost ON data_cost_id=data_bill_data_cost_id ";
                 $sql .= "WHERE YEAR(data_bill.data_bill_date)=:year ";
                 $sql .= "AND MONTH(data_bill.data_bill_date)=:month ";
-                $sql .= "AND ROUND(data_bill.data_bill_billed_cost,2)>:minimal_bill ";
+                $sql .= "AND ROUND(data_bill.data_bill_billed_cost,2)>=:minimal_bill ";
                 $sql .= "ORDER BY `CFOP` ASC, `ACTIVITY CODE` ASC";
 		$parameters = array(
                         ':month'=>$month,
                         ':year'=>$year,
+			':billtype'=>project::BILLTYPE_CFOP,
                         ':minimal_bill'=>$minimal_bill
                 );
 		$data_result = $db->query($sql,$parameters);

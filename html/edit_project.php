@@ -18,7 +18,7 @@ elseif (isset($_POST['edit_project'])) {
 	$project = new project($db,$_POST['project_id']);
 	$hide_cfop = 0;
         $cfop = $_POST['cfop_1'] . "-" . $_POST['cfop_2'] . "-" . $_POST['cfop_3'] . "-" . $_POST['cfop_4'];
-        
+       
 	switch ($_POST['cfop_billtype']) {
                 case 'cfop':
                         if (isset($_POST['hide_cfop'])) {
@@ -59,6 +59,14 @@ elseif (isset($_POST['edit_project'])) {
 if (isset($_GET['project_id']) && is_numeric($_GET['project_id'])) {
         $project_id = $_GET['project_id'];
         $project = new project($db,$project_id);
+	if (!isset($_POST['cfop_billtype'])) {
+                $_POST['cfop_billtype'] = $project->get_billtype();
+        } 
+
+	if (!isset($_POST['custom_bill_description'])) {
+                $_POST['custom_bill_description'] = $project->get_custom_bill_description();
+        }
+
 }
 else {
 	exit;
@@ -79,7 +87,7 @@ $users = user_functions::get_users($db);
 $owner_html = "";
 
 if ($project->get_default()) {
-	$owner_html = "<select class='custom-select' name='owner' id='owner_input' readonly='readonly'>";
+	$owner_html = "<select class='custom-select' name='owner' id='owner_input' disabled>";
 }
 else {
 	$owner_html = "<select class='custom-select' name='owner' id='owner_input'>";

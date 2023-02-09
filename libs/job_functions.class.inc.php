@@ -48,11 +48,13 @@ class job_functions {
                 $sql .= "LEFT JOIN queue_cost ON queue_cost.queue_cost_id=job_bill.job_bill_queue_cost_id ";
                 $sql .= "LEFT JOIN queues ON queues.queue_id=job_bill.job_bill_queue_id ";
                 $sql .= "WHERE (YEAR(job_bill.job_bill_date)=:year AND month(job_bill.job_bill_date)=:month) ";
+		$sql .= "AND cfops.cfop_billtype=:billtype ";
 		$sql .= "HAVING ROUND(COST,2) > 0.00 ";
 		$sql .= "ORDER BY `CFOP` ASC, `ACTIVITY CODE` ASC ";
 		$parameters = array(
 			':year'=>$year,
-			':month'=>$month
+			':month'=>$month,
+			':billtype'=>project::BILLTYPE_CFOP
 		);
                 $job_result = $db->query($sql,$parameters);
 

@@ -43,17 +43,18 @@ $data_bill = data_functions::get_data_bill($db,$month,$year);
 $data_html = "";
 if (count($data_bill)) {
 	foreach ($data_bill as $value) {
-		if ($value['Billed Cost'] > 0) {
+		//if ($value['Total Cost'] > 0) {
 			$data_html .= "<tr>";
 			$data_html .= "<td>" . $value['Directory'] . "</td>";
 			$data_html .= "<td>" . $value['Project'] . "</td>";
 			$data_html .= "<td>" . $value['Terabytes'] . "</td>";
 			$data_html .= "<td>$" . $value['Total Cost'] . "</td>";
 			$data_html .= "<td>$" . $value['Billed Cost'] . "</td>";
+			$data_html .= "<td>" . $value['Bill Type'] . "</td>";
 			$data_html .= "<td>" . $value['CFOP'] . "</td>";
 			$data_html .= "<td>" . $value['Activity Code'] . "</td>";
 			$data_html .= "</tr>";
-		}
+		//}
 	}
 }
 else {
@@ -101,6 +102,7 @@ require_once 'includes/header.inc.php';
 			<th>Terabytes</th>
                         <th>Cost</th>
                         <th>Billed Amount</th>
+			<th>Bill Type</th>
                         <th>CFOP</th>
                         <th>Activity Code</th>
                 </tr>
@@ -109,12 +111,12 @@ require_once 'includes/header.inc.php';
 
         <tr>
                 <td>Total Cost:</td>
-                <td colspan='6'>$<?php echo data_stats::get_total_cost($db,$selected_month,$selected_month,1); ?>
+                <td colspan='7'>$<?php echo data_stats::get_total_cost($db,$selected_month,$selected_month,1); ?>
                 </td>
 	</tr>
 	<tr>
 		<td>Billed Cost:</td>
-		<td colspan='6'>$<?php echo data_stats::get_billed_cost($db,$selected_month,$selected_month,1); ?>
+		<td colspan='7'>$<?php echo data_stats::get_billed_cost($db,$selected_month,$selected_month,1); ?>
         </tr>
 
 </table>
@@ -127,7 +129,9 @@ require_once 'includes/header.inc.php';
                 <option value='csv'>CSV</option>
         </select>&nbsp;
 	<input class='btn btn-primary' type='submit' name='create_data_report' value='Download Full Report'>&nbsp;
-	<input class='btn btn-primary' type='submit' name='create_data_boa_report' value='Download BOA Report'>
+	<input class='btn btn-primary' type='submit' name='create_data_boa_report' value='Download BOA Report'>&nbsp;
+	<input class='btn btn-primary' type='submit' name='create_job_fbs_report' value='Download FBS Report'>&nbsp;
+        <input class='btn btn-primary' type='submit' name='create_job_custom_report' value='Download Custom Billing Report'>
 </form>
 
 <?php

@@ -27,7 +27,7 @@ elseif (isset($_POST['job_report'])) {
 
 elseif (isset($_POST['project_report'])) {
 	$type= $_POST['report_type'];
-	$filename = "project-report." . $type;
+	$filename = $prefix . "-project-report." . $type;
 	$data = functions::get_projects($db,1,$_POST['custom'],$_POST['search']);
 }
 

@@ -11,6 +11,7 @@ class project {
 	private $ldap_group;
 	private $description;
 	private $cfop_billtype;
+	private $custom_bill_description = "";
 	private $cfop;
 	private $cfop_activity;
 	private $enabled;
@@ -187,6 +188,9 @@ class project {
                 return $this->cfop_billtype;
         }
 
+	public function get_custom_bill_description() {
+		return $this->custom_bill_description;
+	}
 	public function get_cfop() {
 		return $this->cfop;
 	}
@@ -342,6 +346,7 @@ class project {
 			$this->description = $result[0]['project_description'];
 			$this->ldap_group = $result[0]['project_ldap_group'];
 			$this->cfop_billtype = $result[0]['cfop_billtype'];
+			$this->custom_bill_description = $result[0]['cfop_custom_description'];
 			$this->cfop = $result[0]['cfop_value'];
 			$this->cfop_activity = $result[0]['cfop_activity'];
 			$this->time_created = $result[0]['cfop_time_created'];

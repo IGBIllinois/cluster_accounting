@@ -212,8 +212,7 @@ class data_dir {
                 $insert_array = array('data_usage_data_dir_id'=>$this->get_data_dir_id(),
                                 'data_usage_project_id'=>$project->get_project_id(),
                                 'data_usage_cfop_id'=>$project->get_cfop_id(),
-                                'data_usage_bytes'=>$bytes,
-                                'data_usage_files'=>$files
+                                'data_usage_bytes'=>$bytes
                                 );
                 $insert_id = $this->db->build_insert('data_usage',$insert_array);
 		if ($insert_id) {
