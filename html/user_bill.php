@@ -115,21 +115,26 @@ else {
 
 $data_usage = $user->get_data_summary($month,$year);
 $data_html = "";
-foreach ($data_usage as $value) {
-	$data_html .= "<tr>";
-	$data_html .= "<td>" . $value['directory'] . "</td>";
-	$data_html .= "<td>" . $value['project'] . "</td>";
-	$data_html .= "<td>" . $value['terabytes'] . "</td>";
-	$data_html .= "<td>$" . number_format($value['total_cost'],2) . "</td>";
-	$data_html .= "<td>$" . number_format($value['billed_cost'],2) . "</td>";
-	if ($login_user->is_admin() || (!$job['cfop_restricted'])) {
-		$data_html .= "<td>".  $value['cfop'] . "</td>";
-		$data_html .= "<td>" . $value['activity_code'] . "</td>";
+if (count($data_usage)) {
+	foreach ($data_usage as $value) {
+		$data_html .= "<tr>";
+		$data_html .= "<td>" . $value['directory'] . "</td>";
+		$data_html .= "<td>" . $value['project'] . "</td>";
+		$data_html .= "<td>" . $value['terabytes'] . "</td>";
+		$data_html .= "<td>$" . number_format($value['total_cost'],2) . "</td>";
+		$data_html .= "<td>$" . number_format($value['billed_cost'],2) . "</td>";
+		if ($login_user->is_admin() || (!$job['cfop_restricted'])) {
+			$data_html .= "<td>".  $value['cfop'] . "</td>";
+			$data_html .= "<td>" . $value['activity_code'] . "</td>";
+		}
+		else {
+			$data_html .= "<td colspan='2'>RESTRICTED</td>";
+		}
+		$data_html .= "</tr>";
 	}
-	else {
-		$data_html .= "<td colspan='2'>RESTRICTED</td>";
-	}
-	$data_html .= "</tr>";
+}
+else {
+		$data_html .= "<tr><td colspan='7'>No Data Usage or not calculated</td></tr>";
 }
 $get_vars = array('user_id'=>$user_id,
 	'month'=>$month,

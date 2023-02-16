@@ -443,7 +443,6 @@ class user {
 			$to = $this->get_email();
 			if (settings::get_debug()) {
 				$to = $admin_email;
-				echo "DEBUG";
 			}
 			
 			$twig_variables = array(
