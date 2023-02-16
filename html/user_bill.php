@@ -24,7 +24,7 @@ if (isset($_GET['month']) && isset($_GET['year'])) {
 $user = new user($db,$ldap,$user_id);
 
 if (isset($_POST['email_bill'])) {
-	$email_result = $user->email_bill(__ADMIN_EMAIL__,$year,$month);
+	$email_result = $user->email_bill(settings::get_admin_email(),$year,$month);
 	if ($email_result['RESULT']) {
 		$message = "<div class='alert alert-success'>" . $email_result['MESSAGE'] . "</div>";
 	}
@@ -101,7 +101,7 @@ if (count($jobs) > 0) {
 		$jobs_html .= "<td>$" . number_format($job['billed_cost'],2) . "</td>";
 		if (($login_user->is_admin()) || (!$job['cfop_restricted'])) {
 			$jobs_html .= "<td>" . $job['cfop'] . "</td>";
-			$jobs_html .= "<td>" . $job['activity'] . "</td>";
+			$jobs_html .= "<td>" . $job['activity_code'] . "</td>";
 		}
 		else {
 			$jobs_html .= "<td colspan='2'>RESTRICTED</td>";
@@ -224,7 +224,7 @@ require_once 'includes/header.inc.php';
 	<input class='btn btn-primary' type='submit'
 		name='email_bill' value='Email Bill to User'>
 </form>
-
+<br>
 <?php 
 if (isset($message)) { echo $message; }
 

@@ -17,7 +17,7 @@ class statistics {
 	}
 
 
-	public function get_total_cost($start_date,$end_date,$format = 0) {
+	public function get_job_total_cost($start_date,$end_date,$format = 0) {
 		$sql = "SELECT ROUND(SUM(job_bill_total_cost),2) AS total_cost ";
 		$sql .= "FROM job_bill ";
 		$sql .= "WHERE DATE(job_bill_date) BETWEEN :start_date AND :end_date";
@@ -38,7 +38,7 @@ class statistics {
 	}
 
 
-	public function get_total_billed_cost($start_date,$end_date,$format = 0) {
+	public function get_job_total_billed_cost($start_date,$end_date,$format = 0) {
 		$sql = "SELECT ROUND(SUM(job_bill_billed_cost),2) AS billed_cost ";
 		$sql .= "FROM job_bill ";
 		$sql .= "WHERE DATE(job_bill_date) BETWEEN :start_date AND :end_date";

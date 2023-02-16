@@ -107,12 +107,12 @@ require_once 'includes/header.inc.php';
 	<?php echo $jobs_html; ?>
 	<tr>
 		<td>Monthly Total Cost:</td>
-		<td colspan='7'>$<?php echo $stats->get_total_cost($selected_month,$selected_month,true); ?>
+		<td colspan='7'>$<?php echo $stats->get_job_total_cost($selected_month,$selected_month,true); ?>
 		</td>
 	</tr>
 	<tr>
 		<td>Monthly Billed  Cost:</td>
-		<td colspan='7'>$<?php echo $stats->get_total_billed_cost($selected_month,$selected_month,true); ?>
+		<td colspan='7'>$<?php echo $stats->get_job_total_billed_cost($selected_month,$selected_month,true); ?>
 		</td>
 	</tr>
 	</tbody>

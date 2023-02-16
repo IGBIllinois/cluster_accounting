@@ -1,3 +1,4 @@
+<html>
 <style>
 {{ css }}
 </style>
@@ -28,12 +29,16 @@ to view a detail listing of your jobs.
 <tbody>
 {% for row in jobs_table %}
 	<tr>
-		<td> {{ jobs_table.queue }} </td>
-		<td> {{ jobs_table.project }} </td>
-		<td> {{ jobs_table.total_cost }} </td>
-		<td> {{ jobs_table.billed_cost }} </td>
-		<td> {{ jobs_table.cfop }} </td>
-		<td> {{ jobs_table.activity }} </td>
+		<td> {{ row.queue }} </td>
+		<td> {{ row.project }} </td>
+		<td> {{ row.total_cost }} </td>
+		<td> {{ row.billed_cost }} </td>
+		{% if row.cfop_restricted  %}
+			<td colspan='2'>RESTRICTED</td>
+		{% else %}
+			<td> {{ row.cfop }} </td>
+			<td> {{ row.activity_code }} </td>
+		{% endif %}
 	</tr>
 {% endfor %}
 </tbody>
@@ -54,7 +59,22 @@ to view a detail listing of your jobs.
 <th>Activity Code</th>
 </thead>
 <tbody>
-{{ data_table }}
+{% for row in  data_table %}
+	<tr>
+		<td> {{ row.directory }} </td>
+		<td> {{ row.data_cost_value }} </td>
+		<td> {{ row.project }} </td>
+		<td> {{ row.terabytes }} </td>
+		<td> {{ row.total_cost }} </td>
+		<td> {{ row.billed_cost }} </td>
+		{% if row.cfop_restricted  %}
+			<td colspan='2'>RESTRICTED</td>
+		{% else %}
+			<td> {{ row.cfop }} </td>
+			<td> {{ row.activity_code }} </td>
+		{% endif %}
+	</tr>
+{% endfor %}
 </tbody>
 </table>
 

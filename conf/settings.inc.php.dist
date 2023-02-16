@@ -11,6 +11,7 @@
 ////////////////////////////////////
 
 define("TITLE","Cluster Accounting");
+define("DEBUG",false);
 define("TIMEZONE","UTC");
 define("MYSQL_HOST","");
 define("MYSQL_USER","");

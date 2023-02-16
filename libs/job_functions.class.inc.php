@@ -32,6 +32,41 @@ class job_functions {
 
 	}
 
+	public static function get_all_jobs_by_month($db,$month,$year) {
+		$sql = "SELECT users.user_id, ";
+                $sql .= "projects.project_id, ";
+                $sql .= "cfops.cfop_id, ";
+                $sql .= "queues.queue_id, ";
+                $sql .= "queue_cost.queue_cost_id, ";
+                $sql .= "COUNT(1) as num_jobs, ";
+                $sql .= "ROUND(SUM(jobs.job_total_cost),2) as total_cost, ";
+                $sql .= "ROUND(SUM(jobs.job_billed_cost),2) as billed_cost ";
+                $sql .= "FROM jobs ";
+                $sql .= "LEFT JOIN users ON users.user_id=jobs.job_user_id ";
+                $sql .= "LEFT JOIN projects ON projects.project_id=jobs.job_project_id ";
+                $sql .= "LEFT JOIN cfops ON cfops.cfop_id=jobs.job_cfop_id ";
+                $sql .= "LEFT JOIN queue_cost ON queue_cost.queue_cost_id=jobs.job_queue_cost_id ";
+                $sql .= "LEFT JOIN queues ON queues.queue_id=jobs.job_queue_id ";
+                $sql .= "WHERE (YEAR(jobs.job_end_time)=:year AND month(jobs.job_end_time)=:month) ";
+                $sql .= "GROUP BY ";
+                $sql .= "queue_cost.queue_cost_id, ";
+                $sql .= "jobs.job_cfop_id, ";
+                $sql .= "jobs.job_project_id, ";
+                $sql .= "jobs.job_queue_id, ";
+                $sql .= "users.user_name ";
+                $sql .= "ORDER BY users.user_name ";
+		echo "Year: " . $year . "\n";
+		echo "Month: " . $month . "\n";
+		$parameters = array(':year'=>$year,':month'=>$month);
+		try {
+	                $result = $db->query($sql,$parameters);
+		}
+		catch(\PDOException $e) {
+			echo $e->getMessage();
+		}
+		return $result;
+
+        }
         public static function get_jobs_boa_bill($db,$month,$year) {
 
 

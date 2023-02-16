@@ -98,7 +98,7 @@ foreach ($directories as $directory) {
 */
 
 $enabled = 0;
-$jobs_bill = job_functions::get_jobs_bill_new($db,$month,$year);
+$jobs_bill = job_functions::get_all_jobs_by_month($db,$month,$year);
 
 $bill_date = $year . "-" . $month . "-01 00:00:00";
 foreach ($jobs_bill as $job_info) {

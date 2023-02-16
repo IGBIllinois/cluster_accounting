@@ -17,7 +17,14 @@ function my_autoloader($class_name) {
 
 spl_autoload_register('my_autoloader');
 
+if (settings::get_debug()) {
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
+}
+
 date_default_timezone_set(settings::get_timezone());
+
 
 $db = new \IGBIllinois\db(settings::get_mysql_host(),
 			settings::get_mysql_database(),

@@ -2,6 +2,7 @@
 
 class settings {
 
+	private const DEBUG = false;
 	private const ENABLE_LOG = false;
 	private const LDAP_HOST = "localhost";
 	private const LDAP_PORT = 389;
@@ -28,6 +29,13 @@ class settings {
                 return TITLE;
         }
 
+	public static function get_debug() {
+		if (defined("DEBUG") && is_bool(DEBUG)) {
+			return DEBUG;
+		}
+		return self::DEBUG;
+
+	}
 	public static function get_log_enabled() {
 		if (defined("ENABLE_LOG") && (is_bool(ENABLE_LOG))) {
 			return ENABLE_LOG;

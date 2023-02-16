@@ -7,8 +7,8 @@ CREATE TABLE job_bill (
 	job_bill_queue_cost_id INT REFERENCES queue_cost(queue_cost_id),
 	job_bill_date TIMESTAMP,
 	job_bill_num_jobs INT,
-	job_bill_total_cost DECIMAL(30,7),
-	job_bill_billed_cost DECIMAL(30,7),
+	job_bill_total_cost DECIMAL(30,2),
+	job_bill_billed_cost DECIMAL(30,2),
 	PRIMARY KEY (job_bill_id)
 );
 

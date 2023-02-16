@@ -140,12 +140,13 @@ class user {
 	}
 	public function get_jobs_summary($month,$year) {
 
-                $sql .= "SELECT projects.project_name as 'project', ";
+                $sql = "SELECT projects.project_name as 'project', ";
                 $sql .= "queues.queue_name as 'queue', ";
                 $sql .= "ROUND(job_bill.job_bill_total_cost,2) as 'total_cost', ";
                 $sql .= "ROUND(job_bill.job_bill_billed_cost,2) as 'billed_cost', ";
                 $sql .= "cfops.cfop_value as 'cfop', ";
-                $sql .= "cfops.cfop_activity as 'activity' ";
+                $sql .= "cfops.cfop_activity as 'activity_code', ";
+		$sql .= "cfops.cfop_restricted as cfop_restricted ";
                 $sql .= "FROM job_bill ";
                 $sql .= "LEFT JOIN projects ON projects.project_id=job_bill.job_bill_project_id ";
                 $sql .= "LEFT JOIN cfops ON cfops.cfop_id=job_bill.job_bill_cfop_id ";
@@ -425,10 +426,10 @@ class user {
 	public function email_bill($admin_email,$year,$month) {
 
 		if (!$this->ldap->is_ldap_user($this->get_username())) {
-			functions::log("Email Bill - User " . $this->get_username() . " not in ldap");
+			//functions::log("Email Bill - User " . $this->get_username() . " not in ldap");
 		}
 		elseif ($this->get_email() == "") {
-			functions::log("Email Bill - User " . $this->get_username() . " email is not set");
+			//functions::log("Email Bill - User " . $this->get_username() . " email is not set");
 		}
 		else {
 			$start_date = $year . $month . "01";
@@ -438,8 +439,13 @@ class user {
 			$user_stats = new user_stats($this->db,$this->get_user_id(),$start_date,$end_date);
 
 			$subject = "Biocluster Accounting Bill - " . \IGBIllinois\Helper\date_helper::get_pretty_date($start_date) . "-" . \IGBIllinois\Helper\date_helper::get_pretty_date($end_date);
-			$to = $this->get_email();
 
+			$to = $this->get_email();
+			if (settings::get_debug()) {
+				$to = $admin_email;
+				echo "DEBUG";
+			}
+			
 			$twig_variables = array(
         	                'css' => settings::get_email_css_contents(),
                 	        'start_date' => \IGBIllinois\Helper\date_helper::get_pretty_date($start_date),
@@ -448,12 +454,12 @@ class user {
         	                'username' => $this->get_username(),
 				'num_jobs' => $user_stats->get_num_jobs(),
                 	        'website_url' => "https://biocluster.igb.illinois.edu/accounting/",
-                        	'jobs_table' => $this->get_jobs_table($start_date,$end_date),
-	                        'data_table' => $this->get_data_table($month,$year)
+                        	'jobs_table' => $this->get_jobs_summary($month,$year),
+	                        'data_table' => $this->get_data_summary($month,$year)
 	                );
 
-			$loader = new Twig_Loader_Filesystem(settings::get_twig_dir());
-			$twig = new Twig_Environment($loader);
+			$loader = new \Twig\Loader\FilesystemLoader(settings::get_twig_dir());
+			$twig = new \Twig\Environment($loader);
 
 			if (file_exists(settings::get_twig_dir() . "/custom/" . self::USER_BILL_TWIG)) {
 				$html_message = $twig->render("custom/" . self::USER_BILL_TWIG,$twig_variables);
@@ -461,94 +467,28 @@ class user {
 			else {
 				$html_message = $twig->render("default/" . self::USER_BILL_TWIG,$twig_variables);
 			}
-			$from = $admin_email;
-				
-			$extraheaders = array("From"=>$from,
-					"Subject"=>$subject
-			);
-			$message = new Mail_mime();
-			$message->setHTMLBody($html_message);
-			$headers= $message->headers($extraheaders);
-			$body = $message->get();
-			$mail = Mail::factory("mail","-f " . $from);
-			$result = $mail->send($to,$headers,$body);
-			if (PEAR::isError($result)) {
-				$message = "Email BIll - User " . $this->get_username() . " Error sending mail. " . $mail->getMessage();
+
+			$email = new \IGBIllinois\email(settings::get_smtp_host(),
+						settings::get_smtp_port(),
+						settings::get_smtp_username(),
+						settings::get_smtp_password());
+
+			$email->set_to_emails($to);
+			try {
+				$result = $email->send_email($admin_email,$subject,"",$html_message);
+				$message = "Email Bill - User " . $this->get_username() . " successfully sent to " . $this->get_email();
+
+			} catch (Exception $e) {
+				$message = "Email BIll - User " . $this->get_username() . " Error sending mail. " . $e->getMessage();
 				$result = false;
 			}
-			else {
-				
-				$message = "Email Bill - User " . $this->get_username() . " successfully sent to " . $this->get_email();
-				$result = true;
-			}
-			functions::log($message);
+			//$log->send_log($message);
 			return array('RESULT'=>$result,'MESSAGE'=>$message);
 		}
 
 	}
 
-	public function get_jobs_table($start_date,$end_date) {
-		$jobs_summary = $this->get_jobs_summary($start_date,$end_date);
-		$jobs_html = "";
-		if (count($jobs_summary)) {
-                        foreach ($jobs_summary as $summary) {
-                                $jobs_html .= "<tr>";
-                                $jobs_html .= "<td>" . $summary['queue'] . "</td>";
-                                $jobs_html .= "<td>" . $summary['project'] . "</td>";
-                                $jobs_html .= "<td>$" . number_format($summary['total_cost'],2) . "</td>";
-                                $jobs_html .= "<td>$" . number_format($summary['billed_cost'],2) . "</td>";
-                                if (!$summary['cfop_restricted']) {
-                                        $jobs_html .= "<td>" . $summary['cfop'] . "</td>";
-                                        $jobs_html .= "<td>" . $summary['activity'] . "</td>";
-                                }
-                                else {
-                                        $jobs_html .= "<td colspan='2'>RESTRICTED</td>";
-                                }
-                                $jobs_html .= "</tr>";
-                        }
-                }
-                else {
-                        $jobs_html = "<tr><td colpan='6'>No Jobs</td></tr>";
 
-                }
-		return $jobs_html;
-
-
-
-	}
-
-	public function get_data_table($month,$year) {
-
-		$data_summary = $this->get_data_summary($month,$year);
-		$data_html = "";
-		if (count($data_summary)) {
-                        foreach ($data_summary as $data) {
-                                $data_html .= "<tr>";
-                                $data_html .= "<td>" . $data['directory'] . "</td>";
-                                $data_html .= "<td>$" . number_format($data['data_cost_value'],2) . "</td>";
-                                $data_html .= "<td>" . $data['project'] . "</td>";
-                                $data_html .= "<td>" . $data['terabytes'] . "</td>";
-                                $data_html .= "<td>$" . number_format($data['total_cost'],2) . "</td>";
-                                $data_html .= "<td>$" . number_format($data['billed_cost'],2) . "</td>";
-                                if (!$data['cfop_restricted']) {
-                                        $data_html .= "<td>".  $data['cfop'] . "</td>";
-                                        $data_html .= "<td>" . $data['activity_code'] . "</td>";
-                                }
-                                else {
-                                        $data_html .= "<td colspan='2'>RESTRICTED</td>";
-                                }
-                                $data_html .= "</tr>";
-
-
-                        }
-                }
-                else {
-                        $data_html = "<tr><td colspan='6'>No Data Usage</td></tr>";
-                }
-		return $data_html;
-
-
-	}
 	public function authenticate($password) {
 		$result = false;
                 $rdn = $this->get_user_rdn();
