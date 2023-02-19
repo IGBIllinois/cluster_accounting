@@ -60,7 +60,7 @@ class project {
 			$error = true;
 			$message .= "<div class='alert alert-danger'>Please enter a project owner.</div>";
 		}
-		if (!\IGBIllinois\cfop::verify_format($cfop,$activity) && $bill_project) {
+		if (!\IGBIllinois\cfop::verify_format($cfop,$activity) && $cfop_billtype==self::BILLTYPE_CFOP) {
 			$error = true;
 			$message .= "<div class='alert alert-danger'>Please enter valid CFOP.</div>";
 		}

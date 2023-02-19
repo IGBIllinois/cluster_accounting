@@ -108,7 +108,7 @@ class data_functions {
 		$sql .= "cfops.cfop_value as 'CFOP', ";
 		$sql .= "cfops.cfop_activity as 'ACTIVITY CODE', ";	
                 $sql .= "ROUND(data_bill.data_bill_billed_cost,2) as 'COST', ";
-		$sql .= "CONCAT('Biocluster Data - ',data_dir.data_dir_path) as 'DESCRIPTION' ";
+		$sql .= "CONCAT('Biocluster Data,' - ',data_dir.data_dir_path) as 'DESCRIPTION' ";
                 $sql .= "FROM data_bill ";
                 $sql .= "LEFT JOIN cfops ON cfops.cfop_id=data_bill.data_bill_cfop_id ";
                 $sql .= "LEFT JOIN projects ON projects.project_id=data_bill.data_bill_project_id ";
@@ -117,12 +117,14 @@ class data_functions {
                 $sql .= "WHERE YEAR(data_bill.data_bill_date)=:year ";
                 $sql .= "AND MONTH(data_bill.data_bill_date)=:month ";
                 $sql .= "AND ROUND(data_bill.data_bill_billed_cost,2)>=:minimal_bill ";
+		$sql .= "AND cfops.cfop_billtype=:billtype ";
                 $sql .= "ORDER BY `CFOP` ASC, `ACTIVITY CODE` ASC";
 		$parameters = array(
                         ':month'=>$month,
                         ':year'=>$year,
 			':billtype'=>project::BILLTYPE_CFOP,
-                        ':minimal_bill'=>$minimal_bill
+                        ':minimal_bill'=>$minimal_bill,
+			':billtype'=>project::BILLTYPE_CFOP
                 );
 		$data_result = $db->query($sql,$parameters);
 
@@ -168,6 +170,39 @@ class data_functions {
                 );
                 $data_result = $db->query($sql,$parameters);
 		return $data_result;
+        }
+
+	public static function get_data_fbs_bill($db,$month,$year,$minimal_bill = 0.00) {
+		$sql = "SELECT 'IGB' as 'AreaCode','CNRG' as 'FacilityCode', ";
+		$sql .= "'' as 'LabCode', IF(users.user_supervisor <> 0,CONCAT(supervisors.user_lastname,', ',supervisors.user_firstname),CONCAT(users.user_lastname,', ',users.user_firstname)) as 'LabName',  ";
+		$sql .= "CONCAT(users.user_firstname,' ',users.user_lastname) as 'RequestedBy', ";
+		$sql .= "users.user_name as 'NAME', CONCAT(cfops.cfop_value,IF(cfops.cfop_activity <> '','-',''),cfops.cfop_activity) as 'CFOP', ";
+		$sql .= "'BIOCLUSTER' as 'SKU_Code', CONCAT(:month,'-',:year) as 'UsageDate', ";
+		$sql .= "'1.000' as 'Quantity', ROUND(data_bill.data_bill_billed_cost,2) as 'UnitPriceOverride', ";
+		$sql .= "CONCAT('Biocluster Data - ',data_dir.data_dir_path) as 'PrintableComments', ";
+		$sql .= "'' as 'UsageRef', '' as 'OrderRef', '' as 'PO_Ref','' as 'PayAlias', ";
+		$sql .= "'' as 'bNonBillable','' as 'NonPrintableComments' ";
+               	$sql .= "FROM data_bill ";
+                $sql .= "LEFT JOIN cfops ON cfops.cfop_id=data_bill.data_bill_cfop_id ";
+                $sql .= "LEFT JOIN projects ON projects.project_id=data_bill.data_bill_project_id ";
+                $sql .= "LEFT JOIN data_dir ON data_dir.data_dir_id=data_bill.data_bill_data_dir_id ";
+                $sql .= "LEFT JOIN data_cost ON data_cost_id=data_bill_data_cost_id ";
+		$sql .= "LEFT JOIN users ON users.user_id=projects.project_owner ";
+		$sql .= "LEFT JOIN users AS supervisors ON supervisors.user_id=users.user_supervisor ";
+                $sql .= "WHERE YEAR(data_bill.data_bill_date)=:year ";
+                $sql .= "AND MONTH(data_bill.data_bill_date)=:month ";
+		$sql .= "AND ROUND(data_bill.data_bill_billed_cost,2)>=:minimal_bill ";
+		$sql .= "AND cfops.cfop_billtype=:billtype ";
+                $sql .= "ORDER BY 'LabName' ASC";
+
+                $parameters = array(
+                        ':month'=>$month,
+                        ':year'=>$year,
+                        ':terabytes'=>data_functions::CONVERT_TERABYTES,
+			':minimal_bill'=>$minimal_bill,
+			':billtype'=>project::BILLTYPE_CFOP
+                );
+                return $db->query($sql,$parameters);
         }
 
 	public static function get_existing_dirs() {

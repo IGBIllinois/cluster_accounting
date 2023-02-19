@@ -62,7 +62,7 @@ $supervisors_html .= "<option></option>";
 $supervisors_html .= "<option value='-1'></option>";
 foreach ($supervisors as $supervisor) {
 	$supervisor_id = $supervisor['id'];
-	$supervisor_fullname = $supervisor['full_name'];
+	$supervisor_fullname = $supervisor['firstname'] . " " . $supervisor['lastname'];
 	$supervisor_username = $supervisor['username'];
 	if ($user->get_supervisor_id() == $supervisor_id) {
 		$supervisors_html .= "<option value='" . $supervisor_id . "' selected='selected'>";

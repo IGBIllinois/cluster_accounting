@@ -168,8 +168,9 @@ class data_dir {
 	
 	private function data_dir_exists($directory) {
 		$sql = "SELECT count(1) as count FROM data_dir ";
-		$sql .= "WHERE data_dir_path LIKE :data_dir_path% ";
+		$sql .= "WHERE data_dir_path LIKE ':data_dir_path%' ";
 		$sql .= "AND data_dir_enabled='1'";
+		
 		$parameters = array(
 			':data_dir_path'=>$directory
 		);
@@ -178,8 +179,7 @@ class data_dir {
 		if ($result[0]['count']) {
 			return true;
 		}
-		else { return false;
-		}
+		return false;
 
 	}
 	

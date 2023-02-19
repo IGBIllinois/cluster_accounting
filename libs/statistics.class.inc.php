@@ -228,7 +228,7 @@ class statistics {
 		$sql = "SELECT ROUND(SUM(job_bill.job_bill_total_cost),2) as total_cost, ";
 		$sql .= "ROUND(SUM(job_bill.job_bill_billed_cost),2) as billed_cost, ";
 		$sql .= "SUM(job_bill.job_bill_num_jobs) as num_jobs, ";
-		$sql .= "users.user_name as user_name, users.user_full_name as full_name ";
+		$sql .= "users.user_name as user_name, CONCAT(users.user_firstname,' ',users.user_lastname) as full_name ";
 		$sql .= "FROM job_bill ";
 		$sql .= "LEFT JOIN users ON users.user_id=job_bill.job_bill_user_id ";
 		$sql .= "WHERE DATE(job_bill.job_bill_date) BETWEEN :start_date AND :end_date ";

@@ -6,7 +6,8 @@ class user {
 	private $db; //mysql database object
 	private $id;
 	private $user_name;
-	private $full_name;
+	private $firstname;
+	private $lastname;
 	private $supervisor_name;
 	private $supervisor_id;
 	private $enabled;
@@ -17,7 +18,13 @@ class user {
 	private $default_project_id;
 	private $default_data_dir_id;	
 	private const USER_BILL_TWIG = "user_bill.html.twig";
-
+	private $ldap_attributes = array(
+			'firstname'=>'givenname',
+			'lastname'=>'sn',
+			'fullname'=>'cn',
+			'homedir'=>'homedirectory',
+			'username'=>'uid'
+		);
 	////////////////Public Functions///////////
 
 	public function __construct(&$db,&$ldap,$id = 0,$username = "") {
@@ -31,12 +38,14 @@ class user {
 			$this->user_name = $username;
 		}
 	}
+	
 	public function __destruct() {
+	
 	}
+
 	public function create($username,$supervisor_id,$admin,$cfop_billtype,$cfop = "",$activity = "",$hide_cfop = 0,$custom_bill_description = "") {
 		$username = trim(rtrim($username));
-		
-
+		echo "supervisor: " . $supervisor_id . "\n";
 		$error = false;
 		//Verify Username
 		$message = "";
@@ -57,7 +66,7 @@ class user {
 			$message .= "<div class='alert alert-danger'>User does not exist in LDAP database.</div>";
 		}
 
-		if ($supervisor_id == "-1") {
+		if (is_null($supervisor_id)) {
 			$error = true;
 			$message .= "<div class='alert alert-danger'>Please select a supervisor.</div>";
 		}
@@ -90,10 +99,21 @@ class user {
 				
 			}
 			else {
-				$full_name = $this->ldap->get_ldap_full_name($username);
-				$home_dir = $this->ldap->get_home_dir($username);
+				$ldap_filter = "(" . $this->ldap_attributes['username'] . "=" . $username . ")";
+				$attributes = array_values($this->ldap_attributes);
+				$ou = settings::get_ldap_base_dn();
+				$ldap_result = $this->ldap->search($ldap_filter,$ou,$attributes);
+				$firstname = "";
+				$lastname = "";
+				$home_dir = "";
+				if ($ldap_result['count'] == 1) {
+					$firstname = $ldap_result[0][$this->ldap_attributes['firstname']][0];
+					$lastname = $ldap_result[0][$this->ldap_attributes['lastname']][0];
+					$home_dir = $ldap_result[0][$this->ldap_attributes['homedir']][0];
+				}
 				$user_array = array('user_name'=>$username,
-						'user_full_name'=>$full_name,
+						'user_firstname'=>$firstname,
+						'user_lastname'=>$lastname,
 						'user_admin'=>$admin,
 						'user_supervisor'=>$supervisor_id,
 						'user_enabled'=>1
@@ -123,8 +143,14 @@ class user {
 	public function get_email() {
 		return $this->email;
 	}
+	public function get_firstname() {
+		return $this->firstname;
+	}
+	public function get_lastname() {
+		return $this->lastname;
+	}
 	public function get_full_name() {
-		return $this->full_name;
+		return $this->get_firstname() . " " . $this->get_lastname();
 	}
 	public function get_supervisor_name() {
 		return $this->supervisor_name;
@@ -536,7 +562,8 @@ class user {
 	private function get_user() {
 
 		$sql = "SELECT users.user_id, users.user_admin, users.user_name, ";
-		$sql .= "users.user_full_name, users.user_enabled, users.user_time_created, ";
+		$sql .= "users.user_firstname,users.user_lastname, ";
+		$sql .= "users.user_enabled, users.user_time_created, ";
 		$sql .= "supervisor.user_id as supervisor_id, supervisor.user_name as supervisor_name, ";
 		$sql .= "projects.project_id as project_id, data_dir.data_dir_id as data_dir_id ";
 		$sql .= "FROM users ";
@@ -553,7 +580,8 @@ class user {
 		if (count($result)) {
 			$this->user_name = $result[0]['user_name'];
 			$this->admin = $result[0]['user_admin'];
-			$this->full_name = $result[0]['user_full_name'];
+			$this->firstname = $result[0]['user_firstname'];
+			$this->lastname = $result[0]['user_lastname'];
 			$this->time_created = $result[0]['user_time_created'];
 			$this->supervisor_name = $result[0]['supervisor_name'];
                         $this->supervisor_id = $result[0]['supervisor_id'];

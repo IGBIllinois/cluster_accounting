@@ -165,7 +165,7 @@ class html {
                 		$users_html .= "<tr>";
 	                	$users_html .= "<td><a href='user.php?user_id=" . $users[$i]['user_id'] . "'>";
 				$users_html .= $users[$i]['user_name'] . "</a></td>";
-		                $users_html .= "<td>" . $users[$i]['user_full_name']. "</td>";
+		                $users_html .= "<td>" . $users[$i]['user_firstname'] . " " . $users[$i]['user_lastname'] . "</td>";
 				if ($users[$i]['user_supervisor'] == '0') {
 					$users_html .= "<td><i class='fas fa-check'></i></td>";
 				}

@@ -20,6 +20,7 @@ class settings {
 	private const SMTP_PORT = 25;
 	private const SMTP_HOST = "localhost";
 	private const REPORT_PREFIX = "Report";
+	private const DATA_MIN_BILL = 0.00;
 
 	public static function get_version() {
                 return VERSION;
@@ -206,7 +207,13 @@ class settings {
 		
 		
 	}
-
+	
+	public static function get_data_minimal_bill() {
+		if (defined('DATA_MIN_BILL')) {
+			return DATA_MIN_BILL;
+		}
+		return self::DATA_MIN_BILL;
+	}
 	public static function get_boa_cfop() {
 		return BOA_CFOP;
 		

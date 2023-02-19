@@ -60,7 +60,7 @@ elseif (isset($_POST['create_data_boa_report'])) {
 	$month = $_POST['month'];
         $year = $_POST['year'];
         $type = $_POST['report_type'];
-        $data = data_functions::get_data_boa_bill($db,$month,$year);
+        $data = data_functions::get_data_boa_bill($db,$month,$year,settings::get_data_minimal_bill());
         $filename = $prefix . "-data-boa-" . $month . "-" . $year . "." . $type;
 
 }
@@ -76,15 +76,24 @@ elseif (isset($_POST['create_job_custom_report'])) {
 }
 
 elseif (isset($_POST['create_data_custom_report'])) {
-                $month = $_POST['month'];
+	$month = $_POST['month'];
         $year = $_POST['year'];
         $type = $_POST['report_type'];
-        $data = data_functions::get_data_custom_bill($db,$month,$year);
+        $data = data_functions::get_data_custom_bill($db,$month,$year,settings::get_data_minimal_bill());
         $filename = $prefix . "-data-custom-" . $month . "-" . $year . "." . $type;
 
 
 }
 
+elseif (isset($_POST['create_data_fbs_report'])) {
+	$month = $_POST['month'];
+        $year = $_POST['year'];
+        $type = $_POST['report_type'];
+        $data = data_functions::get_data_fbs_bill($db,$month,$year,settings::get_data_minimal_bill());
+        $filename = $prefix . "-data-fbs-" . $month . "-" . $year . "." . $type;
+
+
+}
 switch ($type) {
 	case 'csv':
 		\IGBIllinois\report::create_csv_report($data,$filename);
