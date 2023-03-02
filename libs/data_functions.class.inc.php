@@ -108,7 +108,7 @@ class data_functions {
 		$sql .= "cfops.cfop_value as 'CFOP', ";
 		$sql .= "cfops.cfop_activity as 'ACTIVITY CODE', ";	
                 $sql .= "ROUND(data_bill.data_bill_billed_cost,2) as 'COST', ";
-		$sql .= "CONCAT('Biocluster Data,' - ',data_dir.data_dir_path) as 'DESCRIPTION' ";
+		$sql .= "CONCAT('Biocluster Data - ',data_dir.data_dir_path) as 'DESCRIPTION' ";
                 $sql .= "FROM data_bill ";
                 $sql .= "LEFT JOIN cfops ON cfops.cfop_id=data_bill.data_bill_cfop_id ";
                 $sql .= "LEFT JOIN projects ON projects.project_id=data_bill.data_bill_project_id ";
@@ -123,8 +123,7 @@ class data_functions {
                         ':month'=>$month,
                         ':year'=>$year,
 			':billtype'=>project::BILLTYPE_CFOP,
-                        ':minimal_bill'=>$minimal_bill,
-			':billtype'=>project::BILLTYPE_CFOP
+                        ':minimal_bill'=>$minimal_bill
                 );
 		$data_result = $db->query($sql,$parameters);
 
@@ -179,7 +178,7 @@ class data_functions {
 		$sql .= "users.user_name as 'NAME', CONCAT(cfops.cfop_value,IF(cfops.cfop_activity <> '','-',''),cfops.cfop_activity) as 'CFOP', ";
 		$sql .= "'BIOCLUSTER' as 'SKU_Code', CONCAT(:month,'-',:year) as 'UsageDate', ";
 		$sql .= "'1.000' as 'Quantity', ROUND(data_bill.data_bill_billed_cost,2) as 'UnitPriceOverride', ";
-		$sql .= "CONCAT('Biocluster Data - ',data_dir.data_dir_path) as 'PrintableComments', ";
+		$sql .= "CONCAT('Biocluster Data - ',SUBSTRING_INDEX(data_dir.data_dir_path,'/',-1)) as 'PrintableComments', ";
 		$sql .= "'' as 'UsageRef', '' as 'OrderRef', '' as 'PO_Ref','' as 'PayAlias', ";
 		$sql .= "'' as 'bNonBillable','' as 'NonPrintableComments' ";
                	$sql .= "FROM data_bill ";
@@ -193,7 +192,7 @@ class data_functions {
                 $sql .= "AND MONTH(data_bill.data_bill_date)=:month ";
 		$sql .= "AND ROUND(data_bill.data_bill_billed_cost,2)>=:minimal_bill ";
 		$sql .= "AND cfops.cfop_billtype=:billtype ";
-                $sql .= "ORDER BY 'LabName' ASC";
+                $sql .= "ORDER BY LabName ASC";
 
                 $parameters = array(
                         ':month'=>$month,

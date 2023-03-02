@@ -97,6 +97,7 @@ foreach ($directories as $directory) {
 }
 */
 
+
 $enabled = 0;
 $jobs_bill = job_functions::get_all_jobs_by_month($db,$month,$year);
 
