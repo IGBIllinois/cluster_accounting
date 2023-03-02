@@ -102,7 +102,7 @@ class data_functions {
         	return $db->query($sql,$parameters);
 	}
 
-        public static function get_data_boa_bill($db,$month,$year,$minimal_bill = 0.00) {
+        public static function get_data_boa_bill($db,$month,$year,$minimal_bill = 0.01) {
                 $sql = "SELECT '' as 'DATE', ";
 		$sql .= "projects.project_name as 'NAME', ";
 		$sql .= "cfops.cfop_value as 'CFOP', ";
@@ -145,7 +145,7 @@ class data_functions {
 		return array_merge($first_row,$data_result);			
         }
 
-	public static function get_data_custom_bill($db,$month,$year,$minimal_bill = 0.00) {
+	public static function get_data_custom_bill($db,$month,$year,$minimal_bill = 0.01) {
                 $sql = "SELECT CONCAT(:month '/' :year)  as 'DATE', ";
                 $sql .= "projects.project_name as 'NAME', ";
                 $sql .= "ROUND(data_bill.data_bill_billed_cost,2) as 'COST', ";
@@ -172,7 +172,7 @@ class data_functions {
 		return $data_result;
         }
 
-	public static function get_data_fbs_bill($db,$month,$year,$minimal_bill = 0.00) {
+	public static function get_data_fbs_bill($db,$month,$year,$minimal_bill = 0.01) {
 		$sql = "SELECT 'IGB' as 'AreaCode','CNRG' as 'FacilityCode', ";
 		$sql .= "'' as 'LabCode', IF(users.user_supervisor <> 0,CONCAT(supervisors.user_lastname,', ',supervisors.user_firstname),CONCAT(users.user_lastname,', ',users.user_firstname)) as 'LabName',  ";
 		$sql .= "CONCAT(users.user_firstname,' ',users.user_lastname) as 'RequestedBy', ";

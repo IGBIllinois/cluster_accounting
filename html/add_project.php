@@ -5,9 +5,7 @@ if (!$login_user->is_admin()) {
         exit;
 }
 if (isset($_POST['add_project'])) {
-	foreach ($_POST as $var) {
-		$var = trim(rtrim($var));
-	}
+	$_POST = array_map('trim',$_POST);
 
 	$project = new project($db);
 	$default = 0;
@@ -18,25 +16,25 @@ if (isset($_POST['add_project'])) {
                         if (isset($_POST['hide_cfop'])) {
                                 $hide_cfop = 1;
                         }
-                        unset($_POST['custom_bill_description']);
+                        $_POST['custom_bill_description'] = "";
                         break;
                 case 'custom':
-                        unset($_POST['cfop_1']);
-                        unset($_POST['cfop_2']);
-                        unset($_POST['cfop_3']);
-                        unset($_POST['cfop_4']);
-                        unset($_POST['activity']);
+                        $_POST['cfop_1'] = "";
+                        $_POST['cfop_2'] = "";
+                        $_POST['cfop_3'] = "";
+                        $_POST['cfop_4'] = "");
+                        $_POST['activity'] = "";
                         unset($_POST['hide_cfop']);
                         break;
 
                 case 'no_bill':
-                        unset($_POST['cfop_1']);
-                        unset($_POST['cfop_2']);
-                        unset($_POST['cfop_3']);
-                        unset($_POST['cfop_4']);
-                        unset($_POST['activity']);
-                        unset($_POST['hide_cfop']);
-                        unset($_POST['custom_bill_description']);
+                        $_POST['cfop_1'] = "";
+                        $_POST['cfop_2'] = "";
+                        $_POST['cfop_3'] = "";
+                        $_POST['cfop_4'] = "";
+                        $_POST['activity'] = "";
+                        $_POST['hide_cfop'] = "";
+                        $_POST['custom_bill_description'] = "";
                         break;
 
 
@@ -44,8 +42,9 @@ if (isset($_POST['add_project'])) {
 
 
         }
+	
 	$result = $project->create($ldap,$_POST['name'],$_POST['ldap_group'],$_POST['description'],
-				$default,$_POST['cfop_billtype'],$_POST['owner'],$cfop,$_POST['activity'],$_POST['custom_bill_description']);
+				$default,$_POST['cfop_billtype'],$_POST['owner'],$cfop,$_POST['activity'],$hide_cfop,$_POST['custom_bill_description']);
 
 	if ($result['RESULT']) {
 		unset($_POST);

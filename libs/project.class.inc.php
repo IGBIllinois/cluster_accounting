@@ -6,6 +6,7 @@ class project {
 
 	private $db; //mysql database object
 	private $owner;
+	private $owner_id;
 	private $id;
 	private $name;
 	private $ldap_group;
@@ -87,17 +88,17 @@ class project {
 
 	public function edit($ldap_group,$description,$cfop_billtype,$owner_id,$cfop = "",$activity = "",$hide_cfop = 0,$custom_bill_description = "") {
 		if (($cfop != $this->get_cfop()) || ($activity != $this->get_activity_code()) ||
-				($bill_project != $this->get_bill_project())) {
+				($cfop_billtype != $this->get_billtype())) {
 
 	                $error = false;
 			$message = "";
-	                if (!\IGBIllinois\cfop::verify_format($cfop,$activity) && ($bill_project)) {
+	                if (!\IGBIllinois\cfop::verify_format($cfop,$activity) && ($cfop_billtype == self::BILLTYPE_CFOP)) {
         	                $error = true;
                 	        $message = "<div class='alert alert-danger'>Please verify CFOP</div>";
 
 	                }	
 			if (!$error) {
-				$result = $this->set_cfop($bill_project,$cfop,$activity,$hide_cfop);
+				$result = $this->set_cfop($cfop_billtype,$cfop,$activity,$hide_cfop,$custom_bill_description);
 				return array('RESULT'=>true,
 					'MESSAGE'=>"<div class='alert alert-success'>Project successfully updated.</div>",
 					'cfop_id'=>$result);
@@ -125,6 +126,9 @@ class project {
 	                        $message .= "<div class='alert alert-danger'>Please enter a project owner.</div>";
         	        }
 			if (!$error) {
+				if ($this->get_default()) {
+					$owner_id = $this->get_owner_id();
+				}
 				$sql = "UPDATE projects set project_ldap_group=:ldap_group, ";
 				$sql .= "project_description=:description,project_owner=:owner_id ";
 				$sql .= "WHERE project_id=:project_id";
@@ -216,6 +220,9 @@ class project {
 		return $this->owner;
 	}
 
+	public function get_owner_id() {
+		return $this->owner_id;
+	}
 	public function get_enabled() {
 		return $this->enabled;
 	}
@@ -352,6 +359,7 @@ class project {
 			$this->time_created = $result[0]['cfop_time_created'];
 			$this->enabled = $result[0]['project_enabled'];
 			$this->default = $result[0]['project_default'];
+			$this->owner_id = $result[0]['project_owner'];
 			$this->owner = $result[0]['owner'];
 			$this->cfop_id = $result[0]['cfop_id'];
 		}

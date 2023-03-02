@@ -205,10 +205,6 @@ class data_dir {
 
                 $project = new project($this->db,$this->get_project_id());
 
-                if ($project->get_bill_project()) {
-                }
-                else {
-                }
                 $insert_array = array('data_usage_data_dir_id'=>$this->get_data_dir_id(),
                                 'data_usage_project_id'=>$project->get_project_id(),
                                 'data_usage_cfop_id'=>$project->get_cfop_id(),
@@ -291,7 +287,7 @@ class data_dir {
         	        $data_cost = new data_cost($this->db,$data_cost_result['id']);
 			$total_cost = $data_cost->calculate_cost($bytes);
 			$billed_cost = 0;
-			if ($project->get_bill_project()) {
+			if ($project->get_billtype() != project::BILLTYPE_NO_BILL) {
 				$billed_cost = $total_cost;
 			}
         	        $insert_array = array('data_bill_data_dir_id'=>$this->get_data_dir_id(),

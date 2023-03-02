@@ -23,8 +23,6 @@ if (isset($_POST['add_user'])) {
 
 	$hide_cfop = 0;
 	$cfop = $_POST['cfop_1'] . "-" . $_POST['cfop_2'] . "-" . $_POST['cfop_3'] . "-" . $_POST['cfop_4'];
-	$activity_code = $_POST['activity'];
-	$custom_bill_description = $_POST['custom_bill_description'];
 	$billtype = $_POST['cfop_billtype'];
 
 	switch ($billtype) {
@@ -32,25 +30,25 @@ if (isset($_POST['add_user'])) {
 			if (isset($_POST['hide_cfop'])) {
 				$hide_cfop = 1;
 			}
-			unset($_POST['custom_bill_description']);	
+			$_POST['custom_bill_description'] = "";	
 			break;
 		case 'custom':
-			unset($_POST['cfop_1']);
-			unset($_POST['cfop_2']);
-			unset($_POST['cfop_3']);
-			unset($_POST['cfop_4']);
-			unset($_POST['activity']);
+			$_POST['cfop_1'] = "";
+			$_POST['cfop_2'] = "";
+			$_POST['cfop_3'] = "";
+			$_POST['cfop_4'] = "";
+			$_POST['activity'] = "";
 			unset($_POST['hide_cfop']);
 			break;
 
 		case 'no_bill':
-			unset($_POST['cfop_1']);
-                        unset($_POST['cfop_2']);
-                        unset($_POST['cfop_3']);
-                        unset($_POST['cfop_4']);
-                        unset($_POST['activity']);
+			$_POST['cfop_1'] = "";
+                        $_POST['cfop_2'] = "";
+                        $_POST['cfop_3'] = "";
+                        $_POST['cfop_4'] = "";
+                        $_POST['activity'] = "";
                         unset($_POST['hide_cfop']);
-			unset($_POST['custom_bill_description']);
+			$_POST['custom_bill_description'] = "";
 			break;
 
 
@@ -60,7 +58,7 @@ if (isset($_POST['add_user'])) {
 	}
 
 	$user = new user($db,$ldap);
-	$result = $user->create($_POST['new_username'],$supervisor_id,$admin,$billtype,$cfop,$activity_code,$hide_cfop,$custom_bill_description);
+	$result = $user->create($_POST['new_username'],$supervisor_id,$admin,$billtype,$cfop,$_POST['activity'],$hide_cfop,$_POST['custom_bill_description']);
 
 	if ($result['RESULT'] == true) {
 		//header("Location: user.php?user_id=" . $result['user_id']);

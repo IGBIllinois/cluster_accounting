@@ -119,7 +119,7 @@ class job {
 				$cost = $this->queue->calculate_cost($job_data['job_cpu_time'],$job_data['job_ru_wallclock'],
 						$job_data['job_slots'],$mem,$job_data['job_start_time'],$job_data['job_end_time'],$job_data['job_gpu']);
 				$bill_cost = 0;
-				if ($this->project->get_bill_project()) {
+				if ($this->project->get_billtype() != project::BILLTYPE_NO_BILL) {
 					$bill_cost = $cost;
 				}
 				
@@ -296,7 +296,7 @@ class job {
 			$message = $verify_cost['MESSAGE'];
 			$valid = false;
 		}
-		if (!$this->get_project()->get_bill_project()) {
+		if (!$this->get_project()->get_billtype() == project::BILLTYPE_NO_BILL) {
 			$message = "This project is not a billable project";
 			$valid = false;
 		}

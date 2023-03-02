@@ -57,6 +57,7 @@ $log->send_log("Data Usage: Start");
 $directories = data_functions::get_all_directories($db);
 foreach ($directories as $directory) {
 	$data_dir = new data_dir($db,$directory['data_dir_id']);
+
 	$level = \IGBIllinois\log::NOTICE;
 	try {
 		$data_usage = new \IGBIllinois\data_usage($data_dir->get_directory());

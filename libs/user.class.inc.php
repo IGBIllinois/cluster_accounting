@@ -45,7 +45,6 @@ class user {
 
 	public function create($username,$supervisor_id,$admin,$cfop_billtype,$cfop = "",$activity = "",$hide_cfop = 0,$custom_bill_description = "") {
 		$username = trim(rtrim($username));
-		echo "supervisor: " . $supervisor_id . "\n";
 		$error = false;
 		//Verify Username
 		$message = "";
@@ -480,7 +479,8 @@ class user {
 				'num_jobs' => $user_stats->get_num_jobs(),
                 	        'website_url' => "https://biocluster.igb.illinois.edu/accounting/",
                         	'jobs_table' => $this->get_jobs_summary($month,$year),
-	                        'data_table' => $this->get_data_summary($month,$year)
+	                        'data_table' => $this->get_data_summary($month,$year),
+				'admin_email'=> $admin_email
 	                );
 
 			$loader = new \Twig\Loader\FilesystemLoader(settings::get_twig_dir());

@@ -12,37 +12,39 @@ if (isset($_POST['delete_project'])) {
 	header('Location: projects.php');
 }
 elseif (isset($_POST['edit_project'])) {
-	foreach ($_POST as $var) {
-		$var = trim(rtrim($var));
-	}
+	$_POST = array_map('trim',$_POST);
+
 	$project = new project($db,$_POST['project_id']);
 	$hide_cfop = 0;
         $cfop = $_POST['cfop_1'] . "-" . $_POST['cfop_2'] . "-" . $_POST['cfop_3'] . "-" . $_POST['cfop_4'];
-       
+	$owner_id = 0;
+	if (isset($_POST['owner_id'])) {
+		$owner_id = $_POST['owner'];
+	}
 	switch ($_POST['cfop_billtype']) {
                 case 'cfop':
                         if (isset($_POST['hide_cfop'])) {
                                 $hide_cfop = 1;
                         }
-                        unset($_POST['custom_bill_description']);
+                        $_POST['custom_bill_description'] = "";
                         break;
                 case 'custom':
-                        unset($_POST['cfop_1']);
-                        unset($_POST['cfop_2']);
-                        unset($_POST['cfop_3']);
-                        unset($_POST['cfop_4']);
-                        unset($_POST['activity']);
+                        $_POST['cfop_1'] = "";
+                        $_POST['cfop_2'] = "";
+                        $_POST['cfop_3'] = "";
+                        $_POST['cfop_4'] = "";
+                        $_POST['activity'] = "";
                         unset($_POST['hide_cfop']);
                         break;
 
                 case 'no_bill':
-                        unset($_POST['cfop_1']);
-                        unset($_POST['cfop_2']);
-                        unset($_POST['cfop_3']);
-                        unset($_POST['cfop_4']);
-                        unset($_POST['activity']);
+                        $_POST['cfop_1'] = "";
+                        $_POST['cfop_2'] = "";
+                        $_POST['cfop_3'] = "";
+                        $_POST['cfop_4'] = "";
+                        $_POST['activity'] = "";
                         unset($_POST['hide_cfop']);
-                        unset($_POST['custom_bill_description']);
+                        $_POST['custom_bill_description'] = "";
                         break;
 
 
@@ -52,7 +54,7 @@ elseif (isset($_POST['edit_project'])) {
         }
 
 	$result = $project->edit($_POST['ldap_group'],$_POST['description'],
-			$_POST['cfop_billtype'],$_POST['owner'],$cfop,$_POST['activity'],$hide_cfop,$_POST['custom_bill_description']);
+			$_POST['cfop_billtype'],$owner_id,$cfop,$_POST['activity'],$hide_cfop,$_POST['custom_bill_description']);
 
 }
 
@@ -87,10 +89,10 @@ $users = user_functions::get_users($db);
 $owner_html = "";
 
 if ($project->get_default()) {
-	$owner_html = "<select class='custom-select' name='owner' id='owner_input' disabled>";
+	$owner_html = "<select class='custom-select' name='owner_id' id='owner_input' disabled>";
 }
 else {
-	$owner_html = "<select class='custom-select' name='owner' id='owner_input'>";
+	$owner_html = "<select class='custom-select' name='owner_id' id='owner_input'>";
 }
 $owner_html .= "<option></option>";
 foreach ($users as $owner) {
@@ -275,7 +277,7 @@ require_once 'includes/header.inc.php';
 
 ?>
 
-
+<br>
 <?php
 if (isset($result['MESSAGE'])) {
 	echo $result['MESSAGE'];
