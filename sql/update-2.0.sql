@@ -31,6 +31,6 @@ ALTER TABLE data_usage DROP COLUMN data_usage_files;
 
 ALTER TABLE users ADD user_firstname VARCHAR(100) AFTER user_full_name;
 ALTER TABLE users ADD user_lastname VARCHAR(100) AFTER user_firstname;
-UPDATE users SET user_firstname=(SUBSTR(user_full_name,1,(LOCATE(' ',user_full_name)))), user_lastname=(SUBSTR(user_full_name,(LOCATE(' ',user_full_name))));
+UPDATE users SET user_firstname=(SUBSTR(user_full_name,1,(LOCATE(' ',user_full_name)))), user_lastname=(SUBSTR(user_full_name,(LOCATE(' ',user_full_name) +1)));
 ALTER TABLE users DROP COLUMN users.user_full_name;
 

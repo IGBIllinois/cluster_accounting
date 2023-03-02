@@ -44,6 +44,7 @@
 				<li class='nav-item'><a class='nav-link' href='user_graphs.php'>User Graphs</a></li>
 				<?php if ((isset($login_user)) && ($login_user->is_admin())) {
 					echo "<span class='border-top my-2'></span>";
+					echo "<li class='nav-item'><a class='nav-link' href='reports.php'>Reports</a></li>";
 					echo "<li class='nav-item'><a class='nav-link' href='job_billing.php'>Job Billing</a></li>";
 					echo "<li class='nav-item'><a class='nav-link' href='data_billing.php'>Data Billing</a></li>";
 					echo "<li class='nav-item'><a class='nav-link' href='stats_accumulated.php'>Accumulated Stats</a></li>";

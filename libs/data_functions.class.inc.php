@@ -175,7 +175,7 @@ class data_functions {
 	public static function get_data_fbs_bill($db,$month,$year,$minimal_bill = 0.01) {
 		$sql = "SELECT 'IGB' as 'AreaCode','CNRG' as 'FacilityCode', ";
 		$sql .= "'' as 'LabCode', IF(users.user_supervisor <> 0,CONCAT(supervisors.user_lastname,', ',supervisors.user_firstname),CONCAT(users.user_lastname,', ',users.user_firstname)) as 'LabName',  ";
-		$sql .= "CONCAT(users.user_firstname,' ',users.user_lastname) as 'RequestedBy', ";
+		$sql .= "CONCAT(users.user_firstname,users.user_lastname) as 'RequestedBy', ";
 		$sql .= "users.user_name as 'NAME', CONCAT(cfops.cfop_value,IF(cfops.cfop_activity <> '','-',''),cfops.cfop_activity) as 'CFOP', ";
 		$sql .= "'BIOCLUSTER' as 'SKU_Code', CONCAT(:month,'-',:year) as 'UsageDate', ";
 		$sql .= "'1.000' as 'Quantity', ROUND(data_bill.data_bill_billed_cost,2) as 'UnitPriceOverride', ";
