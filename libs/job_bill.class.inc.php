@@ -35,24 +35,42 @@ class job_bill {
 	}
 
 
-	public static function add_job_usage($db,$job_info) {
-		$sql = "INSERT INTO job_bill (job_bill_user_id,job_bill_project_id,job_bill_cfop_id, ";
-		$sql .= "job_bill_queue_id, job_bill_queue_cost_id, job_bill_date,";
-		$sql .= "job_bill_num_jobs,job_bill_total_cost,job_bill_billed_cost) ";
-		$sql .= "VALUES(:user_id,:project_id,:cfop_id,:queue_id,:queue_cost_id,:date,:num_jobs,:total_cost,:billed_cost) ";
+	public static function add_job_bill($db,$job_info) {
+		$sql = "SELECT count(1) as count FROM job_bill ";
+		$sql .= "WHERE job_bill_user_id=:user_id "; 
+		$sql .= "AND job_bill_project_id=:project_id ";
+		$sql .= "AND job_bill_cfop_id=:cfop_id ";
+		$sql .= "AND job_bill_queue_id=:queue_id ";
+		$sql .= "AND job_bill_date=:date ";
+		$sql .= "LIMIT 1";
 		$parameters = array(':user_id'=>$job_info['user_id'],
-			':project_id'=>$job_info['project_id'],
-			':cfop_id'=>$job_info['cfop_id'],
-			':queue_id'=>$job_info['queue_id'],
-			':queue_cost_id'=>$job_info['queue_cost_id'],
-			':date'=>$job_info['date'],
-			':num_jobs'=>$job_info['num_jobs'],
-			':total_cost'=>$job_info['total_cost'],
-			':billed_cost'=>$job_info['billed_cost']
-		);
-		$result = $db->insert_query($sql,$parameters);
-		return $result;
-
+                        ':project_id'=>$job_info['project_id'],
+                        ':cfop_id'=>$job_info['cfop_id'],
+                        ':queue_id'=>$job_info['queue_id'],
+                        ':date'=>$job_info['date'],
+                );
+		$check_exists = $db->query($sql,$parameters);
+		$result = true;
+		if ($check_exists[0]['count']) {
+			$result = false;
+			$message = "Job Bill: Job Bill already calculated";
+		}
+		else {
+			$insert_array = array(
+				'job_bill_user_id'=>$job_info['user_id'],
+				'job_bill_project_id'=>$job_info['project_id'],
+				'job_bill_cfop_id'=>$job_info['cfop_id'],
+				'job_bill_queue_id'=>$job_info['queue_id'],
+				'job_bill_queue_cost_id'=>$job_info['queue_cost_id'],
+				'job_bill_date'=>$job_info['date'],
+				'job_bill_num_jobs'=>$job_info['num_jobs'],
+				'job_bill_total_cost'=>$job_info['total_cost'],
+				'job_bill_billed_cost'=>$job_info['billed_cost']
+			);
+			$insert_id = $db->build_insert('job_bill',$insert_array);
+			$message = "Job Bill: Job Bill successfully added";
+		}
+		return array('RESULT'=>$result,'MESSAGE'=>$message);
 	}
 
 	public static function get_minimal_year($db) {

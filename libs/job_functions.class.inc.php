@@ -55,7 +55,9 @@ class job_functions {
                 $sql .= "jobs.job_queue_id, ";
                 $sql .= "users.user_name ";
                 $sql .= "ORDER BY users.user_name ";
-		$parameters = array(':year'=>$year,':month'=>$month);
+		$parameters = array(':year'=>$year,
+				':month'=>$month
+			);
 		try {
 	                $result = $db->query($sql,$parameters);
 		}
