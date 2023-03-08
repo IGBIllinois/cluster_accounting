@@ -32,19 +32,27 @@ $longopts = array(
 //Following code is to test if the script is being run from the command line or the apache server.
 $sapi_type = php_sapi_name();
 if ($sapi_type != 'cli') {
-	echo "Error: This script can only be run from the command line.";
+	exit("Error: This script can only be run from the command line.");
 }
-else {
 
-	$options = getopt($shortopts,$longopts);
+$options = getopt($shortopts,$longopts);
 
-        if (isset($options['h']) || isset($options['help'])) {
-                echo $output_command;
-                exit;
-        }
+if (isset($options['h']) || isset($options['help'])) {
+	echo $output_command;
+	exit;
+}
 
-	$db = new db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__);
+$db = new \IGBIllinois\db(settings::get_mysql_host(),
+	settings::get_mysql_database(),
+	settings::get_mysql_user(),
+	settings::get_mysql_password(),
+	settings::get_mysql_ssl(),
+	settings::get_mysql_port()
+);
+
+$log = new \IGBIllinois\log(settings::get_log_enabled(),settings::get_logfile());
 	
+<<<<<<< HEAD
 	$start_time = microtime(true);
 	functions::log("Data Usage: Start");	
 	$directories = data_functions::get_all_directories($db);
@@ -67,20 +75,48 @@ else {
 			}	
 			if (($result['RESULT']) && (!isset($options['dry-run']))) {
 				$message = "Data Usage: Directory: " . $data_dir->get_directory() . " Size: " . data_functions::bytes_to_gigabytes($size) . "GB sucessfully added";
-				
-			}
-			elseif (isset($options['dry-run'])) {
-				$message = "DRY-RUN: Data Usage: Directory: " . $data_dir->get_directory() . " Size: " . data_functions::bytes_to_gigabytes($size) . "GB sucessfully added.";
+=======
+$start_time = microtime(true);
+$log->send_log("Data Usage: Start");	
+$directories = data_functions::get_all_directories($db);
+foreach ($directories as $directory) {
+	$data_dir = new data_dir($db,$directory['data_dir_id']);
 
-			}
-			else {
-				$message = "ERROR: Data Usage: Directory: " . $data_dir->get_directory() . " failed adding to database";
-			}
-			functions::log($message);
+	$level = \IGBIllinois\log::NOTICE;
+	try {
+		$data_usage = new \IGBIllinois\data_usage($data_dir->get_directory());
+		$size = $data_usage->get_dir_size();
+
+		if (!isset($options['dry-run'])) {
+			$result = $data_dir->add_usage($size);
+		}
+		else {
+			$result['RESULT'] = true;
+>>>>>>> devel
+				
+		}	
+		if (($result['RESULT']) && (!isset($options['dry-run']))) {
+			$message = "Data Usage: Directory: " . $data_dir->get_directory() . " Size: " . data_functions::bytes_to_gigabytes($size) . "GB sucessfully added";
+			
+		}
+		elseif (isset($options['dry-run'])) {
+			$message = "DRY-RUN: Data Usage: Directory: " . $data_dir->get_directory() . " Size: " . data_functions::bytes_to_gigabytes($size) . "GB sucessfully added.";
+		}
+		else {
+			$message = "Data Usage: Directory: " . $data_dir->get_directory() . " failed adding to database";
+			$level = \IGBIllinois\log::ERROR;
+		}
 	}
-	$end_time = microtime(true);
-	$elapsed_time = round($end_time - $start_time,2);
-	functions::log("Data Usage: Finished. Elapsed Time: " . $elapsed_time . " seconds");
+        catch (Exception $e) {
+                $message = $e->getMessage();
+		$level = \IGBIllinois\log::ERROR;
+
+        }
+	$log->send_log($message,$level);
 }
+
+$end_time = microtime(true);
+$elapsed_time = round($end_time - $start_time,2);
+$log->send_log("Data Usage: Finished. Elapsed Time: " . $elapsed_time . " seconds");
 
 ?>

@@ -1,14 +1,13 @@
 <?php
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
 
 if (!$login_user->is_admin()) {
         exit;
 }
 
+$year = date('Y');
 if (isset($_GET['year'])) {
 	$year = $_GET['year'];
-}
-else { $year = date('Y');
 }
 
 $previous_year = $year - 1;
@@ -48,7 +47,7 @@ $graph_image = "<img src='graph.php?" . http_build_query($get_array) . "'>";
 $graph_form = "<form class='form-inline' name='select_graph' id='select_graph' method='post' action='" . $_SERVER['PHP_SELF'];
 //$graph_form .= "?start_date=" . $start_date . "&end_date=" . $end_date . "'>";
 $graph_form .= "?year=" . $year . "'>";
-$graph_form .= "<select name='graph_type' onChange='document.select_graph.submit();'>";
+$graph_form .= "<select class='custom-select' name='graph_type' onChange='document.select_graph.submit();'>";
 
 foreach ($graph_type_array as $graph) {
         $graph_form .= "<option value='" . $graph['type'] . "' ";
@@ -64,24 +63,27 @@ $graph_form .= "</select>";
 
 $stats = new statistics($db);
 
+require_once 'includes/header.inc.php';
+
 ?>
 <h3>Yearly Stats - <?php echo $year; ?></h3>
-<ul class='pager'>
-        <li class='previous'><a href='<?php echo $back_url; ?>'>Previous Year</a></li>
+<nav>
+<ul class='pagination'>
+        <li class='page-item'><a class='page-link' href='<?php echo $back_url; ?>'>Previous Year</a></li>
 
         <?php
                 $next_year = strtotime('+1 day', strtotime($end_date));
                 $today = mktime(0,0,0,date('m'),date('d'),date('y'));
                 if ($next_year > $today) {
-                        echo "<li class='next disabled'><a href='#'>Next Year</a></li>";
+                        echo "<li class='page-item disabled'><a class='page-link' href='#'>Next Year</a></li>";
                 }
                 else {
-                        echo "<li class='next'><a href='" . $forward_url . "'>Next Year</a></li>";
+                        echo "<li class='page-item'><a class='page-link' href='" . $forward_url . "'>Next Year</a></li>";
                 }
         ?>
 </ul>
-
-<table class='table table-striped table-bordered table-condensed'>
+</nav>
+<table class='table table-striped table-bordered table-sm'>
 	<tr>
 		<td>Number Of Jobs:</td>
 		<td><?php echo $stats->get_num_jobs($start_date,$end_date,true); ?></td>

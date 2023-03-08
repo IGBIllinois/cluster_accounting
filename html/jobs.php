@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
 
 $user_id = $login_user->get_user_id();
 if (isset($_GET['user_id']) && (is_numeric($_GET['user_id']))) {
@@ -16,13 +16,12 @@ $start = 0;
 if (isset($_GET['start']) && is_numeric($_GET['start'])) {
         $start = $_GET['start'];
 }
+
+$start_date = date('Y-m') . "-01";
+$end_date = date('Y-m-d',strtotime('-1 second',strtotime('+1 month',strtotime($start_date))));
 if (isset($_GET['start_date']) && isset($_GET['end_date'])) {
         $start_date = $_GET['start_date'];
         $end_date = $_GET['end_date'];
-}
-else {
-        $start_date = date('Y-m') . "-01";
-        $end_date = date('Y-m-d',strtotime('-1 second',strtotime('+1 month',strtotime($start_date))));
 }
 
 $jobs = array();
@@ -64,7 +63,8 @@ elseif ($login_user->is_supervisor()) {
 $user_list_html = "";
 
 if (count($user_list) > 1) {
-        $user_list_html = "<select class='input-large' name='user_id'>";
+        $user_list_html = "<select class='custom-select' name='user_id' id='user_id_input'>";
+	$user_list_html .= "<option></option>";
 	if ($login_user->is_admin()) {
 		$user_list_html .= "<option value='0'>All Users</option>";
 	}
@@ -89,36 +89,20 @@ if (count($user_list) > 1) {
         $user_list_html .= "</select>";
 }
 
+require_once 'includes/header.inc.php';
 ?>
- <script>
- $(function() {
-$( "#start_date" ).datepicker({
-		maxDate: "+1w",
-		minDate: new Date(2010,1-1,1),
-		changeYear: true,
-		changeMonth: true,
-		dateFormat: "yy-mm-dd",
-
-		});
-$( "#end_date" ).datepicker({
-                maxDate: "+1w",
-                minDate: new Date(2010,1-1,1),
-                changeYear: true,
-                changeMonth: true,
-		dateFormat: "yy-mm-dd",
-		});
-
-});
-
-</script>
-
-
 
 <h3>Search Jobs</h3>
 <div class='row'>
+<<<<<<< HEAD
 <div class='span8'>
 <form class='form-inline' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
                 <input type='text' name='search' class='input-xlarge' placeholder='Search'
+=======
+<div class='col-sm-8 col-md-8 col-lg-8 col-xl-8'>
+	<form class='form-inline' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
+                <input type='text' name='search' class='form-control' placeholder='Search'
+>>>>>>> devel
 			value='<?php if (isset($_GET['search'])) { echo $_GET['search']; } ?>' autocapitalize='none'>
 		<?php
 			if ($login_user->is_admin() || $login_user->is_supervisor()) {
@@ -126,15 +110,22 @@ $( "#end_date" ).datepicker({
 			}
 
 		?>
-		<input class='input-small' type='text' name='start_date' id='start_date' placeholder='Start Date'
+		<input class='form-control' type='text' name='start_date' id='start_date' placeholder='Start Date'
 			value='<?php if (isset($start_date)) { echo $start_date; } ?>'>
-		<input class='input-small' type='text' name='end_date' id='end_date' placeholder='End Date'
+		<input class='form-control' type='text' name='end_date' id='end_date' placeholder='End Date'
 			value='<?php if (isset($end_date)) { echo $end_date; } ?>'>
                 <input type='submit' class='btn btn-primary' value='Search'>
+<<<<<<< HEAD
 </form>
 </div>
 <div class='span4 btn-toolbar text-right'>
         <div class='btn-group'>
+=======
+	</form>
+</div>
+<div class='col-sm-4 col-md-4 col-lg-4 col-xl-4'>
+        <div class='btn-group' role='group'>
+>>>>>>> devel
                 <a class='btn btn-primary' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array); ?>'>All Jobs</a>
                 <a class='btn btn-success' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array) . "&completed=1"; ?>'>Completed Jobs</a>
                 <a class='btn btn-danger' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array) . "&completed=0"; ?>'>Failed Jobs</a>
@@ -142,18 +133,21 @@ $( "#end_date" ).datepicker({
 
 </div>
 </div>
+<br>
 <div class='row'>
-<ul class='unstyled inline'>
-<li><span class='badge badge-success'>&nbsp</span> Completed Job</li>
-<li><span class='badge badge-important'>&nbsp</span> Failed Job</li>
-</ul> 
+	<div class='col-sm-4 col-md-5 col-lg-4 col-xl-4'>
+	<ul class='list-inline'>
+		<li class='list-inline-item'><span class='badge badge-pill badge-success'>&nbsp</span> Completed Job</li>
+		<li class='list-inline-item'><span class='badge badge-pill badge-danger'>&nbsp</span> Failed Job</li>
+	</ul>
+	</div> 
 </div>
 <div class='row'>
-<table class='table table-condensed table-bordered table-striped'>
+<table class='table table-sm table-bordered table-striped'>
         <thead>
                 <tr>
+			<th></th>
 			<th>Job Number</th>
-			<th>Status</th>
 			<th>Username</th>
                         <th>Job Name</th>
                         <th>Project</th>
@@ -166,22 +160,55 @@ $( "#end_date" ).datepicker({
         </thead>
         <?php echo $jobs_html; ?>
 </table>
+</div>
+<div class='row justify-content-center'>
+<?php echo $pages_html; ?>
+</div>
+<div class='row'>
 <form class='form-inline' method='post' action='report.php'>
 	<input type='hidden' name='search' value='<?php echo $search; ?>'>
         <input type='hidden' name='start_date' value='<?php echo $start_date; ?>'> 
 	<input type='hidden' name='end_date' value='<?php echo $end_date; ?>'> 
 	<input type='hidden' name='user_id' value='<?php echo $user_id;?>'>
-	<input type='hidden' name='completed' value='<?php echo $completed; ?>'> 
-	<select name='report_type' class='input-medium'>
+	<input type='hidden' name='completed' value='<?php echo $completed; ?>'>
+	<div class='form-group'>
+	<select class='custom-select custom-select-sm' name='report_type'>
                 <option value='xlsx'>Excel 2007</option>
                 <option value='csv'>CSV</option>
-        </select> <input class='btn btn-primary' type='submit'
+        </select>
+	</div>
+	&nbsp;
+	<input class='btn btn-primary btn-sm' type='submit'
                 name='job_report' value='Download Detailed Report'>
+	
 </form>
-
-<?php echo $pages_html; ?>
 </div>
+
 <?php
 
 require_once 'includes/footer.inc.php';
 ?>
+<script type="text/javascript">
+$(function() { 
+	$( "#start_date" ).datepicker({
+                maxDate: "+1w",
+                minDate: new Date(2010,1-1,1),
+                changeYear: true,
+                changeMonth: true,
+                dateFormat: "yy-mm-dd",
+	});
+	$( "#end_date" ).datepicker({
+                maxDate: "+1w",
+                minDate: new Date(2010,1-1,1),
+                changeYear: true,
+                changeMonth: true,
+                dateFormat: "yy-mm-dd",
+	});
+});
+
+$(document).ready(function() {
+	$('#user_id_input').select2({
+		placeholder: 'Select a Supervisor'
+	});
+});
+</script>

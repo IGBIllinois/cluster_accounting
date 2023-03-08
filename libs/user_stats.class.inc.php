@@ -8,6 +8,7 @@ class user_stats {
 	private $start_date;
 	private $end_date;
 	private $generic_results = array();
+
 	////////////////Public Functions///////////
 	public function __construct($db,$user_id,$start_date,$end_date) {
 		$this->db = $db;
@@ -65,7 +66,7 @@ class user_stats {
 			$this->generic_query();	
 		}
 		$avg_elapsed_time = $this->generic_results[0]['avg_elapsed_time'];
-		if (!$avg_elapased_time) {
+		if (!$avg_elapsed_time) {
 			$avg_elapsed_time = "00:00:00";
 		}
 		return $avg_elapsed_time;

@@ -23,25 +23,6 @@ function enable_supervisors() {
 	}
 }
 
-function enable_project_bill() {
-	if (document.form.bill_project.checked == false) {
-		document.form.cfop_1.disabled = false;
-		document.form.cfop_2.disabled = false;
-		document.form.cfop_3.disabled = false;
-		document.form.cfop_4.disabled = false;
-		document.form.activity.disabled = false;
-		document.form.hide_cfop.disabled = false;
-	} else if (document.form.bill_project.checked == true) {
-		document.form.cfop_1.disabled = true;
-		document.form.cfop_2.disabled = true;
-		document.form.cfop_3.disabled = true;
-		document.form.cfop_4.disabled = true;
-		document.form.activity.disabled = true;
-		document.form.hide_cfop.disabled = true;
-	}
-
-}
-
 
 function cfop_advance_1() {
 	var length = document.forms["form"].cfop_1.value.length;
@@ -85,3 +66,51 @@ function enable_new_cfop() {
 
 	}
 }
+
+function set_cfop_billtype_tab() {
+	switch (cfop_billtype.value) {
+                case 'cfop':
+                        $('#billing_tab a[data-target="#nav-cfop"]').tab('show');
+                        break;
+                case 'custom':
+                        $('#billing_tab a[data-target="#nav-custom"]').tab('show');
+                        break;
+                case 'no_bill':
+                        $('#billing_tab a[data-target="#nav-nobill"]').tab('show');
+                        break;
+                default:
+                        $('#billing_tab a[data-target="#nav-cfop"]').tab('show');
+                        break;
+
+
+
+        };
+}
+
+function set_cfop_billtype_value() {
+	cfop_billtype.value = 'cfop';
+	$('#billing_tab a[data-toggle="tab"]').bind('click',function (e) {
+                var tab = $(this).attr("data-target");
+
+                switch (tab) {
+                        case '#nav-cfop':
+                                cfop_billtype.value = 'cfop';
+                                break;
+                        case '#nav-custom':
+                                cfop_billtype.value = 'custom';
+                                break;
+                        case '#nav-nobill':
+                                cfop_billtype.value = 'no_bill';
+                                break;
+                        default:
+                                cfop_billtype.value = 'cfop';
+                                break;
+                }
+        });
+
+}
+
+
+$.fn.select2.defaults.set( "theme", "bootstrap4" );
+$.fn.select2.defaults.set( "width", "resolve" );
+

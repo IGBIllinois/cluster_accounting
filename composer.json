@@ -1,16 +1,47 @@
 {
+	"repositories" : [
+        {
+                "type": "vcs",
+                "url": "https://www.github.com/IGBIllinois/IGBIllinois-php"
+        }
+        ],
 	"require": {
+<<<<<<< HEAD
 		"php":	">=5.4",
 		"phpoffice/phpexcel": "1.8.1",
 		"components/jquery": "3.5.1",
+=======
+		"php":	">=7.2",
+		"ext-pdo": "*",
+		"ext-mysqlnd": "*",
+		"ext-ldap": "*",
+		"components/jquery": "3.6.0",
+>>>>>>> devel
 		"components/jqueryui": "1.12.1",
-		"jpgraph/jpgraph": "4.0.2",
-		"components/bootstrap-default": "2.3.2",
-		"components/bootstrap": "2.3.2",
-		"pear/mail_mime": "1.10.1",
-		"pear/mail": "1.4.1"
+		"select2/select2": "4.0.13",
+		"ttskch/select2-bootstrap4-theme": "1.5.2",
+		"twbs/bootstrap": "v4.6.2",
+		"twig/twig": "v3.4.3",
+		"fortawesome/font-awesome": "5.15.4",
+		"igbillinois/igbillinois-php": "dev-main"
 	},
-	"config": {
-		"component-dir": "html/vendor/components"
+	 "scripts": {
+                "post-update-cmd": [
+                "mkdir -p html/vendor/components",
+		"mkdir -p html/vendor/twbs",
+		"mkdir -p html/vendor/fortawesome",
+		"mkdir -p html/vendor/select2",
+		"mkdir -p html/vendor/ttskch",
+                "cp -R vendor/twbs/bootstrap html/vendor/twbs/",
+                "cp -R vendor/components/jquery html/vendor/components/",
+                "cp -R vendor/components/jqueryui html/vendor/components/",
+		"cp -R vendor/fortawesome/font-awesome html/vendor/fortawesome/",
+		"cp -R vendor/select2/select2 html/vendor/select2",
+		"cp -R vendor/ttskch/select2-bootstrap4-theme html/vendor/ttskch"
+                ]
+
+        },
+	"require-dev": {
+		"phpmd/phpmd": "^2.13"
 	}
 }

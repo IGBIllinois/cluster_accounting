@@ -25,6 +25,16 @@ if (isset($_POST['remove_data_dir'])) {
 }
 $data_dir = new data_dir($db,$data_dir_id);
 $project = new project($db,$data_dir->get_project_id());
+$graph_type = 'data_usage_daily';
+$end_date = date('Ymd');
+$start_date = date('Ymd',strtotime('-30 days'));
+
+$get_array  = array('graph_type'=>$graph_type,
+		'data_dir_id'=>$data_dir_id,
+                'start_date'=>$start_date,
+                'end_date'=>$end_date
+        );
+$graph_image = "<img src='graph.php?" . http_build_query($get_array) . "'>";
 
 require_once 'includes/header.inc.php';
 
@@ -33,8 +43,13 @@ require_once 'includes/header.inc.php';
 
 <h3>Data Directory - <?php echo $data_dir->get_directory(); ?></h3>
 
+<<<<<<< HEAD
 <div class='row span6'>
 <table class='table table-bordered table-condensed'>
+=======
+<div class='col-sm-6 col-md-6 col-lg-6 col-xl-6'>
+<table class='table table-bordered table-sm'>
+>>>>>>> devel
 <tr>
 	<td>Directory</td>
 	<td><?php echo $data_dir->get_directory(); ?></td>
@@ -60,10 +75,10 @@ require_once 'includes/header.inc.php';
 	<td>
 	<?php
 	if ($data_dir->directory_exists()) {
-		echo "<i class='icon-ok'></i>";
+		echo "<i class='fas fa-check'></i>";
 	}
 	else {
-        	echo "<i class='icon-remove'></i>";
+        	echo "<i class='fas fa-times'></i>";
         }
 	?>
 	</td>
@@ -72,7 +87,10 @@ require_once 'includes/header.inc.php';
 	<td>Project</td>
 	<td><a href='edit_project.php?project_id=<?php echo $data_dir->get_project_id(); ?>'><?php echo $project->get_name(); ?></a></td>
 </tr>
-
+<tr><td>Time Added to Database</td><td><?php echo $data_dir->get_time_created(); ?></td></tr>
+<tr><td>Default Directory</td><td><?php echo $data_dir->is_default() ? "<i class='fas fa-check'>" : "<i class='fas fa-times'>"; ?></td></tr>
+<tr><td>Latest Size (TB)</td><td><?php echo $data_dir->get_latest_size(); ?></td></tr>
+<tr><td>Latest Size Time</td><td><?php echo $data_dir->get_latest_size_date(); ?></td</tr>
 </table>
 </div>
 <div class='row span6'>
@@ -91,8 +109,14 @@ if (!$data_dir->is_default()) {
 <div class='row span6'>
 <?php
 
+<<<<<<< HEAD
 if (isset($message)) { echo $message; } 
+=======
+echo $graph_image;
+>>>>>>> devel
 ?>
+
+
 </div>
 <?php
 

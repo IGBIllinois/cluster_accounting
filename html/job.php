@@ -1,13 +1,14 @@
 <?php
 
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
+
 $user_id = $login_user->get_user_id();
 if (isset($_GET['user_id']) && (is_numeric($_GET['user_id']))) {
         $user_id = $_GET['user_id'];
 }
 
 if (!$login_user->permission($user_id)) {
-        echo "<div class='alert alert-error'>Invalid Permissions</div>";
+        echo "<div class='alert alert-danger'>Invalid Permissions</div>";
         exit;
 }
 
@@ -30,13 +31,13 @@ if (isset($_GET['job'])) {
 
 }
 else { 
-	echo "<div class='alert alert-error'>This job does not exist. Completed jobs will be entered in the accounting software every hour.</div>";
+	echo "<div class='alert alert-warning'>This job does not exist. Completed jobs will be entered in the accounting software every hour.</div>";
 	exit;
 
 }
 
 
-$exec_host_html = "<table class='table table-bordered table-condensed table-striped'>";
+$exec_host_html = "<table class='table table-bordered table-sm table-striped'>";
 $exec_host_html .= "<tr><th>Execution Hosts</th></tr>";
 $exec_hosts = $job->get_exec_hosts();
 if (count($exec_hosts)) {
@@ -49,15 +50,17 @@ else {
 	$exec_host_html .= "<tr><td>No Data</td></tr>";
 }
 $exec_host_html .= "</table>";
+
+require_once 'includes/header.inc.php';
 ?>
 <h3>
 	Job #
 	<?php echo $job->get_full_job_number(); ?>
 	Details
 </h3>
-<div class='row span12'>
-<div class='span8'>
-<table class='table table-bordered table-condensed table-striped'>
+<div class='row'>
+<div class='col-sm-6 col-md-6 col-lg-6 col-xl-6'>
+<table class='table table-bordered table-sm table-striped'>
 	<tr>
 		<td>Job Number:</td>
 		<td><?php echo $job->get_full_job_number(); ?></td>
@@ -83,9 +86,15 @@ $exec_host_html .= "</table>";
 		<td><?php echo $job->get_queue_name(); ?></td>
 	</tr>
 	<tr>
+<<<<<<< HEAD
 		<td>Job State:</td>
 		<td><?php echo $job->get_job_state(); ?></td>
 	</tr>
+=======
+                <td>Job State:</td>
+                <td><?php echo $job->get_job_state(); ?></td>
+        </tr
+>>>>>>> devel
 	<tr>
 		<td>Exit Status:</td>
 		<td><?php echo $job->get_exit_status(); ?></td>
@@ -179,28 +188,31 @@ $exec_host_html .= "</table>";
 
 </table>
 </div>
-<div class='span4'>
+<div class='col-sm-2 col-md-2 col-lg-2 col-xl-2'>
 <?php echo $exec_host_html; ?>
 
 </div>
 </div>
-<div class='row span12'>
+<div class='row'>
+<div class='col-sm-4 col-md-4 col-lg-4 col-xl-4'>
 <?php
 if ($job->get_used_mem() * settings::get_reserve_memory_factor() > $job->get_reserved_mem()) {
-	echo "<div class='alert alert-error span8'>Please reserve the appropriate amount of memory.</div>";
+	echo "<div class='alert alert-danger'>Please reserve the appropriate amount of memory.</div>";
 }
 if ($job->get_cpu_time() * settings::get_reserve_processor_factor() > ($job->get_elapsed_time() * $job->get_slots())) {
-	echo "<div class='alert alert-error span8'>Please reserve the appropriate amount of processors.</div>";
+	echo "<div class='alert alert-danger'>Please reserve the appropriate amount of processors.</div>";
 }
 if ($job->get_submitted_project() !== $job->get_project()->get_name()) {
-	echo "<div class='alert alert-error span8'>Please use the correct project when submitting jobs.  This job was charged to your default project.</div>";
+	echo "<div class='alert alert-danger'>Please use the correct project when submitting jobs.  This job was charged to your default project.</div>";
 }
 if (!strpos($job->get_job_script(),'module load') && $job->get_job_script_exists()) {
-	echo "<div class='alert alert-error span8'>Please use the module command in your qsub script.</div>";
+	echo "<div class='alert alert-danger'>Please use the module command in your qsub script.</div>";
 }
 ?>
 </div>
-<div class='row span12'>
+</div>
+<div class='row'>
+<div class='col-sm-4 col-md-4 col-lg-4 col-xl-4'>
 <?php if (isset($_SERVER['HTTP_REFERER'])) {
 	echo "<a href='" . $_SERVER['HTTP_REFERER'] . "' class='btn btn-primary'>Back</a> ";
 
@@ -215,6 +227,7 @@ if ($login_user->is_admin()) {
 }
 
 ?>
+</div>
 </div>
 </div>
 

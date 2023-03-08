@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
 
 
 if (!$login_user->is_admin()) {
@@ -57,23 +57,18 @@ $get_array = array('search'=>$search,
                 'custom'=>$custom);
 $pages_url = $_SERVER['PHP_SELF'] . "?" . http_build_query($get_array);
 $pages_html = html::get_pages_html($pages_url,$num_projects,$start,$count);
-$projects = functions::get_projects($db,$custom,$search,$start,$count);
+$enabled = 1;
+$projects = functions::get_projects($db,$enabled,$custom,$search,$start,$count);
 $projects_html = "";
 
 foreach ($projects as $project) {
 
-	if ($project['cfop_bill']) {
-		$project_bill = "<i class='icon-ok'></i>";
-	}
-	else {
-		$project_bill = "<i class='icon-remove'></i>";
-	}
 	$projects_html .= "<tr>";
 	$projects_html .= "<td><a href='edit_project.php?project_id=" . $project['project_id'] . "'>" . $project['project_name'] . "</a></td>";
 	$projects_html .= "<td>" . $project['owner'] . "</td>";
 	$projects_html .= "<td>" . $project['project_ldap_group'] . "</td>";
 	$projects_html .= "<td>" . $project['project_description'] . "</td>";
-	$projects_html .= "<td>" . $project_bill . "</td>";
+	$projects_html .= "<td>" . $project['cfop_billtype'] . "</td>";
 	$projects_html .= "<td>" . $project['cfop_value'] . "</td>";
 	$projects_html .= "<td>" . $project['cfop_activity'] . "</td>";
 	$projects_html .= "<td>" . $project['cfop_time_created'] . "</td>";
@@ -81,46 +76,38 @@ foreach ($projects as $project) {
 }
 
 $users = user_functions::get_users($db);
-$owner_html = "<select name='owner' id='owner_input' class='input'>";
-foreach ($users as $owner) {
-	if ((isset($_POST['owner'])) && ($_POST['owner'] == $owner['user_id'])) {
-		$owner_html .= "<option value='" . $owner['user_id'] . "' selected='selected'>" . $owner['user_name'] . "</option>";
-	}
-	else {
-		$owner_html .= "<option value='" . $owner['user_id'] . "'>" . $owner['user_name'] . "</option>";
-	}
 
-}
-$owner_html .= "</select>";
+require_once 'includes/header.inc.php';
+
 ?>
 <h3>Projects</h3>
+<hr>
 <div class='row'>
-<form class='span6 form-search' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
-		<div class='input-append'>
-                <input type='text' name='search' class='input-xlarge search-query' placeholder='Search'
+	<form class='form-inline' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
+		<div class='form-group'>
+                <input class='form-control' type='text' name='search' placeholder='Search'
                         value='<?php if (isset($search)) { echo $search; } ?>' autocapitalize='none'>
 		<input type='hidden' name='custom' value='<?php echo $custom; ?>'>
                 <button type='submit' class='btn btn-primary'>Search</button>
 		</div>
-</form>
-<div class='span6 btn-toolbar text-right'>
-	<div class='btn-group'>
-		<a class='btn' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&custom=ALL"; ?>'>All Projects</a>
-		<a class='btn' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&custom=CUSTOM"; ?>'>Custom Projects</a>
-		<a class='btn' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&custom=DEFAULT"; ?>'>User Projects</a>
+	</form>
+	<div class='btn-group pull-right ml-auto' role='group' aria-label='test'>
+		<a class='btn btn-primary' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&custom=ALL"; ?>'>All Projects</a>
+		<a class='btn btn-secondary' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&custom=CUSTOM"; ?>'>Custom Projects</a>
+		<a class='btn btn-info' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&custom=DEFAULT"; ?>'>User Projects</a>
 	</div>
 
 </div>
-</div>
+<br>
 <div class='row'>
-<table class='table table-condensed table-striped table-bordered'>
+<table class='table table-bordered table-sm table-striped'>
 	<thead>
 		<tr>
 			<th>Name</th>
 			<th>Owner</th>
 			<th>LDAP Group</th>
 			<th>Description</th>
-			<th>Bill</th>
+			<th>Bill Type</th>
 			<th>CFOP</th>
 			<th>Activity Code</th>
 			<th>Time Set</th>
@@ -128,7 +115,30 @@ $owner_html .= "</select>";
 	</thead>
 	<?php echo $projects_html; ?>
 </table>
+</div>
+<div class='row justify-content-center'>
 <?php echo $pages_html; ?>
+</div>
+<div class='row'>
+<div class='row'>
+<form class='form-inline' method='post' action='report.php'>
+        <input type='hidden' name='search' value='<?php echo $search; ?>'>
+	<input type='hidden' name='custom' value='<?php echo $custom; ?>'>
+        <div class='form-group'>
+        <select class='custom-select custom-select-sm' name='report_type'>
+                <option value='xlsx'>Excel 2007</option>
+                <option value='csv'>CSV</option>
+        </select>
+        </div>
+        &nbsp;
+        <input class='btn btn-primary btn-sm' type='submit'
+                name='project_report' value='Download Projects Report'>
+
+</form>
+</div>
+
+</div>
+<div class='row'>
 <?php
 if (isset($result['MESSAGE'])) {
 	echo $result['MESSAGE'];

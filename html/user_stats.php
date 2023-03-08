@@ -28,6 +28,7 @@ $user_stats = new user_stats($db,$user_id,$start_date,$end_date);
 $format = 1;
 ?>
 <h3>Monthly Stats - <?php echo $month_name . " " . $year; ?></h3>
+<hr>
 <ul class='pager'>
         <li class='previous'><a href='<?php echo $url_navigation['back_url']; ?>'>Previous Month</a></li>
 
@@ -43,7 +44,7 @@ $format = 1;
         ?>
 </ul>
 
-<table class='table table-condensed table-striped table-bordered'>
+<table class='table table-sm table-striped table-bordered'>
 	<tr>
 		<td>Number of Jobs</td>
 		<td><?php echo $user_stats->get_num_jobs($format); ?></td>

@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
 
 if (!$login_user->is_admin()) {
         exit;
@@ -36,27 +36,27 @@ $user_count = 0;
 
 $users_html = html::get_users_rows($all_users,$start,$count);
 
+require_once 'includes/header.inc.php';
 
 ?>
-<h3>List of Users</h3>
+<h3>List of Users - <?php echo $enabled ? "Active" : "Deactived"; ?></h3>
 <div class='row'>
-<form class='span6 form-search' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
-        <div class='input-append'>
-                <input type='text' name='search' class='input-xlarge search-query' placeholder='Search' value='<?php if (isset($search)) { echo $search; } ?>'>
-		<input type='hidden' name='enabled' value='<?php echo $enabled; ?>'>
-                <button type='submit' class='btn btn-primary'>Search</button>
-        </div>
-</form>
-<div class='span6 btn-toolbar text-right'>
-        <div class='btn-group'>
-                <a class='btn' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&enabled=1"; ?>'>Active</a>
-                <a class='btn' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&enabled=0"; ?>'>Deactived</a>
+	<form class='form-inline' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
+        	<div class='form-group'>
+                	<input class='form-control' type='text' name='search' placeholder='Search' value='<?php if (isset($search)) { echo $search; } ?>'>
+			<input type='hidden' name='enabled' value='<?php echo $enabled; ?>'>
+        	        <button type='submit' class='btn btn-primary'>Search</button>
+	        </div>
+	</form>
+        <div class='btn-group pull-right ml-auto' role='group'>
+                <a class='btn btn-primary' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&enabled=1"; ?>'>Active</a>
+                <a class='btn btn-warning' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&enabled=0"; ?>'>Deactived</a>
         </div>
 
 </div>
-</div>
+<br>
 <div class='row'>
-<table class='table table-striped table-condensed table-bordered'>
+<table class='table table-striped table-sm table-bordered'>
 	<thead>
 		<tr>
 			<th>NetID</th>
@@ -70,6 +70,7 @@ $users_html = html::get_users_rows($all_users,$start,$count);
 	<?php echo $users_html; ?>
 	</tbody>
 </table>
+<<<<<<< HEAD
 <?php
 if ($enabled) {
 	echo "<p>Number of Active Users: " . $num_users . "</p>";
@@ -79,14 +80,19 @@ else {
 }
 
 ?>
+=======
+</div>
+<?php echo $pages_html; ?>
+
+<div class='row'>
+>>>>>>> devel
 <form class='form-inline' method='post' action='report.php'>
-                <select name='report_type' class='input-medium'>
+                <select class='form-control custom-select' name='report_type'>
                 <option value='xlsx'>Excel 2007</option>
                 <option value='csv'>CSV</option>
         </select> <input class='btn btn-primary' type='submit'
                 name='create_user_report' value='Download User List'>
 </form>
 
-<?php echo $pages_html; ?>
 </div>
 <?php require_once 'includes/footer.inc.php'; ?>

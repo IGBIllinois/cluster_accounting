@@ -4,7 +4,7 @@ class user_functions {
 
 
 	public static function get_supervisors($db) {
-	        $sql = "SELECT user_name as username,user_full_name as full_name,user_id as id ";
+	        $sql = "SELECT user_name as username,user_firstname as firstname, user_lastname as lastname, user_id as id ";
 	        $sql .= "FROM users ";
         	$sql .= "WHERE user_enabled='1' AND user_supervisor='0' ORDER BY username ASC";
 	        return $db->query($sql);
@@ -17,14 +17,18 @@ class user_functions {
         	$search = strtolower(trim(rtrim($search)));
 	        $where_sql = array();
 	
-        	$sql = "SELECT users.* FROM users ";
+        	$sql = "SELECT users.*,supervisors.user_name as supervisor_user_name, ";
+		$sql .= "CONCAT(supervisors.user_firstname,' ',supervisors.user_lastname) as supervisor_full_name ";
+		$sql .= "FROM users ";
+		$sql .= "LEFT JOIN users as supervisors ON supervisors.user_id=users.user_supervisor ";
 	        array_push($where_sql,"users.user_enabled='" . $enabled . "'");
 
         	if ($search != "" ) {
                 	$terms = explode(" ",$search);
 	                foreach ($terms as $term) {
         	                $search_sql = "(LOWER(users.user_name) LIKE '%" . $term . "%' OR ";
-                	        $search_sql .= "LOWER(users.user_full_name) LIKE '%" . $term . "%') ";
+                	        $search_sql .= "LOWER(users.user_firstname) LIKE '%" . $term . "%' OR ";
+				$search_sql .= "LOWER(users.user_lastname) LIKE '%" . $term . "%') ";
                         	array_push($where_sql,$search_sql);
 	                }
 

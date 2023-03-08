@@ -10,10 +10,17 @@
 
 class slurm {
 
+<<<<<<< HEAD
 	const SLURM_FORMAT = "State,JobID,User,JobName,Account,Partition,ExitCode,Submit,Start,End,Elapsed,ReqMem,MaxRSS,ReqCPUS,NodeList,MaxVMSize,TotalCPU,NTasks,NNodes,AllocGRES";
 	const SLURM_STATES = "CA,CD,F,TO,OOM";
 	const SLURM_DELIMITER = "|";
 	const SLURM_TIME_FORMAT = "%Y-%m-%d %H:%M:%s";
+=======
+	private const SLURM_FORMAT = "State,JobID,User,JobName,Account,Partition,ExitCode,Submit,Start,End,Elapsed,ReqMem,MaxRSS,ReqCPUS,NodeList,MaxVMSize,TotalCPU,NTasks,NNodes,AllocTRES";
+	private const SLURM_STATES = "CA,CD,F,TO,OOM";
+	private const SLURM_DELIMITER = "|";
+	private const SLURM_TIME_FORMAT = "%Y-%m-%d %H:%M:%s";
+>>>>>>> devel
 
 	public static function get_accounting($start_time,$end_time) {
 
@@ -26,13 +33,13 @@ class slurm {
 		$exec .= "--state=" . self::SLURM_STATES;
 		$exit_status = 1;
 		$output_array = array();
-		$output = exec($exec,$output_array,$exit_status);
+		exec($exec,$output_array,$exit_status);
 		$job_data = array();
 		$startMemory = memory_get_usage();
 		foreach ($output_array as $job_array) {
 			array_push($job_data,array_combine(explode(",",self::SLURM_FORMAT),explode(self::SLURM_DELIMITER,$job_array)));
 		}
-		functions::log(memory_get_usage() - $startMemory . " bytes");
+		//functions::log(memory_get_usage() - $startMemory . " bytes");
 		return self::format_slurm_accounting($job_data);
 	}
 
@@ -42,7 +49,7 @@ class slurm {
 			$job_number = $job['JobID'];
 			if (!strpos($job_number ,".batch")) {
 				
-				foreach ($accounting as $key=>$value) {
+				foreach ($accounting as $value) {
 					if ($value['JobID'] == $job_number . ".batch") {
 						$job['MaxRSS'] = $value['MaxRSS'];
 						$job['MaxVMSize'] = $value['MaxVMSize'];
@@ -110,6 +117,7 @@ class slurm {
                 	);
 			return $job->create($job_insert,$ldap);
 		}
+		return array('RESULT'=> 0);
 	        
 	}
 	//convert_to_seconds() - converts DD:HH:MM:SS

@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
 
 if (!$login_user->is_admin()) {
         exit;
@@ -28,7 +28,7 @@ foreach ($queues as $queue) {
 	$all_costs = $queue_object->get_all_costs();
 	$queue_html .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . "'>";
 	$queue_html .= "<input type='hidden' name='queue_id' value='" . $queue_object->get_queue_id() . "'>";
-	$queue_html .= "<table class='table table-bordered table-striped table-condensed'>";
+	$queue_html .= "<table class='table table-bordered table-striped table-sm'>";
 	$queue_html .= "<thead><tr><th colspan='4'>" . $queue_object->get_name() . " - "  . $queue_object->get_description() . "</th></tr></thead>";
 	$queue_html .= "<tr><td>CPU Cost (per sec)</td>";
 	$queue_html .= "<td>Memory Cost (per GB)</td>";
@@ -41,19 +41,21 @@ foreach ($queues as $queue) {
 		$queue_html .= "<td>" . $cost['time'] . "</td>";
 		$queue_html .= "</tr>";
 	}
-	$queue_html .= "<tr><td>$<input class='input-small' type='text' name='cpu_cost'</td>";
-	$queue_html .= "<td>$<input class='input-small' type='text' name='mem_cost''></td>";
-	$queue_html .= "<td>$<input class='input-small' type='text' name='gpu_cost'></td>";
-	$queue_html .= "<td><button class='btn btn-small btn-primary' type='submit' name='set_cost'><i class='icon-pencil'></i>Update Cost</button>";
-	$queue_html .= "<button class='btn btn-small btn-danger' type='submit' name='delete_queue' onClick='return confirm_delete_queue()'><i class='icon-remove'></i>Delete</button></td></tr>";
+	$queue_html .= "<tr><td><div class='input-group'><div class='input-group-prepend'><div class='input-group-text'>$</div></div><input class='form-control' type='text' name='cpu_cost'</div></td>";
+	$queue_html .= "<td><div class='input-group'><div class='input-group-prepend'><div class='input-group-text'>$</div></div><input class='form-control' type='text' name='mem_cost''></div></td>";
+	$queue_html .= "<td><div class='input-group'><div class='input-group-prepend'><div class='input-group-text'>$</div></div><input class='form-control' type='text' name='gpu_cost'></div></td>";
+	$queue_html .= "<td><button class='btn btn-small btn-primary' type='submit' name='set_cost'><i class='fas fa-edit'></i>&nbsp;Update Cost</button>&nbsp;";
+	$queue_html .= "<button class='btn btn-small btn-danger' type='submit' name='delete_queue' onClick='return confirm_delete_queue()'><i class='fas fa-times'></i>&nbsp;Delete</button></td></tr>";
 	$queue_html .= "</table></form>";
 	$queue_html .= "<br>";
 }
 
+require_once 'includes/header.inc.php';
+
 ?>
 
 <h3>Queues</h3>
-
+<hr>
 <?php echo $queue_html;
 
 

@@ -1,0 +1,84 @@
+<html>
+<style>
+{{ css }}
+</style>
+<div class='container-fluid'><div class='col-sm-12 col-md-12 col-lg-12 col-xl-12'>
+<br>
+<p>{{ full_name }}, </p>
+<p>Below is your bill.  You can go to <a href='{{ website_url }}'>{{ website_url }}</a>
+to view a detail listing of your jobs.
+<br>If you are a supervisor, you can login to the accounting site to view details of your students/workers billing.
+<br>If you want to update your CFOP or close your account, please email us at <a href='mailto:{{ admin_email }}'>{{admin_email}}</a>.
+<p>
+<br>Name: {{ full_name }}
+<br>Username: {{ username }}
+<br>Start Date: {{ start_date }}
+<br>End Date: {{ end_date }}
+<br>Number of Jobs: {{ num_jobs }}
+
+<h4>Cluster Usage</h4>
+
+<p>
+<table class='table table-bordered table-sm table-stripped'>
+<thead>
+<th>Queue</th>
+<th>Project</th>
+<th>Cost</th>
+<th>Billed Amount</th>
+<th>CFOP</th>
+<th>Activity Code</th>
+</thead>
+<tbody>
+{% for row in jobs_table %}
+	<tr>
+		<td> {{ row.queue }} </td>
+		<td> {{ row.project }} </td>
+		<td> {{ row.total_cost }} </td>
+		<td> {{ row.billed_cost }} </td>
+		{% if row.cfop_restricted  %}
+			<td colspan='2'>RESTRICTED</td>
+		{% else %}
+			<td> {{ row.cfop }} </td>
+			<td> {{ row.activity_code }} </td>
+		{% endif %}
+	</tr>
+{% endfor %}
+</tbody>
+</table>
+
+<h4>Data Usage</h4>
+
+<p>
+<table class='table table-bordered table-sm table-stripped'>
+<thead>
+<th>Directory</th>
+<th>Cost ($/TB)</th>
+<th>Project</th>
+<th>Terabytes</th>
+<th>Cost</th>
+<th>Billed Amount</th>
+<th>CFOP</th>
+<th>Activity Code</th>
+</thead>
+<tbody>
+{% for row in  data_table %}
+	<tr>
+		<td> {{ row.directory }} </td>
+		<td> {{ row.data_cost_value }} </td>
+		<td> {{ row.project }} </td>
+		<td> {{ row.terabytes }} </td>
+		<td> {{ row.total_cost }} </td>
+		<td> {{ row.billed_cost }} </td>
+		{% if row.cfop_restricted  %}
+			<td colspan='2'>RESTRICTED</td>
+		{% else %}
+			<td> {{ row.cfop }} </td>
+			<td> {{ row.activity_code }} </td>
+		{% endif %}
+	</tr>
+{% endfor %}
+</tbody>
+</table>
+
+</div>
+</div>

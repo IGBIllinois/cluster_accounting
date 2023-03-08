@@ -17,7 +17,7 @@ if (isset($_GET['start_date']) && isset($_GET['end_date'])) {
 	}
 //	print_r($data);
 	$title = "User Jobs";
-	cluster_graph::pie_graph($data,$title);
+	\IGBIllinois\graphs::pie_graph($data,$title);
 }
 
 

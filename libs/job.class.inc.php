@@ -18,13 +18,9 @@ class job {
 	private $end_time;
 	private $queued_time;
 	private $elapsed_time;
-	private $elapsed_time_hours;
 	private $wallclock_time;
-	private $wallclock_time_hours;
 	private $cpu_time;
-	private $cpu_time_hours;
 	private $slots;
-	private $cpu;
 	private $reserved_mem;
 	private $used_mem;
 	private $maxvmem;
@@ -123,7 +119,7 @@ class job {
 				$cost = $this->queue->calculate_cost($job_data['job_cpu_time'],$job_data['job_ru_wallclock'],
 						$job_data['job_slots'],$mem,$job_data['job_start_time'],$job_data['job_end_time'],$job_data['job_gpu']);
 				$bill_cost = 0;
-				if ($this->project->get_bill_project()) {
+				if ($this->project->get_billtype() != project::BILLTYPE_NO_BILL) {
 					$bill_cost = $cost;
 				}
 				
@@ -136,7 +132,7 @@ class job {
 				$job_data['job_user_id'] = $user->get_user_id();
 				$job_data['job_project_id'] = $this->project->get_project_id();
 				$job_data['job_queue_id'] = $this->queue->get_queue_id();
-				$job_data['job_cfop_id'] = $this->project->get_cfop_id_by_date($job_data['job_start_time']);
+				$job_data['job_cfop_id'] = $this->project->get_cfop_id();
 				$job_data['job_queue_cost_id'] = $this->queue->get_queue_cost_id();
 				$job_id = $this->db->build_insert("jobs",$job_data);
 				if ($job_id) {
@@ -144,14 +140,15 @@ class job {
 						'job_id'=>$job_id,'MESSAGE'=>"Job Number: " . $job_number . " - User: " . $job_data['job_user'] . " - Successfully added to database");
 				}
 				else {
-					return array('RESULT'=>false,
+					return array('RESULT'=>0,
 						'MESSAGE'=>'ERROR: Error adding job ' . $job_number);
 				}
 				
 			}
 		}
 		else {
-			return array('RESULT'=>false);
+			return array('RESULT'=>0,
+				'MESSAGE'=> "Job Number: " . $job_number . " already exists in database");
 		}
 
 	}
@@ -293,22 +290,25 @@ class job {
 
 	public function set_billed_cost($cost) {
 		$verify_cost = $this->verify_cost($cost);
-		$bill_project = $this->get_project()->get_bill_project();
 		$valid = true;
 		$message = "";
 		if (!$verify_cost['RESULT']) {
 			$message = $verify_cost['MESSAGE'];
 			$valid = false;
 		}
-		if (!$this->get_project()->get_bill_project()) {
+		if (!$this->get_project()->get_billtype() == project::BILLTYPE_NO_BILL) {
 			$message = "This project is not a billable project";
 			$valid = false;
 		}
 		
 		if ($valid) {
-			$sql = "UPDATE jobs SET job_billed_cost='" . $cost . "' ";
-			$sql .= "WHERE job_id='" . $this->get_job_id() . "' LIMIT 1";
-			$result = $this->db->non_select_query($sql);
+			$sql = "UPDATE jobs SET job_billed_cost=:cost ";
+			$sql .= "WHERE job_id=:job_id LIMIT 1";
+			$parameters = array(
+				':cost'=>$cost,
+				':job_id'=>$this->get_job_id()
+			);
+			$result = $this->db->non_select_query($sql,$parameters);
 			if ($result) {
 				$this->billed_cost = $cost;
 				$message = "Billed Cost successfully changed";
@@ -320,10 +320,16 @@ class job {
 
 	public function set_project($project_id) {
 		$project = new project($this->db,$project_id);
-		$sql = "UPDATE jobs SET job_project_id='" . $project_id . "'";
-		$sql .= ",job_cfop_id='" . $project->get_cfop_id() . "' ";
-		$sql .= "WHERE job_id='" . $this->get_job_id() . "' LIMIT 1";
-		$result = $this->db->non_select_query($sql);
+		$sql = "UPDATE jobs SET job_project_id=:project_id";
+		$sql .= ",job_cfop_id=:cfop_id ";
+		$sql .= "WHERE job_id=:job_id LIMIT 1";
+		$parameters = array(
+			':project_id'=>$project_id,
+			':cfop_id'=>$project->get_cfop_id(),
+			':job_id'=>$this->get_job_id()
+
+		);
+		$result = $this->db->non_select_query($sql,$parameters);
 		if ($result) {
 			$message = "Project Successfully updated";
 			$this->project =  $project;
@@ -334,8 +340,12 @@ class job {
 	}
 
 	public function set_cfop($cfop_id) {
-		$sql = "UPDATE jobs SET job_cfop_id='" . $cfop_id . "' ";
-		$sql .= "WHERE job_id='" . $this->get_job_id() . "' LIMIT 1";
+		$sql = "UPDATE jobs SET job_cfop_id=:cfop_id ";
+		$sql .= "WHERE job_id=:job_id LIMIT 1";
+		$parameters = array(
+			':cfop_id'=>$cfop_id,
+			':job_id'=>$this->get_job_id()
+		);
 		$result = $this->db->non_select_query($sql);
 		if ($result) {
 			$message = "CFOP successfully updated.";
@@ -351,13 +361,9 @@ class job {
 	public function set_new_cfop($cfop,$activity,$hide_cfop) {
 		$valid = 1;
 		$message = "";
-		if (!project::verify_cfop($cfop)) {
+		if (!\IGBIllinois\cfop::verify_format($cfop,$activity)) {
 			$message .= "Invalid CFOP";
 			$valid =0;
-		}
-		if (!project::verify_activity_code($activity)) {
-			$message .= "Invalid Acivity Code";
-			$valid = 0;
 		}
 		if ($valid) {
 
@@ -375,18 +381,20 @@ class job {
 	}
 	public function job_exists($job_number) {
 		$split_job = $this->split_job_number($job_number);
+		$parameters[':job_number'] = $split_job['job_number'];
 		if ($split_job['job_number_array'] == "") {
                         $sql = "SELECT count(1) AS count FROM jobs ";
-                        $sql .= "WHERE job_number='" . $split_job['job_number'] . "' ";
+                        $sql .= "WHERE job_number=:job_number ";
                         $sql .= "AND ISNULL(job_number_array) LIMIT 1";
 
 		}
 		else {
 			$sql = "SELECT count(1) AS count FROM jobs ";
-			$sql .= "WHERE job_number='" . $split_job['job_number'] . "' ";
-			$sql .= "AND job_number_array='" . $split_job['job_number_array'] . "' LIMIT 1";
+			$sql .= "WHERE job_number=:job_number ";
+			$sql .= "AND job_number_array=:job_number_array LIMIT 1";
+			$parameters[':job_number_array'] = $split_job['job_number_array'];
 		}
-		$result = $this->db->query($sql);
+		$result = $this->db->query($sql,$parameters);
 		if ($result[0]['count']) { 
 			return true;
 		}
@@ -396,18 +404,21 @@ class job {
 	/////////////////Private Functions///////////
 
 	private function get_job() {
+		$parameters[':job_number'] = $this->get_job_number();
 		if ($this->get_job_number_array() == "") {
 	                $sql = "SELECT * FROM job_info ";
-	                $sql .= "WHERE job_number='" . $this->get_job_number() . "' AND ";
+	                $sql .= "WHERE job_number=:job_number AND ";
         	        $sql .= "ISNULL(job_number_array) LIMIT 1";
 
 		}
 		else {
 			$sql = "SELECT * FROM job_info ";
-			$sql .= "WHERE job_number='" . $this->get_job_number() . "' AND ";
-			$sql .= "job_number_array='" . $this->get_job_number_array() . "' LIMIT 1";
+			$sql .= "WHERE job_number=:job_number AND ";
+			$sql .= "job_number_array=:job_number_array LIMIT 1";
+			$parameters[':job_number_array'] = $this->get_job_number_array();
+			
 		}
-		$result = $this->db->query($sql);
+		$result = $this->db->query($sql,$parameters);
 		if ($result) {
 			$this->id = $result[0]['id'];
 			$this->queue_name = $result[0]['queue_name'];
@@ -498,3 +509,5 @@ class job {
 		return sprintf("%02d%s%02d%s%02d", floor($t/3600), $f, ($t/60)%60, $f, $t%60);
 	}
 }
+
+?>

@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
 
 $user_id = 0;
 $user = "";
@@ -12,6 +12,13 @@ elseif (isset($_GET['username'])) {
 else {
 	$user = new user($db,$ldap,$login_user->get_user_id());
 }
+<<<<<<< HEAD
+=======
+if (!$login_user->permission($user_id)) {
+        echo "<div class='alert alert-danger'>Invalid Permissions</div>";
+        exit;
+}
+>>>>>>> devel
 
 $supervising_users_html = "";
 if ($user->is_supervisor()) {
@@ -57,11 +64,14 @@ foreach ($queues as $queue) {
 
 }
 
-
+require_once 'includes/header.inc.php';
 
 ?>
+<h3>User Information</h3>
+<hr>
+<div class='col-sm-8 col-md-8 col-lg-8 col-xl-8'>
 <div class='row'>
-<table class='table table-striped table-bordered table-condensed'>
+<table class='table table-striped table-bordered table-sm'>
 	<tr>
 		<td>Name:</td>
 		<td><?php echo $user->get_full_name(); ?></td>
@@ -82,27 +92,31 @@ foreach ($queues as $queue) {
 	<tr>
 		<td>Administrator:</td>
 		<td><?php if ($user->is_admin()) {
-                	echo "<i class='icon-ok'></i>";
+                	echo "<i class='fas fa-check'></i>";
         	}
         	else {
-                	echo "<i class='icon-remove'></i>";
+                	echo "<i class='fas fa-times'></i>";
         	}
 		?>
 		</td>
 	</tr>
 	<tr>	<td>Active IGB/LDAP Account</td>
 		<td><?php if ($ldap->is_ldap_user($user->get_username())) {
-			echo "<i class='icon-ok'></i>";
+			echo "<i class='fas fa-check'></i>";
 		}
 		else {
-			echo "<i class='icon-remove'></i>";
+			echo "<i class='fas fa-times'></i>";
 		}
 		?></td></tr>
 		<?php if ($user->is_supervisor()) {    
-                        echo "<tr><td>Is Supervisor:</td><td><i class='icon-ok'></i></td></tr>";
+                        echo "<tr><td>Is Supervisor:</td><td><i class='fas fa-check'></i></td></tr>";
                 }
                 else {
+<<<<<<< HEAD
                         echo "<tr><td>Is Supervisor:</td><td><i class='icon-remove'></i></td></tr>";
+=======
+                        echo "<tr><td>Is Supervisor:</td><td><i class='fas fa-times'></i></td></tr>";
+>>>>>>> devel
 			echo "<tr><td>Supervisor's Name: </td><td><a href='user.php?user_id=" . $user->get_supervisor_id() . "'>" . $user->get_supervisor_name() . "</a></td></tr>";
                 }
                 ?>
@@ -135,18 +149,19 @@ if ($login_user->is_admin()) {
 	echo "<div class='btn-group'>";
 	echo "<a class='btn btn-primary' href='edit_project.php?project_id=" .
 			$user->default_project()->get_project_id() . "'>";
-	echo "<i class='icon-pencil'></i>Edit User Project</a>";
-	echo "<a class='btn btn-primary' href='edit_user.php?user_id=" . $user->get_user_id() . "'><i class='icon-pencil'></i>Edit User</a>";
-	echo "<a class='btn btn-info' href='user_bill.php?user_id=" . $user->get_user_id() . "'>User Bill</a>";
-	echo "<a class='btn btn-success' href='jobs.php?user_id=" . $user->get_user_id() . "'>User Jobs</a>";
+	echo "<i class='fas fa-edit'></i>Edit User Project</a>";
+	echo "<a class='btn btn-primary' href='edit_user.php?user_id=" . $user->get_user_id() . "'><i class='fas fa-user-edit'></i>&nbsp;Edit User</a>";
+	echo "<a class='btn btn-info' href='user_bill.php?user_id=" . $user->get_user_id() . "'><i class='fas fa-money-bill'></i>&nbsp;User Bill</a>";
+	echo "<a class='btn btn-success' href='jobs.php?user_id=" . $user->get_user_id() . "'><i class='fas fa-file-alt'></i>&nbsp;User Jobs</a>";
 	echo "</div></div>";
 	echo "</form>";
 }
 
 if (isset($result['MESSAGE'])) { 
-	echo "<div class='alert alert-error'>" . $result['MESSAGE'] . "</div>"; 
+	echo "<div class='alert alert-danger'>" . $result['MESSAGE'] . "</div>"; 
 }
 ?>
+</div>
 </div>
 <?php 
 require_once 'includes/footer.inc.php'; 

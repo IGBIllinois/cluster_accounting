@@ -11,7 +11,6 @@ class queue {
 	private $name;
 	private $ldap_group;
 	private $description;
-	private $submission_time = 0;
 	private $enabled;
 	private $cpu_cost;
 	private $mem_cost;
@@ -43,35 +42,35 @@ class queue {
 	//$description - string - queue description
 	//returns array with id of new queue
 	//Creates new queue
-	public function create($name,$description,$ldap_group,$cpu,$mem,$gpu) {
+	public function create($name,$description,$ldap_group,$cpu,$mem,$gpu,$ldap) {
 		$errors = false;
 		$message = "";
 		if(!$this->verify_queue_name($name)) {
 			$errors = true;
-			$message .= "<div class='alert alert-warning'>Please enter a valid queue name.</div>";
+			$message .= "<div class='alert alert-danger'>Please enter a valid queue name.</div>";
 		}
 		if ($description == "") {
 			$errors = true;
-			$message .= "<div class='alert alert-warning'>Please enter a queue description.</div>";
+			$message .= "<div class='alert alert-danger'>Please enter a queue description.</div>";
 
 		}
-		if (!$this->verify_ldap_group($ldap_group)) {
+		if (!$this->verify_ldap_group($ldap,$ldap_group)) {
 			$errors = true;
-			$message .= "<div class='alert alert-warning'>Please enter valid LDAP group.</div>";
+			$message .= "<div class='alert alert-danger'>Please enter valid LDAP group.</div>";
 
 		}
 		if (!is_numeric($cpu)) {
 			$errors = true;
-			$message .= "<div class='alert alert-warning'>Please enter valid CPU cost.</div>";
+			$message .= "<div class='alert alert-danger'>Please enter valid CPU cost.</div>";
 		}
 		if (!is_numeric($mem)) {
 			$errors = true;
-			$message .= "<div class='alert alert-warning'>Please enter valid memory cost.</div>";
+			$message .= "<div class='alert alert-danger'>Please enter valid memory cost.</div>";
 
 		}
 		if (!is_numeric($gpu)) {
 			$errors = true;
-			$message .= "<div class='alert alert-warning'>Please enter valid GPU cost.</div>";
+			$message .= "<div class='alert alert-danger'>Please enter valid GPU cost.</div>";
 		}
 		if ($errors == 0) {
 			$queue_array = array('queue_name'=>$name,
@@ -100,10 +99,14 @@ class queue {
 		}
 		elseif ($submission_time != 0) {
 			$sql = "SELECT queue_cost_id FROM queue_cost ";
-			$sql .= "WHERE queue_cost_queue_id='" . $this->get_queue_id() . "' ";
-			$sql .= "AND queue_cost_time_created<='" . $submission_time . "' ";
+			$sql .= "WHERE queue_cost_queue_id=:queue_id ";
+			$sql .= "AND queue_cost_time_created<=:submission_time ";
 			$sql .= "ORDER BY queue_cost_time_created DESC LIMIT 1";
-			$result = $this->db->query($sql);
+			$parameters = array(
+				':queue_id'=>$this->get_queue_id(),
+				':submission_time'=>$submission_time
+			);
+			$result = $this->db->query($sql,$parameters);
 			return $result[0]['queue_cost_id'];	
 		}
 	}
@@ -164,17 +167,17 @@ class queue {
 
 		if (($cpu_cost == "") || (!is_numeric($cpu_cost))) {
 			$errors = true;
-			$message .= "<div class='alert'>Please enter a valid processor cost.</div>";
+			$message .= "<div class='alert alert-danger'>Please enter a valid processor cost.</div>";
 		}
 
 		if (($mem_cost == "") || (!is_numeric($mem_cost))) {
 			$errors = true;
-			$message .= "<div class='alert'>Please enter a valid memory cost.</div>";
+			$message .= "<div class='alert alert-danger'>Please enter a valid memory cost.</div>";
 		}
 
 		if (($gpu_cost == "") || (!is_numeric($gpu_cost))) {
 			$errors = true;
-			$message .= "<div class='alert'>Please enter a valid GPU cost.</div>";
+			$message .= "<div class='alert alert-danger'>Please enter a valid GPU cost.</div>";
 		}
 
 		if ($errors) {
@@ -198,8 +201,9 @@ class queue {
 	//enable()
 	//enables the queue
 	public function enable() {
-		$sql = "UPDATE queues SET queue_enabled='1' WHERE queue_id='" . $this->get_queue_id() . "' LIMIT 1";
-		$this->db->non_select_query($sql);
+		$sql = "UPDATE queues SET queue_enabled='1' WHERE queue_id=:queue_id LIMIT 1";
+		$parameters = array(':queue_id'=>$this->get_queue_id());
+		$this->db->non_select_query($sql,$parameters);
 		$this->enabled = true;
 		return true;
 	}
@@ -207,9 +211,11 @@ class queue {
 	//disable()
 	//disables the queue
 	public function disable() {
-		$sql = "UPDATE queues SET queue_enabled='0' WHERE queue_id='" . $this->get_queue_id() . "' LIMIT 1";
+		$sql = "UPDATE queues SET queue_enabled='0' WHERE queue_id=:queue_id LIMIT 1";
+		$parameters = array(':queue_id'=>$this->get_queue_id());
+		$this->db->non_select_query($sql,$parameters);
 		$this->enabled = false;
-		$this->db->non_select_query($sql);
+		return true;
 		return true;
 
 	}
@@ -222,9 +228,7 @@ class queue {
 
 	}
 
-	public function verify_ldap_group($ldap_group) {
-		$ldap = new ldap(__LDAP_HOST__,__LDAP_SSL__,__LDAP_PORT__,__LDAP_BASE_DN__);
-
+	public function verify_ldap_group($ldap,$ldap_group) {
 		if (($ldap_group == "") || ($ldap->get_group_exists($ldap_group))) {
 			return true;
 		}
@@ -245,9 +249,10 @@ class queue {
 		$sql = "SELECT queue_cost_mem as memory, queue_cost_cpu as cpu, ";
 		$sql .= "queue_cost_gpu as gpu, queue_cost_time_created as time ";
 		$sql .= "FROM queue_cost ";
-		$sql .= "WHERE queue_cost_queue_id='" . $this->get_queue_id() . "'";
+		$sql .= "WHERE queue_cost_queue_id=:queue_id ";
 		$sql .= "ORDER BY queue_cost_time_created ASC ";
-		return $this->db->query($sql);
+		$parameters = array(':queue_id'=>$this->get_queue_id());
+		return $this->db->query($sql,$parameters);
 
 	}
 	////////////////Private Functions//////////
@@ -263,8 +268,9 @@ class queue {
 	//loads queue object with queue name
 	private function load_by_name($queue_name,$date) {
 		$sql = "SELECT queue_id FROM queues ";
-		$sql .= "WHERE queue_name='" . $queue_name . "' LIMIT 1";
-		$result = $this->db->query($sql);
+		$sql .= "WHERE queue_name=:queue_name LIMIT 1";
+		$parameters = array(':queue_name'=>$queue_name);
+		$result = $this->db->query($sql,$parameters);
 		if ($result) {
 			$this->get_queue($result[0]['queue_id'],$date);
 		}
@@ -279,10 +285,14 @@ class queue {
 		$sql = "SELECT queues.*,queue_cost.* ";
 		$sql .= "FROM queues ";
 		$sql .= "LEFT JOIN queue_cost ON queue_cost.queue_cost_queue_id=queues.queue_id ";
-		$sql .= "WHERE queues.queue_id='" . $queue_id . "' ";
-		$sql .= "AND queue_cost_time_created<='" . $date . "' ";
+		$sql .= "WHERE queues.queue_id=:queue_id ";
+		$sql .= "AND queue_cost_time_created<=:cost_time_created ";
 		$sql .= "ORDER BY queue_cost.queue_cost_time_created DESC LIMIT 1";
-		$result = $this->db->query($sql);
+		$parameters = array(
+			':queue_id'=>$queue_id,
+			':cost_time_created'=>$date
+		);
+		$result = $this->db->query($sql,$parameters);
 		if ($result) {
 			$this->id = $result[0]['queue_id'];
 			$this->name = $result[0]['queue_name'];
@@ -294,6 +304,7 @@ class queue {
 			$this->time_created = $result[0]['queue_cost_time_created'];
 			$this->enabled = $result[0]['queue_enabled'];
 			$this->queue_cost_id = $result[0]['queue_cost_id'];
+
 		}
 		else { return false;
 		}
@@ -386,3 +397,5 @@ class queue {
 
 	}
 }
+
+?>

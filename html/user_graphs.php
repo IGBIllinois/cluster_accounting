@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
 
 $graph_type_array[0]['type'] = 'user_num_jobs_per_month';
 $graph_type_array[0]['title'] = 'Jobs Per Month';
@@ -34,7 +34,7 @@ $end_date = $year . "1231";
 $get_array = array('year'=>$year,'graph_type'=>$graph_type,'user_id'=>$user_id);
 $graph_image = "<img src='graph.php?" . http_build_query($get_array) . "'>";
 
-$graph_form = "<select name='graph_type'>";
+$graph_form = "<select class='custom-select' name='graph_type'>";
 
 foreach ($graph_type_array as $graph) {
         $graph_form .= "<option value='" . $graph['type'] . "' ";
@@ -48,7 +48,7 @@ foreach ($graph_type_array as $graph) {
 
 $graph_form .= "</select>";
 
-$year_form = "<select name='year' class='input-small'>";
+$year_form = "<select name='year' class='custom-select'>";
 for ($i=2010;$i<=date('Y');$i++) {
 	if ($i == $year) {
 		$year_form .= "<option value='" . $i . "' selected='selected'>" . $i . "</option>";
@@ -69,9 +69,10 @@ if ($login_user->is_admin()) {
 }
 $user_list_html = "";
 if (count($user_list)) {
-        $user_list_html = "<select class='input-small' name='user_id'>";
+        $user_list_html = "<select class='custom-select' name='user_id' id='user_id_input'>";
+	$user_list_html .= "<option></option>";
         if ((!isset($_GET['user_id'])) || ($_GET['user_id'] == $login_user->get_user_id())) {
-                $user_list_html .= "<option value='" . $login_user->get_user_id(). "' selected='selected'>";
+                $user_list_html .= "<option value='" . $login_user->get_user_id(). "' selected>";
                 $user_list_html .= $login_user->get_username() . "</option>";
         }
         else {
@@ -92,11 +93,11 @@ if (count($user_list)) {
         $user_list_html .= "</select>";
 }
 
-
-
+require_once 'includes/header.inc.php';
 
 ?>
 <h3>User Stats - <?php echo $year; ?></h3>
+<hr>
 <form class='form-inline' method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>'>
 <?php 
 	if ($login_user->is_supervisor() || $login_user->is_admin()) {
@@ -112,8 +113,9 @@ if (count($user_list)) {
 	<?php echo $year_form; ?>
 	<label class='inline'>Graph:</label>
 	<?php echo $graph_form; ?>
-	<input class='btn btn-primary' type='submit' name='get_job_graph' value='Get Graph'>
+	&nbsp;<input class='btn btn-primary' type='submit' name='get_job_graph' value='Get Graph'>
 </form>
+<br>
 <div class=row'>
 <?php echo $graph_image; ?>
 </div>
@@ -122,3 +124,12 @@ if (count($user_list)) {
 
 require_once 'includes/footer.inc.php';
 ?>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+        $('#user_id_input').select2({
+                placeholder: 'Select a Supervisor'
+        });
+});
+</script>
