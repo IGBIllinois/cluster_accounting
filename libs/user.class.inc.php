@@ -451,10 +451,10 @@ class user {
 	public function email_bill($admin_email,$year,$month) {
 
 		if (!$this->ldap->is_ldap_user($this->get_username())) {
-			//functions::log("Email Bill - User " . $this->get_username() . " not in ldap");
+			functions::log("Email Bill - User " . $this->get_username() . " not in ldap");
 		}
 		elseif ($this->get_email() == "") {
-			//functions::log("Email Bill - User " . $this->get_username() . " email is not set");
+			functions::log("Email Bill - User " . $this->get_username() . " email is not set");
 		}
 		else {
 			$start_date = $year . $month . "01";
@@ -477,7 +477,7 @@ class user {
 	                        'full_name' => $this->get_full_name(),
         	                'username' => $this->get_username(),
 				'num_jobs' => $user_stats->get_num_jobs(),
-                	        'website_url' => "https://biocluster.igb.illinois.edu/accounting/",
+                	        'website_url' => "https://bioapps3.igb.illinois.edu/accounting/",
                         	'jobs_table' => $this->get_jobs_summary($month,$year),
 	                        'data_table' => $this->get_data_summary($month,$year),
 				'admin_email'=> $admin_email
@@ -498,9 +498,10 @@ class user {
 						settings::get_smtp_username(),
 						settings::get_smtp_password());
 
+			$email->set_replyto_emails(settings::get_admin_email());
 			$email->set_to_emails($to);
 			try {
-				$result = $email->send_email($admin_email,$subject,"",$html_message);
+				$result = $email->send_email(settings::get_from_email(),$subject,"",$html_message);
 				$message = "Email Bill - User " . $this->get_username() . " successfully sent to " . $this->get_email();
 
 			} catch (Exception $e) {
