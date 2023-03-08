@@ -26,8 +26,6 @@ cp conf/settings.inc.php.dist conf/settings.inc.php
 ## LDAP Settings
 * LDAP_HOST - LDAP hostname, 2 hosts can be specified if you leave a space between them
 * LDAP_BASE_DN - BaseDN of your ldap server
-* LDAP_PEOPLE_OU - Full OU of location of your users
-* LDAP_GROUP_OU - Full OU of location of your groups
 * LDAP_BIND_USER - Bind user (optional)
 * LDAP_BIND_PASS - Bind password (optional)
 * LDAP_SSL - Enable SSL (ldaps)

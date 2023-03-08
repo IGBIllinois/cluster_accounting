@@ -21,8 +21,6 @@ define("MYSQL_PORT",3306);
 define("MYSQL_SSL",false);
 define("LDAP_HOST","");
 define("LDAP_BASE_DN","");
-define("LDAP_PEOPLE_OU","");
-define("LDAP_GROUP_OU","");
 define("LDAP_BIND_USER","");
 define("LDAP_BIND_PASS","");
 define("LDAP_SSL",false);
@@ -39,7 +37,6 @@ define("SMTP_USERNAME","");
 define("SMTP_PASSWORD","");
 define("FROM","");
 define("FROM_NAME","");
-define("TO","");
 define("ADMIN_EMAIL","");
 
 define("SESSION_NAME","cluster_accounting");
