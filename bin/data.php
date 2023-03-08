@@ -52,30 +52,6 @@ $db = new \IGBIllinois\db(settings::get_mysql_host(),
 
 $log = new \IGBIllinois\log(settings::get_log_enabled(),settings::get_logfile());
 	
-<<<<<<< HEAD
-	$start_time = microtime(true);
-	functions::log("Data Usage: Start");	
-	$directories = data_functions::get_all_directories($db);
-	foreach ($directories as $directory) {
-			$data_dir = new data_dir($db,$directory['data_dir_id']);
-
-			$size = 0;
-			//if /home/groups/hpcbio
-			if ($data_dir->get_data_dir_id() == 75) {
-				$size = $data_dir->get_dir_size_du();
-			}
-			else {
-				$size = $data_dir->get_dir_size();
-			}
-			if (!isset($options['dry-run'])) {
-				$result = $data_dir->add_usage($size);
-			}
-			else {
-				$result['RESULT'] = true;
-			}	
-			if (($result['RESULT']) && (!isset($options['dry-run']))) {
-				$message = "Data Usage: Directory: " . $data_dir->get_directory() . " Size: " . data_functions::bytes_to_gigabytes($size) . "GB sucessfully added";
-=======
 $start_time = microtime(true);
 $log->send_log("Data Usage: Start");	
 $directories = data_functions::get_all_directories($db);
@@ -92,7 +68,6 @@ foreach ($directories as $directory) {
 		}
 		else {
 			$result['RESULT'] = true;
->>>>>>> devel
 				
 		}	
 		if (($result['RESULT']) && (!isset($options['dry-run']))) {

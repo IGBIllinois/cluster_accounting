@@ -10,45 +10,6 @@
 //
 ////////////////////////////////////
 
-<<<<<<< HEAD
-//General Settings
-define("__TITLE__","Biocluster Accounting, University of Illinois Urbana-Champaign");
-define("__ADMIN_EMAIL__","");
-define("__SESSION_NAME__","cluster_accounting");
-define("__SESSION_TIMEOUT__",3600);
-define("__LOG_FILE__","");
-define("__ENABLE_LOG__",false);
-define("__BOA_CFOP__",'');
-define ('__PASSWORD_RESET_URL__','');
-
-//Database Settings
-define("__MYSQL_HOST__","");
-define("__MYSQL_USER__","");
-define("__MYSQL_PASSWORD__","");
-define("__MYSQL_DATABASE__","");
-
-//LDAP Settings
-define("__LDAP_HOST__","");
-define("__LDAP_BASE_DN__","");
-define("__LDAP_PEOPLE_OU__","");
-define("__LDAP_GROUP_OU__","");
-define("__LDAP_BIND_USER__","");
-define("__LDAP_BIND_PASS__","");
-define("__LDAP_SSL__",FALSE);
-define("__LDAP_PORT__",389);
-
-//Scheduler Settings
-define("__JOB_SCHEDULER__","");
-define("__TORQUE_ACCOUNTING__","/var/spool/torque/server_priv/accounting/");
-define("__TORQUE_JOBS_LOG__","/var/spool/torque/job_logs/");
-
-//Data and Job Settings
-define("__DATA_MIN_BILL__",1.00);
-define("__RESERVE_PROCESSORS_FACTOR__",0.1);
-define("__RESERVE_MEMORY_FACTOR__",0.1);
-define("__ROOT_DATA_DIR__","/home/a-m /home/n-z /home/labs /home/groups /home/themes");
-
-=======
 define("TITLE","Cluster Accounting");
 define("DEBUG",false);
 define("TIMEZONE","UTC");
@@ -88,7 +49,6 @@ define("DATA_MIN_BILL",1.00);
 define("RESERVE_PROCESSORS_FACTOR",0.1);
 define("RESERVE_MEMORY_FACTOR",0.1);
 define("ROOT_DATA_DIR","");
->>>>>>> devel
 
 define("LOG_FILE","");
 define("ENABLE_LOG",false);

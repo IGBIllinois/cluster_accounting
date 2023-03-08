@@ -8,18 +8,13 @@ if (!$login_user->is_admin()) {
 if (isset($_GET['data_dir_id']) && (is_numeric($_GET['data_dir_id']))) {
 	$data_dir_id = $_GET['data_dir_id'];
 }
-$message = "";
+
 if (isset($_POST['remove_data_dir'])) {
 	$data_dir_id = $_POST['data_dir_id'];
 	$data_dir  = new data_dir($db,$data_dir_id);
 	if (!$data_dir->is_default()) {
-		$result = $data_dir->disable();
-		if ($result['RESULT']) {
-			header('Location: data_dir_custom.php');	
-		}
-		else {
-			$message = "<div class='alert alert-error'>" . $result['MESSAGE'] . "</div>";
-		}
+		$data_dir->disable();
+		header('Location: data_dir_custom.php');	
 	}
 
 }
@@ -43,32 +38,11 @@ require_once 'includes/header.inc.php';
 
 <h3>Data Directory - <?php echo $data_dir->get_directory(); ?></h3>
 
-<<<<<<< HEAD
-<div class='row span6'>
-<table class='table table-bordered table-condensed'>
-=======
 <div class='col-sm-6 col-md-6 col-lg-6 col-xl-6'>
 <table class='table table-bordered table-sm'>
->>>>>>> devel
 <tr>
 	<td>Directory</td>
 	<td><?php echo $data_dir->get_directory(); ?></td>
-</tr>
-<tr>
-	<td>Enabled</td>
-	<td><?php
-	if ($data_dir->get_enabled()) {
-		echo "<i class='icon-ok'></i>";
-	}
-	else {
-		echo "<i class='icon-remove'></i>";
-	}
-	?>
-	</td>
-</tr>
-<tr>
-	<td>Time Added</td>
-	<td><?php echo $data_dir->get_time_created(); ?></td>
 </tr>
 <tr>
 	<td>Currently Exists</td>
@@ -81,7 +55,7 @@ require_once 'includes/header.inc.php';
         	echo "<i class='fas fa-times'></i>";
         }
 	?>
-	</td>
+</td>
 </tr>
 <tr>
 	<td>Project</td>
@@ -92,8 +66,6 @@ require_once 'includes/header.inc.php';
 <tr><td>Latest Size (TB)</td><td><?php echo $data_dir->get_latest_size(); ?></td></tr>
 <tr><td>Latest Size Time</td><td><?php echo $data_dir->get_latest_size_date(); ?></td</tr>
 </table>
-</div>
-<div class='row span6'>
 <?php 
 
 if (!$data_dir->is_default()) {
@@ -104,16 +76,8 @@ if (!$data_dir->is_default()) {
 	echo "</form>";
 
 }
-?>
-</div>
-<div class='row span6'>
-<?php
 
-<<<<<<< HEAD
-if (isset($message)) { echo $message; } 
-=======
 echo $graph_image;
->>>>>>> devel
 ?>
 
 

@@ -77,28 +77,7 @@ class data_functions {
 		return false;
 	}
 
-<<<<<<< HEAD
-	public static function get_current_data_cost_by_type($db,$type) {
-		 $sql = "SELECT data_cost.data_cost_id as id, ";
-                $sql .= "data_cost.data_cost_type as type, ";
-                $sql .= "ROUND(data_cost_value,2) as cost, ";
-                $sql .= "data_cost_time as time ";
-                $sql .= "FROM data_cost ";
-                $sql .= "WHERE data_cost_enabled='1' ";
-		$sql .= "AND data_cost_type='" . $type . "'";
-                $sql .= "ORDER BY type ";
-		$result = $db->query($sql);
-		if (count($result) == 1) {
-			return $result[0];
-		}
-                return false;
-
-
-	}
-	public static function get_data_bill($db,$month,$year,$minimum_bill = 0.00) {
-=======
 	public static function get_data_bill($db,$month,$year) {
->>>>>>> devel
 		$sql = "SELECT data_dir.data_dir_path as 'Directory', ";
 	        $sql .= "ROUND(data_bill.data_bill_avg_bytes / :terabytes,3) as 'Terabytes', ";
         	$sql .= "ROUND(data_cost.data_cost_value,2) as 'Rate ($/Terabyte)', ";
@@ -233,13 +212,8 @@ class data_functions {
 			
 			$found_dirs = array();
 			$found_dirs = array_diff(scandir($dir), array('..','.'));
-			foreach ($found_dirs as $key=>&$value) {
-				if (is_link($dir . "/" . $value)) {
-					unset($found_dirs[$key]);
-				}
-				else {
-					$value = $dir . "/" . $value;
-				}
+			foreach ($found_dirs as &$value) {
+				$value = $dir . "/" . $value;
 			}
 			if (count($found_dirs)) {
 				$existing_dirs = array_merge($existing_dirs,$found_dirs);

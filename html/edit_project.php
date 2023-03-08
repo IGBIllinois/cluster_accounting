@@ -113,20 +113,6 @@ foreach ($group_members as $member) {
 
 require_once 'includes/header.inc.php';
 ?>
-<<<<<<< HEAD
-<h3>
-	Project -
-	<?php echo $project->get_name(); ?>
-</h3>
-
-<h5>Status: <?php if ($project->get_enabled()) { echo "<span class='text-success'>Enabled</span>"; } else { echo "<span class='text-error'>Disabled</span>"; } ?></h5>
-<table class='table table-bordered table-striped table-condensed'>
-	<thead>
-		<tr>
-			<th>Project Members</th>
-		</tr>
-	</thead>
-=======
 <h3>Project - <?php echo $project->get_name(); ?></h3>
 <hr>
 <div class='card'>
@@ -135,7 +121,6 @@ require_once 'includes/header.inc.php';
 <br>
 <table class='table table-bordered table-striped table-sm'>
 	<tbody>
->>>>>>> devel
 	<?php echo $group_members_html; ?>
 	</tbody>
 </table>

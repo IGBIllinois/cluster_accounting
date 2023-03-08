@@ -1,8 +1,6 @@
 # Cluster Accounting
 [![Build Status](https://github.com/IGBIllinois/cluster_accounting/actions/workflows/main.yml/badge.svg)](https://github.com/IGBIllinois/cluster_accounting/actions/workflows/main.yml)
 
-[![Build Status](https://travis-ci.com/IGBIllinois/cluster_accounting.svg?branch=master)](https://travis-ci.com/IGBIllinois/cluster_accounting)
-
 - Cluster Accounting records jobs submitted on an HPC cluster using Torque or SLURM.
 - Records data usage of the shared filesystem for billing
 - Supports different prices for CPU, Memory, GPUs in different queues.
@@ -14,15 +12,11 @@
 # Installation
 
 ## Prerequisites
-- Apache Web Server [https://httpd.apache.org/](https://httpd.apache.org/)
-- PHP >= 5.4
+- PHP
 - PHP Mysql
 - PHP LDAP
 - PHP XML
-- Composer [https://getcomposer.org/](https://getcomposer.org/)
-- Mysql/MariaDB >= 5.5
-- SLURM [https://slurm.schedmd.com/](https://slurm.schedmd.com/) or PBS Torque [https://adaptivecomputing.com/cherry-services/torque-resource-manager/](https://adaptivecomputing.com/cherry-services/torque-resource-manager/)
-- LDAP Server for authentication
+
 
 1.  Add apache config to apache configuration to point to html directory
 ```
@@ -36,13 +30,9 @@ Alias /accounting /var/www/accounting/html
 ```
 CREATE DATABASE cluster_accounting CHARACTER SET utf8;
 ```
-<<<<<<< HEAD
-=======
 
->>>>>>> devel
 3.  Run sql/cluster_accounting.sql on the mysql server.
 ```
-
 mysql -u root -p cluster_accounting < sql/cluster_accounting.sql
 ```
 4.  Create a user/password on the mysql server which has select/insert/delete/update permissions on the cluster_accounting database.
@@ -50,18 +40,11 @@ mysql -u root -p cluster_accounting < sql/cluster_accounting.sql
 CREATE USER 'cluster_accounting'@'localhost' IDENTIFIED BY 'STRONG_PASSWORD';
 GRANT SELECT,INSERT,DELETE,UPDATE ON cluster_accounting.* to 'cluster_accounting'@'localhost';
 ```
-<<<<<<< HEAD
-5 Copy conf/settings.inc.php.dist to conf/settings.inc.php.  Detailed list of settings is at [docs/config.md](docs/config.md)
-```
-cp conf/settings.inc.php.dist conf/settings.inc.php
-```
-=======
 5.  Copy conf/settings.inc.php.dist to conf/settings.inc.php.  Detailed list of settings is at [docs/config.md](docs/config.md)
 ```
 cp conf/settings.inc.php.dist conf/settings.inc.php
 ```
 
->>>>>>> devel
 6.  Run composer to install php dependencies
 ```
 composer install

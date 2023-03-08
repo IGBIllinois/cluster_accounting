@@ -70,22 +70,10 @@ require_once 'includes/header.inc.php';
 	<?php echo $users_html; ?>
 	</tbody>
 </table>
-<<<<<<< HEAD
-<?php
-if ($enabled) {
-	echo "<p>Number of Active Users: " . $num_users . "</p>";
-}
-else {
-	echo "<p>Number of Inactive Users: " . $num_users . "</p>"; 
-}
-
-?>
-=======
 </div>
 <?php echo $pages_html; ?>
 
 <div class='row'>
->>>>>>> devel
 <form class='form-inline' method='post' action='report.php'>
                 <select class='form-control custom-select' name='report_type'>
                 <option value='xlsx'>Excel 2007</option>

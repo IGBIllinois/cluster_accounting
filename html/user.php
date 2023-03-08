@@ -12,13 +12,10 @@ elseif (isset($_GET['username'])) {
 else {
 	$user = new user($db,$ldap,$login_user->get_user_id());
 }
-<<<<<<< HEAD
-=======
 if (!$login_user->permission($user_id)) {
         echo "<div class='alert alert-danger'>Invalid Permissions</div>";
         exit;
 }
->>>>>>> devel
 
 $supervising_users_html = "";
 if ($user->is_supervisor()) {
@@ -48,10 +45,10 @@ $projects = $user->get_projects();
 $projects_html = "";
 foreach ($projects as $project) {
 	if ($project['project_default']) {
-		$projects_html .= "<tr><td></td><td><a href='edit_project.php?project_id=" . $project['project_id'] . "'>" . $project['project_name'] . " - default project</a></td></tr>";
+		$projects_html .= "<tr><td></td><td>" . $project['project_name'] . " - default project</td></tr>";
 	}
 	else {
-		$projects_html .= "<tr><td></td><td><a href='edit_project.php?project_id=" . $project['project_id'] . "'>" . $project['project_name'] . "</a></td></tr>";
+		$projects_html .= "<tr><td></td><td>" . $project['project_name'] . "</td></tr>";
 	}
 
 
@@ -112,11 +109,7 @@ require_once 'includes/header.inc.php';
                         echo "<tr><td>Is Supervisor:</td><td><i class='fas fa-check'></i></td></tr>";
                 }
                 else {
-<<<<<<< HEAD
-                        echo "<tr><td>Is Supervisor:</td><td><i class='icon-remove'></i></td></tr>";
-=======
                         echo "<tr><td>Is Supervisor:</td><td><i class='fas fa-times'></i></td></tr>";
->>>>>>> devel
 			echo "<tr><td>Supervisor's Name: </td><td><a href='user.php?user_id=" . $user->get_supervisor_id() . "'>" . $user->get_supervisor_name() . "</a></td></tr>";
                 }
                 ?>

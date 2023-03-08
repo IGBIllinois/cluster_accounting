@@ -341,18 +341,12 @@ class project {
 		$sql .= "FROM projects ";
 		$sql .= "LEFT JOIN users ON users.user_id=projects.project_owner ";
 		$sql .= "LEFT JOIN cfops ON cfops.cfop_project_id=projects.project_id ";
-<<<<<<< HEAD
-		$sql .= "WHERE project_id='" . $project_id . "' ";
-		$sql .= "AND cfops.cfop_active='1' LIMIT 1";
-		$result = $this->db->query($sql);
-=======
 		$sql .= "WHERE project_id=:project_id ";
 		$sql .= "AND cfops.cfop_active='1' LIMIT 1";
 		$parameters = array(
                         ':project_id'=>$project_id
                 );
 		$result = $this->db->query($sql,$parameters);
->>>>>>> devel
 		if ($result) {
 			$this->id = $result[0]['project_id'];
 			$this->name = $result[0]['project_name'];

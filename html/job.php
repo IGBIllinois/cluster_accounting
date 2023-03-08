@@ -86,15 +86,9 @@ require_once 'includes/header.inc.php';
 		<td><?php echo $job->get_queue_name(); ?></td>
 	</tr>
 	<tr>
-<<<<<<< HEAD
-		<td>Job State:</td>
-		<td><?php echo $job->get_job_state(); ?></td>
-	</tr>
-=======
                 <td>Job State:</td>
                 <td><?php echo $job->get_job_state(); ?></td>
         </tr
->>>>>>> devel
 	<tr>
 		<td>Exit Status:</td>
 		<td><?php echo $job->get_exit_status(); ?></td>

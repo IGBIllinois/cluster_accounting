@@ -54,11 +54,6 @@ class job_functions {
                 $sql .= "jobs.job_project_id, ";
                 $sql .= "jobs.job_queue_id, ";
                 $sql .= "users.user_name ";
-<<<<<<< HEAD
-		$sql .= "HAVING ROUND(SUM(jobs.job_billed_cost),2) > 0.00 ";
-                $sql .= "ORDER BY `CFOP` ASC, `ACTIVITY CODE` ASC ";
-                $job_result = $db->query($sql);
-=======
                 $sql .= "ORDER BY users.user_name ";
 		$parameters = array(':year'=>$year,
 				':month'=>$month
@@ -97,7 +92,6 @@ class job_functions {
 			':billtype'=>project::BILLTYPE_CFOP
 		);
                 $job_result = $db->query($sql,$parameters);
->>>>>>> devel
 
 		$total_bill = 0;
 		foreach ($job_result as $values) {

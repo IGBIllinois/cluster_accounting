@@ -94,15 +94,9 @@ require_once 'includes/header.inc.php';
 
 <h3>Search Jobs</h3>
 <div class='row'>
-<<<<<<< HEAD
-<div class='span8'>
-<form class='form-inline' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
-                <input type='text' name='search' class='input-xlarge' placeholder='Search'
-=======
 <div class='col-sm-8 col-md-8 col-lg-8 col-xl-8'>
 	<form class='form-inline' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
                 <input type='text' name='search' class='form-control' placeholder='Search'
->>>>>>> devel
 			value='<?php if (isset($_GET['search'])) { echo $_GET['search']; } ?>' autocapitalize='none'>
 		<?php
 			if ($login_user->is_admin() || $login_user->is_supervisor()) {
@@ -115,17 +109,10 @@ require_once 'includes/header.inc.php';
 		<input class='form-control' type='text' name='end_date' id='end_date' placeholder='End Date'
 			value='<?php if (isset($end_date)) { echo $end_date; } ?>'>
                 <input type='submit' class='btn btn-primary' value='Search'>
-<<<<<<< HEAD
-</form>
-</div>
-<div class='span4 btn-toolbar text-right'>
-        <div class='btn-group'>
-=======
 	</form>
 </div>
 <div class='col-sm-4 col-md-4 col-lg-4 col-xl-4'>
         <div class='btn-group' role='group'>
->>>>>>> devel
                 <a class='btn btn-primary' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array); ?>'>All Jobs</a>
                 <a class='btn btn-success' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array) . "&completed=1"; ?>'>Completed Jobs</a>
                 <a class='btn btn-danger' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array) . "&completed=0"; ?>'>Failed Jobs</a>

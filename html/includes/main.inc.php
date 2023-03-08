@@ -17,11 +17,6 @@ function my_autoloader($class_name) {
 
 spl_autoload_register('my_autoloader');
 
-<<<<<<< HEAD
-
-$db = new db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__,__MYSQL_PORT__);
-$ldap = new ldap(__LDAP_HOST__,__LDAP_SSL__,__LDAP_PORT__,__LDAP_BASE_DN__);
-=======
 if (settings::get_debug()) {
         ini_set('display_errors', 1);
         ini_set('display_startup_errors', 1);
@@ -49,7 +44,6 @@ if (settings::get_ldap_bind_user() != "") {
 }
 
 $log = new \IGBIllinois\log(settings::get_log_enabled(),settings::get_logfile());
->>>>>>> devel
 
 require_once 'includes/session.inc.php';
 ?>

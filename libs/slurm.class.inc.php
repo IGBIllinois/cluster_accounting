@@ -10,17 +10,10 @@
 
 class slurm {
 
-<<<<<<< HEAD
-	const SLURM_FORMAT = "State,JobID,User,JobName,Account,Partition,ExitCode,Submit,Start,End,Elapsed,ReqMem,MaxRSS,ReqCPUS,NodeList,MaxVMSize,TotalCPU,NTasks,NNodes,AllocGRES";
-	const SLURM_STATES = "CA,CD,F,TO,OOM";
-	const SLURM_DELIMITER = "|";
-	const SLURM_TIME_FORMAT = "%Y-%m-%d %H:%M:%s";
-=======
 	private const SLURM_FORMAT = "State,JobID,User,JobName,Account,Partition,ExitCode,Submit,Start,End,Elapsed,ReqMem,MaxRSS,ReqCPUS,NodeList,MaxVMSize,TotalCPU,NTasks,NNodes,AllocTRES";
 	private const SLURM_STATES = "CA,CD,F,TO,OOM";
 	private const SLURM_DELIMITER = "|";
 	private const SLURM_TIME_FORMAT = "%Y-%m-%d %H:%M:%s";
->>>>>>> devel
 
 	public static function get_accounting($start_time,$end_time) {
 

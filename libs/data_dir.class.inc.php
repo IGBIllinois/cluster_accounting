@@ -10,11 +10,8 @@ class data_dir {
 	private $time_created;
 	private $enabled;
 	private $default;
-<<<<<<< HEAD
-=======
 	private $latest_size = 0;
 	private $latest_size_date;
->>>>>>> devel
 
 	private const PERCENTILE = 0.95;
 
@@ -47,11 +44,6 @@ class data_dir {
 		}
 		else {
 			$sql = "INSERT INTO data_dir(data_dir_project_id,data_dir_path,data_dir_default) ";
-<<<<<<< HEAD
-			$sql .= "VALUES('" . $this->project->get_project_id() . "','" . $directory . "'";
-			$sql .= ",'" . $default . "')";
-			$result = $this->db->insert_query($sql);
-=======
 			$sql .= "VALUES(:project_id,:directory,:default)";
 			$parameters = array(
 				':project_id'=>$this->project->get_project_id(),
@@ -59,7 +51,6 @@ class data_dir {
 				':default'=>$default
 			);
 			$result = $this->db->insert_query($sql,$parameters);
->>>>>>> devel
 			return array('RESULT'=>true,
 					"data_dir_id"=>$result,
 					"MESSAGE"=>"<div class='alert alert-success'>Directory " . $directory . " successfully added</div>"
@@ -81,11 +72,6 @@ class data_dir {
 	
 	public function get_enabled() {
 		return $this->enabled;
-<<<<<<< HEAD
-	}
-	public function get_time_created() {
-		return $this->time_created;
-=======
 	}
 	public function get_time_created() {
 		return $this->time_created;
@@ -96,7 +82,6 @@ class data_dir {
 	}
 	public function get_latest_size_date() {
 		return $this->latest_size_date;
->>>>>>> devel
 	}
 	public function enable() {
                 $sql = "UPDATE data_dir SET data_dir_enabled='1' ";
@@ -121,16 +106,11 @@ class data_dir {
                 }
 		if (!$error) {
 			$sql = "UPDATE data_dir SET data_dir_enabled='0' ";
-<<<<<<< HEAD
-			$sql .= "WHERE data_dir_id='" . $this->get_data_dir_id() . "' LIMIT 1";
-			$result = $this->db->non_select_query($sql);
-=======
 			$sql .= "WHERE data_dir_id=:data_dir_id LIMIT 1";
 			$parameters = array(
 				':data_dir_id'=>$this->get_data_dir_id()
 			);
 			$result = $this->db->non_select_query($sql,$parameters);
->>>>>>> devel
 			if ($result) {
 				$this->enabled = 0;
 				$message = "Successfully remove directory " . $this->get_directory() . ".";
@@ -142,10 +122,6 @@ class data_dir {
 	}
 	
 	private function get_data_dir() {
-<<<<<<< HEAD
-		$sql = "SELECT * FROM data_dir ";
-		$sql .= "WHERE data_dir_id='" . $this->id . "' ";
-=======
 		$sql = "SELECT data_dir.*, ";
 		$sql .= "ROUND(du.data_usage_bytes / :terabytes,3) as terabytes,du.data_usage_time as data_usage_time ";
 		$sql .= "FROM data_dir ";
@@ -153,7 +129,6 @@ class data_dir {
 		$sql .= "FROM data_usage WHERE data_usage.data_usage_data_dir_id=:data_dir_id ORDER BY data_usage.data_usage_time DESC LIMIT 1) as du ";
                 $sql .= "ON du.data_usage_data_dir_id=data_dir.data_dir_id ";
 		$sql .= "WHERE data_dir_id=:data_dir_id ";
->>>>>>> devel
 		$sql .= "LIMIT 1";
 		$parameters = array(
 			':data_dir_id'=>$this->get_data_dir_id(),
@@ -166,11 +141,8 @@ class data_dir {
 			$this->project_id = $result[0]['data_dir_project_id'];
 			$this->enabled = $result[0]['data_dir_enabled'];
 			$this->default = $result[0]['data_dir_default'];
-<<<<<<< HEAD
-=======
 			$this->latest_size = $result[0]['terabytes'];
 			$this->latest_size_date = $result[0]['data_usage_time'];
->>>>>>> devel
 			return true;
 		}
 		return false;
@@ -193,97 +165,7 @@ class data_dir {
 		return is_dir($this->get_directory());
 
 	}
-<<<<<<< HEAD
-        public function get_dir_size() {
-
-                $result = false;
-		$filesystem_type = $this->get_filesystem_type();
-		switch ($filesystem_type) {
-			case "ceph":
-				$result = $this->get_dir_size_rbytes();
-				break;
-
-			case "gpfs":
-				$result = $this->get_dir_size_gpfs();
-				break;
-			default:
-				$result = $this->get_dir_size_du();
-				break;
-
-
-		}
-                return $result;
-        }
-
-	public function get_filesystem_type() {
-		$result = false;
-		if (file_exists($this->get_directory())) {
-			$exec = "stat --file-system --printf=%T " . $this->get_directory();
-	                $exit_status = 1;
-        	        $output_array = array();
-                	$output = exec($exec,$output_array,$exit_status);
-	                if (!$exit_status) {
-        	                $result = $output;
-                	}
-		}
-		return $result;
-
-	}
-	//get_dir_size_rbytes()
-	//uses the rbytes field in ls or stat command to get directory size
-	//ceph uses this field to store the directory size
-	private function get_dir_size_rbytes() {
-		//$exec = "ls -ld " . $this->get_directory() . " | awk '{print $5}'";
-		$exec = "stat --printf=%s " . $this->get_directory();
-		$exit_status = 1;
-		$output_array = array();
-		$output = exec($exec,$output_array,$exit_status);
-		if (!$exit_status) {
-			$result = $output;
-		}
-		return $result;
-
-
-	}
-
-	//get_dir_size_du()
-	//uses the du command to get directory size.
-        public function get_dir_size_du() {
-		$result = 0;
-		if (file_exists($this->get_directory())) {
-                	$exec = "du --max-depth=0 " . $this->get_directory() . "/ | awk '{print $1}'";
-	                $exit_status = 1;
-        	        $output_array = array();
-                	$output = exec($exec,$output_array,$exit_status);
-	                if (!$exit_status) {
-				$result = round($output * self::kilobytes_to_bytes / self::gpfs_replication );
-                	}
-		}
-                return $result;
-
-
-        }
-
-	private function get_dir_size_gpfs() {
-
-		$result = 0;
-                if (file_exists($this->get_directory())) {
-                        $exec = "source /etc/profile; ";
-			$exec .= self::gpfs_mmpolicy_du . " " . $this->get_directory() . "/ | awk '{print $1}'";
-                        $exit_status = 1;
-                        $output_array = array();
-                        $output = exec($exec,$output_array,$exit_status);
-                        if (!$exit_status) {
-                                $result = round($output * self::kilobytes_to_bytes / self::gpfs_replication );
-                        }
-                }
-
-		return $result;
-
-	}	
-=======
 	
->>>>>>> devel
 	private function data_dir_exists($directory) {
 		$sql = "SELECT count(1) as count FROM data_dir ";
 		$sql .= "WHERE data_dir_path LIKE ':data_dir_path%' ";
@@ -323,23 +205,10 @@ class data_dir {
 
                 $project = new project($this->db,$this->get_project_id());
 
-<<<<<<< HEAD
-                $data_cost = new data_cost($this->db);
-                if ($project->get_bill_project()) {
-                }
-                else {
-                }
-                $insert_array = array('data_usage_data_dir_id'=>$this->get_data_dir_id(),
-                                'data_usage_project_id'=>$project->get_project_id(),
-                                'data_usage_cfop_id'=>$project->get_cfop_id(),
-                                'data_usage_bytes'=>$bytes,
-                                'data_usage_files'=>$files
-=======
                 $insert_array = array('data_usage_data_dir_id'=>$this->get_data_dir_id(),
                                 'data_usage_project_id'=>$project->get_project_id(),
                                 'data_usage_cfop_id'=>$project->get_cfop_id(),
                                 'data_usage_bytes'=>$bytes
->>>>>>> devel
                                 );
                 $insert_id = $this->db->build_insert('data_usage',$insert_array);
 		if ($insert_id) {

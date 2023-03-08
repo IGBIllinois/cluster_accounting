@@ -219,13 +219,6 @@ class settings {
 		
 
 	}
-<<<<<<< HEAD
-	public static function get_password_reset_url() {
-                if (defined('__PASSWORD_RESET_URL__') && (__PASSWORD_RESET_URL__ != "") &&
-                        filter_var(__PASSWORD_RESET_URL__,FILTER_VALIDATE_URL,FILTER_FLAG_SCHEME_REQUIRED)) {
-
-                        return __PASSWORD_RESET_URL__;
-=======
 
 	public static function get_password_reset_url() {
 		if (defined('PASSWORD_RESET_URL') && (PASSWORD_RESET_URL != "") &&
@@ -275,15 +268,10 @@ class settings {
 	public static function get_smtp_username() {
                 if (defined("SMTP_USERNAME")) {
                         return SMTP_USERNAME;
->>>>>>> devel
                 }
                 return false;
         }
 
-<<<<<<< HEAD
-	public static function get_website_url() {
-		return __WEBSITE_URL__;
-=======
         public static function get_smtp_password() {
                 if (defined("SMTP_PASSWORD")) {
                         return SMTP_PASSWORD;
@@ -311,7 +299,6 @@ class settings {
 		}
 		return self::REPORT_PREFIX;
 
->>>>>>> devel
 	}
 }
 

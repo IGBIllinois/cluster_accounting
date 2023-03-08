@@ -94,12 +94,8 @@ class user {
 				$this->set_supervisor($supervisor_id);
 				$this->default_project()->enable();
 				$this->default_data_dir()->enable();
-<<<<<<< HEAD
-				$this->default_project()->set_cfop($bill_project,$cfop,$activity,$hide_cfop);
-=======
 				$this->default_project()->set_cfop($cfop_billtype,$cfop,$activity,$hide_cfop,$custom_bill_description);
 				
->>>>>>> devel
 			}
 			else {
 				$ldap_filter = "(" . $this->ldap_attributes['username'] . "=" . $username . ")";
@@ -133,7 +129,7 @@ class user {
 			}
 			return array('RESULT'=>true,
 					'MESSAGE'=>'User succesfully added.',
-					'user_id'=>$this->get_user_id());
+					'user_id'=>$user_id);
 		}
 
 	}
@@ -281,14 +277,6 @@ class user {
 	}
 
 	public function get_owned_projects() {
-<<<<<<< HEAD
-		$sql = "SELECT * FROM projects ";
-		$sql .= "WHERE project_owner='" . $this->get_user_id() . "' ";
-		$sql .= "AND project_enabled='1'";
-		$result = $this->db->query($sql);
-		return $result;
-	}
-=======
                 $sql = "SELECT * FROM projects ";
                 $sql .= "WHERE project_owner=:owner ";
                 $sql .= "AND project_enabled='1'";
@@ -298,7 +286,6 @@ class user {
                 return $this->db->query($sql,$parameters);
         }
 
->>>>>>> devel
 	public function is_project_member($project) {
 		$user_projects = $this->get_projects();
 		foreach ($user_projects as $user_project) {
@@ -355,17 +342,6 @@ class user {
 		if (count($supervising_users)) {
 			$message = "Unable to delete user.  User is supervising " . count($supervising_users) . " other users.";
 			$error = true;
-<<<<<<< HEAD
-		}
-		if (is_dir($this->default_data_dir()->get_directory())) {
-			$message = "Unable to delete user.  Home folder " . $this->default_data_dir()->get_directory() . " still exists.";
-			$error = true;
-		}
-		if (count($this->get_owned_projects()) > 1) {
-			$message = "Unable to delete user.  User is the owner of active projects";
-			$error = true;
-		}
-=======
 		}		
 		if (is_dir($this->default_data_dir()->get_directory())) {
                         $message = "Unable to delete user.  Home folder " . $this->default_data_dir()->get_directory() . " still exists.";
@@ -376,7 +352,6 @@ class user {
                         $error = true;
                 }
 
->>>>>>> devel
 		if (!$error) {
 			$sql = "UPDATE users SET user_enabled='0' WHERE user_id=:user_id LIMIT 1";
 			$parameters = array( 

@@ -24,11 +24,6 @@ function my_autoloader($class_name) {
 
 spl_autoload_register('my_autoloader');
 
-<<<<<<< HEAD
-$db = new db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__,__MYSQL_PORT__);
-$ldap = new ldap(__LDAP_HOST__,__LDAP_SSL__,__LDAP_PORT__,__LDAP_BASE_DN__);
-=======
->>>>>>> devel
 
 $db = new \IGBIllinois\db(settings::get_mysql_host(),
 			settings::get_mysql_database(),
@@ -138,19 +133,6 @@ if (isset($_POST['login'])) {
 					<div class='input-group-append'>
 						<span class='input-group-text'><i class='fas fa-lock'></i></span>
 					</div>
-<<<<<<< HEAD
-					</div>
-					<br>
-					<button type='submit' name='login' class='btn btn-primary'>Login</button>
-					<?php if (settings::get_password_reset_url()) {
-                                                echo "<a class='pull-right' href='" . settings::get_password_reset_url() . "'>Forgot Password?</a>";
-                                        }
-                                        ?>
-
-				</form>
-
-=======
->>>>>>> devel
 
 				</div>
 			</div>
