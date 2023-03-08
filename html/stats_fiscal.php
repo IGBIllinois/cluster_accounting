@@ -99,12 +99,12 @@ require_once 'includes/header.inc.php';
 	</tr>
 	<tr>
 		<td>Job Total Cost:</td>
-		<td>$<?php echo $stats->get_total_cost($start_date,$end_date,true); ?>
+		<td>$<?php echo $stats->get_job_total_cost($start_date,$end_date,true); ?>
 		</td>
 	</tr>
 	<tr>
 		<td>Job Billed Cost:</td>
-		<td>$<?php echo $stats->get_total_billed_cost($start_date,$end_date,true); ?>
+		<td>$<?php echo $stats->get_job_total_billed_cost($start_date,$end_date,true); ?>
 		</td>
 	</tr>
 	<tr>
