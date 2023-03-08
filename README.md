@@ -17,6 +17,10 @@
 - PHP LDAP
 - PHP XML
 
+* Git clone https://www.github.com/IGBIllinois/cluster_accounting or download tagged tar.gz
+```
+git clone https://github.com/IGBIllinois/cluster_accounting.git
+```
 
 1.  Add apache config to apache configuration to point to html directory
 ```
