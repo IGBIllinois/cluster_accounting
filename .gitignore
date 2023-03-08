@@ -4,7 +4,6 @@
 /html/vendor
 /components
 /log/*
-composer.lock
 /templates/custom/*
 
 ####Whitelist#####
