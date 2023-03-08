@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
 
 if (!$login_user->is_admin()) {
         exit;
@@ -36,7 +36,7 @@ $get_array = array('year'=>$year,'graph_type'=>$graph_type);
 $graph_image = "<img src='graph.php?" . http_build_query($get_array) . "'>";
 
 $graph_form = "<form name='select_graph' id='select_graph' method='post' action='" . $_SERVER['PHP_SELF'] . "?year=" . $year . "'>";
-$graph_form .= "<select class='input-xlarge' name='graph_type' onChange='document.select_graph.submit();'>";
+$graph_form .= "<select class='custom-select' name='graph_type' onChange='document.select_graph.submit();'>";
 
 foreach ($graph_type_array as $graph) {
 	$graph_form .= "<option value='" . $graph['type'] . "' ";
@@ -49,6 +49,8 @@ foreach ($graph_type_array as $graph) {
 }
 
 $graph_form .= "</select></form>";
+
+require_once 'includes/header.inc.php';
 
 ?>
 <h3>Accumulated Stats - <?php echo $year; ?></h3>
@@ -66,7 +68,8 @@ $graph_form .= "</select></form>";
         ?>
 </ul>
 <?php echo $graph_form; ?>
-<div class='row span12'>
+<br>
+<div class='row'>
 <?php echo $graph_image; ?>
 </div>
 <?php

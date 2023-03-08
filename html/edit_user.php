@@ -12,9 +12,7 @@ if (isset($_GET['user_id'])) {
 }
 $message = "";
 if (isset($_POST['edit_user'])) {
-	foreach($_POST as $var) {
-		$var = trim(rtrim($var));
-	}
+	$_POST = array_map('trim',$_POST);
 	$admin = 0;
 	if (isset($_POST['is_admin'])) {
 		$admin = 1;
@@ -48,7 +46,7 @@ elseif (isset($_POST['delete_user'])) {
                 header("Location: list_users.php");
         }
 	else {
-		$message = "<div class='alert alert-error'>" . $result['MESSAGE'] . "</div>";
+		$message = "<div class='alert alert-danger'>" . $result['MESSAGE'] . "</div>";
 	}
 }
 
@@ -59,11 +57,12 @@ elseif (isset($_POST['cancel_user'])) {
 
 //Code to get list of supervisors to choose from.
 $supervisors = user_functions::get_supervisors($db);
-$supervisors_html = "<select name='supervisor_id' id='supervisors_input'>";
+$supervisors_html = "<select class='custom-select' name='supervisor_id' id='supervisors_input'>";
+$supervisors_html .= "<option></option>";
 $supervisors_html .= "<option value='-1'></option>";
 foreach ($supervisors as $supervisor) {
 	$supervisor_id = $supervisor['id'];
-	$supervisor_fullname = $supervisor['full_name'];
+	$supervisor_fullname = $supervisor['firstname'] . " " . $supervisor['lastname'];
 	$supervisor_username = $supervisor['username'];
 	if ($user->get_supervisor_id() == $supervisor_id) {
 		$supervisors_html .= "<option value='" . $supervisor_id . "' selected='selected'>";
@@ -79,56 +78,66 @@ $supervisors_html .= "</select>";
 require_once 'includes/header.inc.php';
 
 ?>
-
-<form class='form-horizontal' method='post' action='<?php echo $_SERVER['PHP_SELF'] . "?user_id=" . $user_id; ?>'
-	name='form'>
+<h3>Edit User</h3>
+<hr>
+<div class='col-sm-6 col-md-6 col-lg-6 col-xl-6'>
+<form method='post' action='<?php echo $_SERVER['PHP_SELF'] . "?user_id=" . $user_id; ?>' name='form'>
 	<input type='hidden' name='user_id' value='<?php echo $user_id; ?>'>
-	<fieldset>
-		<legend>Edit User</legend>
-		<div class='control-group'>
-			<label class='control-label' for='username_input'>Username:</label>
-				<div class='controls'>
-					<label><?php echo $user->get_username(); ?></label>
-			</div>
+	<div class='form-group row'>
+		<label class='col-sm-4 col-form-label' for='username_input'>Username:</label>
+		<div class='col-sm-8'>
+			<input class='form-control-plaintext' type='text' readonly value="<?php echo $user->get_username(); ?>">
 		</div>
-		<div class='control-group'>
-			<label class='control-label' for='admin_input'>Is Administrator:</label>
-			<div class='controls'>
-				<input type='checkbox' name='is_admin' id='is_admin_input'
-					<?php if ($user->is_admin()) { echo "checked='checked'"; } ?>>
-			</div>
+	</div>
+	<div class='form-group row'>
+		<div class='col-sm-8 offset-sm-4'>
+		<div clas='form-check'>
+			<input class='form-check-input' type='checkbox' name='is_admin' id='is_admin_input'
+				<?php echo $user->is_admin() ? "checked" : "";  ?>>
+			<label class='form-check-label' for='is_admin_input'>Is Administrator</label>
 		</div>
-		<div class='control-group'>
-			<label class='control-label' for='is_supervisor_input'>Is Supervisor</label>
-			<div class='controls'>
-				<input type='checkbox' name='is_supervisor' id='is_supervisor_input'
-					onClick='enable_supervisors();' <?php if ($user->is_supervisor()) { echo "checked='checked'"; } ?>>
-			</div>
 		</div>
-		<div class='control-group'>
-			<label class='control-label' for='supervisor_input'>Supervisor:</label>
-			<div class='controls'>
-				<?php echo $supervisors_html; ?>
-			</div>
+	</div>
+	<div class='form-group row'>
+		<div class='col-sm-8 offset-sm-4'>
+		<div clas='form-check'>
+			<input class='form-check-input' type='checkbox' name='is_supervisor' id='is_supervisor_input'
+				onClick='enable_supervisors();' <?php echo $user->is_supervisor() ? "checked" : ""; ?>>
+			<label class='form-check-label' for='is_supervisor_input'>Is Supervisor</label>
 		</div>
-		<div class='control-group'>
-			<div class='controls'>
-				<input class='btn btn-primary' type='submit' name='edit_user'
-					value='Edit User'> 
-				<input class='btn btn-danger' type='submit' name='delete_user' value='Delete User'
+		</div>	
+	</div>
+	<div class='form-group row'>
+		<label class='col-sm-4 col-form-label' for='supervisor_input'>Supervisor:</label>
+		<div class='col-sm-8'>
+			<?php echo $supervisors_html; ?>
+		</div>
+	</div>
+
+	<div class='form-group row'>
+		<div class='col-sm-8'>
+			<input class='btn btn-primary' type='submit' name='edit_user' value='Edit User'> 
+			<input class='btn btn-danger' type='submit' name='delete_user' value='Delete User'
 				onClick='return (confirm_disable_user());'>
-
-			<input class='btn btn-warning' type='submit'
-					name='cancel_user' value='Cancel'>
-			</div>
+			<input class='btn btn-warning' type='submit' name='cancel_user' value='Cancel'>
 		</div>
-	</fieldset>
+	</div>
 </form>
-<script type='text/javascript'>
-enable_supervisors();
 
-</script>
 <?php
 if (isset($message)) { echo $message; }
+?>
+</div>
+
+<?php 
 require_once 'includes/footer.inc.php';
 ?>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	enable_supervisors();
+	$('#supervisors_input').select2({
+		placeholder: 'Select a Supervisor'
+	});
+});
+</script>

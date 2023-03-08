@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
 
 if (isset($_GET['start']) && is_numeric($_GET['start'])) {
 	$start = $_GET['start'];
@@ -25,9 +25,12 @@ foreach ($projects as $project) {
 	
 	
 }
+
+require_once 'includes/header.inc.php';
 ?>
 <h3>List of Home Directories</h3>
-<table class='table table-striped table-condensed table-bordered'>
+<hr>
+<table class='table table-striped table-sm table-bordered'>
 	<thead>
 		<tr>
 			<th>Directory</th>

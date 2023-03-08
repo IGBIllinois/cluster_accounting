@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
 
 if (!$login_user->is_admin()) {
         exit;
@@ -57,7 +57,7 @@ $graph_image = "<img src='graph.php?" . http_build_query($get_array) . "'>";
 
 $graph_form = "<form class='form-inline' name='select_graph' id='select_graph' method='post' action='" . $_SERVER['PHP_SELF'];
 $graph_form .= "?year=" . $year . "'>";
-$graph_form .= "<select name='graph_type' onChange='document.select_graph.submit();'>";
+$graph_form .= "<select class='custom-select' name='graph_type' onChange='document.select_graph.submit();'>";
 
 foreach ($graph_type_array as $graph) {
         $graph_form .= "<option value='" . $graph['type'] . "' ";
@@ -72,6 +72,8 @@ foreach ($graph_type_array as $graph) {
 $graph_form .= "</select>";
 
 $stats = new statistics($db);
+
+require_once 'includes/header.inc.php';
 
 ?>
 <h3>Fiscal Stats - <?php echo $year; ?></h3>
@@ -90,7 +92,7 @@ $stats = new statistics($db);
         ?>
 </ul>
 
-<table class='table table-striped table-bordered table-condensed'>
+<table class='table table-striped table-bordered table-sm'>
 	<tr>
 		<td>Number Of Jobs:</td>
 		<td><?php echo $stats->get_num_jobs($start_date,$end_date,true); ?></td>

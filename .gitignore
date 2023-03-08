@@ -3,5 +3,10 @@
 /vendor
 /html/vendor
 /components
-/log
+/log/*
 composer.lock
+/templates/custom/*
+
+####Whitelist#####
+
+!.gitkeep
