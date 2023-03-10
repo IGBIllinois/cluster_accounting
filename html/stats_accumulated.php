@@ -4,14 +4,19 @@ require_once 'includes/main.inc.php';
 if (!$login_user->is_admin()) {
         exit;
 }
-$year = date('Y');
+
+$selected_year = new DateTime(date('Y-01-01 00:00:00'));
 if (isset($_GET['year'])) {
-	$year = $_GET['year'];
+        $year = $_GET['year'];
+        $selected_year = DateTime::createFromFormat("Y-m-d H:i:s",$year . "-01-01 00:00:00");
 }
-$previous_year = $year - 1;
-$next_year =$year + 1;
-$forward_url = $_SERVER['PHP_SELF'] . "?year=" . $next_year;
-$back_url = $_SERVER['PHP_SELF'] . "?year=" . $previous_year;
+
+$year = $selected_year->format('Y');
+
+$current_year = new DateTime();
+
+$next_year = DateTime::createFromFormat('Y-m',$year . "-01");
+$next_year->modify('first day of next year');
 
 $graph_type_array[0]['type'] = 'jobs_per_month';
 $graph_type_array[0]['title'] = 'Jobs Per Month';
@@ -38,36 +43,46 @@ $graph_image = "<img src='graph.php?" . http_build_query($get_array) . "'>";
 $graph_form = "<form name='select_graph' id='select_graph' method='post' action='" . $_SERVER['PHP_SELF'] . "?year=" . $year . "'>";
 $graph_form .= "<select class='custom-select' name='graph_type' onChange='document.select_graph.submit();'>";
 
+$graph_form = "<form class='form-inline' name='select_graph' id='select_graph' method='post' action='" . $_SERVER['PHP_SELF'];
+$graph_form .= "?year=" . $selected_year->format("Y") . "'>";
+$graph_form .= "<select class='custom-select' name='graph_type' onChange='document.select_graph.submit();'>";
+
 foreach ($graph_type_array as $graph) {
-	$graph_form .= "<option value='" . $graph['type'] . "' ";
-	if ($graph_type == $graph['type']) {
-        	$graph_form .= "selected='selected'";
-	}
-	$graph_form .= ">" . $graph['title'] . "</option>\n";
+        $graph_form .= "<option value='" . $graph['type'] . "' ";
+        if ($graph_type == $graph['type']) {
+                $graph_form .= "selected='selected'";
+        }
+        $graph_form .= ">" . $graph['title'] . "</option>\n";
 
 
 }
 
-$graph_form .= "</select></form>";
+$graph_form .= "</select>";
+
+$url_navigation = html::get_url_navigation_year($_SERVER['PHP_SELF'],$year);
 
 require_once 'includes/header.inc.php';
 
 ?>
 <h3>Accumulated Stats - <?php echo $year; ?></h3>
-<ul class='pager'>
-        <li class='previous'><a href='<?php echo $back_url; ?>'>Previous Year</a></li>
+<div class='row'>
+        <div class='col-sm-12 col-md-12 col-lg-12 col-xl-12'>
+        <a class='btn btn-sm btn-primary' href='<?php echo $url_navigation['back_url']; ?>'>Previous Year</a>
 
         <?php
-		$this_year = date("Y");
-                if ($next_year > $this_year) {
-                        echo "<li class='next disabled'><a href='#'>Next Year</a></li>";
+                if ($next_year > $current_year) {
+                        echo "<div class='float-right'><a class='btn btn-sm btn-primary' onclick='return false;'>Next Year</a></div>";
                 }
                 else {
-                        echo "<li class='next'><a href='" . $forward_url . "'>Next Year</a></li>";
+                        echo "<div class='float-right'><a class='btn btn-sm btn-primary' href='" . $url_navigation['forward_url'] . "'>Next Year</a></div>";
                 }
         ?>
-</ul>
+        </div>
+</div>
+<p>
+<div class='row'>
 <?php echo $graph_form; ?>
+</div>
 <br>
 <div class='row'>
 <?php echo $graph_image; ?>
