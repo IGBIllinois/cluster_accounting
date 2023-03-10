@@ -109,7 +109,20 @@ if (isset($_POST['login'])) {
 	<p>
 	
 <div class='container'>
-	<div class='col-md-6 col-lg-6 col-xl-6 offset-md-3 offset-lg-3 offset-xl-3'>
+	<div class='row'>
+		<div class='col-sm-10 col-md-10 col-lg-10 col-xl-10'>
+			<div class='jumbotron'>
+        		<h1 class='display-4'>
+	                <img src="images/imark_bw.gif"
+        	                style="padding: 0 10px 10px 0; vertical-align: text-top;">Biocluster
+                	Accounting
+	        	</h1>
+        		<p>View, manage, and bill Biocluster usage and storage</p>
+			</div>
+		</div>
+	</div>
+	<div class='row'>
+		<div class='col-sm-10 col-md-10 col-lg-10 col-xl-10'>
 		<div class='card'>
 			<div class='card-header bg-light'>Login</div>
 		<div class='card-body'>
@@ -148,9 +161,13 @@ if (isset($_POST['login'])) {
 		</form>
 		</div>
 		</div>
-
-		<p>
+		</div>
+	</div>
+	<br>
+	<div class='row'>
+		<div class='col-sm-10 col-md-10 col-lg-10 col-xl-10'>
 		<?php if (isset($message)) { echo $message; } ?>
+		</div>
 	</div>
 </div>
 
