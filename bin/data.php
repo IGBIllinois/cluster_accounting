@@ -15,6 +15,8 @@ spl_autoload_register('my_autoloader');
 require_once '../conf/settings.inc.php';
 require_once '../vendor/autoload.php';
 
+date_default_timezone_set(settings::get_timezone());
+
 //Command parameters
 $output_command = "data.php Inserts data usage into database\n";
 $output_command .= "Usage: php data.php \n";

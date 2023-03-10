@@ -140,7 +140,7 @@ require_once 'includes/header.inc.php';
 <div class='card'>
 <div class='card-header'>Default Project Billing</div>
 <div class='card-body'> 
-	<div class='col-sm-8 col-md-8 col-lg-8 col-xl-8'>
+	<div class='col-sm-12 col-md-12 col-lg-12 col-xl-12'>
 		<nav>
 			<div class='nav nav-tabs' role='tablist' id='billing_tab'>
 				<a class='nav-item nav-link active' data-toggle='tab' data-target='#nav-cfop' type='button'>CFOP</a>
@@ -160,23 +160,23 @@ require_once 'includes/header.inc.php';
                                 	        value='<?php if (isset($_POST['cfop_1'])) { echo $_POST['cfop_1']; } ?>'>
 					</div>
 				-
-				<div class='col-sm-2'>
-                                <input class='form-control' type='text' name='cfop_2'
-                                        id='cfop_input' maxlength='6' onKeyUp='cfop_advance_2()'
-                                        value='<?php if (isset($_POST['cfop_2'])) { echo $_POST['cfop_2']; } ?>'>
-				</div>
+					<div class='col-sm-2'>
+        	                        <input class='form-control' type='text' name='cfop_2'
+                	                        id='cfop_input' maxlength='6' onKeyUp='cfop_advance_2()'
+                        	                value='<?php if (isset($_POST['cfop_2'])) { echo $_POST['cfop_2']; } ?>'>
+					</div>
 				-
-				<div class='col-sm-2'>
-                                <input class='form-control' type='text' name='cfop_3'
-                                        id='cfop_input' maxlength='6' onKeyUp='cfop_advance_3()'
-                                        value='<?php if (isset($_POST['cfop_3'])) { echo $_POST['cfop_3']; } ?>'>
-				</div>
+					<div class='col-sm-2'>
+        	                        <input class='form-control' type='text' name='cfop_3'
+                	                        id='cfop_input' maxlength='6' onKeyUp='cfop_advance_3()'
+                        	                value='<?php if (isset($_POST['cfop_3'])) { echo $_POST['cfop_3']; } ?>'>
+					</div>
 				-
-				<div class='col-sm-2'>
-                                <input class='form-control' type='text' name='cfop_4'
-                                        id='cfop_input' maxlength='6'
-                                        value='<?php if (isset($_POST['cfop_4'])) { echo $_POST['cfop_4']; } ?>'>
-				</div>
+					<div class='col-sm-2'>
+        	                        <input class='form-control' type='text' name='cfop_4'
+                	                        id='cfop_input' maxlength='6'
+                        	                value='<?php if (isset($_POST['cfop_4'])) { echo $_POST['cfop_4']; } ?>'>
+					</div>
 				</div>
                 		<div class='form-group row'>
 		                        <label class='col-sm-3 col-form-label' for='activity_input'>Activity Code (optional):</label>

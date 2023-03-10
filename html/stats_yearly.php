@@ -5,18 +5,31 @@ if (!$login_user->is_admin()) {
         exit;
 }
 
-$year = date('Y');
+$selected_year = new DateTime(date('Y-01-01 00:00:00'));
 if (isset($_GET['year'])) {
-	$year = $_GET['year'];
+        $year = $_GET['year'];
+	$selected_year = DateTime::createFromFormat("Y-m-d H:i:s",$year . "-01-01 00:00:00");
 }
 
-$previous_year = $year - 1;
-$next_year = $year + 1;
-$start_date = $year . "0101";
-$end_date = $year . "1231";
+$year = $selected_year->format('Y');
 
-$back_url = $_SERVER['PHP_SELF'] . "?year=" . $previous_year;
-$forward_url = $_SERVER['PHP_SELF'] . "?year=" . $next_year;
+//////Year////////
+$min_year = job_bill::get_minimal_year($db);
+$year_html = "<select class='form-control' name='year'>";
+for ($i=$min_year; $i<=date("Y");$i++) {
+        if ($i == $year) { $year_html .= "<option value='" . $i . "' selected='true'>" . $i . "</option>"; }
+        else { $year_html .= "<option value='" . $i . "'>" . $i . "</option>"; }
+}
+$year_html .= "</select>";
+
+$start_date = DateTime::createFromFormat("Y-m-d H:i:s",$year . "-01-01 00:00:00");
+$end_date = DateTime::createFromFormat("Y-m-d H:i:s",$year . "-12-31 23:59:59");
+
+$url_navigation = html::get_url_navigation_year($_SERVER['PHP_SELF'],$year);
+
+$next_year = DateTime::createFromFormat('Y-m',$year . "-01");
+$next_year->modify('first day of next year');
+$current_year = new DateTime();
 
 $graph_type_array[0]['type'] = 'top_job_users';
 $graph_type_array[0]['title'] = 'Top Users';
@@ -39,14 +52,14 @@ if (isset($_POST['graph_type'])) {
 
 }
 $get_array  = array('graph_type'=>$graph_type,
-		'start_date'=>$start_date,
-		'end_date'=>$end_date);
+		'start_date'=>$start_date->format("Ymd"),
+		'end_date'=>$end_date->format("Ymd")
+	);
 $graph_image = "<img src='graph.php?" . http_build_query($get_array) . "'>";
 
 
 $graph_form = "<form class='form-inline' name='select_graph' id='select_graph' method='post' action='" . $_SERVER['PHP_SELF'];
-//$graph_form .= "?start_date=" . $start_date . "&end_date=" . $end_date . "'>";
-$graph_form .= "?year=" . $year . "'>";
+$graph_form .= "?year=" . $selected_year->format("Y") . "'>";
 $graph_form .= "<select class='custom-select' name='graph_type' onChange='document.select_graph.submit();'>";
 
 foreach ($graph_type_array as $graph) {
@@ -67,22 +80,32 @@ require_once 'includes/header.inc.php';
 
 ?>
 <h3>Yearly Stats - <?php echo $year; ?></h3>
-<nav>
-<ul class='pagination'>
-        <li class='page-item'><a class='page-link' href='<?php echo $back_url; ?>'>Previous Year</a></li>
+<form class='form-inline' action='<?php echo $_SERVER['PHP_SELF']; ?>' method='get'>
+<div class='form-group'>
+        <label for='year'>Year:</label>
+        &nbsp; <?php echo $year_html; ?>
+</div>
+&nbsp;
+<div class='form-group'>
+        <button class='btn btn-primary' type='submit' name='selectedDate'>Get Records</button>
+</div>
+</form>
+<p>
+<div class='row'>
+        <div class='col-sm-12 col-md-12 col-lg-12 col-xl-12'>
+        <a class='btn btn-sm btn-primary' href='<?php echo $url_navigation['back_url']; ?>'>Previous Year</a>
 
         <?php
-                $next_year = strtotime('+1 day', strtotime($end_date));
-                $today = mktime(0,0,0,date('m'),date('d'),date('y'));
-                if ($next_year > $today) {
-                        echo "<li class='page-item disabled'><a class='page-link' href='#'>Next Year</a></li>";
+                if ($next_year > $current_year) {
+                        echo "<div class='float-right'><a class='btn btn-sm btn-primary' onclick='return false;'>Next Year</a></div>";
                 }
                 else {
-                        echo "<li class='page-item'><a class='page-link' href='" . $forward_url . "'>Next Year</a></li>";
+                        echo "<div class='float-right'><a class='btn btn-sm btn-primary' href='" . $url_navigation['forward_url'] . "'>Next Year</a></div>";
                 }
         ?>
-</ul>
-</nav>
+        </div>
+</div>
+<p>
 <table class='table table-striped table-bordered table-sm'>
 	<tr>
 		<td>Number Of Jobs:</td>
@@ -97,18 +120,6 @@ require_once 'includes/header.inc.php';
 		<td>Job Billed Cost:</td>
 		<td>$<?php echo $stats->get_job_total_billed_cost($start_date,$end_date,true); ?>
 		</td>
-	</tr>
-	<tr>
-		<td>Longest Job (HH:MM:SS):</td>
-		<td><?php echo $stats->get_longest_job($start_date,$end_date); ?></td>
-	</tr>
-	<tr>
-		<td>Average Job Length (HH:MM:SS):</td>
-		<td><?php echo $stats->get_avg_job($start_date,$end_date); ?></td>
-	</tr>
-	<tr>
-		<td>Average Job Wait:</td>
-		<td><?php echo $stats->get_avg_wait($start_date,$end_date); ?></td>
 	</tr>
 	<tr>
 		<td>Data Total Cost:</td>

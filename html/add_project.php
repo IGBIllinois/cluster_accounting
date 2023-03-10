@@ -22,7 +22,7 @@ if (isset($_POST['add_project'])) {
                         $_POST['cfop_1'] = "";
                         $_POST['cfop_2'] = "";
                         $_POST['cfop_3'] = "";
-                        $_POST['cfop_4'] = "");
+                        $_POST['cfop_4'] = "";
                         $_POST['activity'] = "";
                         unset($_POST['hide_cfop']);
                         break;
@@ -74,7 +74,7 @@ require_once 'includes/header.inc.php';
 ?>
 <h3>Add Project</h3>
 <hr>
-<div class='col-sm-6 col-md-6 col-lg-6 col-xl-6'>
+<div class='col-sm-12 col-md-12 col-lg-12 col-xl-12'>
 <form class='form' name='form' method='post'
 	action='<?php echo $_SERVER['PHP_SELF']; ?>'>
 		<div class='form-group row'>

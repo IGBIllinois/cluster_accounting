@@ -129,7 +129,7 @@ require_once 'includes/header.inc.php';
 <br>
 <div class='card'>
 <div class='card-header'>Edit Project</div>
-<div class='col-sm-8 col-md-8 col-lg-8 col-xl-8'>
+<div class='col-sm-12 col-md-12 col-lg-12 col-xl-12'>
 <br>
 <form name='form' method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>?project_id=<?php echo $project->get_project_id(); ?>'>
 	<input type='hidden' name='project_id' value='<?php echo $project->get_project_id(); ?>'>

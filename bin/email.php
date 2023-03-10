@@ -1,7 +1,5 @@
 #!/usr/bin/env php
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 chdir(dirname(__FILE__));
 
 $include_paths = array('../libs');
@@ -16,6 +14,8 @@ spl_autoload_register('my_autoloader');
 
 require_once '../conf/settings.inc.php';
 require_once '../vendor/autoload.php';
+
+date_default_timezone_set(settings::get_timezone());
 
 //Command parameters
 $output_command = "email.php Emails users their monthly bill\n";

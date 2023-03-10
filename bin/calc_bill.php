@@ -15,6 +15,8 @@ spl_autoload_register('my_autoloader');
 require_once '../conf/settings.inc.php';
 require_once '../vendor/autoload.php';
 
+date_default_timezone_set(settings::get_timezone());
+
 //Command parameters
 $output_command = "calc_bill.php Calculates Data and Job Monthly Billing\n";
 $output_command .= "Defaults to previous month\n";

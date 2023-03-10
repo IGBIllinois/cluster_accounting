@@ -92,16 +92,16 @@ class statistics {
                         ':year'=>$year
                 );
 
-		$sql = "SELECT MONTH(jobs.job_end_time) as month,  ";
-		$sql .= "count(1) as num_jobs ";
-		$sql .= "FROM jobs ";
-		$sql .= "WHERE YEAR(jobs.job_end_time)=:year ";
+		$sql = "SELECT MONTH(job_bill.job_bill_date) as month,  ";
+		$sql .= "SUM(job_bill.job_bill_num_jobs) as num_jobs ";
+		$sql .= "FROM job_bill ";
+		$sql .= "WHERE YEAR(job_bill.job_bill_date)=:year ";
 		if ($user_id) {
-                        $sql .= "AND jobs.job_user_id=:user_id ";
+                        $sql .= "AND job_bill.job_bill_user_id=:user_id ";
 			$parameters[':user_id'] = $user_id;
                 }
-		$sql .= "GROUP BY MONTH(jobs.job_end_time) ";
-		$sql .= "ORDER BY MONTH(jobs.job_end_time) ASC";
+		$sql .= "GROUP BY MONTH(job_bill.job_bill_date) ";
+		$sql .= "ORDER BY MONTH(job_bill.job_bill_date) ASC";
 		$result = $this->db->query($sql,$parameters);
 		
 		return $this->get_month_array($result,"month","num_jobs");
@@ -111,16 +111,18 @@ class statistics {
 		$parameters = array(
                         ':year'=>$year
                 );
-                $sql = "SELECT MONTH(job_end_time) as month,ROUND(SUM(job_billed_cost),2) as billed_cost ";
-                $sql .= "FROM jobs ";
-                $sql .= "WHERE YEAR(job_end_time)=:year ";
+                $sql = "SELECT MONTH(job_bill_date) as month, ";
+		$sql .= "ROUND(SUM(job_bill_billed_cost),2) as billed_cost ";
+                $sql .= "FROM job_bill ";
+                $sql .= "WHERE YEAR(job_bill_date)=:year ";
                 if ($user_id) {
-                        $sql .= "AND jobs.job_user_id=:user_id ";
+                        $sql .= "AND job_bill.job_bill_user_id=:user_id ";
 			$parameters[':user_id'] = $user_id;
                 }
 
-                $sql .= "GROUP BY MONTH(job_end_time)";
-		$sql .= "ORDER BY MONTH(job_end_time) ASC";
+                $sql .= "GROUP BY MONTH(job_bill_date)";
+		$sql .= "ORDER BY MONTH(job_bill_date) ASC";
+		error_log($sql);
                 $result = $this->db->query($sql,$parameters);
 		return $this->get_month_array($result,"month","billed_cost");
 
@@ -131,97 +133,23 @@ class statistics {
                         ':year'=>$year
                 );
 
-                $sql = "SELECT MONTH(job_end_time) as month,ROUND(SUM(job_total_cost),2) as total_cost ";
-                $sql .= "FROM jobs ";
-                $sql .= "WHERE YEAR(job_end_time)=:year ";
+                $sql = "SELECT MONTH(job_bill_date) as month, ";
+		$sql .= "ROUND(SUM(job_bill_total_cost),2) as total_cost ";
+                $sql .= "FROM job_bill ";
+                $sql .= "WHERE YEAR(job_bill_date)=:year ";
                 if ($user_id) {
-                        $sql .= "AND jobs.job_user_id=:user_id ";
+                        $sql .= "AND job_bill.job_bill_user_id=:user_id ";
 			$parameters[':user_id'] = $user_id;
                 }
 
-                $sql .= "GROUP BY MONTH(job_end_time)";
+                $sql .= "GROUP BY MONTH(job_bill_date)";
+		$sql .= "ORDER BY MONTH(job_bill_date) ASC";
                 $result = $this->db->query($sql,$parameters);
                 return $this->get_month_array($result,"month","total_cost");
 
 
         }
 
-	public function get_longest_job($start_date,$end_date) {
-		$sql = "SELECT SEC_TO_TIME(MAX(TIME_TO_SEC(jobs.job_ru_wallclock))) as max_job_length ";
-		$sql .= "FROM jobs ";
-		$sql .= "WHERE DATE(job_end_time) BETWEEN :start_date AND :end_date";
-		$parameters = array(
-			':start_date'=>$start_date->format("Y-m-d H:i:s"),
-			':end_date'=>$end_date->format("Y-m-d H:i:s")
-		);
-		$result = $this->db->query($sql,$parameters);
-		$max_job_length = $result[0]['max_job_length'];
-		if (!$max_job_length) {
-			$max_job_length = "00:00:00";
-		}
-		return $max_job_length;
-	}
-
-	public function get_avg_job($start_date,$end_date) {
-		$sql = "SELECT SEC_TO_TIME(ROUND(AVG(TIME_TO_SEC(jobs.job_ru_wallclock)))) as avg_job_length ";
-		$sql .= "FROM jobs ";
-		$sql .= "WHERE DATE(job_end_time) BETWEEN :start_date AND :end_date";
-		$parameters = array(
-			':start_date'=>$start_date->format("Y-m-d H:i:s"),
-                        ':end_date'=>$end_date->format("Y-m-d H:i:s")
-		);
-		$result = $this->db->query($sql,$parameters);
-		$avg_job_length = $result[0]['avg_job_length'];
-		if (!$avg_job_length) {
-			$avg_job_length = "00:00:00";
-		}
-		return $avg_job_length;
-	}
-
-
-	//get_avg_wait()
-	//calculates the average of the time between when the job is submitted to the queue till it starts to run.
-	//$state_date - start date
-	//$end_date - end date
-	//returns number of secs
-	public function get_avg_wait($start_date,$end_date) {
-		$sql = "SELECT SEC_TO_TIME(ROUND(AVG(TIME_TO_SEC(TIMEDIFF(job_start_time,job_submission_time))))) AS avg_wait ";
-		$sql .= "FROM jobs ";
-		$sql .= "WHERE DATE(job_end_time) BETWEEN :start_date AND :end_date";
-		$parameters = array(
-                        ':start_date'=>$start_date->format("Y-m-d H:i:s"),
-                        ':end_date'=>$end_date->format("Y-m-d H:i:s")
-                );
-
-		$result = $this->db->query($sql,$parameters);
-		$avg_wait = $result[0]['avg_wait'];
-		if (!$avg_wait) {
-			$avg_wait = "00:00:00";
-		}
-		return $avg_wait;
-	}
-
-	//get_wait_time()
-	//returns the difference between start_time and submission_time for each job in a specified period.
-	//$start_date - start date of period
-	//$end_date - end date of period
-	//returns array of wait time for each job in seconds.
-	public function get_wait_time($start_date,$end_date) {
-		$sql = "SELECT TIME_TO_SEC(TIMEDIFF(job_start_time,job_submission_time)) as wait_time ";
-		$sql .= "FROM jobs ";
-		$sql .= "WHERE DATE(job_end_time) BETWEEN :start_date AND :end_date";
-		$parameters = array(
-                        ':start_date'=>$start_date->format("Y-m-d H:i:s"),
-                        ':end_date'=>$end_date->format("Y-m-d H:i:s")
-                );
-		$sql_result =  $this->db->query($sql,$parameters);
-		$result = array();
-		foreach($sql_result as $value) {
-			array_push($result,$value['wait_time']);
-
-		}
-		return $result;
-	}
 
 	public function get_jobs_summary($start_date,$end_date,$sort = "user_name", $direction = "ASC") {
 

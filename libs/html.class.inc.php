@@ -91,6 +91,22 @@ class html {
                 return array('back_url'=>$back_url,'forward_url'=>$forward_url);
 
         }
+	public static function get_url_navigation_year($url,$year,$get_array = array()) {
+                $current_date = DateTime::createFromFormat('Y-m-d H:i:s',$year . "-01-01 00:00:00");
+
+                $next_date = clone $current_date;
+                $next_date->modify('first day of next year');
+                $next_get_array = array_merge(array('year'=>$next_date->format('Y')),$get_array);
+                $forward_url = $url . "?" . http_build_query($next_get_array);
+
+                $previous_date = clone $current_date;
+                $previous_date->modify('first day of previous year');
+                $previous_get_array = array_merge(array('year'=>$previous_date->format('Y')),$get_array);
+                $back_url = $url . "?" . http_build_query($previous_get_array);
+
+                return array('back_url'=>$back_url,'forward_url'=>$forward_url);
+
+        }
 
 
 	public static function get_jobs_rows($jobs,$start = 0,$count = 0) {
