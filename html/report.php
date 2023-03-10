@@ -31,14 +31,6 @@ elseif (isset($_POST['project_report'])) {
 	$data = functions::get_projects($db,1,$_POST['custom'],$_POST['search']);
 }
 
-elseif (isset($_POST['create_data_report'])) {
-	$month = $_POST['month'];
-        $year = $_POST['year'];
-        $type = $_POST['report_type'];
-        $data = data_functions::get_data_bill($db,$month,$year);
-	$filename = $prefix . "-data-" . $month . "-" . $year . "." . $type;
-}
-
 elseif (isset($_POST['create_user_report'])) {
 	$type = $_POST['report_type'];
 	$data = user_functions::get_users($db,$ldap);
@@ -51,10 +43,35 @@ elseif (isset($_POST['create_job_boa_report'])) {
         $type = $_POST['report_type'];
         $data = job_functions::get_jobs_boa_bill($db,$month,$year);
         $filename = $prefix . "-job-boa-" . $month . "-" . $year . "." . $type;
+}
 
+elseif (isset($_POST['create_job_fbs_report'])) {
+        $month = $_POST['month'];
+        $year = $_POST['year'];
+        $type = $_POST['report_type'];
+        $data = job_functions::get_jobs_fbs_bill($db,$month,$year);
+        $filename = $prefix . "-job-fbs-" . $month . "-" . $year . "." . $type;
 
 
 }
+elseif (isset($_POST['create_job_custom_report'])) {
+        $month = $_POST['month'];
+        $year = $_POST['year'];
+        $type = $_POST['report_type'];
+        $data = job_functions::get_jobs_custom_bill($db,$month,$year);
+        $filename = $prefix . "-job-custom-" . $month . "-" . $year . "." . $type;
+
+
+}
+
+elseif (isset($_POST['create_data_report'])) {
+        $month = $_POST['month'];
+        $year = $_POST['year'];
+        $type = $_POST['report_type'];
+        $data = data_functions::get_data_bill($db,$month,$year);
+        $filename = $prefix . "-data-" . $month . "-" . $year . "." . $type;
+}
+
 elseif (isset($_POST['create_data_boa_report'])) {
 
 	$month = $_POST['month'];
@@ -62,16 +79,6 @@ elseif (isset($_POST['create_data_boa_report'])) {
         $type = $_POST['report_type'];
         $data = data_functions::get_data_boa_bill($db,$month,$year,settings::get_data_minimal_bill());
         $filename = $prefix . "-data-boa-" . $month . "-" . $year . "." . $type;
-
-}
-
-elseif (isset($_POST['create_job_custom_report'])) {
-	        $month = $_POST['month'];
-        $year = $_POST['year'];
-        $type = $_POST['report_type'];
-        $data = job_functions::get_jobs_custom_bill($db,$month,$year);
-        $filename = $prefix . "-job-custom-" . $month . "-" . $year . "." . $type;
-
 
 }
 
