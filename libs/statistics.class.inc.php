@@ -122,7 +122,6 @@ class statistics {
 
                 $sql .= "GROUP BY MONTH(job_bill_date)";
 		$sql .= "ORDER BY MONTH(job_bill_date) ASC";
-		error_log($sql);
                 $result = $this->db->query($sql,$parameters);
 		return $this->get_month_array($result,"month","billed_cost");
 

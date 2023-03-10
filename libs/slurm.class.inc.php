@@ -32,7 +32,6 @@ class slurm {
 		foreach ($output_array as $job_array) {
 			array_push($job_data,array_combine(explode(",",self::SLURM_FORMAT),explode(self::SLURM_DELIMITER,$job_array)));
 		}
-		//functions::log(memory_get_usage() - $startMemory . " bytes");
 		return self::format_slurm_accounting($job_data);
 	}
 
@@ -59,7 +58,16 @@ class slurm {
 
 
 	public static function add_accounting($db,$ldap,$job_data) {
-		if (!strpos($job_data['JobID'],".batch") && !strpos($job_data['JobID'],".0") && !strpos($job_data['JobID'],".extern")){
+
+		$job_array_regex = "/^\d+_\[\d+-\d+\]/";
+		$job_array_limit_regex = "/^\d+_\[\d+-\d+\%\d+\]/";
+
+		if (!strpos($job_data['JobID'],".batch") && 
+			!strpos($job_data['JobID'],".0") && 
+			!strpos($job_data['JobID'],".extern") &&
+			!preg_match($job_array_regex,$job_data['JobID']) &&
+			!preg_match($job_array_limit_regex,$job_data['JobID'])
+		) {
 			$job = new job($db);
 			if ($job_data['Account'] == "") {
 				$job_data['Account'] = $job_data['User'];
