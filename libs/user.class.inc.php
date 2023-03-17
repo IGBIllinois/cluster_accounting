@@ -457,13 +457,11 @@ class user {
 			functions::log("Email Bill - User " . $this->get_username() . " email is not set");
 		}
 		else {
-			$start_date = $year . $month . "01";
-			$end_date = $year . $month . date('t',strtotime($start_date));
-
+			$bill_month = DateTime::createFromFormat("Y-m-d H:i:s",$year . "-" . $month . "-01 00:00:00");
 		
-			$user_stats = new user_stats($this->db,$this->get_user_id(),$start_date,$end_date);
+			$user_stats = new user_stats($this->db,$this->get_user_id(),$month,$year);
 
-			$subject = "Biocluster Accounting Bill - " . \IGBIllinois\Helper\date_helper::get_pretty_date($start_date) . "-" . \IGBIllinois\Helper\date_helper::get_pretty_date($end_date);
+			$subject = "Biocluster Accounting Bill - " . $bill_month->format('F') . " - " . $bill_month->format('Y');
 
 			$to = $this->get_email();
 			if (settings::get_debug()) {
@@ -472,8 +470,8 @@ class user {
 			
 			$twig_variables = array(
         	                'css' => settings::get_email_css_contents(),
-                	        'start_date' => \IGBIllinois\Helper\date_helper::get_pretty_date($start_date),
-                        	'end_date' => \IGBIllinois\Helper\date_helper::get_pretty_date($end_date),
+                	        'month' => $bill_month->format('F'),
+                        	'year' => $bill_month->format('Y'),
 	                        'full_name' => $this->get_full_name(),
         	                'username' => $this->get_username(),
 				'num_jobs' => $user_stats->get_num_jobs(),
