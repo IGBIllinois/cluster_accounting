@@ -65,6 +65,15 @@ class project {
 			$error = true;
 			$message .= "<div class='alert alert-danger'>Please enter valid CFOP.</div>";
 		}
+		try {
+                        $cfop_obj =  new \IGBIllinois\cfop(settings::get_cfop_api_key(),settings::get_debug());
+                        $cfop_obj->validate_cfop($cfop,$activity);
+
+                }
+                catch (\Exception $e) {
+                        $error = true;
+                        $message .= "<div class='alert alert-danger'>" . $e->getMessage() . "</div>";
+                }
 
 		if ($error) {
 			return array('RESULT'=>false,
@@ -97,6 +106,16 @@ class project {
                 	        $message = "<div class='alert alert-danger'>Please verify CFOP</div>";
 
 	                }	
+			try {
+				$cfop_obj =  new \IGBIllinois\cfop(settings::get_cfop_api_key(),settings::get_debug());
+				$cfop_obj->validate_cfop($cfop,$activity);
+
+			}
+			catch (\Exception $e) {
+				$error = true;
+				$message .= "<div class='alert alert-danger'>" . $e->getMessage() . "</div>";
+			}
+
 			if (!$error) {
 				$result = $this->set_cfop($cfop_billtype,$cfop,$activity,$hide_cfop,$custom_bill_description);
 				return array('RESULT'=>true,

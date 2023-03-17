@@ -75,6 +75,15 @@ class user {
 			$message .= "<div class='alert alert-danger'>Invalid CFOP.</div>";
 		}
 
+		try {
+			$cfop_obj =  new \IGBIllinois\cfop(settings::get_cfop_api_key(),settings::get_debug());
+			$cfop_obj->validate_cfop($cfop,$activity);
+			
+		}
+		catch (\Exception $e) {
+			$error = true;
+			$message .= "<div class='alert alert-danger'>" . $e->getMessage() . "</div>";
+		}
 		if (($cfop_billtype == project::BILLTYPE_CUSTOM) && ($custom_bill_description == ""))  {
 			$error = true;
 			$message .= "<div class='alert alert-danger'>Please enter a custom bill description</div>";

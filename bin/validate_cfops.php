@@ -71,23 +71,48 @@ $start_time = microtime(true);
 $log->send_log("Validate CFOPs: Start");	
 
 $cfops = functions::get_all_cfops($db);
-$cfop_class =  new \IGBIllinois\cfop(settings::get_cfop_api_key(),settings::get_debug());
-
+$cfop_obj =  new \IGBIllinois\cfop(settings::get_cfop_api_key(),settings::get_debug());
+$txt_message = "Invalid CFOPS\n\n";
 foreach ($cfops as $cfop) {
-	try {
-	        $result = $cfop_class->validate_cfop($cfop['cfop'],$cfop['activity_code']);
-	}
-	catch (\Exception $e) {
-		$message = $cfop['cfop'];
-		if ($cfop['activity_code'] != "") {
-			$message .= " - " . $cfop['activity_code'];
+	if (!$dryrun) {
+		try {
+	        	$result = $cfop_obj->validate_cfop($cfop['cfop'],$cfop['activity_code']);
 		}
-        	echo $message . " " . $e->getMessage() . "\n";
+		catch (\Exception $e) {
+			$message = $cfop['cfop'];
+			if ($cfop['activity_code'] != "") {
+				$message .= " - " . $cfop['activity_code'];
+			}
+	        	echo $message . " " . $e->getMessage() . "\n";
+			$txt_message .= $message . " " . $e->getMessage() . "\n";
+		}
 	}
-
 }
 
+if ($send_email) {
+	
+	$subject = "Biocluster - Invalid CFOPS";
 
+	$email = new \IGBIllinois\email(settings::get_smtp_host(),
+                                                settings::get_smtp_port(),
+                                                settings::get_smtp_username(),
+                                                settings::get_smtp_password());
+	$email->set_to_emails(settings::get_admin_email());
+	try {
+		echo $txt_message;
+		$result = $email->send_email(settings::get_from_email(),$subject,$txt_message,"",settings::get_from_name());
+		$message = "Email Invalid CFOPS successfully sent to " . settings::get_admin_email();
+		echo $message;
+
+	}
+	catch (Exception $e) {
+		$message = "Email Invalid CFOPS: Error sending mail. " . $e->getMessage();
+		echo $message;
+	}
+
+
+
+}
 
 $end_time = microtime(true);
 $elapsed_time = round($end_time - $start_time,2);
