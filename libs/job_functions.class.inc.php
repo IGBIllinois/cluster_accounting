@@ -115,7 +115,7 @@ class job_functions {
                 $sql .= "CONCAT(users.user_firstname,users.user_lastname) as 'RequestedBy', ";
                 $sql .= "users.user_name as 'NAME', CONCAT(cfops.cfop_value,IF(cfops.cfop_activity <> '','-',''),cfops.cfop_activity) as 'CFOP', ";
                 $sql .= "'BIOCLUSTER' as 'SKU_Code', CONCAT(:month,'-',:year) as 'UsageDate', ";
-                $sql .= "'1.000' as 'Quantity', ROUND(job_bill.job_bill_billed_cost,2) as 'UnitPriceOverride', ";
+                $sql .= "'1.000' as 'Quantity', ROUND(SUM(job_bill.job_bill_billed_cost),2) as 'UnitPriceOverride', ";
                 $sql .= "CONCAT('Biocluster Jobs - ',users.user_name) as 'PrintableComments', ";
                 $sql .= "'' as 'UsageRef', '' as 'OrderRef', '' as 'PO_Ref','' as 'PayAlias', ";
                 $sql .= "'' as 'bNonBillable','' as 'NonPrintableComments' ";
@@ -127,6 +127,7 @@ class job_functions {
                 $sql .= "WHERE YEAR(job_bill.job_bill_date)=:year ";
                 $sql .= "AND MONTH(job_bill.job_bill_date)=:month ";
                 $sql .= "AND cfops.cfop_billtype=:billtype ";
+		$sql .= "GROUP BY job_bill.job_bill_user_id ";
                 $sql .= "ORDER BY LabName ASC";
                 $parameters = array(
                         ':month'=>$month,
