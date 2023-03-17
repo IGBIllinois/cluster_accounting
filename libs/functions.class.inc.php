@@ -169,6 +169,22 @@ class functions {
 
 	}
 
+	public static function get_all_cfops($db) {
+		$sql = "SELECT cfop_value as cfop, ";
+		$sql .= "cfop_activity as activity_code ";
+		$sql .= "FROM cfops ";
+		$sql .= "WHERE cfop_billtype=:billtype ";
+		$sql .= "AND cfop_active=1 ";
+		$sql .= "GROUP BY cfop_value,cfop_activity ";
+		$sql .= "ORDER BY cfop,activity_code ";
+		$parameters = array(
+			'billtype'=>project::BILLTYPE_CFOP
+		);
+		return $db->query($sql,$parameters);
+
+
+	}
+
 	public static function recursive_array_search($needle,$haystack) {
 		foreach($haystack as $key=>$value) {
 			$current_key=$key;
@@ -178,7 +194,6 @@ class functions {
 		}
 		return false;
 	}
-
 }
 
 ?>
