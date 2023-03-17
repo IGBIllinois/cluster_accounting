@@ -295,6 +295,7 @@ class project {
 		return $result;
 	}
 	public function disable() {
+		$cfop_result = $this->disable_all_cfops();
 		$sql = "UPDATE projects SET project_enabled='0' ";
 		$sql .= "WHERE project_id=:project_id LIMIT 1";
 		$parameters = array(
@@ -383,6 +384,17 @@ class project {
 		}
 	}
 
+	private function disable_all_cfops() {
+		$sql = "UPDATE cfops SET cfop_active=:active ";
+		$sql .= "WHERE cfop_project_id=:project_id ";
+		$parameters = array(
+			':active'=>0,
+			':project_id'=>$this->get_project_id()
+		);
+		$result = $this->db->non_select_query($sql,$parameters);
+		return $result;
+
+	}
 }
 
 ?>

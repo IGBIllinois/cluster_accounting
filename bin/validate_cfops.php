@@ -21,6 +21,7 @@ date_default_timezone_set(settings::get_timezone());
 $output_command = "validate_cfops.php Validates active CFOPs against Banner Database\n";
 $output_command .= "Usage: php data.php \n";
 $output_command .= "	--dry-run	Do dry run, do not submit\n";
+$output_command .= "	--email		Sends email to admin email address with report\n";
 $output_command .= "    -h, --help              Display help menu\n";
 
 //Parameters
@@ -28,6 +29,7 @@ $shortopts = "h";
 
 $longopts = array(
 	"dry-run",
+	"email",
         "help"
 );
 
@@ -37,12 +39,23 @@ if ($sapi_type != 'cli') {
 	exit("Error: This script can only be run from the command line.");
 }
 
+$send_email = false;
+$dryrun = false;
+
 $options = getopt($shortopts,$longopts);
 
 if (isset($options['h']) || isset($options['help'])) {
 	echo $output_command;
 	exit;
 }
+
+if (isset($options['dry-run'])) {
+	$dryrun = true;
+}
+if (isset($options['email'])) {
+	$send_email = true;
+}
+
 
 $db = new \IGBIllinois\db(settings::get_mysql_host(),
 	settings::get_mysql_database(),
@@ -58,11 +71,23 @@ $start_time = microtime(true);
 $log->send_log("Validate CFOPs: Start");	
 
 $cfops = functions::get_all_cfops($db);
-foreach ($cfops as $cfop) {
-	echo $cfop['cfop'] . " " . $cfop['activity_code'] . "\n";
+$cfop_class =  new \IGBIllinois\cfop(settings::get_cfop_api_key(),settings::get_debug());
 
+foreach ($cfops as $cfop) {
+	try {
+	        $result = $cfop_class->validate_cfop($cfop['cfop'],$cfop['activity_code']);
+	}
+	catch (\Exception $e) {
+		$message = $cfop['cfop'];
+		if ($cfop['activity_code'] != "") {
+			$message .= " - " . $cfop['activity_code'];
+		}
+        	echo $message . " " . $e->getMessage() . "\n";
+	}
 
 }
+
+
 
 $end_time = microtime(true);
 $elapsed_time = round($end_time - $start_time,2);

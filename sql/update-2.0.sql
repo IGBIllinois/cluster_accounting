@@ -22,7 +22,8 @@ ALTER TABLE cfops ADD cfop_custom_description VARCHAR(255) AFTER cfop_activity;
 UPDATE cfops SET cfop_billtype='no_bill' WHERE cfop_bill=0;
 UPDATE cfops SET cfop_billtype='cfop' WHERE cfop_bill=1;
 UPDATE cfops SET cfop_billtype='custom',cfop_custom_description='Credit Card',cfop_value='',cfop_activity='' WHERE cfop_value='5-555555-555555-555555';
-
+UPDATE cfops SET cfop_billtype='custom',cfop_custom_description='Credit Card',cfop_value='',cfop_activity='' WHERE cfop_value='1-666666-666666-666666';
+UPDATE cfops SET cfop_billtype='custom',cfop_custom_description='Credit Card',cfop_value='',cfop_activity='' WHERE cfop_value='3-333333-333333-333333';
 ALTER TABLE cfops DROP COLUMN cfop_bill;
 ALTER TABLE data_bill MODIFY COLUMN data_bill_total_cost DECIMAL(30,2);
 ALTER TABLE data_bill MODIFY COLUMN data_bill_billed_cost DECIMAL(30,2);

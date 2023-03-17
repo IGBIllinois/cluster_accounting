@@ -300,6 +300,12 @@ class settings {
 		return self::REPORT_PREFIX;
 
 	}
+	public static function get_cfop_api_key() {
+		if (defined("CFOP_API_KEY")) {
+			return CFOP_API_KEY;
+		}
+		return false;
+	}
 }
 
 ?>
