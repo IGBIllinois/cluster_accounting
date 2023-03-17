@@ -30,54 +30,59 @@ $month_html .= "</select>";
 require_once 'includes/header.inc.php';
 
 ?>
-
 <h3>Reports</h3>
-<br>
-<h4>Users</h4>
+<form method='post' action='report.php'>
+<h4>User Reports</h4>
 <div class='row'>
-<form class='form-inline' method='post' action='report.php'>
+	<div class='col-sm-3 col-md-3 col-lg-3 col-xl-3'>
                 <select class='form-control custom-select' name='report_type'>
-                <option value='xlsx'>Excel 2007</option>
+                <option value='xlsx'>Excel</option>
                 <option value='csv'>CSV</option>
-        </select>&nbsp;
+        </select>
+	</div>
+	<div class='col'>
 	<input class='btn btn-primary' type='submit'
                 name='create_user_report' value='Download User List'>
-</form>
-
+	</div>
+</div>
+<br>
+<h4>Select Date and Format</h4>
+<div class='row'>
+	<div class='col-sm-3 col-md-3 col-lg-3 col-xl-3'>
+		<?php echo $year_html; ?>
+	</div>
+	<div class='col-sm-3 col-md-3 col-lg-3 col-xl-3'>
+		<?php echo $month_html; ?>
+	</div>
+	<div class='col-sm-3 col-md-3 col-lg-3 col-xl-3'>
+        <select name='report_type' class='form-control custom-select'>
+                <option value='xlsx'>Excel</option>
+                <option value='csv'>CSV</option>
+        </select>
+        </div>
 </div>
 <br>
 <h4>Jobs</h4>
 <div class='row'>
-<form class='form-inline' action='report.php' method='post'>
-	<?php echo $year_html; ?>
-	<?php echo $month_html; ?>
-        <select name='report_type' class='form-control custom-select'>
-                <option value='xlsx'>Excel 2007</option>
-                <option value='csv'>CSV</option>
-        </select>&nbsp;
-        <input class='btn btn-primary' type='submit' name='create_job_report' value='Download Full Report'>&nbsp;
-        <input class='btn btn-primary' type='submit' name='create_job_boa_report' value='Download BOA Report'>&nbsp;
-        <input class='btn btn-primary' type='submit' name='create_job_fbs_report' value='Download FBS Report'>&nbsp;
-        <input class='btn btn-primary' type='submit' name='create_job_custom_report' value='Download Custom Billing Report'>
+	<div class='col'>
+	        <input class='btn btn-primary' type='submit' name='create_job_report' value='Download Full Report'>&nbsp;
+        	<input class='btn btn-primary' type='submit' name='create_job_boa_report' value='Download BOA Report'>&nbsp;
+	        <input class='btn btn-primary' type='submit' name='create_job_fbs_report' value='Download FBS Report'>&nbsp;
+        	<input class='btn btn-primary' type='submit' name='create_job_custom_report' value='Download Custom Billing Report'>
+	</div>
 
-</form>
 </div>
 <br>
 <h4>Data Usage</h4>
 <div class='row'>
-<form class='form-inline' action='report.php' method='post'>
-	<?php echo $year_html; ?>
-        <?php echo $month_html; ?>
-        <select class='custom-select' name='report_type'>
-                <option value='xlsx'>Excel 2007</option>
-                <option value='csv'>CSV</option>
-        </select>&nbsp;
-        <input class='btn btn-primary' type='submit' name='create_data_report' value='Download Full Report'>&nbsp;
-        <input class='btn btn-primary' type='submit' name='create_data_boa_report' value='Download BOA Report'>&nbsp;
-        <input class='btn btn-primary' type='submit' name='create_data_fbs_report' value='Download FBS Report'>&nbsp;
-        <input class='btn btn-primary' type='submit' name='create_data_custom_report' value='Download Custom Billing Report'>
-</form>
+	<div class='col'>
+	        <input class='btn btn-primary' type='submit' name='create_data_report' value='Download Full Report'>&nbsp;
+        	<input class='btn btn-primary' type='submit' name='create_data_boa_report' value='Download BOA Report'>&nbsp;
+	        <input class='btn btn-primary' type='submit' name='create_data_fbs_report' value='Download FBS Report'>&nbsp;
+        	<input class='btn btn-primary' type='submit' name='create_data_custom_report' value='Download Custom Billing Report'>
+	</div>
 </div>
+</form>
 <?php
 
 require_once 'includes/footer.inc.php';
