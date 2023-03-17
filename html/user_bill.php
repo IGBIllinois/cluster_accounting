@@ -45,7 +45,7 @@ if ($login_user->is_admin()) {
 }
 $user_list_html = "";
 if (count($user_list)) {
-	$user_list_html = "<label>User: </label><select class='custom-select' name='user_id' id='user_input'>";
+	$user_list_html = "<label>User: </label>&nbsp;<select class='custom-select' name='user_id' id='user_input'>";
 	if ((!isset($_GET['user_id'])) || ($_GET['user_id'] == $login_user->get_user_id())) {
                 $user_list_html .= "<option value='" . $login_user->get_user_id(). "' selected='selected'>";
                 $user_list_html .= $login_user->get_username() . "</option>";
@@ -219,7 +219,7 @@ require_once 'includes/header.inc.php';
 	<input type='hidden' name='end_date' value='<?php echo $end_date; ?>'>
 	<input type='hidden' name='user_id' value='<?php echo $user_id;?>'>
 	<select name='report_type' class='custom-select'>
-                <option value='xlsx'>Excel 2007</option>
+                <option value='xlsx'>Excel</option>
                 <option value='csv'>CSV</option>
         </select>&nbsp;
 	<input class='btn btn-primary' type='submit' name='user_job_report' value='Download Cluster Usage Report'>

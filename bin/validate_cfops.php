@@ -71,7 +71,7 @@ $start_time = microtime(true);
 $log->send_log("Validate CFOPs: Start");	
 
 $cfops = functions::get_all_cfops($db);
-$cfop_obj =  new \IGBIllinois\cfop(settings::get_cfop_api_key(),settings::get_debug());
+$cfop_obj =  new \IGBIllinois\cfop(settings::get_cfop_api_key());
 $txt_message = "Invalid CFOPS\n\n";
 foreach ($cfops as $cfop) {
 	if (!$dryrun) {

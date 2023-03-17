@@ -125,7 +125,7 @@ require_once 'includes/header.inc.php';
         <input type='hidden' name='month' value='<?php echo $month; ?>'>
 	<input type='hidden' name='year' value='<?php echo $year; ?>'>
 	<select class='custom-select' name='report_type'>
-                <option value='xlsx'>Excel 2007</option>
+                <option value='xlsx'>Excel</option>
                 <option value='csv'>CSV</option>
         </select>&nbsp;
 	<input class='btn btn-primary' type='submit' name='create_data_report' value='Download Full Report'>&nbsp;

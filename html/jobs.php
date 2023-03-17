@@ -160,7 +160,7 @@ require_once 'includes/header.inc.php';
 	<input type='hidden' name='completed' value='<?php echo $completed; ?>'>
 	<div class='form-group'>
 	<select class='custom-select custom-select-sm' name='report_type'>
-                <option value='xlsx'>Excel 2007</option>
+                <option value='xlsx'>Excel</option>
                 <option value='csv'>CSV</option>
         </select>
 	</div>
