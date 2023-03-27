@@ -108,7 +108,7 @@ if (isset($_POST['login'])) {
 </nav>
 <br>
 	
-<div class='container-fluid'>
+<div class='container'>
 	<div class='row'>
 		<div class='col-sm-10 col-md-10 col-lg-10 col-xl-10'>
 			<div class='jumbotron'>
