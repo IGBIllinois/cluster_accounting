@@ -56,4 +56,6 @@ define('CFOP_API_KEY','');
 
 define('FBS_ACCESS_KEY','');
 define('FBS_SECRET_KEY','');
+define('FBS_FACILITY_ID','');
+
 ?>

@@ -352,12 +352,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/IGBIllinois/IGBIllinois-php.git",
-                "reference": "7a5f48b9be490ac8bcd326152ba609f48f085449"
+                "reference": "b770661991b5df0d0e2c6ad51b35409bc0c6a816"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/IGBIllinois/IGBIllinois-php/zipball/7a5f48b9be490ac8bcd326152ba609f48f085449",
-                "reference": "7a5f48b9be490ac8bcd326152ba609f48f085449",
+                "url": "https://api.github.com/repos/IGBIllinois/IGBIllinois-php/zipball/b770661991b5df0d0e2c6ad51b35409bc0c6a816",
+                "reference": "b770661991b5df0d0e2c6ad51b35409bc0c6a816",
                 "shasum": ""
             },
             "require": {
@@ -402,7 +402,7 @@
                 "source": "https://github.com/IGBIllinois/IGBIllinois-php/tree/main",
                 "issues": "https://github.com/IGBIllinois/IGBIllinois-php/issues"
             },
-            "time": "2023-03-27T18:26:19+00:00"
+            "time": "2023-03-27T20:14:39+00:00"
         },
         {
             "name": "maennchen/zipstream-php",

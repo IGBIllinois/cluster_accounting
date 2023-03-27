@@ -201,7 +201,20 @@ class data_functions {
 			':minimal_bill'=>$minimal_bill,
 			':billtype'=>project::BILLTYPE_CFOP
                 );
-                return $db->query($sql,$parameters);
+                $report = $db->query($sql,$parameters);
+		$fbs_customers = functions::get_fbs_labcodes();
+                foreach ($report as &$record) {
+                        for ($i=0; $i<count($fbs_customers); $i++) {
+                                if (trim($record['LabName']) == trim($fbs_customers[$i]['CustomerDirectoryName'])) {
+                                        $record['LabCode'] = $fbs_customers[$i]['CustomerCode'];
+                                        break;
+                                }
+
+                        }
+
+                }
+                return $report;
+
         }
 
 	public static function get_existing_dirs() {

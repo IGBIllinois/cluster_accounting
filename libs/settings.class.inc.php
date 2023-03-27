@@ -320,8 +320,12 @@ class settings {
 			return FBS_SECRET_KEY;
 		}
 		return false;
-
-
+	}
+	public static function get_fbs_facility_id() {
+		if (defined("FBS_FACILITY_ID")) {
+			return FBS_FACILITY_ID;
+		}
+		return false;
 
 	}
 }
