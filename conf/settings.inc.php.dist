@@ -54,4 +54,6 @@ define('PASSWORD_RESET_URL','');
 define('REPORT_PREFIX','Report');
 define('CFOP_API_KEY','');
 
+define('FBS_ACCESS_KEY','');
+define('FBS_SECRET_KEY','');
 ?>

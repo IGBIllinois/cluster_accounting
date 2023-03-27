@@ -306,6 +306,24 @@ class settings {
 		}
 		return false;
 	}
+
+	public static function get_fbs_access_key() {
+		if (defined("FBS_ACCESS_KEY")) {
+			return FBS_ACCESS_KEY;
+		}
+		return false;
+
+	}
+
+	public static function get_fbs_secret_key() {
+		if (defined("FBS_SECRET_KEY")) {
+			return FBS_SECRET_KEY;
+		}
+		return false;
+
+
+
+	}
 }
 
 ?>
