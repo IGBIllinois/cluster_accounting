@@ -106,9 +106,9 @@ if (isset($_POST['login'])) {
 	<a class="navbar-brand py-0" href="#"><?php echo settings::get_title(); ?></a>
 	<span class="navbar-text py-0">Version <?php echo settings::get_version(); ?></span>
 </nav>
-	<p>
+<br>
 	
-<div class='container'>
+<div class='container-fluid'>
 	<div class='row'>
 		<div class='col-sm-10 col-md-10 col-lg-10 col-xl-10'>
 			<div class='jumbotron'>

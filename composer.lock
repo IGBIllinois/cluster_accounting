@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7ccf364789dbea1b52e565eac0b36d98",
+    "content-hash": "f75cb2e91e8ec6e4c10d23b865ab3b82",
     "packages": [
         {
             "name": "amenadiel/jpgraph",
@@ -348,16 +348,16 @@
         },
         {
             "name": "igbillinois/igbillinois-php",
-            "version": "dev-main",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/IGBIllinois/IGBIllinois-php.git",
-                "reference": "7c1304f96c9eab04bf41edb72bc3d5a4377929c5"
+                "reference": "a55ab78ea59b5a49640409d043c52463d9f846d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/IGBIllinois/IGBIllinois-php/zipball/7c1304f96c9eab04bf41edb72bc3d5a4377929c5",
-                "reference": "7c1304f96c9eab04bf41edb72bc3d5a4377929c5",
+                "url": "https://api.github.com/repos/IGBIllinois/IGBIllinois-php/zipball/a55ab78ea59b5a49640409d043c52463d9f846d6",
+                "reference": "a55ab78ea59b5a49640409d043c52463d9f846d6",
                 "shasum": ""
             },
             "require": {
@@ -366,16 +366,15 @@
                 "ext-gd": "*",
                 "ext-mbstring": "*",
                 "pear/auth_sasl2": "v0.2.0",
-                "pear/mail": "1.4.1",
-                "pear/mail_mime": "1.10.9",
-                "pear/net_smtp": "1.9.2",
+                "pear/mail": "v1.5.0",
+                "pear/mail_mime": "1.10.11",
+                "pear/net_smtp": "1.10.1",
                 "php": ">=7.1",
                 "phpoffice/phpspreadsheet": ">=1.16"
             },
             "require-dev": {
-                "phpdocumentor/phpdocumentor": "2.*"
+                "phpdocumentor/phpdocumentor": "v2.9.1"
             },
-            "default-branch": true,
             "type": "project",
             "autoload": {
                 "classmap": [
@@ -399,10 +398,10 @@
                 "template"
             ],
             "support": {
-                "source": "https://github.com/IGBIllinois/IGBIllinois-php/tree/main",
+                "source": "https://github.com/IGBIllinois/IGBIllinois-php/tree/1.3.0",
                 "issues": "https://github.com/IGBIllinois/IGBIllinois-php/issues"
             },
-            "time": "2023-03-17T17:30:02+00:00"
+            "time": "2023-03-26T22:46:49+00:00"
         },
         {
             "name": "maennchen/zipstream-php",
@@ -759,16 +758,16 @@
         },
         {
             "name": "pear/mail",
-            "version": "v1.4.1",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/Mail.git",
-                "reference": "9609ed5e42ac5b221dfd9af85de005c59d418ee7"
+                "reference": "c31b7635899a630a8ce681e5ced18cededcc15f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/Mail/zipball/9609ed5e42ac5b221dfd9af85de005c59d418ee7",
-                "reference": "9609ed5e42ac5b221dfd9af85de005c59d418ee7",
+                "url": "https://api.github.com/repos/pear/Mail/zipball/c31b7635899a630a8ce681e5ced18cededcc15f3",
+                "reference": "c31b7635899a630a8ce681e5ced18cededcc15f3",
                 "shasum": ""
             },
             "require": {
@@ -792,12 +791,17 @@
                 "./"
             ],
             "license": [
-                "BSD-2-Clause"
+                "BSD-3-Clause"
             ],
             "authors": [
                 {
                     "name": "Chuck Hagenbuch",
                     "email": "chuck@horde.org",
+                    "role": "Lead"
+                },
+                {
+                    "name": "Armin Graefe",
+                    "email": "schengawegga@gmail.com",
                     "role": "Lead"
                 },
                 {
@@ -817,24 +821,25 @@
                 "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Mail",
                 "source": "https://github.com/pear/Mail"
             },
-            "time": "2017-04-11T17:27:29+00:00"
+            "time": "2022-11-29T22:04:18+00:00"
         },
         {
             "name": "pear/mail_mime",
-            "version": "1.10.9",
+            "version": "1.10.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/Mail_Mime.git",
-                "reference": "1e7ae4e5258b6c0d385a8e76add567934245d38d"
+                "reference": "d4fb9ce61201593d0f8c6db629c45e29c3409c14"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/Mail_Mime/zipball/1e7ae4e5258b6c0d385a8e76add567934245d38d",
-                "reference": "1e7ae4e5258b6c0d385a8e76add567934245d38d",
+                "url": "https://api.github.com/repos/pear/Mail_Mime/zipball/d4fb9ce61201593d0f8c6db629c45e29c3409c14",
+                "reference": "d4fb9ce61201593d0f8c6db629c45e29c3409c14",
                 "shasum": ""
             },
             "require": {
-                "pear/pear-core-minimal": "*"
+                "pear/pear-core-minimal": "*",
+                "php": ">=5.2.0"
             },
             "type": "library",
             "autoload": {
@@ -847,7 +852,7 @@
                 "./"
             ],
             "license": [
-                "BSD-3-clause"
+                "BSD-3-Clause"
             ],
             "authors": [
                 {
@@ -867,20 +872,20 @@
                 "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Mail_Mime",
                 "source": "https://github.com/pear/Mail_Mime"
             },
-            "time": "2020-06-27T08:35:27+00:00"
+            "time": "2021-09-05T08:42:45+00:00"
         },
         {
             "name": "pear/net_smtp",
-            "version": "1.9.2",
+            "version": "1.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/Net_SMTP.git",
-                "reference": "18b5dbaa049bee5f6d02c9a4318db02472e2c922"
+                "reference": "cfd963dc5cc73b4d64c7769e47dfa0f439dec536"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/Net_SMTP/zipball/18b5dbaa049bee5f6d02c9a4318db02472e2c922",
-                "reference": "18b5dbaa049bee5f6d02c9a4318db02472e2c922",
+                "url": "https://api.github.com/repos/pear/Net_SMTP/zipball/cfd963dc5cc73b4d64c7769e47dfa0f439dec536",
+                "reference": "cfd963dc5cc73b4d64c7769e47dfa0f439dec536",
                 "shasum": ""
             },
             "require": {
@@ -918,6 +923,11 @@
                     "name": "Chuck Hagenbuch",
                     "email": "chuck@horde.org",
                     "role": "Lead"
+                },
+                {
+                    "name": "Armin Graefe",
+                    "email": "schengawegga@gmail.com",
+                    "role": "Lead"
                 }
             ],
             "description": "An implementation of the SMTP protocol",
@@ -931,7 +941,7 @@
                 "issues": "https://github.com/pear/Net_SMTP/issues",
                 "source": "https://github.com/pear/Net_SMTP"
             },
-            "time": "2020-08-13T01:26:09+00:00"
+            "time": "2022-09-23T21:48:50+00:00"
         },
         {
             "name": "pear/net_socket",
@@ -2721,9 +2731,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "igbillinois/igbillinois-php": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
