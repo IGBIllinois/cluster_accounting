@@ -356,6 +356,7 @@ class project {
 	public function get_directories() {
 		$sql = "SELECT * FROM data_dir ";
 		$sql .= "WHERE data_dir_project_id=:project_id ";
+		$sql .= "AND data_dir_enabled=1 ";
 		$sql .= "ORDER BY data_dir_path ASC ";
 		$parameters = array(
 			':project_id'=>$this->get_project_id()

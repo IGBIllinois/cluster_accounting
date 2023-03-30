@@ -23,14 +23,12 @@ $project = new project($db,$data_dir->get_project_id());
 $graph_type = 'data_usage_daily';
 $end_date = date('Ymd');
 $start_date = date('Ymd',strtotime('-30 days'));
-
 $get_array  = array('graph_type'=>$graph_type,
 		'data_dir_id'=>$data_dir_id,
                 'start_date'=>$start_date,
                 'end_date'=>$end_date
         );
 $graph_image = "<img src='graph.php?" . http_build_query($get_array) . "'>";
-
 require_once 'includes/header.inc.php';
 
 ?>

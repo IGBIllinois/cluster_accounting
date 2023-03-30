@@ -171,7 +171,6 @@ switch ($graph_type) {
 		$data_dir_id = $_GET['data_dir_id'];
 		$data_dir = new data_dir($db,$data_dir_id);
 		$data = $data_dir->get_usage_range($start_date_obj,$end_date_obj);
-		$i = 0;
 
 		\IGBIllinois\graphs::bar_graph($data,$xaxis,$yaxis,$title);
 		break;
