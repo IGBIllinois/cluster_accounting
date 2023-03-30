@@ -108,7 +108,13 @@ $owner_html .= "</select>";
 $group_members = $project->get_group_members($ldap);
 $group_members_html = "";
 foreach ($group_members as $member) {
-	$group_members_html .= "<tr><td>" . $member . "</td></tr>";
+	$group_members_html .= "<tr><td><a href='user.php?username=" . $member . "'>" . $member . "</a></td></tr>";
+}
+
+$directories = $project->get_directories();
+$directories_html = "";
+foreach ($directories as $directory) {
+	$directories_html .= "<tr><td><a href='data_dir.php?data_dir_id=" . $directory['data_dir_id'] . "'>" . $directory['data_dir_path'] . "</a></td></tr>";
 }
 
 require_once 'includes/header.inc.php';
@@ -126,6 +132,19 @@ require_once 'includes/header.inc.php';
 </table>
 </div>
 </div>
+<br>
+<div class='card'>
+<div class='card-header'>Project Directories</div>
+<div class='col-sm-12 col-md-12 col-lg-12 col-xl-12'>
+<br>
+<table class='table table-bordered table-striped table-sm'>
+        <tbody>
+        <?php echo $directories_html; ?>
+        </tbody>
+</table>
+</div>
+</div>
+
 <br>
 <div class='card'>
 <div class='card-header'>Edit Project</div>

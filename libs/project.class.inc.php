@@ -353,6 +353,16 @@ class project {
 
 	}
 
+	public function get_directories() {
+		$sql = "SELECT * FROM data_dir ";
+		$sql .= "WHERE data_dir_project_id=:project_id ";
+		$sql .= "ORDER BY data_dir_path ASC ";
+		$parameters = array(
+			':project_id'=>$this->get_project_id()
+		);
+		return $this->db->query($sql,$parameters);
+
+	}
 	///////////////Private Functions/////////////
 
 	private function get_project($project_id) {
