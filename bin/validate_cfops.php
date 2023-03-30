@@ -99,7 +99,6 @@ if ($send_email) {
                                                 settings::get_smtp_password());
 	$email->set_to_emails(settings::get_admin_email());
 	try {
-		echo $txt_message;
 		$result = $email->send_email(settings::get_from_email(),$subject,$txt_message,"",settings::get_from_name());
 		$message = "Email Invalid CFOPS successfully sent to " . settings::get_admin_email();
 		echo $message;
