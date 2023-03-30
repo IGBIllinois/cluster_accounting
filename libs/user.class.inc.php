@@ -367,7 +367,7 @@ class user {
 				":user_id"=>$this->get_user_id()
 			);
 			$this->enabled = false;
-			$this->db->non_select_query($sql);
+			$this->db->non_select_query($sql,$parameters);
 			$this->default_project()->disable();
 			$this->default_data_dir()->disable();
 			
