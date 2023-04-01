@@ -476,7 +476,6 @@ class user {
 			if (settings::get_debug()) {
 				$to = $admin_email;
 			}
-			
 			$twig_variables = array(
         	                'css' => settings::get_email_css_contents(),
                 	        'month' => $bill_month->format('F'),

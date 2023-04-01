@@ -272,7 +272,7 @@ class data_dir {
 		$sql .= "LIMIT 1";
 		$parameters = array(
 			':data_dir_id'=>$this->get_data_dir_id(),
-			':bill_date='=>$bill_date
+			':bill_date'=>$bill_date
 		);
 		$check_exists = $this->db->query($sql,$parameters);
 		$result = true;
@@ -283,8 +283,7 @@ class data_dir {
 		}
 		else {
 	                $project = new project($this->db,$this->get_project_id());
-			$data_cost_result = data_functions::get_current_data_cost_by_type($this->db,'standard');
-        	        $data_cost = new data_cost($this->db,$data_cost_result['id']);
+			$data_cost = data_functions::get_current_data_cost($this->db);
 			$total_cost = $data_cost->calculate_cost($bytes);
 			$billed_cost = 0;
 			if ($project->get_billtype() != project::BILLTYPE_NO_BILL) {
@@ -293,7 +292,7 @@ class data_dir {
         	        $insert_array = array('data_bill_data_dir_id'=>$this->get_data_dir_id(),
                 	                'data_bill_project_id'=>$project->get_project_id(),
                         	        'data_bill_cfop_id'=>$project->get_cfop_id(),
-                                	'data_bill_data_cost_id'=>$data_cost_result['id'],
+                                	'data_bill_data_cost_id'=>$data_cost->get_id(),
 	                                'data_bill_avg_bytes'=>$bytes,
 					'data_bill_total_cost'=>$total_cost,
 					'data_bill_billed_cost'=>$billed_cost,
