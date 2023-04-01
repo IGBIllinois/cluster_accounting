@@ -460,10 +460,12 @@ class user {
 	public function email_bill($admin_email,$year,$month) {
 
 		if (!$this->ldap->is_ldap_user($this->get_username())) {
-			functions::log("Email Bill - User " . $this->get_username() . " not in ldap");
+			throw new \Exception("Email Bill - User " . $this->get_username() . " not in ldap");
+			return false;
 		}
 		elseif ($this->get_email() == "") {
-			functions::log("Email Bill - User " . $this->get_username() . " email is not set");
+			throw new \Exception("Email Bill - User " . $this->get_username() . " email is not set");
+			return false;
 		}
 		else {
 			$bill_month = DateTime::createFromFormat("Y-m-d H:i:s",$year . "-" . $month . "-01 00:00:00");
@@ -472,10 +474,11 @@ class user {
 
 			$subject = "Biocluster Accounting Bill - " . $bill_month->format('F') . " - " . $bill_month->format('Y');
 
-			$to = $this->get_email();
-			if (settings::get_debug()) {
-				$to = $admin_email;
-			}
+			//$to = $this->get_email();
+			//if (settings::get_debug()) {
+			//	$to = $admin_email;
+			//}
+			$to = "dslater@igb.illinois.edu";
 			$twig_variables = array(
         	                'css' => settings::get_email_css_contents(),
                 	        'month' => $bill_month->format('F'),
@@ -511,11 +514,10 @@ class user {
 				$message = "Email Bill - User " . $this->get_username() . " successfully sent to " . $this->get_email();
 
 			} catch (Exception $e) {
-				$message = "Email BIll - User " . $this->get_username() . " Error sending mail. " . $e->getMessage();
-				$result = false;
+				throw new \Exceptino("Email BIll - User " . $this->get_username() . " Error sending mail. " . $e->getMessage());
+				return false;;
 			}
-			//$log->send_log($message);
-			return array('RESULT'=>$result,'MESSAGE'=>$message);
+			return $result;
 		}
 
 	}

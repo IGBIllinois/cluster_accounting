@@ -24,14 +24,15 @@ if (isset($_GET['month']) && isset($_GET['year'])) {
 $user = new user($db,$ldap,$user_id);
 
 if (isset($_POST['email_bill'])) {
-	$email_result = $user->email_bill(settings::get_admin_email(),$year,$month);
-	if ($email_result['RESULT']) {
-		$message = "<div class='alert alert-success'>" . $email_result['MESSAGE'] . "</div>";
+	try {
+		$email_result = $user->email_bill(settings::get_admin_email(),$year,$month);
+		$message = "<div class='alert alert-success'>Email Bill - User " . $user->get_username() . " successfully sent to " . $user->get_email() . "</div>";
 	}
-	else {
-		$message = "<div class='alert alert-danger'>" . $email_result['MESSAGE'] . "</div>";
+	catch (\Exception $e) {
+		$message = "<div class='alert alert-danger'>" . $e->getMessage() . "</div>";
 	}
 }
+
 $end_date = date('Ymd',strtotime('-1 second',strtotime('+1 month',strtotime($start_date))));
 $month_name = date('F',strtotime($start_date));
 

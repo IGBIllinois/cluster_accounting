@@ -12,6 +12,7 @@ function my_autoloader($class_name) {
 }
 spl_autoload_register('my_autoloader');
 
+require_once '../conf/app.inc.php';
 require_once '../conf/settings.inc.php';
 require_once '../vendor/autoload.php';
 
@@ -36,38 +37,65 @@ $longopts = array(
 
 //Following code is to test if the script is being run from the command line or the apache server.
 if (php_sapi_name() != 'cli') {
-        echo "Error: This script can only be run from the command line.";
+        exit("Error: This script can only be run from the command line.");
 }
-else {
-	$year = date('Y',strtotime(date('Y-m')." -1 month"));
-	$month = date('m',strtotime(date('Y-m')." -1 month"));
-	$options = getopt($shortopts,$longopts);
-
-        if (isset($options['h']) || isset($options['help'])) {
-                echo $output_command;
-                exit;
-        }
-	if (isset($options['year']) && isset($options['month'])) {
-		$year = $options['year'];
-		$month = $options['month'];
-	}
-	elseif ((!isset($options['year']) && isset($options['month'])) ||
-		(isset($options['year']) && !isset($options['month']))) {
-		echo "Must specify year and month together\n";
-		echo $output_command;
-		exit;
-	}
-	$db = new db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__);
-	$ldap = new ldap(__LDAP_HOST__,__LDAP_SSL__,__LDAP_PORT__,__LDAP_BASE_DN__);
-
-	$user_list = user_functions::get_users($db,$ldap);
-	foreach ($user_list as $user) {
-			$user_object = new user($db,$ldap,$user['user_id']);
-			$user_object->email_bill(__ADMIN_EMAIL__,$year,$month);
-	}
 
 
+$year = date('Y',strtotime(date('Y-m')." -1 month"));
+$month = date('m',strtotime(date('Y-m')." -1 month"));
+$options = getopt($shortopts,$longopts);
+
+if (isset($options['h']) || isset($options['help'])) {
+	echo $output_command;
+	exit;
 }
+if (isset($options['year']) && isset($options['month'])) {
+	$year = $options['year'];
+	$month = $options['month'];
+}
+elseif ((!isset($options['year']) && isset($options['month'])) ||
+	(isset($options['year']) && !isset($options['month']))) {
+	echo "Must specify year and month together\n";
+	echo $output_command;
+	exit;
+}
+
+$db = new \IGBIllinois\db(settings::get_mysql_host(),
+                        settings::get_mysql_database(),
+                        settings::get_mysql_user(),
+                        settings::get_mysql_password(),
+                        settings::get_mysql_ssl(),
+                        settings::get_mysql_port()
+                        );
+
+$ldap = new \IGBIllinois\ldap(settings::get_ldap_host(),
+                        settings::get_ldap_base_dn(),
+                        settings::get_ldap_port(),
+                        settings::get_ldap_ssl(),
+                        settings::get_ldap_tls());
+if (settings::get_ldap_bind_user() != "") {
+        $ldap->bind(settings::get_ldap_bind_user(),settings::get_ldap_bind_password());
+}
+
+$log = new \IGBIllinois\log(settings::get_log_enabled(),settings::get_logfile());
+
+$user_list = user_functions::get_users($db,$ldap);
+foreach ($user_list as $user) {
+	$user_object = new user($db,$ldap,$user['user_id']);
+	$level = \IGBIllinois\log::NOTICE;
+	try {
+		$user_object->email_bill(settings::get_admin_email(),$year,$month);
+		$message = "Email Bill - User " . $user_object->get_username() . " successfully sent to " . $user_object->get_email();
+	}
+	catch (\Exception $e) {
+		$level = \IGBIllinois\log::ERROR;
+		$message = $e->getMessage();	
+
+	}
+	$log->send_log($message,$level);
+}
+
+
 
 
 

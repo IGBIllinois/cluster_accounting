@@ -12,6 +12,7 @@ function my_autoloader($class_name) {
 }
 spl_autoload_register('my_autoloader');
 
+require_once '../conf/app.inc.php';
 require_once '../conf/settings.inc.php';
 require_once '../vendor/autoload.php';
 
