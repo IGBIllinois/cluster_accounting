@@ -470,22 +470,19 @@ class user {
 		else {
 			$bill_month = DateTime::createFromFormat("Y-m-d H:i:s",$year . "-" . $month . "-01 00:00:00");
 		
-			$user_stats = new user_stats($this->db,$this->get_user_id(),$month,$year);
 
 			$subject = "Biocluster Accounting Bill - " . $bill_month->format('F') . " - " . $bill_month->format('Y');
 
-			//$to = $this->get_email();
-			//if (settings::get_debug()) {
-			//	$to = $admin_email;
-			//}
-			$to = "dslater@igb.illinois.edu";
+			$to = $this->get_email();
+			if (settings::get_debug()) {
+				$to = $admin_email;
+			}
 			$twig_variables = array(
         	                'css' => settings::get_email_css_contents(),
                 	        'month' => $bill_month->format('F'),
                         	'year' => $bill_month->format('Y'),
 	                        'full_name' => $this->get_full_name(),
         	                'username' => $this->get_username(),
-				'num_jobs' => $user_stats->get_num_jobs(),
                 	        'website_url' => "https://bioapps3.igb.illinois.edu/accounting/",
                         	'jobs_table' => $this->get_jobs_summary($month,$year),
 	                        'data_table' => $this->get_data_summary($month,$year),
