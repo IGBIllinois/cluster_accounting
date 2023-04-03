@@ -53,7 +53,7 @@ elseif (isset($_POST['edit_project'])) {
 
         }
 
-	$result = $project->edit($_POST['ldap_group'],$_POST['description'],
+	$result = $project->edit($ldap,$_POST['ldap_group'],$_POST['description'],
 			$_POST['cfop_billtype'],$owner_id,$cfop,$_POST['activity'],$hide_cfop,$_POST['custom_bill_description']);
 
 }

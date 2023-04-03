@@ -95,7 +95,7 @@ class project {
 
 	}
 
-	public function edit($ldap_group,$description,$cfop_billtype,$owner_id,$cfop = "",$activity = "",$hide_cfop = 0,$custom_bill_description = "") {
+	public function edit($ldap,$ldap_group,$description,$cfop_billtype,$owner_id,$cfop = "",$activity = "",$hide_cfop = 0,$custom_bill_description = "") {
 		if (($cfop != $this->get_cfop()) || ($activity != $this->get_activity_code()) ||
 				($cfop_billtype != $this->get_billtype())) {
 
@@ -132,7 +132,7 @@ class project {
 		else {
 			$error = false;
 			$message = "";
-                	if (!$this->verify_ldap_group($ldap_group)) {
+                	if (!$this->verify_ldap_group($ldap,$ldap_group)) {
                         	$error = true;
 	                        $message .= "<div class='alert alert-danger'>Please enter a valid LDAP group.</div>";
         	        }
