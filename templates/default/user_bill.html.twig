@@ -32,8 +32,8 @@ to view a detail listing of your jobs.
 	<tr>
 		<td> {{ row.queue }} </td>
 		<td> {{ row.project }} </td>
-		<td> {{ row.total_cost }} </td>
-		<td> {{ row.billed_cost }} </td>
+		<td> ${{ row.total_cost }} </td>
+		<td> ${{ row.billed_cost }} </td>
 		{% if row.cfop_restricted  %}
 			<td colspan='2'>RESTRICTED</td>
 		{% else %}
@@ -63,11 +63,11 @@ to view a detail listing of your jobs.
 {% for row in  data_table %}
 	<tr>
 		<td> {{ row.directory }} </td>
-		<td> {{ row.data_cost_value }} </td>
+		<td> ${{ row.data_cost_value }} </td>
 		<td> {{ row.project }} </td>
 		<td> {{ row.terabytes }} </td>
-		<td> {{ row.total_cost }} </td>
-		<td> {{ row.billed_cost }} </td>
+		<td> ${{ row.total_cost }} </td>
+		<td> ${{ row.billed_cost }} </td>
 		{% if row.cfop_restricted  %}
 			<td colspan='2'>RESTRICTED</td>
 		{% else %}
