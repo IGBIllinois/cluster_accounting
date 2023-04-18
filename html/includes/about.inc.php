@@ -41,10 +41,9 @@ if (!$login_user->is_admin()) {
 		<tr><td>TIMEZONE</td><td><?php echo settings::get_timezone(); ?></td></tr>
 		<tr><td>LDAP_HOST</td><td><?php echo settings::get_ldap_host(); ?></td></tr>
 		<tr><td>LDAP_BASE_DN</td><td><?php echo settings::get_ldap_base_dn(); ?></td></tr>
-		<tr><td>LDAP_GROUP</td><td><?php echo settings::get_ldap_group(); ?></td></tr>	
 		<tr><td>LDAP_SSL</td><td><?php echo settings::get_ldap_ssl() ? "true" : "false"; ?></td></tr>
 		<tr><td>LDAP_TLS</td><td><?php echo settings::get_ldap_tls() ? "true" : "false"; ?></td></tr>
-		<tr><td>LDAP_BIND_USER</td><td></php echo settings::get_ldap_bind_user(); ?></td></tr>
+		<tr><td>LDAP_BIND_USER</td><td><?php echo settings::get_ldap_bind_user(); ?></td></tr>
 		<tr><td>LDAP_PORT</td><td><?php echo settings::get_ldap_port(); ?></td></tr>
 		<tr><td>MYSQL_HOST</td><td><?php echo settings::get_mysql_host(); ?></td></tr>
 		<tr><td>MYSQL_DATABASE</td><td><?php echo settings::get_mysql_database(); ?></td></tr>

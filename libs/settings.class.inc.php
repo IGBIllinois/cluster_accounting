@@ -103,14 +103,6 @@ class settings {
 		return self::LDAP_BIND_PASS;
 	}
 
-	public static function get_ldap_group() {
-		if (defined("LDAP_GROUP")) {
-			return LDAP_GROUP;
-		}
-		return false;
-	
-	}
-
 	public static function get_session_name() {
 		if (defined("SESSION_NAME")) {
 			return SESSION_NAME;

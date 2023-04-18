@@ -127,7 +127,8 @@ if (isset($_POST['login'])) {
 			<div class='card-header bg-light'>Login</div>
 		<div class='card-body'>
 		<form class='form' role='form' action='login.php' method='post' name='login'>
-			<div class='form-group-row'>	
+			<div class='col-sm-10 col-md-10 col-lg-10 col-xl-10 offset-sm-1 offset-md-1 offset-lg-1 offset-xl-1'>
+			<div class='form-group'>	
 				<label class='col-form-label' for='username'>Username:</label> 
 				<div class='input-group'>
 					<input class='form-control' type='text'
@@ -138,7 +139,7 @@ if (isset($_POST['login'])) {
 					</div>
 				</div>
 			</div>
-			<div class='form-group-row'>
+			<div class='form-group'>
 				<label class='col-form-label' for='password'>Password:</label>
 				<div class='input-group'>
 					<input class='form-control' type='password' name='password' 
@@ -150,13 +151,14 @@ if (isset($_POST['login'])) {
 				</div>
 			</div>
 			<br>		
-			<div class='form-group-row'>
+			<div class='form-group'>
 				<button type='submit' name='login' class='btn btn-primary'>Login</button>
 				<div class='float-right'><?php if (settings::get_password_reset_url()) {
 					echo "<a class='pull-right' target='_blank' href='" . settings::get_password_reset_url() . "'>Forgot Password?</a>";
 				}
 				?>
 				</div>
+			</div>
 			</div>
 		</form>
 		</div>
