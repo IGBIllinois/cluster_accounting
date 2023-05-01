@@ -96,7 +96,6 @@ class user {
 
 		//Everything looks good, add user and default user project
 		else {
-		
 			if ($this->is_disabled($username)) {
 				$this->load_by_username($username);
 				$this->enable();
@@ -104,7 +103,6 @@ class user {
 				$this->default_project()->enable();
 				$this->default_data_dir()->enable();
 				$this->default_project()->set_cfop($cfop_billtype,$cfop,$activity,$hide_cfop,$custom_bill_description);
-				
 			}
 			else {
 				$ldap_filter = "(" . $this->ldap_attributes['username'] . "=" . $username . ")";
@@ -138,7 +136,7 @@ class user {
 			}
 			return array('RESULT'=>true,
 					'MESSAGE'=>'User succesfully added.',
-					'user_id'=>$user_id);
+					'user_id'=>$this->get_user_id());
 		}
 
 	}
@@ -340,7 +338,7 @@ class user {
 		$parameters = array (
 			":user_id"=>$this->get_user_id()
 		);
-		$this->db->non_select_query($sql);
+		$this->db->non_select_query($sql,$parameters);
 		$this->enabled = true;
 		return true;
 	}
