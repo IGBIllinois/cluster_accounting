@@ -226,6 +226,32 @@ class user {
                 );
 		$result = $this->db->query($sql,$parameters);
 		return $result;
+	}
+
+	public function get_running_jobs() {
+		$sql = "SELECT IF(ISNULL(running_jobs.job_number_array),running_jobs.job_number, ";
+                $sql .= "CONCAT(running_jobs.job_number,'[',running_jobs.job_number_array,']')) as 'Job Number', ";
+                $sql .= "running_jobs.job_name as 'Job Name', ";
+                $sql .= "ROUND(running_jobs.job_estimated_cost,2) as 'Current Cost', ";
+		$sql .= "running_jobs.job_state as 'State', ";
+                $sql .= "queues.queue_name as 'Queue', ";
+                $sql .= "projects.project_name as 'Project', ";
+                $sql .= "running_jobs.job_submission_time as 'Submission Time', ";
+                $sql .= "running_jobs.job_start_time as 'Start Time', ";
+                $sql .= "running_jobs.job_ru_wallclock as 'Elapsed Time (Secs)', running_jobs.job_cpu_time as 'CPU Time (Secs)', ";
+                $sql .= "round(running_jobs.job_reserved_mem / 1073741824,2) as 'Reserved Memory (GB)', ";
+                $sql .= "round(running_jobs.job_used_mem /1073741824,2) as 'Used Memory (GB)', ";
+                $sql .= "round(running_jobs.job_maxvmem / 1073741824,2) as 'Virtual Memory (GB)', ";
+                $sql .= "running_jobs.job_slots as 'CPUs' ";
+                $sql .= "FROM running_jobs ";
+                $sql .= "LEFT JOIN queues ON queues.queue_id=running_jobs.job_queue_id ";
+                $sql .= "LEFT JOIN projects ON projects.project_id=running_jobs.job_project_id ";
+                $sql .= "AND running_jobs.job_user_id=:user_id ";
+                $parameters = array(
+                        ':user_id'=> $this->get_user_id(),
+                );
+                $result = $this->db->query($sql,$parameters);
+                return $result;
 
 
 

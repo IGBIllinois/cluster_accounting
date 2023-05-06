@@ -61,7 +61,7 @@ if (isset($_POST['add_user'])) {
 	$result = $user->create($_POST['new_username'],$supervisor_id,$admin,$billtype,$cfop,$_POST['activity'],$hide_cfop,$_POST['custom_bill_description']);
 
 	if ($result['RESULT'] == true) {
-		header("Location: user.php?user_id=" . $result['user_id']);
+		//header("Location: user.php?user_id=" . $result['user_id']);
 	}
 	elseif ($result['RESULT'] == false) {
 		$message = $result['MESSAGE'];

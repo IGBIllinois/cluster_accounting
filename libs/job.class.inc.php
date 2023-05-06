@@ -4,41 +4,41 @@ class job {
 
 	////////////////Private Variables//////////
 
-	private $db; //mysql database object
-	private $id; //job id number
-	private $queue; //queue object
-	private $project; //project object
-	private $hostname;
-	private $name;
-	private $job_number_full;
-	private $job_number; //torque job number
-	private $job_number_array;
-	private $submission_time;
-	private $start_time;
-	private $end_time;
-	private $queued_time;
-	private $elapsed_time;
-	private $wallclock_time;
-	private $cpu_time;
-	private $slots;
-	private $reserved_mem;
-	private $used_mem;
-	private $maxvmem;
-	private $username;
-	private $user_id;
-	private $total_cost;
-	private $billed_cost;
-	private $cfop_id;
-	private $cfop;
-	private $activity_code;
-	private $exit_status;
-	private $submitted_project;
-	private $exec_hosts = array();
-	private $job_script = "No Job Script Available";
-	private $job_script_exists = 0;
-	private $reserved_gpu;
-	private $job_state;
-	private $exit_status_codes = array('0'=>'JOB_EXEC_OK',
+	protected $db; //mysql database object
+	protected $id; //job id number
+	protected $queue; //queue object
+	protected $project; //project object
+	protected $hostname;
+	protected $name;
+	protected $job_number_full;
+	protected $job_number; //torque job number
+	protected $job_number_array;
+	protected $submission_time;
+	protected $start_time;
+	protected $end_time;
+	protected $queued_time;
+	protected $elapsed_time;
+	protected $wallclock_time;
+	protected $cpu_time;
+	protected $slots;
+	protected $reserved_mem;
+	protected $used_mem;
+	protected $maxvmem;
+	protected $username;
+	protected $user_id;
+	protected $total_cost;
+	protected $billed_cost;
+	protected $cfop_id;
+	protected $cfop;
+	protected $activity_code;
+	protected $exit_status;
+	protected $submitted_project;
+	protected $exec_hosts = array();
+	protected $job_script = "No Job Script Available";
+	protected $job_script_exists = 0;
+	protected $reserved_gpu;
+	protected $job_state;
+	protected $exit_status_codes = array('0'=>'JOB_EXEC_OK',
 			'-1'=>'JOB_EXEC_FAIL1',
 			'-2'=>'JOB_EXEC_FAIL2',
 			'-3'=>'JOB_EXEC_RETRY',
@@ -67,7 +67,7 @@ class job {
 	}
 
 	public function load($job_number) {
-		$split_job = $this->split_job_number($job_number);
+		$split_job = self::split_job_number($job_number);
 		$this->job_number = $split_job['job_number'];
 		$this->job_number_array = $split_job['job_number_array'];
 		$this->get_job();
@@ -75,7 +75,7 @@ class job {
 
 	public function create($job_data,$ldap) {
 		$job_number = $job_data['job_number'];
-		$split_job = $this->split_job_number($job_data['job_number']);
+		$split_job = self::split_job_number($job_data['job_number']);
 		if (!$this->job_exists($job_number)) {
 			$this->queue = new queue($this->db,0,$job_data['job_submission_time'],$job_data['job_queue_name']);
 			$user = new user($this->db,$ldap,0,$job_data['job_user']);
@@ -380,7 +380,7 @@ class job {
 
 	}
 	public function job_exists($job_number) {
-		$split_job = $this->split_job_number($job_number);
+		$split_job = self::split_job_number($job_number);
 		$parameters[':job_number'] = $split_job['job_number'];
 		if ($split_job['job_number_array'] == "") {
                         $sql = "SELECT count(1) AS count FROM jobs ";
@@ -403,7 +403,7 @@ class job {
 
 	/////////////////Private Functions///////////
 
-	private function get_job() {
+	protected function get_job() {
 		$parameters[':job_number'] = $this->get_job_number();
 		if ($this->get_job_number_array() == "") {
 	                $sql = "SELECT * FROM job_info ";
@@ -457,7 +457,7 @@ class job {
 		}
 	}
 
-	private static function split_job_number($in_job_number) {
+	protected static function split_job_number($in_job_number) {
 		$job_number_array = 0;
 	
 		//Torque Job Array	
@@ -484,7 +484,7 @@ class job {
 
 	}
 	
-	private function set_exec_hosts_var($exec_hosts) {
+	protected function set_exec_hosts_var($exec_hosts) {
 		if (strlen($exec_hosts)) {
 			$exec_hosts_array = explode("+",$exec_hosts);
 			sort($exec_hosts_array,SORT_STRING);
@@ -492,7 +492,7 @@ class job {
 		}
 
 	}
-	private function verify_cost($cost) {
+	protected function verify_cost($cost) {
 		$valid = true;
 		$message = "";
 		if (!is_numeric($cost)) {
@@ -504,7 +504,7 @@ class job {
 	}
 
 
-	private function format_time($t,$f=':') // t = seconds, f = separator 
+	protected function format_time($t,$f=':') // t = seconds, f = separator 
 	{
 		return sprintf("%02d%s%02d%s%02d", floor($t/3600), $f, ($t/60)%60, $f, $t%60);
 	}

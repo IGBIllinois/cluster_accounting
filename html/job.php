@@ -37,8 +37,7 @@ else {
 }
 
 
-$exec_host_html = "<table class='table table-bordered table-sm table-striped'>";
-$exec_host_html .= "<tr><th>Execution Hosts</th></tr>";
+$exec_host_html = "";
 $exec_hosts = $job->get_exec_hosts();
 if (count($exec_hosts)) {
 	foreach ($exec_hosts as $host) {
@@ -53,14 +52,13 @@ $exec_host_html .= "</table>";
 
 require_once 'includes/header.inc.php';
 ?>
-<h3>
-	Job #
-	<?php echo $job->get_full_job_number(); ?>
-	Details
-</h3>
+<h3>Job #<?php echo $job->get_full_job_number(); ?></h3>
+
 <div class='row'>
 <div class='col-sm-6 col-md-6 col-lg-6 col-xl-6'>
 <table class='table table-bordered table-sm table-striped'>
+	<thead class='thead-dark'><tr><th colspan='2'>Job Details</th></tr></thead>
+	<tbody>
 	<tr>
 		<td>Job Number:</td>
 		<td><?php echo $job->get_full_job_number(); ?></td>
@@ -179,16 +177,20 @@ require_once 'includes/header.inc.php';
 		<td>Activity Code:</td>
 		<td><?php echo $job->get_activity_code(); ?></td>
 	</tr>
-
+	</tbody>
 </table>
 </div>
 <div class='col-sm-2 col-md-2 col-lg-2 col-xl-2'>
+<table class='table table-bordered table-sm table-striped'>
+<thead class='thead-dark'><tr><th>Execution Hosts</th></tr></thead>
+<tbody>
 <?php echo $exec_host_html; ?>
+</tbody>
 
 </div>
 </div>
 <div class='row'>
-<div class='col-sm-4 col-md-4 col-lg-4 col-xl-4'>
+<div class='col-sm-6 col-md-6 col-lg-6 col-xl-6'>
 <?php
 if ($job->get_used_mem() * settings::get_reserve_memory_factor() > $job->get_reserved_mem()) {
 	echo "<div class='alert alert-danger'>Please reserve the appropriate amount of memory.</div>";

@@ -11,7 +11,9 @@
 class slurm {
 
 	private const SLURM_FORMAT = "State,JobID,User,JobName,Account,Partition,ExitCode,Submit,Start,End,Elapsed,ReqMem,MaxRSS,ReqCPUS,NodeList,MaxVMSize,TotalCPU,NTasks,NNodes,AllocTRES";
-	private const SLURM_STATES = "CA,CD,F,TO,OOM";
+	private const SLURM_RUNNING_FORMAT = "State,JobID,User,JobName,Account,Partition,Submit,Start,Elapsed,ReqMem,MaxRSS,ReqCPUS,NodeList,MaxVMSize,TotalCPU,NTasks,NNodes,AllocTRES";
+	public const SLURM_STATES = "CA,CD,F,TO,OOM";
+	public const SLURM_RUNNING_STATES = "PD,R";	
 	private const SLURM_DELIMITER = "|";
 	private const SLURM_TIME_FORMAT = "%Y-%m-%d %H:%M:%s";
 
@@ -28,13 +30,28 @@ class slurm {
 		$output_array = array();
 		exec($exec,$output_array,$exit_status);
 		$job_data = array();
-		$startMemory = memory_get_usage();
 		foreach ($output_array as $job_array) {
 			array_push($job_data,array_combine(explode(",",self::SLURM_FORMAT),explode(self::SLURM_DELIMITER,$job_array)));
 		}
 		return self::format_slurm_accounting($job_data);
 	}
 
+	public static function get_running_jobs() {
+		$exec = "export SLURM_TIME_FORMAT='" . self::SLURM_TIME_FORMAT . "'; ";
+                $exec .= "sacct -anP --noconvert ";
+                $exec .= "--format=" . self::SLURM_RUNNING_FORMAT . " ";
+                $exec .= "--delimiter='" . self::SLURM_DELIMITER . "' ";
+                $exec .= "--state=" . self::SLURM_RUNNING_STATES;
+                $exit_status = 1;
+                $output_array = array();
+                exec($exec,$output_array,$exit_status);
+                $job_data = array();
+                foreach ($output_array as $job_array) {
+                        array_push($job_data,array_combine(explode(",",self::SLURM_RUNNING_FORMAT),explode(self::SLURM_DELIMITER,$job_array)));
+                }
+                return self::format_slurm_accounting($job_data);
+
+	}
 	public static function format_slurm_accounting($accounting) {
 
 		foreach ($accounting as &$job) {
@@ -121,6 +138,71 @@ class slurm {
 		return array('RESULT'=> 0);
 	        
 	}
+
+	//Add Running Job.  Addes running job to job_running table
+	public static function add_running_job($db,$ldap,$job_data) {
+
+                $job_array_regex = "/^\d+_\[\d+-\d+\]/";
+                $job_array_limit_regex = "/^\d+_\[\d+-\d+\%\d+\]/";
+
+                if (!strpos($job_data['JobID'],".batch") &&
+                        !strpos($job_data['JobID'],".0") &&
+                        !strpos($job_data['JobID'],".extern") &&
+                        !preg_match($job_array_regex,$job_data['JobID']) &&
+                        !preg_match($job_array_limit_regex,$job_data['JobID'])
+                ) {
+                        $running_job = new running_job($db);
+                        if ($job_data['Account'] == "") {
+                                $job_data['Account'] = $job_data['User'];
+                        }
+
+                        //Memory per CPU
+                        if (strpos($job_data['ReqMem'],"c")) {
+                                $job_data['ReqMem'] = substr($job_data['ReqMem'],0,strpos($job_data['ReqMem'],"c"));
+                                $units = substr($job_data['ReqMem'],-1,1);
+                                $temp_mem = substr($job_data['ReqMem'],0,-1);
+                                $temp_mem = $temp_mem * $job_data['ReqCPUS'];
+                                $job_data['ReqMem'] = $temp_mem . $units;
+                        }
+                        //Memory Per Node
+                        elseif (strpos($job_data['ReqMem'],"n")) {
+                                $job_data['ReqMem'] = substr($job_data['ReqMem'],0,strpos($job_data['ReqMem'],"n"));
+                                $units = substr($job_data['ReqMem'],-1,1);
+                                $temp_mem = substr($job_data['ReqMem'],0,-1);
+                                $temp_mem = $temp_mem * $job_data['NNodes'];
+                                $job_data['ReqMem'] = $temp_mem . $units;
+                        }
+
+                        $gpu = 0;
+                        if (isset($job_data['AllocGRES']) && ($job_data['AllocGRES'] != "")) {
+                                $gpu = substr($job_data['AllocGRES'],strpos($job_data['AllocGRES'],':') +1 );
+                        }
+
+                        //creates array that gets submitted to the job.class.inc.php with the required information
+                        $job_insert = array('job_number'=>$job_data['JobID'],
+                                        'job_user'=>$job_data['User'],
+                                        'job_project'=>$job_data['Account'],
+                                        'job_queue_name'=>$job_data['Partition'],
+                                        'job_name'=>$job_data['JobName'],
+                                        'job_slots'=>$job_data['ReqCPUS'],
+                                        'job_submission_time'=>$job_data['Submit'],
+                                        'job_start_time'=>$job_data['Start'],
+                                        'job_ru_wallclock'=>self::convert_to_seconds(self::format_slurm_time($job_data['Elapsed'])),
+                                        'job_cpu_time'=>self::convert_to_seconds(self::format_slurm_time($job_data['TotalCPU'])),
+                                        'job_reserved_mem'=>self::convert_memory($job_data['ReqMem']),
+                                        'job_used_mem'=>self::convert_memory($job_data['MaxRSS']),
+                                        'job_exec_hosts'=>$job_data['NodeList'],
+                                        'job_maxvmem'=>self::convert_memory($job_data['MaxVMSize']),
+                                        'job_gpu'=>$gpu,
+                                        'job_state'=>$job_data['State']
+                        );
+                        return $running_job->create($job_insert,$ldap);
+                }
+                return array('RESULT'=> 0);
+
+        }
+
+
 	//convert_to_seconds() - converts DD:HH:MM:SS
 	//$time - string formatted as DD:HH:MM:SS
 	//returns integer

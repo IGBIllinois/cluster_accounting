@@ -12,8 +12,20 @@ $data_html .= "<td>$" . $data_cost->get_cost() . "</td>";
 $data_html .= "</tr>";
 
 
+$running_jobs = $login_user->get_running_jobs();
+$jobs_html = "";
+foreach ($running_jobs as $job) {
+	$jobs_html .= "<tr>";
+	$jobs_html .= "<td>" . $job['State'] . "</td>";
+	$jobs_html .= "<td>" . $job['Job Number'] . "</td>";
+	$jobs_html .= "<td>" . $job['Job Name'] . "</td>";
+	$jobs_html .= "<td>$" . $job['Current Cost'] . "</td>";
+	$jobs_html .= "</tr>";
+
+}
 require_once 'includes/header.inc.php';
 ?>
+Logged in user id is <?php echo $login_user->get_user_id(); ?>
 <div class='jumbotron col-sm-10 col-md-10 col-lg-10 col-xl-10'>
 	<h1 class='display-4'>
 		<img src="images/imark_bw.gif"
@@ -22,6 +34,27 @@ require_once 'includes/header.inc.php';
 	</h1>
 	<p>View, manage, and bill Biocluster usage and storage</p>
 </div>
+<div class='col-sm-10 col-md-10 col-lg-10 col-xl-10'>
+<h3>Current Jobs</h3>
+<table class='table table-bordered table-sm table-striped'>
+	<thead>
+		<tr>
+			<th>State</th>
+			<th>Job Number</th>
+			<th>Name</th>
+			<th>Current Cost</th>
+			
+		</tr>
+	</thead>
+	<tbody>
+		<?php echo $jobs_html; ?>
+	</tbody>
+
+</table>
+<?php echo $jobs_html; ?> 
+
+</div>
+
 <div class='col-sm-10 col-md-10 col-lg-10 col-xl-10'>
 <p><h3>Cluster Cost</h3>
 <p>Cluster usage is calculated by taking the higher of the
