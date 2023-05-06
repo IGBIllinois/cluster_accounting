@@ -11,7 +11,7 @@
 class slurm {
 
 	private const SLURM_FORMAT = "State,JobID,User,JobName,Account,Partition,ExitCode,Submit,Start,End,Elapsed,ReqMem,MaxRSS,ReqCPUS,NodeList,MaxVMSize,TotalCPU,NTasks,NNodes,AllocTRES";
-	private const SLURM_RUNNING_FORMAT = "State,JobID,User,JobName,Account,Partition,Submit,Start,Elapsed,ReqMem,MaxRSS,ReqCPUS,NodeList,MaxVMSize,TotalCPU,NTasks,NNodes,AllocTRES";
+	private const SLURM_RUNNING_FORMAT = "State,JobID,User,JobName,Account,Partition,Submit,Start,Elapsed,ReqMem,ReqCPUS,NodeList,TotalCPU,NTasks,NNodes,AllocTRES";
 	public const SLURM_STATES = "CA,CD,F,TO,OOM";
 	public const SLURM_RUNNING_STATES = "PD,R";	
 	private const SLURM_DELIMITER = "|";
@@ -60,8 +60,12 @@ class slurm {
 				
 				foreach ($accounting as $value) {
 					if ($value['JobID'] == $job_number . ".batch") {
-						$job['MaxRSS'] = $value['MaxRSS'];
-						$job['MaxVMSize'] = $value['MaxVMSize'];
+						if (isset($value['MaxRSS'])) {
+							$job['MaxRSS'] = $value['MaxRSS'];
+						}
+						if (isset($value['MaxVMSize'])) {
+							$job['MaxVMSize'] = $value['MaxVMSize'];
+						}
 						$job['NTasks'] = $value['NTasks'];
 						
 						break;	
@@ -125,11 +129,11 @@ class slurm {
                                 	'job_ru_wallclock'=>self::convert_to_seconds(self::format_slurm_time($job_data['Elapsed'])),
 	                                'job_cpu_time'=>self::convert_to_seconds(self::format_slurm_time($job_data['TotalCPU'])),
         	                        'job_reserved_mem'=>self::convert_memory($job_data['ReqMem']),
-                	                'job_used_mem'=>self::convert_memory($job_data['MaxRSS']),
+					'job_used_mem'=>self::convert_memory($job_data['MaxRSS']),
+                                        'job_exec_hosts'=>$job_data['NodeList'],
+                                        'job_maxvmem'=>self::convert_memory($job_data['MaxVMSize']),
                         	        'job_exit_status'=>$job_data['ExitCode'],
-					'job_exec_hosts'=>$job_data['NodeList'],
 					'job_qsub_script'=>'',
-        	                        'job_maxvmem'=>self::convert_memory($job_data['MaxVMSize']),
 					'job_gpu'=>$gpu,
 					'job_state'=>$job_data['State']
                 	);
@@ -190,9 +194,7 @@ class slurm {
                                         'job_ru_wallclock'=>self::convert_to_seconds(self::format_slurm_time($job_data['Elapsed'])),
                                         'job_cpu_time'=>self::convert_to_seconds(self::format_slurm_time($job_data['TotalCPU'])),
                                         'job_reserved_mem'=>self::convert_memory($job_data['ReqMem']),
-                                        'job_used_mem'=>self::convert_memory($job_data['MaxRSS']),
                                         'job_exec_hosts'=>$job_data['NodeList'],
-                                        'job_maxvmem'=>self::convert_memory($job_data['MaxVMSize']),
                                         'job_gpu'=>$gpu,
                                         'job_state'=>$job_data['State']
                         );

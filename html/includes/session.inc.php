@@ -39,4 +39,5 @@ else {
 	$session_vars = array('timeout'=>time());
 	$session->set_session($session_vars);
 }
+
 ?>

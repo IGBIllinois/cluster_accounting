@@ -124,7 +124,7 @@ if (count($data_usage)) {
 		$data_html .= "<td>" . $value['terabytes'] . "</td>";
 		$data_html .= "<td>$" . number_format($value['total_cost'],2) . "</td>";
 		$data_html .= "<td>$" . number_format($value['billed_cost'],2) . "</td>";
-		if ($login_user->is_admin() || (!$job['cfop_restricted'])) {
+		if ($login_user->is_admin() || (!$value['cfop_restricted'])) {
 			$data_html .= "<td>".  $value['cfop'] . "</td>";
 			$data_html .= "<td>" . $value['activity_code'] . "</td>";
 		}

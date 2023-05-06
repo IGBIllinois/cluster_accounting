@@ -28,13 +28,8 @@ class running_job extends job {
 
 			}
 			else {
-				if ($job_data['job_used_mem'] > $job_data['job_reserved_mem']) {
-					$mem = $job_data['job_used_mem'];
-				}
-				else {
-					$mem = $job_data['job_reserved_mem'];
-				}
 				$current_time = date('Y-m-d H:i:s');
+				$mem = $job_data['job_reserved_mem'];
 				$cost = $this->queue->calculate_cost($job_data['job_cpu_time'],$job_data['job_ru_wallclock'],
 						$job_data['job_slots'],$mem,$job_data['job_start_time'],$current_time,$job_data['job_gpu']);
 				
@@ -48,7 +43,6 @@ class running_job extends job {
 				$job_data['job_queue_id'] = $this->queue->get_queue_id();
 				$job_data['job_cfop_id'] = $this->project->get_cfop_id();
 				$job_data['job_queue_cost_id'] = $this->queue->get_queue_cost_id();
-				print_r($job_data);
 				
 				$job_id = $this->db->build_insert("running_jobs",$job_data);
 				if ($job_id) {

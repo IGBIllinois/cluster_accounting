@@ -21,12 +21,11 @@ CREATE TABLE running_jobs (
         job_ru_wallclock BIGINT UNSIGNED,
         job_cpu_time BIGINT UNSIGNED,
         job_reserved_mem BIGINT UNSIGNED,
-        job_used_mem BIGINT UNSIGNED,
         job_exec_hosts VARCHAR(255),
-        job_maxvmem BIGINT UNSIGNED,
         job_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         job_gpu INT DEFAULT 0,
         job_state VARCHAR(20) DEFAULT "",
         PRIMARY KEY(job_id)
-) ENGINE = MEMORY;
+);
+
 

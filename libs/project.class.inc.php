@@ -304,10 +304,8 @@ class project {
 	}
 
 	public function enable() {
-		echo "<br>in enable";
 		$sql = "UPDATE projects SET project_enabled='1' ";
 		$sql .= "WHERE project_id=:project_id LIMIT 1";
-		echo "<br>$sql";
 		$parameters = array(
                         ':project_id'=>$this->get_project_id()
                 );

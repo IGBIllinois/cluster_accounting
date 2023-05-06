@@ -14,18 +14,26 @@ $data_html .= "</tr>";
 
 $running_jobs = $login_user->get_running_jobs();
 $jobs_html = "";
-foreach ($running_jobs as $job) {
-	$jobs_html .= "<tr>";
-	$jobs_html .= "<td>" . $job['State'] . "</td>";
-	$jobs_html .= "<td>" . $job['Job Number'] . "</td>";
-	$jobs_html .= "<td>" . $job['Job Name'] . "</td>";
-	$jobs_html .= "<td>$" . $job['Current Cost'] . "</td>";
-	$jobs_html .= "</tr>";
-
+if (count($running_jobs)) {
+	foreach ($running_jobs as $job) {
+		$jobs_html .= "<tr>";
+		$jobs_html .= "<td>" . $job['State'] . "</td>";
+		$jobs_html .= "<td>" . $job['Job Number'] . "</td>";
+		$jobs_html .= "<td>" . $job['Elapsed Time (Secs)'] . "</td>";
+		$jobs_html .= "<td>" . $job['Job Name'] . "</td>";
+		$jobs_html .= "<td>" . $job['Queue'] . "</td>";
+		$jobs_html .= "<td>" . $job['CPUs'] . "</td>";
+		$jobs_html .= "<td>" . $job['Reserved Memory (GB)'] . "</td>";
+		$jobs_html .= "<td>" . $job['GPUs'] . "</td>";
+		$jobs_html .= "<td>$" . $job['Current Cost'] . "</td>";
+		$jobs_html .= "</tr>";
+	}
+}
+else {
+	$jobs_html = "<tr><td colspan='8'>No Running or Pending Jobs</td></tr>";
 }
 require_once 'includes/header.inc.php';
 ?>
-Logged in user id is <?php echo $login_user->get_user_id(); ?>
 <div class='jumbotron col-sm-10 col-md-10 col-lg-10 col-xl-10'>
 	<h1 class='display-4'>
 		<img src="images/imark_bw.gif"
@@ -41,7 +49,12 @@ Logged in user id is <?php echo $login_user->get_user_id(); ?>
 		<tr>
 			<th>State</th>
 			<th>Job Number</th>
+			<th>Elapsed Time (Secs)</th>
 			<th>Name</th>
+			<th>Queue</th>
+			<th>Reserved CPUs</th>
+			<th>Reserved Memory (GB)</th>
+			<th>Reserved GPUs</th>
 			<th>Current Cost</th>
 			
 		</tr>
@@ -51,7 +64,6 @@ Logged in user id is <?php echo $login_user->get_user_id(); ?>
 	</tbody>
 
 </table>
-<?php echo $jobs_html; ?> 
 
 </div>
 
