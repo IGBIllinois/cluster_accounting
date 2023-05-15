@@ -11,26 +11,42 @@ $data_html = "<tr>";
 $data_html .= "<td>$" . $data_cost->get_cost() . "</td>";
 $data_html .= "</tr>";
 
-
-$running_jobs = $login_user->get_running_jobs();
+$start = 0;
+$count = 10;
+$running_jobs = job_functions::get_running_jobs($db,$login_user->get_user_id(),$start,$count);
+$number_jobs = job_functions::get_num_running_jobs($db,$login_user->get_user_id());
 $jobs_html = "";
 if (count($running_jobs)) {
 	foreach ($running_jobs as $job) {
+		$state_html = "";
+                switch($job['state']) {
+                        case 'RUNNING':
+                                $state_html = "<span class='badge badge-pill badge-success'>&nbsp;</span>";
+                                break;
+                        case 'PENDING':
+                                $state_html = "<span class='badge badge-pill badge-info'><&nbsp;</span>";
+
+                }
+
 		$jobs_html .= "<tr>";
-		$jobs_html .= "<td>" . $job['State'] . "</td>";
-		$jobs_html .= "<td>" . $job['Job Number'] . "</td>";
-		$jobs_html .= "<td>" . $job['Elapsed Time (Secs)'] . "</td>";
-		$jobs_html .= "<td>" . $job['Job Name'] . "</td>";
-		$jobs_html .= "<td>" . $job['Queue'] . "</td>";
-		$jobs_html .= "<td>" . $job['CPUs'] . "</td>";
-		$jobs_html .= "<td>" . $job['Reserved Memory (GB)'] . "</td>";
-		$jobs_html .= "<td>" . $job['GPUs'] . "</td>";
-		$jobs_html .= "<td>$" . $job['Current Cost'] . "</td>";
+		$jobs_html .= "<td>" . $state_html . "</td>";
+		$jobs_html .= "<td>" . $job['job_number'] . "</td>";
+		$jobs_html .= "<td>" . $job['job_name'] . "</td>";
+		$jobs_html .= "<td>" . $job['project'] . "</td>";
+		$jobs_html .= "<td>" . $job['queue'] . "</td>";
+		$jobs_html .= "<td>" . $job['elapsed_time'] . "</td>";
+		$jobs_html .= "<td>" . $job['cpus'] . "</td>";
+		$jobs_html .= "<td>" . $job['mem_reserved'] . "</td>";
+		$jobs_html .= "<td>" . $job['gpus'] . "</td>";
+		$jobs_html .= "<td>$" . $job['current_cost'] . "</td>";
 		$jobs_html .= "</tr>";
+	}
+	if ($number_jobs > $count) {
+		$jobs_html .= "<tr><td colspan='10'><a href='running_jobs.php'>Click Here</a> to view the rest of your jobs</td></tr>";
 	}
 }
 else {
-	$jobs_html = "<tr><td colspan='8'>No Running or Pending Jobs</td></tr>";
+	$jobs_html = "<tr><td colspan='10'>No Running or Pending Jobs</td></tr>";
 }
 require_once 'includes/header.inc.php';
 ?>
@@ -43,15 +59,24 @@ require_once 'includes/header.inc.php';
 	<p>View, manage, and bill Biocluster usage and storage</p>
 </div>
 <div class='col-sm-10 col-md-10 col-lg-10 col-xl-10'>
-<h3>Current Jobs</h3>
+<h3>Current and Pending Jobs</h3>
+<p>List of jobs currenting running or pending with the estimated current cost of the job.  Updated every 10 minutes</p>
+<div class='col-sm-4 col-md-5 col-lg-4 col-xl-4'>
+	<ul class='list-inline'>
+                <li class='list-inline-item'><span class='badge badge-pill badge-success'>&nbsp</span> Running Job</li>
+                <li class='list-inline-item'><span class='badge badge-pill badge-info'>&nbsp</span> Pending Job</li>
+        </ul>
+</div>
+
 <table class='table table-bordered table-sm table-striped'>
 	<thead>
 		<tr>
-			<th>State</th>
+			<th>&nbsp;</th>
 			<th>Job Number</th>
-			<th>Elapsed Time (Secs)</th>
-			<th>Name</th>
+			<th>Job Name</th>
+			<th>Project</th>			
 			<th>Queue</th>
+			<th>Elapsed Time</th>
 			<th>Reserved CPUs</th>
 			<th>Reserved Memory (GB)</th>
 			<th>Reserved GPUs</th>

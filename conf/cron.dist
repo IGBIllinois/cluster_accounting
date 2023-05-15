@@ -4,3 +4,4 @@
 4 * * * * root php /var/www/accounting/bin/accounting.php --previous-hour > /dev/null 2>&1
 0 5 1 * * root php /var/www/accounting/bin/calc_bill.php > /dev/null 2>&1
 0 8 1 * * root php /var/www/accounting/bin/email.php > /dev/null 2>&1
+0 8 15 * * root php /var/www/accounting/bin/validate_cfops.php --email > /dev/null 2>&1

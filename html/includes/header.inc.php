@@ -40,7 +40,8 @@
 				<li class='nav-item'><a class='nav-link' href='index.php'>Main</a></li>
 				<li class='nav-item'><a class='nav-link' href='user.php'>Information</a></li>
 				<li class='nav-item'><a class='nav-link' href='user_bill.php'>User Bill</a></li>
-				<li class='nav-item'><a class='nav-link' href='jobs.php'>Jobs</a></li>
+				<li class='nav-item'><a class='nav-link' href='jobs.php'>Completed Jobs</a></li>
+				<li class='nav-item'><a class='nav-link' href='running_jobs.php'>Running Jobs</a></li>
 				<li class='nav-item'><a class='nav-link' href='user_graphs.php'>User Graphs</a></li>
 				<?php if ((isset($login_user)) && ($login_user->is_admin())) {
 					echo "<span class='border-top my-2'></span>";

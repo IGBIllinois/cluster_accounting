@@ -195,7 +195,7 @@ $(function() {
 
 $(document).ready(function() {
 	$('#user_id_input').select2({
-		placeholder: 'Select a Supervisor'
+		placeholder: 'Select a User'
 	});
 });
 </script>

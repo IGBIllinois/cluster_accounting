@@ -308,6 +308,44 @@ class job_functions {
                 return $result[0]['count'];
 	}
 
+	public static function get_running_jobs($db,$user_id = 0,$start = 0 ,$count = 0) {
+                $sql = "SELECT IF(ISNULL(running_jobs.job_number_array),running_jobs.job_number, ";
+                $sql .= "CONCAT(running_jobs.job_number,'[',running_jobs.job_number_array,']')) as job_number, ";
+                $sql .= "running_jobs.job_name as job_name, ";
+		$sql .= "running_jobs.job_user as username, ";
+                $sql .= "ROUND(running_jobs.job_estimated_cost,2) as current_cost, ";
+                $sql .= "running_jobs.job_state as state, ";
+                $sql .= "queues.queue_name as queue, ";
+                $sql .= "projects.project_name as project, ";
+                $sql .= "running_jobs.job_submission_time as submission_time, ";
+                $sql .= "running_jobs.job_start_time as start_time, ";
+                $sql .= "SEC_TO_TIME(running_jobs.job_ru_wallclock) as elapsed_time, running_jobs.job_cpu_time as cpu_time, ";
+                $sql .= "round(running_jobs.job_reserved_mem / 1073741824,2) as mem_reserved, ";
+                $sql .= "running_jobs.job_slots as cpus, ";
+                $sql .= "running_jobs.job_gpu as gpus ";
+                $sql .= "FROM running_jobs ";
+                $sql .= "LEFT JOIN queues ON queues.queue_id=running_jobs.job_queue_id ";
+                $sql .= "LEFT JOIN projects ON projects.project_id=running_jobs.job_project_id ";
+		$parameters = array();
+		if ($user_id) {
+                	$sql .= "WHERE running_jobs.job_user_id=:user_id ";
+			$parameters[':user_id'] = $user_id;		
+		}
+		$sql .= "ORDER BY current_cost DESC ";
+		if ($count != 0) {
+                        $sql .= "LIMIT " . $start . "," . $count;
+                }
+		$result = $db->query($sql,$parameters);
+                return $result;
+        }
+
+	public static function get_num_running_jobs($db,$user_id) {
+		$result = self::get_running_jobs($db,$user_id);
+		return count($result);
+
+
+	}
+
 }
 
 ?>

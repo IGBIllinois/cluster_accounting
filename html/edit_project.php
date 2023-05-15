@@ -19,7 +19,7 @@ elseif (isset($_POST['edit_project'])) {
         $cfop = $_POST['cfop_1'] . "-" . $_POST['cfop_2'] . "-" . $_POST['cfop_3'] . "-" . $_POST['cfop_4'];
 	$owner_id = 0;
 	if (isset($_POST['owner_id'])) {
-		$owner_id = $_POST['owner'];
+		$owner_id = $_POST['owner_id'];
 	}
 	switch ($_POST['cfop_billtype']) {
                 case 'cfop':

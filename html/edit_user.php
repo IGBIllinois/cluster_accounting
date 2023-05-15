@@ -52,7 +52,7 @@ elseif (isset($_POST['delete_user'])) {
 
 elseif (isset($_POST['cancel_user'])) {
 	unset($_POST);
-	header('Location:user.php?user_id' . $_POST['user_id']);
+	header('Location:user.php?user_id=' . $_POST['user_id']);
 }
 
 //Code to get list of supervisors to choose from.
