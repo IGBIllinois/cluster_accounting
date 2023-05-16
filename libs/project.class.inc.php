@@ -389,7 +389,6 @@ class project {
 			$this->name = $result[0]['project_name'];
 			$this->description = $result[0]['project_description'];
 			$this->ldap_group = $result[0]['project_ldap_group'];
-			$this->custom_bill_description = $result[0]['cfop_custom_description'];
 			$this->enabled = $result[0]['project_enabled'];
 			$this->default = $result[0]['project_default'];
 			$this->owner_id = $result[0]['project_owner'];
@@ -413,7 +412,7 @@ class project {
 			$this->cfop_id = $result[0]['cfop_id'];
 			$this->cfop = $result[0]['cfop_value'];
 			$this->cfop_activity = $result[0]['cfop_activity'];
-			$this->cfop_billtype = $result[0]['cfop_billtye'];
+			$this->cfop_billtype = $result[0]['cfop_billtype'];
 			$this->custom_bill_description = $result[0]['cfop_custom_description'];
 		}
 		return true;

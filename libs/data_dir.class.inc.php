@@ -100,6 +100,7 @@ class data_dir {
 	public function disable() {
 		$error = false;
 		$message = "";
+		$result = 0;
 		if (is_dir($this->get_directory())) {
                         $message = "Unable to delete directory.  Directory " . $this->get_directory() . " still exists.";
                         $error = true;
