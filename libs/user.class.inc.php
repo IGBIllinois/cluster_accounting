@@ -99,7 +99,10 @@ class user {
 			if ($this->is_disabled($username)) {
 				$this->load_by_username($username);
 				$this->enable();
-				$this->set_supervisor($supervisor_id);
+				echo "Supervisor ID: " . $supervisor_id;
+				if ($supervisor_id) {
+					$this->set_supervisor($supervisor_id);
+				}
 				$this->default_project()->enable();
 				$this->default_data_dir()->enable();
 				$this->default_project()->set_cfop($cfop_billtype,$cfop,$activity,$hide_cfop,$custom_bill_description);

@@ -13,8 +13,8 @@ class project {
 	private $description;
 	private $cfop_billtype;
 	private $custom_bill_description = "";
-	private $cfop;
-	private $cfop_activity;
+	private $cfop = "";
+	private $cfop_activity = "";
 	private $enabled;
 	private $default;
 	private $time_created;
@@ -369,36 +369,56 @@ class project {
 
 	private function get_project($project_id) {
 
-		$sql = "SELECT projects.*,cfops.*, users.user_name as owner ";
-		$sql .= "FROM projects ";
-		$sql .= "LEFT JOIN users ON users.user_id=projects.project_owner ";
-		$sql .= "LEFT JOIN cfops ON cfops.cfop_project_id=projects.project_id ";
-		$sql .= "WHERE project_id=:project_id ";
-		$sql .= "AND cfops.cfop_active='1' LIMIT 1";
+		//$sql = "SELECT projects.*,cfops.*, users.user_name as owner ";
+		//$sql .= "FROM projects ";
+		//$sql .= "LEFT JOIN users ON users.user_id=projects.project_owner ";
+		//$sql .= "LEFT JOIN cfops ON cfops.cfop_project_id=projects.project_id ";
+		//$sql .= "WHERE project_id=:project_id ";
+		//$sql .= "AND cfops.cfop_active='1' LIMIT 1";
+		$sql = "SELECT projects.*, users.user_name as owner ";
+                $sql .= "FROM projects ";
+                $sql .= "LEFT JOIN users ON users.user_id=projects.project_owner ";
+                $sql .= "WHERE project_id=:project_id LIMIT 1";
+
 		$parameters = array(
                         ':project_id'=>$project_id
                 );
 		$result = $this->db->query($sql,$parameters);
-		if ($result) {
+		if (count($result)) {
 			$this->id = $result[0]['project_id'];
 			$this->name = $result[0]['project_name'];
 			$this->description = $result[0]['project_description'];
 			$this->ldap_group = $result[0]['project_ldap_group'];
-			$this->cfop_billtype = $result[0]['cfop_billtype'];
 			$this->custom_bill_description = $result[0]['cfop_custom_description'];
-			$this->cfop = $result[0]['cfop_value'];
-			$this->cfop_activity = $result[0]['cfop_activity'];
-			$this->time_created = $result[0]['cfop_time_created'];
 			$this->enabled = $result[0]['project_enabled'];
 			$this->default = $result[0]['project_default'];
 			$this->owner_id = $result[0]['project_owner'];
 			$this->owner = $result[0]['owner'];
-			$this->cfop_id = $result[0]['cfop_id'];
+			$this->load_current_cfop();
 		}
 		else { return false;
 		}
 	}
 
+	private function load_current_cfop() {
+		$sql = "SELECT cfops.* ";
+		$sql .= "FROM cfops ";
+		$sql .= "WHERE cfops.cfop_project_id=:project_id ";
+		$sql .= "AND cfops.cfop_active=1 LIMIT 1";
+		$parameters = array(
+			':project_id'=>$this->get_project_id()
+		);
+		$result = $this->db->query($sql,$parameters);
+		if (count($result)) {
+			$this->cfop_id = $result[0]['cfop_id'];
+			$this->cfop = $result[0]['cfop_value'];
+			$this->cfop_activity = $result[0]['cfop_activity'];
+			$this->cfop_billtype = $result[0]['cfop_billtye'];
+			$this->custom_bill_description = $result[0]['cfop_custom_description'];
+		}
+		return true;
+
+	}
 	private function load_by_id($project_id) {
 		$this->get_project($project_id);
 
