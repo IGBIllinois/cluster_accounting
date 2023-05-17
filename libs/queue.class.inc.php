@@ -237,6 +237,9 @@ class queue {
 	}
 
 	public function calculate_cost($cpu_time,$wallclock_time,$slots,$mem,$start_time,$end_time,$num_gpu) {
+		if ($start_time == "0000-00-00 00:00:00") {
+			return 0;
+		}
 		$elapsed_time = strtotime($end_time) - strtotime($start_time);
 		$cost_array = array();
 		array_push($cost_array,$this->calculate_cpu_cost($cpu_time,$wallclock_time,$slots,$start_time,$end_time));
