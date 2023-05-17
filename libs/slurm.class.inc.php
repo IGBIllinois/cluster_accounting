@@ -182,6 +182,11 @@ class slurm {
                                 $gpu = substr($job_data['AllocGRES'],strpos($job_data['AllocGRES'],':') +1 );
                         }
 
+			$start_time = "0000-00-00 00:00:00";
+			if ($job_data['Start'] != 'Unknown') {
+				$start_time = $job_data['Start'];
+			}
+			echo "Start Time: " . $start_time . "\n";
                         //creates array that gets submitted to the job.class.inc.php with the required information
                         $job_insert = array('job_number'=>$job_data['JobID'],
                                         'job_user'=>$job_data['User'],
@@ -190,7 +195,7 @@ class slurm {
                                         'job_name'=>$job_data['JobName'],
                                         'job_slots'=>$job_data['ReqCPUS'],
                                         'job_submission_time'=>$job_data['Submit'],
-                                        'job_start_time'=>$job_data['Start'],
+                                        'job_start_time'=>$start_time,
                                         'job_ru_wallclock'=>self::convert_to_seconds(self::format_slurm_time($job_data['Elapsed'])),
                                         'job_cpu_time'=>self::convert_to_seconds(self::format_slurm_time($job_data['TotalCPU'])),
                                         'job_reserved_mem'=>self::convert_memory($job_data['ReqMem']),
@@ -198,6 +203,7 @@ class slurm {
                                         'job_gpu'=>$gpu,
                                         'job_state'=>$job_data['State']
                         );
+			print_r($job_insert);
                         return $running_job->create($job_insert,$ldap);
                 }
                 return array('RESULT'=> 0);
