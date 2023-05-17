@@ -309,7 +309,6 @@ class project {
 		$parameters = array(
                         ':project_id'=>$this->get_project_id()
                 );
-		print_r($parameters);
 		$result = $this->db->non_select_query($sql,$parameters);
 		$this->enabled = 1;
 		return $result;

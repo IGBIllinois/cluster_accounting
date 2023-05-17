@@ -186,7 +186,6 @@ class slurm {
 			if ($job_data['Start'] != 'Unknown') {
 				$start_time = $job_data['Start'];
 			}
-			echo "Start Time: " . $start_time . "\n";
                         //creates array that gets submitted to the job.class.inc.php with the required information
                         $job_insert = array('job_number'=>$job_data['JobID'],
                                         'job_user'=>$job_data['User'],
@@ -203,7 +202,6 @@ class slurm {
                                         'job_gpu'=>$gpu,
                                         'job_state'=>$job_data['State']
                         );
-			print_r($job_insert);
                         return $running_job->create($job_insert,$ldap);
                 }
                 return array('RESULT'=> 0);

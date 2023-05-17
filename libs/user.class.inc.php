@@ -99,7 +99,6 @@ class user {
 			if ($this->is_disabled($username)) {
 				$this->load_by_username($username);
 				$this->enable();
-				echo "Supervisor ID: " . $supervisor_id;
 				if ($supervisor_id) {
 					$this->set_supervisor($supervisor_id);
 				}
