@@ -24,7 +24,7 @@ if (count($running_jobs)) {
                                 $state_html = "<span class='badge badge-pill badge-success'>&nbsp;</span>";
                                 break;
                         case 'PENDING':
-                                $state_html = "<span class='badge badge-pill badge-info'><&nbsp;</span>";
+                                $state_html = "<span class='badge badge-pill badge-info'>&nbsp;</span>";
 
                 }
 
