@@ -158,7 +158,7 @@ class project {
 					':project_id'=>$this->get_project_id()
 				);
 				$this->db->non_select_query($sql,$parameters);
-				$this->get_project();
+				$this->get_project($this->get_project_id());
 				return array('RESULT'=>true,
 					'MESSAGE'=>"<div class='alert alert-success'>Project successfully updated.</div>",
 					'project_id'=>$this->get_project_id());
@@ -367,18 +367,11 @@ class project {
 	///////////////Private Functions/////////////
 
 	private function get_project($project_id) {
-
-		//$sql = "SELECT projects.*,cfops.*, users.user_name as owner ";
-		//$sql .= "FROM projects ";
-		//$sql .= "LEFT JOIN users ON users.user_id=projects.project_owner ";
-		//$sql .= "LEFT JOIN cfops ON cfops.cfop_project_id=projects.project_id ";
-		//$sql .= "WHERE project_id=:project_id ";
-		//$sql .= "AND cfops.cfop_active='1' LIMIT 1";
 		$sql = "SELECT projects.*, users.user_name as owner ";
                 $sql .= "FROM projects ";
                 $sql .= "LEFT JOIN users ON users.user_id=projects.project_owner ";
                 $sql .= "WHERE project_id=:project_id LIMIT 1";
-
+		
 		$parameters = array(
                         ':project_id'=>$project_id
                 );
