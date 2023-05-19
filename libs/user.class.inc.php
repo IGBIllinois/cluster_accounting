@@ -509,7 +509,7 @@ class user {
 				$message = "Email Bill - User " . $this->get_username() . " successfully sent to " . $this->get_email();
 
 			} catch (Exception $e) {
-				throw new \Exceptino("Email BIll - User " . $this->get_username() . " Error sending mail. " . $e->getMessage());
+				throw new \Exception("Email BIll - User " . $this->get_username() . " Error sending mail. " . $e->getMessage());
 				return false;;
 			}
 			return $result;
