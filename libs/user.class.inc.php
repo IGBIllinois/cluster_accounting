@@ -520,8 +520,7 @@ class user {
 
 	public function authenticate($password) {
 		$result = false;
-                $rdn = $this->get_user_rdn();
-                if (($this->ldap->bind($rdn,$password)) && ($this->get_user_exist($this->user_name))) {
+                if (($this->ldap->authenticate($this->get_username(),$password)) && ($this->get_user_exist($this->user_name))) {
                         $result = true;
 
                 }
@@ -609,18 +608,6 @@ class user {
 		return $result[0]['count'];
 
 	}
-
-	private function get_user_rdn() {
-                $filter = "(uid=" . $this->get_username() . ")";       
-                $attributes = array('dn');
-                $result = $this->ldap->search($filter,'',$attributes);
-                if (isset($result[0]['dn'])) {
-                        return $result[0]['dn'];
-                }
-                else {
-                        return false;
-                }
-        }
 
 	private function is_disabled($username) {
 		$sql = "SELECT count(1) as count FROM users WHERE user_name=:username ";
