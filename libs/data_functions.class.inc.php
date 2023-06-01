@@ -168,6 +168,15 @@ class data_functions {
 			':billtype'=>project::BILLTYPE_CUSTOM
                 );
                 $data_result = $db->query($sql,$parameters);
+		if (!count($data_result)) {
+                        $data_result[0] = array('DATE'=>"",
+                                'NAME'=>"",
+                                'DESCRIPTION'=>"NO CUSTOM DATA BILLINGS",
+                                'COST'=>"",
+                                'PROJECT'=>""
+                        );
+                }
+
 		return $data_result;
         }
 

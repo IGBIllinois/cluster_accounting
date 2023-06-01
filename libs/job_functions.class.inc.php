@@ -165,8 +165,7 @@ class job_functions {
                 $sql .= "LEFT JOIN queue_cost ON queue_cost.queue_cost_id=jobs.job_queue_cost_id ";
                 $sql .= "LEFT JOIN queues ON queues.queue_id=jobs.job_queue_id ";
                 $sql .= "WHERE (YEAR(jobs.job_end_time)=:year AND month(jobs.job_end_time)=:month) ";
-                $sql .= "AND cfops.cfop_bill='1' ";
-		$sql .= "AND cfops.custom_billi='1' ";
+                $sql .= "AND cfops.cfop_billtype=:billtype ";
                 $sql .= "GROUP BY ";
                 $sql .= "queue_cost.queue_cost_id, ";
                 $sql .= "jobs.job_cfop_id, ";
@@ -175,13 +174,20 @@ class job_functions {
                 $sql .= "users.user_name ";
                 $sql .= "HAVING ROUND(SUM(jobs.job_billed_cost),2) > 0.00 ";
                 $sql .= "ORDER BY `NAME` ASC";
-		$paramters = array(
+		$parameters = array(
 			':month'=>$month,
-			':year'=>$year
+			':year'=>$year,
+			':billtype'=>project::BILLTYPE_CUSTOM
 		);
                 $job_result = $db->query($sql,$parameters);
-
-
+		if (!count($job_result)) {
+			$job_result[0] = array('DATE'=>"",
+				'NAME'=>"",
+				'DESCRIPTION'=>"NO CUSTOM JOB BILLINGS",
+				'COST'=>"",
+				'PROJECT'=>""
+			);
+		}
                 return $job_result;
 
 

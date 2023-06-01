@@ -66,6 +66,7 @@ class functions {
                                 $search_sql .= "projects.project_description LIKE '%" . $term . "%' OR ";
 				$search_sql .= "cfops.cfop_value LIKE '%" . $term . "%' OR ";
                                 $search_sql .= "cfops.cfop_activity LIKE '%" . $term . "%' OR ";
+				$search_sql .= "cfops.cfop_billtype LIKE '%" . $term . "%' OR ";
                                 $search_sql .= "users.user_name LIKE '%" . $term . "%') ";
                                 array_push($where_sql,$search_sql);
                         }
