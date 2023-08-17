@@ -136,7 +136,7 @@ class job_functions {
                 );
                 $report = $db->query($sql,$parameters);
 
-		/*this is currently breaking the report and according to fbs, we dont need to worry about doing this - this comment make labcodes blank
+		/**this is currently breaking the report and according to fbs, we dont need to worry about doing this - this comment make labcodes blank
 		$fbs_customers = functions::get_fbs_labcodes();
 		foreach ($report as &$record) {
 			for ($i=0; $i<count($fbs_customers); $i++) {
@@ -148,7 +148,7 @@ class job_functions {
 			}
 
 		}
-		/*
+		*/
 		return $report;
 		
         }
