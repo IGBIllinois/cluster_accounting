@@ -43,7 +43,7 @@ elseif (isset($_POST['update_cost'])) {
 elseif (isset($_POST['edit_cfop'])) {
 	if ($_POST['new_cfop']) {
 		$cfop_id = $_POST['new_cfop'];
-		$result =$job->set_cfop($cfop_id);
+		$result = $job->set_cfop($cfop_id);
 	}
 	else {
 		$hide_cfop = 0;

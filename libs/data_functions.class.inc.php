@@ -211,6 +211,8 @@ class data_functions {
 			':billtype'=>project::BILLTYPE_CFOP
                 );
                 $report = $db->query($sql,$parameters);
+
+		/*commenting this out fixes the program and also makes labcodes blank, not needed per cecil
 		$fbs_customers = functions::get_fbs_labcodes();
                 foreach ($report as &$record) {
                         for ($i=0; $i<count($fbs_customers); $i++) {
@@ -222,6 +224,7 @@ class data_functions {
                         }
 
                 }
+		*/
                 return $report;
 
         }

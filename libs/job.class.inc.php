@@ -346,7 +346,7 @@ class job {
 			':cfop_id'=>$cfop_id,
 			':job_id'=>$this->get_job_id()
 		);
-		$result = $this->db->non_select_query($sql);
+		$result = $this->db->non_select_query($sql,$parameters);
 		if ($result) {
 			$message = "CFOP successfully updated.";
 			$this->cfop_id = $cfop_id;
