@@ -82,7 +82,6 @@ class slurm {
 
 		$job_array_regex = "/^\d+_\[\d+-\d+\]/";
 		$job_array_limit_regex = "/^\d+_\[\d+-\d+\%\d+\]/";
-
 		if (!strpos($job_data['JobID'],".batch") && 
 			!strpos($job_data['JobID'],".0") && 
 			!strpos($job_data['JobID'],".extern") &&
@@ -146,9 +145,8 @@ class slurm {
 	//Add Running Job.  Addes running job to job_running table
 	public static function add_running_job($db,$ldap,$job_data) {
 
-                $job_array_regex = "/^\d+_\[\d+-\d+\]/";
-                $job_array_limit_regex = "/^\d+_\[\d+-\d+\%\d+\]/";
-
+                $job_array_regex = "/^\d+_\[\d+-\d+,%\]/";
+                $job_array_limit_regex = "/^\d+_\[\d+-\d+\%\d+,%\]/";
                 if (!strpos($job_data['JobID'],".batch") &&
                         !strpos($job_data['JobID'],".0") &&
                         !strpos($job_data['JobID'],".extern") &&

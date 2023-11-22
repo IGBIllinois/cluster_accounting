@@ -505,7 +505,7 @@ class user {
 			$email->set_replyto_emails(settings::get_admin_email());
 			$email->set_to_emails($to);
 			try {
-				$result = $email->send_email(settings::get_from_email(),$subject,"",$html_message);
+				$result = $email->send_email(settings::get_from_email(),$subject,"",$html_message,settings::get_from_name());
 				$message = "Email Bill - User " . $this->get_username() . " successfully sent to " . $this->get_email();
 
 			} catch (Exception $e) {

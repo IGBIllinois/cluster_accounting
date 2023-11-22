@@ -43,7 +43,6 @@ class running_job extends job {
 				$job_data['job_queue_id'] = $this->queue->get_queue_id();
 				$job_data['job_cfop_id'] = $this->project->get_cfop_id();
 				$job_data['job_queue_cost_id'] = $this->queue->get_queue_cost_id();
-				
 				$job_id = $this->db->build_insert("running_jobs",$job_data);
 				if ($job_id) {
                                         return array('RESULT'=>true,
