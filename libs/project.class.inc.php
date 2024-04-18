@@ -66,7 +66,7 @@ class project {
 			$message .= "<div class='alert alert-danger'>Please enter valid CFOP.</div>";
 		}
 		try {
-			if (settings::get_cfop_api_enabled()) {
+			if (!settings::get_cfop_api_enabled()) {
                         	$cfop_obj =  new \IGBIllinois\cfop(settings::get_cfop_api_key(),settings::get_debug());
                         	$cfop_obj->validate_cfop($cfop,$activity);
 			}
@@ -113,7 +113,7 @@ class project {
 
 	                }	
 			try {
-				if (settings::get_cfop_api_enabled()) {
+				if (!settings::get_cfop_api_enabled()) {
 					$cfop_obj =  new \IGBIllinois\cfop(settings::get_cfop_api_key(),settings::get_debug());
 					$cfop_obj->validate_cfop($cfop,$activity);
 				} 
