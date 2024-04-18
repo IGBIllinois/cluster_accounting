@@ -5,8 +5,6 @@ if (!$login_user->is_admin()) {
         exit;
 }
 
-print_r($_POST);
-
 if (isset($_POST['delete_project'])) {
 	$project_id = $_POST['project_id'];
 	$project = new project($db,$project_id);
