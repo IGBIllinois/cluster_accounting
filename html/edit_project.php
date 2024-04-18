@@ -5,6 +5,8 @@ if (!$login_user->is_admin()) {
         exit;
 }
 
+print_r($_POST);
+
 if (isset($_POST['delete_project'])) {
 	$project_id = $_POST['project_id'];
 	$project = new project($db,$project_id);
@@ -297,6 +299,8 @@ require_once 'includes/header.inc.php';
 ?>
 
 <br>
+<br>
+
 <?php
 if (isset($result['MESSAGE'])) {
 	echo $result['MESSAGE'];

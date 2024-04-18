@@ -21,6 +21,7 @@ class settings {
 	private const SMTP_HOST = "localhost";
 	private const REPORT_PREFIX = "Report";
 	private const DATA_MIN_BILL = 0.00;
+	private	const CFOP_API_ENABLED = false;
 
 	public static function get_version() {
                 return VERSION;
@@ -291,6 +292,13 @@ class settings {
 		}
 		return self::REPORT_PREFIX;
 
+	}
+
+	public static function get_cfop_api_enabled() {
+		if (defined("CFOP_API_ENABLED") && is_bool(CFOP_API_ENABLED)) {
+			return CFOP_API_ENABLED;
+		}
+		return self::CFOP_API_ENABLED;
 	}
 	public static function get_cfop_api_key() {
 		if (defined("CFOP_API_KEY")) {

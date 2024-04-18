@@ -66,8 +66,10 @@ class project {
 			$message .= "<div class='alert alert-danger'>Please enter valid CFOP.</div>";
 		}
 		try {
-                        $cfop_obj =  new \IGBIllinois\cfop(settings::get_cfop_api_key(),settings::get_debug());
-                        $cfop_obj->validate_cfop($cfop,$activity);
+			if (settings::get_cfop_api_enabled()) {
+                        	$cfop_obj =  new \IGBIllinois\cfop(settings::get_cfop_api_key(),settings::get_debug());
+                        	$cfop_obj->validate_cfop($cfop,$activity);
+			}
 
                 }
                 catch (\Exception $e) {
@@ -95,7 +97,11 @@ class project {
 
 	}
 
-	public function edit($ldap,$ldap_group,$description,$cfop_billtype,$owner_id,$cfop = "",$activity = "",$hide_cfop = 0,$custom_bill_description = "") {
+	public function edit($ldap,$ldap_group,$description,$cfop_billtype,$owner_id = 0,$cfop = "",$activity = "",$hide_cfop = 0,$custom_bill_description = "") {
+		if ($this->get_default()) {
+			$owner_id = $this->get_owner_id();
+		}
+
 		if (($cfop != $this->get_cfop()) || ($activity != $this->get_activity_code()) ||
 				($cfop_billtype != $this->get_billtype())) {
 
@@ -107,15 +113,17 @@ class project {
 
 	                }	
 			try {
-				$cfop_obj =  new \IGBIllinois\cfop(settings::get_cfop_api_key(),settings::get_debug());
-				$cfop_obj->validate_cfop($cfop,$activity);
+				if (settings::get_cfop_api_enabled()) {
+					$cfop_obj =  new \IGBIllinois\cfop(settings::get_cfop_api_key(),settings::get_debug());
+					$cfop_obj->validate_cfop($cfop,$activity);
+				} 
 
 			}
 			catch (\Exception $e) {
 				$error = true;
 				$message .= "<div class='alert alert-danger'>" . $e->getMessage() . "</div>";
 			}
-
+			
 			if (!$error) {
 				$result = $this->set_cfop($cfop_billtype,$cfop,$activity,$hide_cfop,$custom_bill_description);
 				return array('RESULT'=>true,
@@ -145,9 +153,6 @@ class project {
 	                        $message .= "<div class='alert alert-danger'>Please enter a project owner.</div>";
         	        }
 			if (!$error) {
-				if ($this->get_default()) {
-					$owner_id = $this->get_owner_id();
-				}
 				$sql = "UPDATE projects set project_ldap_group=:ldap_group, ";
 				$sql .= "project_description=:description,project_owner=:owner_id ";
 				$sql .= "WHERE project_id=:project_id";
@@ -157,6 +162,8 @@ class project {
 					':owner_id'=>$owner_id,
 					':project_id'=>$this->get_project_id()
 				);
+				echo "<br>SQL: " . $sql;
+				echo "<br>Parameters: " . print_r($parameters);
 				$this->db->non_select_query($sql,$parameters);
 				$this->get_project($this->get_project_id());
 				return array('RESULT'=>true,

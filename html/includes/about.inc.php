@@ -9,14 +9,14 @@ if (!$login_user->is_admin()) {
         <div class='modal-content'>
         <div class='modal-header'>
                 <h5 class='modal-title'>About</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
                 <span aria-hidden="true">&times;</span>
         </div>
 <div class='modal-body'>
 
 	<table class='table table-bordered table-sm'>
 		<tbody>
-		<tr><td>Code Website</td></td><td><a href='<?php echo settings::get_website_url(); ?>' target='_blank'><?php echo settings::get_website_url(); ?></a></td></tr>
+		<tr><td>Code Website</td><td><a href='<?php echo settings::get_website_url(); ?>' target='_blank'><?php echo settings::get_website_url(); ?></a></td></tr>
 		<tr><td>App Version</td><td><?php echo settings::get_version(); ?></td></tr>
 		<tr><td>Webserver Version</td><td><?php echo \IGBIllinois\Helper\functions::get_webserver_version(); ?></td></tr>
 		<tr><td>MySQL Version</td><td><?php echo $db->get_version(); ?></td>
