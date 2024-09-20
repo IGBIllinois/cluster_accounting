@@ -129,7 +129,6 @@ require_once 'includes/header.inc.php';
                 <option value='csv'>CSV</option>
         </select>&nbsp;
 	<input class='btn btn-primary' type='submit' name='create_data_report' value='Download Full Report'>&nbsp;
-	<input class='btn btn-primary' type='submit' name='create_data_boa_report' value='Download BOA Report'>&nbsp;
 	<input class='btn btn-primary' type='submit' name='create_data_fbs_report' value='Download FBS Report'>&nbsp;
         <input class='btn btn-primary' type='submit' name='create_data_custom_report' value='Download Custom Billing Report'>
 </form>

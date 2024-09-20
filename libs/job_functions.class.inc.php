@@ -67,47 +67,6 @@ class job_functions {
 		return $result;
 
         }
-        public static function get_jobs_boa_bill($db,$month,$year) {
-
-                $sql = "SELECT '' as 'DATE', ";
-		$sql .= "users.user_name as 'NAME', ";
-                $sql .= "cfops.cfop_value as 'CFOP', ";
-                $sql .= "cfops.cfop_activity as 'ACTIVITY CODE', ";
-                $sql .= "ROUND(job_bill.job_bill_billed_cost,2) as 'COST', ";
-		$sql .= "CONCAT('Biocluster Jobs - ',projects.project_name) as 'DESCRIPTION' ";
-                $sql .= "FROM job_bill ";
-		$sql .= "LEFT JOIN users ON users.user_id=job_bill.job_bill_user_id ";
-                $sql .= "LEFT JOIN projects ON projects.project_id=job_bill.job_bill_project_id ";
-                $sql .= "LEFT JOIN cfops ON cfops.cfop_id=job_bill.job_bill_cfop_id ";
-                $sql .= "LEFT JOIN queue_cost ON queue_cost.queue_cost_id=job_bill.job_bill_queue_cost_id ";
-                $sql .= "LEFT JOIN queues ON queues.queue_id=job_bill.job_bill_queue_id ";
-                $sql .= "WHERE (YEAR(job_bill.job_bill_date)=:year AND month(job_bill.job_bill_date)=:month) ";
-		$sql .= "AND cfops.cfop_billtype=:billtype ";
-		$sql .= "HAVING ROUND(COST,2) > 0.00 ";
-		$sql .= "ORDER BY `CFOP` ASC, `ACTIVITY CODE` ASC ";
-		$parameters = array(
-			':year'=>$year,
-			':month'=>$month,
-			':billtype'=>project::BILLTYPE_CFOP
-		);
-                $job_result = $db->query($sql,$parameters);
-
-		$total_bill = 0;
-		foreach ($job_result as $values) {
-			$total_bill += $values['COST'];
-		}
-		$first_row = array(array('DATE'=>$month . "/" . $year,
-			'NAME'=>'IGB Biocluster Jobs',
-			'CFOP'=>settings::get_boa_cfop(),
-			'ACTIVITY CODE'=>'',
-			'COST'=>"-" . $total_bill,
-			'DESCRIPTION'=>'',
-			));
-
-		return array_merge($first_row,$job_result);
-		
-
-        }
 
 	public static function get_jobs_fbs_bill($db,$month,$year) {
                 $sql = "SELECT 'IGB' as 'AreaCode','CNRG' as 'FacilityCode', ";

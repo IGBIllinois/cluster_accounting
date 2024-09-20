@@ -49,7 +49,6 @@ define("ROOT_DATA_DIR","");
 
 define("LOG_FILE","");
 define("ENABLE_LOG",false);
-define("BOA_CFOP",'');
 define('PASSWORD_RESET_URL','');
 define('REPORT_PREFIX','Report');
 define('CFOP_API_ENABLED',false);

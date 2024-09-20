@@ -207,11 +207,6 @@ class settings {
 		}
 		return self::DATA_MIN_BILL;
 	}
-	public static function get_boa_cfop() {
-		return BOA_CFOP;
-		
-
-	}
 
 	public static function get_password_reset_url() {
 		if (defined('PASSWORD_RESET_URL') && (PASSWORD_RESET_URL != "") &&

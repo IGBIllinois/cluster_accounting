@@ -102,48 +102,6 @@ class data_functions {
         	return $db->query($sql,$parameters);
 	}
 
-        public static function get_data_boa_bill($db,$month,$year,$minimal_bill = 0.01) {
-                $sql = "SELECT '' as 'DATE', ";
-		$sql .= "projects.project_name as 'NAME', ";
-		$sql .= "cfops.cfop_value as 'CFOP', ";
-		$sql .= "cfops.cfop_activity as 'ACTIVITY CODE', ";	
-                $sql .= "ROUND(data_bill.data_bill_billed_cost,2)  as 'COST', ";
-		$sql .= "CONCAT('Biocluster Data - ',data_dir.data_dir_path) as 'DESCRIPTION' ";
-                $sql .= "FROM data_bill ";
-                $sql .= "LEFT JOIN cfops ON cfops.cfop_id=data_bill.data_bill_cfop_id ";
-                $sql .= "LEFT JOIN projects ON projects.project_id=data_bill.data_bill_project_id ";
-                $sql .= "LEFT JOIN data_dir ON data_dir.data_dir_id=data_bill.data_bill_data_dir_id ";
-                $sql .= "LEFT JOIN data_cost ON data_cost_id=data_bill_data_cost_id ";
-                $sql .= "WHERE YEAR(data_bill.data_bill_date)=:year ";
-                $sql .= "AND MONTH(data_bill.data_bill_date)=:month ";
-                $sql .= "AND ROUND(data_bill.data_bill_billed_cost,2)>=:minimal_bill ";
-		$sql .= "AND cfops.cfop_billtype=:billtype ";
-                $sql .= "ORDER BY `CFOP` ASC, `ACTIVITY CODE` ASC";
-		$parameters = array(
-                        ':month'=>$month,
-                        ':year'=>$year,
-			':billtype'=>project::BILLTYPE_CFOP,
-                        ':minimal_bill'=>$minimal_bill
-                );
-		$data_result = $db->query($sql,$parameters);
-
-
-		$total_bill = 0;
-		foreach ($data_result as $values) {
-                        $total_bill += $values['COST'];
-                }
-
-                $first_row = array(array('DATE'=>$month . "/" . $year,
-                        'NAME'=>'IGB Biocluster Data',
-                        'CFOP'=>settings::get_boa_cfop(),
-                        'ACTIVITY CODE'=>'',
-                        'COST'=>"-" . $total_bill,
-			'DESCRIPTION'=>'',
-			));
-
-		return array_merge($first_row,$data_result);			
-        }
-
 	public static function get_data_custom_bill($db,$month,$year,$minimal_bill = 0.01) {
                 $sql = "SELECT CONCAT(:month '/' :year)  as 'DATE', ";
                 $sql .= "projects.project_name as 'NAME', ";
