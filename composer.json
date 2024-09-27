@@ -17,7 +17,7 @@
 		"components/jqueryui": "1.12.1",
 		"select2/select2": "4.0.13",
 		"ttskch/select2-bootstrap4-theme": "1.5.2",
-		"twbs/bootstrap": "v4.6.2",
+		"twbs/bootstrap": "v5.0.0",
 		"twig/twig": "v3.4.3",
 		"fortawesome/font-awesome": "5.15.4",
 		"igbillinois/igbillinois-php": "1.4.0"
