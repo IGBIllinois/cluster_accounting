@@ -40,25 +40,6 @@ elseif (isset($_POST['update_cost'])) {
 		array_push($messages,$result);
 	}
 }
-elseif (isset($_POST['edit_cfop'])) {
-	if ($_POST['new_cfop']) {
-		$cfop_id = $_POST['new_cfop'];
-		$result = $job->set_cfop($cfop_id);
-	}
-	else {
-		$hide_cfop = 0;
-        	if (isset($_POST['hide_cfop'])) {
-                	$hide_cfop = 1;
-	        }
-
-        	$cfop = $_POST['cfop_1'] . "-" . $_POST['cfop_2'] . "-" . $_POST['cfop_3'] . "-" . $_POST['cfop_4'];
-		$result = $job->set_new_cfop($cfop,$_POST['activity'],$hide_cfop);
-	}
-	if ($result['RESULT']) {
-		unset($_POST);
-	}
-	array_push($messages,$result);
-}
 
 elseif (isset($_POST['cancel'])) {
 	unset($_POST);
@@ -202,79 +183,8 @@ require_once 'includes/header.inc.php';
 		</td>
 		<td><input class='btn btn-primary btn-small' type='submit' name='update_cost' value='Update'></td>
         </tr>
-	<tr>
-                <td>CFOP:</td>
-                <td><?php echo $job->get_cfop(); ?></td>
-		<td>&nbsp</td>
-        </tr>
-        <tr>
-                <td>Activity Code:</td>
-                <td><?php echo $job->get_activity_code(); ?></td>
-		<td>&nbsp</td>
-        </tr>
 </table>
 </div>
-</div>
-
-<div class='col-sm-6 col-md-6 col-lg-6 col-xl-6'>
-<h4>Update CFOP</h4>
-<div class='form-group row'>
-<select class='custom-select' name='new_cfop' id='new_cfop' onChange='enable_new_cfop();'>
-<?php echo $edit_cfop_html; ?>
-</select>
-</div>
-<br>
-<div class='form-group row'>
-	<label class='col-sm-3 col-form-label' for='cfop_input'>CFOP:</label>
-	<div class='col-sm-1'>
-		<input class='form-control' type='text' name='cfop_1' id='cfop_input'
-			maxlength='1' onKeyUp='cfop_advance_1()'
-			value='<?php if (isset($_POST['cfop_1'])) { echo $_POST['cfop_1']; } ?>'>
-	</div>
-	-
-	<div class='col-sm-2'>
-		<input class='form-control' type='text' name='cfop_2'
-			id='cfop_input' maxlength='6' onKeyUp='cfop_advance_2()'
-			value='<?php if (isset($_POST['cfop_2'])) { echo $_POST['cfop_2']; } ?>'>
-	</div>
-	-
-	<div class='col-sm-2'>
-		<input class='form-control' type='text' name='cfop_3'
-			id='cfop_input' maxlength='6' onKeyUp='cfop_advance_3()'
-			value='<?php if (isset($_POST['cfop_3'])) { echo $_POST['cfop_3']; } ?>'>
-	</div>
-	-
-	<div class='col-sm-2'>
-		<input class='form-control' type='text' name='cfop_4'
-			id='cfop_input' maxlength='6'
-			value='<?php if (isset($_POST['cfop_4'])) { echo $_POST['cfop_4']; } ?>'>
-	</div>
-</div>
-
-<div class='form-group row'>
-	<label class='col-sm-3 col-form-label' for='activity_input'>Activity Code (optional):</label>
-	<div class='col-sm-2'>
-		<input class='form-control' type='text' name='activity' maxlength='6'
-			id='activity_input' value='<?php if (isset($_POST['activity'])) { echo $_POST['activity']; } ?>'>
-	</div>
-</div>
-
-<div class='form-group row'>
-	<div class='col-sm-9 offset-sm-3'>
-	<div clas='form-check'>
-		<input class='form-check-input' type='checkbox' name='hide_cfop' id='hide_cfop_input' <?php if (isset($_POST['hide_cfop'])) { echo "checked='checked'"; } ?>>
-		<label class='form-check-label' for='hide_cfop_input'>Hide CFOP From User</label>
-	</div>
-	</div>
-</div>
-
-
-<div class='form-group'>
-	<div class='col-sm-8 col-md-8 col-lg-8 col-xl-8'>
-		<input class='btn btn-primary' type='submit' name='edit_cfop' value='Edit CFOP'>
-	</div>
-</div>
-
 </div>
 
 <div class='row'>

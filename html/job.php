@@ -169,14 +169,6 @@ require_once 'includes/header.inc.php';
 		}
 		?>
 	</tr>
-	<tr>
-		<td>CFOP:</td>
-		<td><?php echo $job->get_cfop(); ?></td>
-	</tr>
-	<tr>
-		<td>Activity Code:</td>
-		<td><?php echo $job->get_activity_code(); ?></td>
-	</tr>
 	</tbody>
 </table>
 </div>

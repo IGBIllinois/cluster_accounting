@@ -5,11 +5,22 @@ if (!$login_user->is_admin()) {
         exit;
 }
 
+$message = "";
 if (isset($_POST['delete_project'])) {
 	$project_id = $_POST['project_id'];
 	$project = new project($db,$project_id);
 	$project->disable();
 	header('Location: projects.php');
+}
+elseif (isset($_POST['update_bill'])) {
+	$project_id = $_POST['project_id'];
+	$month = $_POST['month'];
+	$year = $_POST['year'];
+	$job_result = job_bill::update_bill($db,$project_id,$month,$year);
+	$message = $job_result['MESSAGE'];
+	$data_result = data_dir::update_bill($db,$project_id,$month,$year);
+	$message .= $data_result['MESSAGE'];
+
 }
 elseif (isset($_POST['edit_project'])) {
 	$_POST = array_map('trim',$_POST);
@@ -55,6 +66,7 @@ elseif (isset($_POST['edit_project'])) {
 
 	$result = $project->edit($ldap,$_POST['ldap_group'],$_POST['description'],
 			$_POST['cfop_billtype'],$owner_id,$cfop,$_POST['activity'],$hide_cfop,$_POST['custom_bill_description']);
+	$message = $result['MESSAGE'];
 
 }
 
@@ -116,6 +128,30 @@ $directories_html = "";
 foreach ($directories as $directory) {
 	$directories_html .= "<tr><td><a href='data_dir.php?data_dir_id=" . $directory['data_dir_id'] . "'>" . $directory['data_dir_path'] . "</a></td></tr>";
 }
+
+$selected_month = new DateTime('now');
+$month_name = $selected_month->format('F');
+$month = $selected_month->format('m');
+$year = $selected_month->format('Y');
+
+//////Year////////
+$min_year = job_bill::get_minimal_year($db);
+$year_html = "<select class='form-control' name='year'>";
+for ($i=$min_year; $i<=date("Y");$i++) {
+        if ($i == $year) { $year_html .= "<option value='" . $i . "' selected='true'>" . $i . "</option>"; }
+        else { $year_html .= "<option value='" . $i . "'>" . $i . "</option>"; }
+}
+$year_html .= "</select>&nbsp;";
+
+///////Month///////
+$month_html = "<select class='form-control' name='month'>";
+for ($i=1;$i<=12;$i++) {
+        if ($i == $month) { $month_html .= "<option value='$i' selected='true'>" . $i . " - " . date('F', mktime(0, 0, 0, $i, 10)) . "</option>"; }
+        else { $month_html .= "<option value='$i'>" . $i . " - " . date('F', mktime(0, 0, 0, $i, 10)) . "</option>"; }
+}
+$month_html .= "</select>";
+
+$previous_bill_html = $year_html . $month_html;
 
 require_once 'includes/header.inc.php';
 ?>
@@ -289,6 +325,17 @@ require_once 'includes/header.inc.php';
 </div>
 </div>
 <br>
+<div class='card'>
+<div class='card-header'>Update Previous Bill</div>
+<div class='card-body'>
+	<form class='form-inline' action='<?php echo $_SERVER['PHP_SELF']; ?>?project_id=<?php echo $project->get_project_id(); ?>' method='post'>
+	<?php echo $previous_bill_html; ?>&nbsp;
+	<input type='hidden' name='project_id' value='<?php echo $project_id; ?>'>
+	<input class='btn btn-primary' type='submit' name='update_bill' value='Update Bill'>	
+	</form>
+</div>
+</div>
+<br>
 <?php if (isset($_SERVER['HTTP_REFERER'])) {
         echo "<a href='" . $_SERVER['HTTP_REFERER'] . "' class='btn btn-primary'>Back</a>";
 
@@ -300,8 +347,8 @@ require_once 'includes/header.inc.php';
 <br>
 
 <?php
-if (isset($result['MESSAGE'])) {
-	echo $result['MESSAGE'];
+if (isset($message)) {
+	echo $message;
 }
 
 require_once 'includes/footer.inc.php';

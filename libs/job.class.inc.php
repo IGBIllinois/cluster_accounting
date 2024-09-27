@@ -28,9 +28,6 @@ class job {
 	protected $user_id;
 	protected $total_cost;
 	protected $billed_cost;
-	protected $cfop_id;
-	protected $cfop;
-	protected $activity_code;
 	protected $exit_status;
 	protected $submitted_project;
 	protected $exec_hosts = array();
@@ -132,7 +129,6 @@ class job {
 				$job_data['job_user_id'] = $user->get_user_id();
 				$job_data['job_project_id'] = $this->project->get_project_id();
 				$job_data['job_queue_id'] = $this->queue->get_queue_id();
-				$job_data['job_cfop_id'] = $this->project->get_cfop_id();
 				$job_data['job_queue_cost_id'] = $this->queue->get_queue_cost_id();
 				$job_id = $this->db->build_insert("jobs",$job_data);
 				if ($job_id) {
@@ -242,15 +238,6 @@ class job {
 	public function get_billed_cost() {
 		return $this->billed_cost;
 	}
-	public function get_cfop_id() {
-		return $this->cfop_id;
-	}
-	public function get_cfop() {
-		return $this->cfop;
-	}
-	public function get_activity_code() {
-		return $this->activity_code;
-	}
 	public function get_formated_total_cost() {
 		return number_format($this->get_total_cost(),2);
 	}
@@ -320,12 +307,10 @@ class job {
 
 	public function set_project($project_id) {
 		$project = new project($this->db,$project_id);
-		$sql = "UPDATE jobs SET job_project_id=:project_id";
-		$sql .= ",job_cfop_id=:cfop_id ";
+		$sql = "UPDATE jobs SET job_project_id=:project_id ";
 		$sql .= "WHERE job_id=:job_id LIMIT 1";
 		$parameters = array(
 			':project_id'=>$project_id,
-			':cfop_id'=>$project->get_cfop_id(),
 			':job_id'=>$this->get_job_id()
 
 		);
@@ -339,25 +324,6 @@ class job {
 
 	}
 
-	public function set_cfop($cfop_id) {
-		$sql = "UPDATE jobs SET job_cfop_id=:cfop_id ";
-		$sql .= "WHERE job_id=:job_id LIMIT 1";
-		$parameters = array(
-			':cfop_id'=>$cfop_id,
-			':job_id'=>$this->get_job_id()
-		);
-		$result = $this->db->non_select_query($sql,$parameters);
-		if ($result) {
-			$message = "CFOP successfully updated.";
-			$this->cfop_id = $cfop_id;
-			$cfop = functions::get_cfop($this->db,$cfop_id);
-			$this->cfop = $cfop[0]['cfop_value'];
-			$this->activity_code = $cfop[0]['cfop_activity'];
-			return array('RESULT'=>true,'MESSAGE'=>$message);
-		}
-		return array('RESULT'=>false,'MESSAGE'=>'Failed updating CFOP');
-
-	}
 	public function set_new_cfop($cfop,$activity,$hide_cfop) {
 		$valid = 1;
 		$message = "";
@@ -429,8 +395,6 @@ class job {
 			$this->slots = $result[0]['slots'];
 			$this->username = $result[0]['username'];
 			$this->user_id = $result[0]['user_id'];
-			$this->cfop = $result[0]['cfop'];
-			$this->activity_code = $result[0]['activity_code'];
 			$this->total_cost = $result[0]['total_cost'];
 			$this->billed_cost = $result[0]['billed_cost'];
 			$this->submission_time = $result[0]['submission_time'];

@@ -119,10 +119,7 @@ if ($calc_data) {
 
 if ($calc_jobs) {
 	$jobs_bill = job_functions::get_all_jobs_by_month($db,$month,$year);
-
-	$bill_date = $year . "-" . $month . "-01 00:00:00";
 	foreach ($jobs_bill as $job_info) {
-		$job_info['date'] = $bill_date;
 		if (!$dry_run) {
 			$result = job_bill::add_job_bill($db,$job_info);
 			$log->send_log($result['MESSAGE']);

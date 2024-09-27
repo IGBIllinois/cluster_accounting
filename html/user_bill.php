@@ -137,6 +137,7 @@ if (count($data_usage)) {
 else {
 		$data_html .= "<tr><td colspan='7'>No Data Usage or not calculated</td></tr>";
 }
+
 $get_vars = array('user_id'=>$user_id,
 	'month'=>$month,
 	'year'=>$year);

@@ -94,24 +94,24 @@ require_once 'includes/header.inc.php';
 
 <h3>Search Jobs</h3>
 <div class='row'>
-<div class='col-sm-8 col-md-8 col-lg-8 col-xl-8'>
+<div class='col-sm-9 col-md-9 col-lg-9 col-xl-9'>
 	<form class='form-inline' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
                 <input type='text' name='search' class='form-control' placeholder='Search'
-			value='<?php if (isset($_GET['search'])) { echo $_GET['search']; } ?>' autocapitalize='none'>
+			value='<?php if (isset($_GET['search'])) { echo $_GET['search']; } ?>' autocapitalize='none'>&nbsp;
 		<?php
 			if ($login_user->is_admin() || $login_user->is_supervisor()) {
 				echo $user_list_html;
 			}
 
-		?>
+		?>&nbsp;
 		<input class='form-control' type='text' name='start_date' id='start_date' placeholder='Start Date'
-			value='<?php if (isset($start_date)) { echo $start_date; } ?>'>
+			value='<?php if (isset($start_date)) { echo $start_date; } ?>'>&nbsp;
 		<input class='form-control' type='text' name='end_date' id='end_date' placeholder='End Date'
-			value='<?php if (isset($end_date)) { echo $end_date; } ?>'>
+			value='<?php if (isset($end_date)) { echo $end_date; } ?>'>&nbsp;
                 <input type='submit' class='btn btn-primary' value='Search'>
 	</form>
 </div>
-<div class='col-sm-4 col-md-4 col-lg-4 col-xl-4'>
+<div class='col-sm-3 col-md-3 col-lg-3 col-xl-3'>
         <div class='btn-group' role='group'>
                 <a class='btn btn-primary' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array); ?>'>All Jobs</a>
                 <a class='btn btn-success' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array) . "&completed=1"; ?>'>Completed Jobs</a>

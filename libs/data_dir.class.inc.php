@@ -265,7 +265,8 @@ class data_dir {
         }
 
 	public function add_data_bill($month,$year,$bytes) {
-		$bill_date = $year . "-" . $month . "-01 00:00:00";
+		$date = strtotime($year . "-" . $month . "-01");
+		$bill_date = date("Y-m-t 00:00:00",$date);
 		$sql = "SELECT count(1) as count ";
 		$sql .= "FROM data_bill ";
 		$sql .= "WHERE data_bill.data_bill_date=:bill_date ";
@@ -304,6 +305,33 @@ class data_dir {
 		}
 		return array('RESULT'=>$result,'MESSAGE'=>$message,'id'=>$insert_id);
 	}
+
+	 public static function update_bill($db,$project_id,$month,$year) {
+                $selected_date = strtotime(date('Y-m',strtotime($year . "-" . $month)));
+                $current_date = strtotime(date('Y-m'));
+                if ($selected_date >= $current_date) {
+                        $message = "<div class='alert alert-danger'>Data Bill Not Updated.  Selected Date is the current month or in the future</div>";
+                        return array('RESULT'=>false,'MESSAGE'=>$message);
+                }
+                else {
+                        $project = new project($db,$project_id);
+                        $sql = "UPDATE data_bill SET data_bill_cfop_id=:cfop_id ";
+                        $sql .= "WHERE data_bill_project_id=:project_id ";
+                        $sql .= "AND MONTH(data_bill_date)=:month ";
+                        $sql .= "AND YEAR(data_bill_date)=:year";
+                        $parameters = array(':cfop_id'=>$project->get_cfop_id(),
+                                ':project_id'=>$project_id,
+                                ':month'=>$month,
+                                ':year'=>$year
+                        );
+                        $result = $db->non_select_query($sql,$parameters);
+                        if ($result) {
+                                $message = "<div class='alert alert-success'>Data Bill Successfully updated for Project for " . $month . "-" . $year . "</div>";
+                                return array('RESULT'=>$result,'MESSAGE'=>$message);
+                        }
+                }
+                return array('RESULT'=>false);
+        }
 
 }
 

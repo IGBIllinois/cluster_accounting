@@ -33,24 +33,25 @@ class job_functions {
 	}
 
 	public static function get_all_jobs_by_month($db,$month,$year) {
-		$sql = "SELECT users.user_id, ";
+		$sql = "SELECT users.user_id, users.user_name, ";
                 $sql .= "projects.project_id, ";
                 $sql .= "cfops.cfop_id, ";
                 $sql .= "queues.queue_id, ";
                 $sql .= "queue_cost.queue_cost_id, ";
                 $sql .= "COUNT(1) as num_jobs, ";
                 $sql .= "ROUND(SUM(jobs.job_total_cost),2) as total_cost, ";
-                $sql .= "ROUND(SUM(jobs.job_billed_cost),2) as billed_cost ";
+                $sql .= "ROUND(SUM(jobs.job_billed_cost),2) as billed_cost, ";
+		$sql .= ":year as year, ";
+		$sql .= ":month as month ";
                 $sql .= "FROM jobs ";
                 $sql .= "LEFT JOIN users ON users.user_id=jobs.job_user_id ";
                 $sql .= "LEFT JOIN projects ON projects.project_id=jobs.job_project_id ";
-                $sql .= "LEFT JOIN cfops ON cfops.cfop_id=jobs.job_cfop_id ";
+                $sql .= "LEFT JOIN cfops ON cfops.cfop_project_id=projects.project_id ";
                 $sql .= "LEFT JOIN queue_cost ON queue_cost.queue_cost_id=jobs.job_queue_cost_id ";
                 $sql .= "LEFT JOIN queues ON queues.queue_id=jobs.job_queue_id ";
                 $sql .= "WHERE (YEAR(jobs.job_end_time)=:year AND month(jobs.job_end_time)=:month) ";
                 $sql .= "GROUP BY ";
                 $sql .= "queue_cost.queue_cost_id, ";
-                $sql .= "jobs.job_cfop_id, ";
                 $sql .= "jobs.job_project_id, ";
                 $sql .= "jobs.job_queue_id, ";
                 $sql .= "users.user_name ";
@@ -123,14 +124,13 @@ class job_functions {
                 $sql .= "FROM jobs ";
                 $sql .= "LEFT JOIN users ON users.user_id=jobs.job_user_id ";
                 $sql .= "LEFT JOIN projects ON projects.project_id=jobs.job_project_id ";
-                $sql .= "LEFT JOIN cfops ON cfops.cfop_id=jobs.job_cfop_id ";
+                $sql .= "LEFT JOIN cfops ON cfops.project_id=projects.project_id ";
                 $sql .= "LEFT JOIN queue_cost ON queue_cost.queue_cost_id=jobs.job_queue_cost_id ";
                 $sql .= "LEFT JOIN queues ON queues.queue_id=jobs.job_queue_id ";
                 $sql .= "WHERE (YEAR(jobs.job_end_time)=:year AND month(jobs.job_end_time)=:month) ";
                 $sql .= "AND cfops.cfop_billtype=:billtype ";
                 $sql .= "GROUP BY ";
                 $sql .= "queue_cost.queue_cost_id, ";
-                $sql .= "jobs.job_cfop_id, ";
                 $sql .= "jobs.job_project_id, ";
                 $sql .= "jobs.job_queue_id, ";
                 $sql .= "users.user_name ";
@@ -183,7 +183,6 @@ class job_functions {
         	$sql .= "SEC_TO_TIME(wallclock_time) as elapsed_time, ";
 	        $sql .= "username as username, ";
         	$sql .= "project_name as project, queue_name as queue, ";
-	        $sql .= "cfop as cfop, activity_code as activity, ";
 		$sql .= "exit_status as exit_status ";
         	$sql .= "FROM job_info ";
 
