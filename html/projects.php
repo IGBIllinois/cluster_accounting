@@ -125,7 +125,7 @@ require_once 'includes/header.inc.php';
         <input type='hidden' name='search' value='<?php echo $search; ?>'>
 	<input type='hidden' name='custom' value='<?php echo $custom; ?>'>
         <div class='form-group'>
-        <select class='custom-select custom-select-sm' name='report_type'>
+        <select class='form-select' name='report_type'>
                 <option value='xlsx'>Excel</option>
                 <option value='csv'>CSV</option>
         </select>

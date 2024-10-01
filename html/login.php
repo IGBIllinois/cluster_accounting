@@ -103,24 +103,27 @@ if (isset($_POST['login'])) {
 </head>
 <body class='d-flex flex-column min-vh-100' OnLoad="document.login.username.focus();" style='padding-top: 70px; padding-bottom: 60px;'>
 <nav class='navbar fixed-top navbar-dark bg-dark'>
+	<div class='container-fluid'>
 	<a class="navbar-brand py-0" href="#"><?php echo settings::get_title(); ?></a>
 	<span class="navbar-text py-0">Version <?php echo settings::get_version(); ?></span>
+	</div>
 </nav>
 <br>
 	
 <div class='container'>
 	<div class='row'>
 		<div class='col-sm-10 col-md-10 col-lg-10 col-xl-10'>
-			<div class='jumbotron'>
-        		<h1 class='display-4'>
-	                <img src="images/imark_bw.gif"
-        	                style="padding: 0 10px 10px 0; vertical-align: text-top;">Biocluster
-                	Accounting
-	        	</h1>
-        		<p>View, manage, and bill Biocluster usage and storage</p>
+			<div class='container text-sm-left p-5 bg-light'>
+        			<h1 class='display-4'>
+	        	        <img src="images/imark_bw.gif"
+        	        	        style="padding: 0 10px 10px 0; vertical-align: text-top;">Biocluster
+	                	Accounting
+		        	</h1>
+        			<p class='lead'>View, manage, and bill Biocluster usage and storage</p>
 			</div>
 		</div>
 	</div>
+	<br>
 	<div class='row'>
 		<div class='col-sm-10 col-md-10 col-lg-10 col-xl-10'>
 		<div class='card'>
@@ -152,8 +155,9 @@ if (isset($_POST['login'])) {
 			</div>
 			<br>		
 			<div class='form-group'>
+				
 				<button type='submit' name='login' class='btn btn-primary'>Login</button>
-				<div class='float-right'><?php if (settings::get_password_reset_url()) {
+				<div class='float-end'><?php if (settings::get_password_reset_url()) {
 					echo "<a class='pull-right' target='_blank' href='" . settings::get_password_reset_url() . "'>Forgot Password?</a>";
 				}
 				?>

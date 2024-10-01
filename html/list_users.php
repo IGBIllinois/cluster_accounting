@@ -75,7 +75,7 @@ require_once 'includes/header.inc.php';
 
 <div class='row'>
 <form class='form-inline' method='post' action='report.php'>
-                <select class='form-control custom-select' name='report_type'>
+                <select class='form-select' name='report_type'>
                 <option value='xlsx'>Excel</option>
                 <option value='csv'>CSV</option>
         </select> <input class='btn btn-primary' type='submit'

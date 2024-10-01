@@ -47,7 +47,7 @@ require_once 'includes/header.inc.php';
 	<div class='form-group row'>
 		<label class='col-sm-4 col-form-label' for='project_input'>Project:</label>
 		<div class='col-sm-8'>
-		<select class='custom-select' name='project_id' id='project_input'>
+		<select class='form-select' name='project_id' id='project_input'>
 			<?php echo $projects_html; ?>
 		</select>
 		</div>

@@ -57,7 +57,7 @@ elseif (isset($_POST['cancel_project'])) {
 
 
 $users = user_functions::get_users($db);
-$owner_html = "<select name='owner' id='owner_input' class='form-control custom-select'>";
+$owner_html = "<select name='owner' id='owner_input' class='form-select'>";
 $owner_html .= "<option></option>";
 foreach ($users as $owner) {
 	if ((isset($_POST['owner'])) && ($_POST['owner'] == $owner['user_id'])) {

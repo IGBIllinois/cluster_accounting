@@ -4,3 +4,5 @@ SELECT jobs.job_id as id, IF(ISNULL(jobs.job_number_array),jobs.job_number, CONC
 
 ALTER TABLE jobs DROP COLUMN job_cfop_id;
 
+UPDATE data_bill SET data_bill_date=CONCAT(LAST_DAY(data_bill_date)," 00:00:00");
+UPDATE job_bill SET job_bill_date=CONCAT(LAST_DAY(job_bill_date)," 00:00:00");

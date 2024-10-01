@@ -19,7 +19,7 @@ $year = $selected_month->format('Y');
 
 //////Year////////
 $min_year = job_bill::get_minimal_year($db);
-$year_html = "<select class='form-control' name='year'>";
+$year_html = "<select class='form-select' name='year'>";
 for ($i=$min_year; $i<=date("Y");$i++) {
         if ($i == $year) { $year_html .= "<option value='" . $i . "' selected='true'>" . $i . "</option>"; }
         else { $year_html .= "<option value='" . $i . "'>" . $i . "</option>"; }
@@ -27,7 +27,7 @@ for ($i=$min_year; $i<=date("Y");$i++) {
 $year_html .= "</select>";
 
 ///////Month///////
-$month_html = "<select class='form-control' name='month'>";
+$month_html = "<select class='form-select' name='month'>";
 for ($i=1;$i<=12;$i++) {
         if ($i == $month) { $month_html .= "<option value='$i' selected='true'>" . $i . " - " . date('F', mktime(0, 0, 0, $i, 10)) . "</option>"; }
         else { $month_html .= "<option value='$i'>" . $i . " - " . date('F', mktime(0, 0, 0, $i, 10)) . "</option>"; }
@@ -67,7 +67,7 @@ $graph_image = "<img src='graph.php?" . http_build_query($get_array) . "'>";
 
 $graph_form = "<form class='form-inline' name='select_graph' id='select_graph' method='post' action='" . $_SERVER['PHP_SELF'];
 $graph_form .= "?year=" . $selected_month->format("Y") . "&month=" . $selected_month->format("m") . "'>";
-$graph_form .= "<select class='custom-select' name='graph_type' onChange='document.select_graph.submit();'>";
+$graph_form .= "<select class='form-select' name='graph_type' onChange='document.select_graph.submit();'>";
 
 foreach ($graph_type_array as $graph) {
         $graph_form .= "<option value='" . $graph['type'] . "' ";

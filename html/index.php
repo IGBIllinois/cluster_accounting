@@ -50,7 +50,9 @@ else {
 }
 require_once 'includes/header.inc.php';
 ?>
-<div class='jumbotron col-sm-10 col-md-10 col-lg-10 col-xl-10'>
+<div class='row'>
+<div class='col-sm-10 col-md-10 col-lg-10 col-xl-10'>
+<div class='container text-sm-left p-5 bg-light'>
 	<h1 class='display-4'>
 		<img src="images/imark_bw.gif"
 			style="padding: 0 10px 10px 0; vertical-align: text-top;">Biocluster
@@ -58,6 +60,9 @@ require_once 'includes/header.inc.php';
 	</h1>
 	<p>View, manage, and bill Biocluster usage and storage</p>
 </div>
+</div>
+</div>
+<br>
 <div class='col-sm-10 col-md-10 col-lg-10 col-xl-10'>
 <h3>Current and Pending Jobs</h3>
 <p>List of jobs currenting running or pending with the estimated current cost of the job.  Updated every 10 minutes</p>

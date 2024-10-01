@@ -15,7 +15,7 @@ $year = $selected_year->format('Y');
 
 //////Year////////
 $min_year = job_bill::get_minimal_year($db);
-$year_html = "<select class='form-control' name='year'>";
+$year_html = "<select class='form-select' name='year'>";
 for ($i=$min_year; $i<=date("Y");$i++) {
         if ($i == $year) { $year_html .= "<option value='" . $i . "' selected='true'>" . $i . "</option>"; }
         else { $year_html .= "<option value='" . $i . "'>" . $i . "</option>"; }
@@ -60,7 +60,7 @@ $graph_image = "<img src='graph.php?" . http_build_query($get_array) . "'>";
 
 $graph_form = "<form class='form-inline' name='select_graph' id='select_graph' method='post' action='" . $_SERVER['PHP_SELF'];
 $graph_form .= "?year=" . $selected_year->format("Y") . "'>";
-$graph_form .= "<select class='custom-select' name='graph_type' onChange='document.select_graph.submit();'>";
+$graph_form .= "<select class='form-select' name='graph_type' onChange='document.select_graph.submit();'>";
 
 foreach ($graph_type_array as $graph) {
         $graph_form .= "<option value='" . $graph['type'] . "' ";

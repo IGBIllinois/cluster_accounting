@@ -31,7 +31,7 @@ $year = $selected_year->format('Y');
 
 //////Year////////
 $min_year = job_bill::get_minimal_year($db);
-$year_html = "<select class='form-control' name='year'>";
+$year_html = "<select class='form-select' name='year'>";
 for ($i=$min_year; $i<=date("Y");$i++) {
         if ($i == $year) { $year_html .= "<option value='" . $i . "' selected='true'>" . $i . "</option>"; }
         else { $year_html .= "<option value='" . $i . "'>" . $i . "</option>"; }
@@ -51,7 +51,7 @@ $current_year = new DateTime();
 $get_array = array('year'=>$year,'graph_type'=>$graph_type,'user_id'=>$user_id);
 $graph_image = "<img src='graph.php?" . http_build_query($get_array) . "'>";
 
-$graph_form = "<select class='custom-select' name='graph_type'>";
+$graph_form = "<select class='form-select' name='graph_type'>";
 
 foreach ($graph_type_array as $graph) {
         $graph_form .= "<option value='" . $graph['type'] . "' ";
@@ -69,9 +69,9 @@ $graph_form .= "</select>";
 $graph_image = "<img src='graph.php?" . http_build_query($get_array) . "'>";
 
 
-$graph_form = "<form class='form-inline' name='select_graph' id='select_graph' method='post' action='" . $_SERVER['PHP_SELF'];
+$graph_form = "<form class='d-flex flex-row align-items-center flex-wrap' name='select_graph' id='select_graph' method='post' action='" . $_SERVER['PHP_SELF'];
 $graph_form .= "?year=" . $selected_year->format("Y") . "'>";
-$graph_form .= "<select class='custom-select' name='graph_type' onChange='document.select_graph.submit();'>";
+$graph_form .= "<select class='form-select' name='graph_type' onChange='document.select_graph.submit();'>";
 
 foreach ($graph_type_array as $graph) {
         $graph_form .= "<option value='" . $graph['type'] . "' ";
@@ -95,7 +95,7 @@ if ($login_user->is_admin()) {
 }
 $user_list_html = "";
 if (count($user_list)) {
-        $user_list_html = "<select class='custom-select' name='user_id' id='user_id_input'>";
+        $user_list_html = "<select class='form-select' name='user_id' id='user_id_input'>";
         $user_list_html .= "<option></option>";
         if ((!isset($_GET['user_id'])) || ($_GET['user_id'] == $login_user->get_user_id())) {
                 $user_list_html .= "<option value='" . $login_user->get_user_id(). "' selected='selected'>";
@@ -124,10 +124,10 @@ require_once 'includes/header.inc.php';
 
 ?>
 <h3>User Stats - <?php echo $year; ?></h3>
-<form class='form-inline' method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>'>
+<form class='d-flex flex-row align-items-center flex-wrap' method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>'>
 <?php
         if ($login_user->is_supervisor() || $login_user->is_admin()) {
-        echo "<label class='inline'>Username:</label>&nbsp";
+        echo "<label class='my-1 me-2'>Username:</label>&nbsp";
         echo $user_list_html;
 
         }
@@ -136,9 +136,9 @@ require_once 'includes/header.inc.php';
         }
 ?>
 	&nbsp;
-        <label class='inline'>Year:</label>&nbsp;
+        <label class='my-1 me-2'>Year:</label>&nbsp;
         <?php echo $year_html; ?>&nbsp;
-        <label class='inline'>Graph:</label>&nbsp;
+        <label class='my-1 me-2'>Graph:</label>&nbsp;
         <?php echo $graph_form; ?>
         &nbsp;<input class='btn btn-primary' type='submit' name='get_job_graph' value='Get Graph'>
 </form>

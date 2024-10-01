@@ -73,7 +73,7 @@ elseif (isset($_POST['cancel_user'])) {
 
 //Code to get list of supervisors to choose from.
 $supervisors = user_functions::get_supervisors($db);
-$supervisors_html = "<select class='custom-select' name='supervisor_id' id='supervisors_input'>";
+$supervisors_html = "<select class='form-select' name='supervisor_id' id='supervisors_input'>";
 $supervisors_html .= "<option></option>";
 $supervisors_html .= "<option value='-1'></option>";
 foreach ($supervisors as $supervisor) {
