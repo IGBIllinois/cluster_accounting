@@ -238,20 +238,21 @@ if (isset($message)) { echo $message; }
 ?>
 </div>
 
+<script type="text/javascript">
+$(document).ready(function() {
+        enable_supervisors();
+        $('#supervisors_input').select2({
+                'placeholder': "Select a Supervisor"
+        });
+
+        set_cfop_billtype_tab();
+        set_cfop_billtype_value();
+
+});
+</script>
+
 <?php 
 require_once 'includes/footer.inc.php';
 ?>
 
-<script type="text/javascript">
-$(document).ready(function() { 
-	enable_supervisors();
-	$('#supervisors_input').select2({
-		'placeholder': "Select a Supervisor"
-	});
-
-	set_cfop_billtype_tab();
-	set_cfop_billtype_value();
-
-});
-</script>
 

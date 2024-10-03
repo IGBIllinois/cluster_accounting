@@ -79,7 +79,7 @@ foreach ($graph_type_array as $graph) {
 
 }
 
-$graph_form .= "</select>";
+$graph_form .= "</select></form>";
 
 require_once 'includes/header.inc.php';
 

@@ -53,16 +53,16 @@ require_once 'includes/header.inc.php';
         	echo "<i class='fas fa-times'></i>";
         }
 	?>
-</td>
+	</td>
 </tr>
 <tr>
 	<td>Project</td>
 	<td><a href='edit_project.php?project_id=<?php echo $data_dir->get_project_id(); ?>'><?php echo $project->get_name(); ?></a></td>
 </tr>
 <tr><td>Time Added to Database</td><td><?php echo $data_dir->get_time_created(); ?></td></tr>
-<tr><td>Default Directory</td><td><?php echo $data_dir->is_default() ? "<i class='fas fa-check'>" : "<i class='fas fa-times'>"; ?></td></tr>
+<tr><td>Default Directory</td><td><?php echo $data_dir->is_default() ? "<i class='fas fa-check'></i>" : "<i class='fas fa-times'></i>"; ?></td></tr>
 <tr><td>Latest Size (TB)</td><td><?php echo $data_dir->get_latest_size(); ?></td></tr>
-<tr><td>Latest Size Time</td><td><?php echo $data_dir->get_latest_size_date(); ?></td</tr>
+<tr><td>Latest Size Time</td><td><?php echo $data_dir->get_latest_size_date(); ?></td></tr>
 </table>
 <?php 
 

@@ -26,7 +26,7 @@ $projects = functions::get_projects($db);
 $projects_html = "<option></option>";
 foreach ($projects as $project) {
 	$projects_html .= "<option value='" . $project['project_id'] . "'>";
-	$projects_html .= $project['project_name'] . "</option>";
+	$projects_html .= $project['project_name'] . "</option>\n";
 	
 	
 }
@@ -64,16 +64,17 @@ if (isset($result['MESSAGE'])) { echo $result['MESSAGE']; }
 ?>
 </div>
 
+<script type='text/javascript'>
+$(document).ready(function() {
+        $('#project_input').select2({
+                'placeholder': "Select a Project"
+        });
+});
+
+</script>
+
 <?php 
 require_once 'includes/footer.inc.php';
 ?>
 
-<script type='text/javascript'>
-$(document).ready(function() {
-	$('#project_input').select2({
-        	'placeholder': "Select a Project"
-	});
-});
-
-</script>
 

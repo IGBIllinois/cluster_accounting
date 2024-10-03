@@ -33,10 +33,10 @@ if (count($running_jobs)) {
 		$state_html = "";
 		switch($job['state']) {
 			case 'RUNNING':
-				$state_html = "<span class='badge badge-pill badge-success'>&nbsp;</span>";
+				$state_html = "<span class='badge rounded-pill bg-success'>&nbsp;</span>";
 				break;
 			case 'PENDING':
-				$state_html = "<span class='badge badge-pill badge-info'>&nbsp;</span>";
+				$state_html = "<span class='badge rounded-pill bg-info'>&nbsp;</span>";
 
 		}
                 $jobs_html .= "<tr>";
@@ -119,8 +119,8 @@ require_once 'includes/header.inc.php';
 <div class='row'>
 	<div class='col-sm-4 col-md-5 col-lg-4 col-xl-4'>
 	<ul class='list-inline'>
-		<li class='list-inline-item'><span class='badge badge-pill badge-success'>&nbsp</span> Running Job</li>
-		<li class='list-inline-item'><span class='badge badge-pill badge-info'>&nbsp</span> Pending Job</li>
+		<li class='list-inline-item'><span class='badge rounded-pill bg-success'>&nbsp;</span> Running Job</li>
+		<li class='list-inline-item'><span class='badge rounded-pill bg-info'>&nbsp;</span> Pending Job</li>
 	</ul>
 	</div> 
 </div>
@@ -149,15 +149,16 @@ require_once 'includes/header.inc.php';
 <?php echo $pages_html; ?>
 </div>
 
+<script type="text/javascript">
+
+$(document).ready(function() {
+        $('#user_id_input').select2({
+                placeholder: 'Select a User'
+        });
+});
+</script>
+
 <?php
 
 require_once 'includes/footer.inc.php';
 ?>
-<script type="text/javascript">
-
-$(document).ready(function() {
-	$('#user_id_input').select2({
-		placeholder: 'Select a User'
-	});
-});
-</script>

@@ -31,7 +31,7 @@ require_once 'includes/header.inc.php';
 <form method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>'>
 	<div class='form-group'>
 		<label for='name_input'>Queue Name:</label>
-		<input class='form-control' type='text' class='input-medium' id='name_input' name='name'
+		<input class='form-control' type='text' id='name_input' name='name'
 			value='<?php if (isset($_POST['name'])) { echo $_POST['name']; }?>'>
 	</div>
 	<div class='form-group'>

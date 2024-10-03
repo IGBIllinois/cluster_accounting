@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7fc030da25079ac967f9ff23efea2033",
+    "content-hash": "3db773d97c711acada774483d69d3b3c",
     "packages": [
         {
             "name": "amenadiel/jpgraph",
@@ -77,6 +77,48 @@
                 "source": "https://github.com/HuasoFoundries/jpgraph/tree/v4.1.1"
             },
             "time": "2021-04-27T19:09:11+00:00"
+        },
+        {
+            "name": "apalfrey/select2-bootstrap-5-theme",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/apalfrey/select2-bootstrap-5-theme.git",
+                "reference": "ab448b2ac36a6f7f90b162e384ca2b1469a3cc1f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/apalfrey/select2-bootstrap-5-theme/zipball/ab448b2ac36a6f7f90b162e384ca2b1469a3cc1f",
+                "reference": "ab448b2ac36a6f7f90b162e384ca2b1469a3cc1f",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andrew Palfrey",
+                    "email": "apalfrey@apalfrey.me"
+                }
+            ],
+            "description": "Select2 theme for Bootstrap 5",
+            "homepage": "https://github.com/apalfrey/select2-bootstrap-5-theme",
+            "keywords": [
+                "bootstrap",
+                "bootstrap-5",
+                "bootstrap5",
+                "css",
+                "scss",
+                "select2",
+                "theme"
+            ],
+            "support": {
+                "issues": "https://github.com/apalfrey/select2-bootstrap-5-theme/issues",
+                "source": "https://github.com/apalfrey/select2-bootstrap-5-theme/tree/1.3.0"
+            },
+            "time": "2022-05-08T00:12:43+00:00"
         },
         {
             "name": "components/jquery",
@@ -1112,16 +1154,16 @@
         },
         {
             "name": "phpoffice/phpspreadsheet",
-            "version": "1.29.1",
+            "version": "1.29.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "59ee38f7480904cd6487e5cbdea4d80ff2758719"
+                "reference": "3a5a818d7d3e4b5bd2e56fb9de44dbded6eae07f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/59ee38f7480904cd6487e5cbdea4d80ff2758719",
-                "reference": "59ee38f7480904cd6487e5cbdea4d80ff2758719",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/3a5a818d7d3e4b5bd2e56fb9de44dbded6eae07f",
+                "reference": "3a5a818d7d3e4b5bd2e56fb9de44dbded6eae07f",
                 "shasum": ""
             },
             "require": {
@@ -1211,9 +1253,9 @@
             ],
             "support": {
                 "issues": "https://github.com/PHPOffice/PhpSpreadsheet/issues",
-                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/1.29.1"
+                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/1.29.2"
             },
-            "time": "2024-09-03T00:55:32+00:00"
+            "time": "2024-09-29T07:04:47+00:00"
         },
         {
             "name": "psr/http-client",
@@ -1626,52 +1668,6 @@
                 }
             ],
             "time": "2024-09-09T11:45:10+00:00"
-        },
-        {
-            "name": "ttskch/select2-bootstrap4-theme",
-            "version": "1.5.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ttskch/select2-bootstrap4-theme.git",
-                "reference": "03fe405b21e4f8165a617b2b269346b1ffdc3619"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ttskch/select2-bootstrap4-theme/zipball/03fe405b21e4f8165a617b2b269346b1ffdc3619",
-                "reference": "03fe405b21e4f8165a617b2b269346b1ffdc3619",
-                "shasum": ""
-            },
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Takashi Kanemoto",
-                    "email": "ttskch@gmail.com"
-                }
-            ],
-            "description": "Select2 v4 theme for Bootstrap4",
-            "keywords": [
-                "bootstrap",
-                "bootstrap4",
-                "css",
-                "scss",
-                "select2",
-                "theme"
-            ],
-            "support": {
-                "issues": "https://github.com/ttskch/select2-bootstrap4-theme/issues",
-                "source": "https://github.com/ttskch/select2-bootstrap4-theme/tree/1.5.2"
-            },
-            "funding": [
-                {
-                    "url": "https://www.paypal.com/paypalme/ttskch",
-                    "type": "custom"
-                }
-            ],
-            "time": "2021-01-28T07:02:26+00:00"
         },
         {
             "name": "twbs/bootstrap",

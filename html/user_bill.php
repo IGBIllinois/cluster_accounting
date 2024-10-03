@@ -46,7 +46,7 @@ if ($login_user->is_admin()) {
 }
 $user_list_html = "";
 if (count($user_list)) {
-	$user_list_html = "<label>User: </label>&nbsp;<select class='custom-select' name='user_id' id='user_input'>";
+	$user_list_html = "<label>User: </label>&nbsp;<select class='form-select' name='user_id' id='user_input' data-placeholder='Select a User'>";
 	if ((!isset($_GET['user_id'])) || ($_GET['user_id'] == $login_user->get_user_id())) {
                 $user_list_html .= "<option value='" . $login_user->get_user_id(). "' selected='selected'>";
                 $user_list_html .= $login_user->get_username() . "</option>";
@@ -149,18 +149,18 @@ require_once 'includes/header.inc.php';
 ?>
 <h3>User Bill - <?php echo $month_name . " " . $year; ?></h3>
 <hr>
-<form class='form-inline' action='<?php echo $_SERVER['PHP_SELF']; ?>' method='get'>
+<form action='<?php echo $_SERVER['PHP_SELF']; ?>' method='get'>
 	<?php if ($login_user->is_admin() || $login_user->is_supervisor()) {
 		echo $user_list_html;
 
 		} 
 	?>&nbsp;
 	<label class='form-label' for='month'>Month: </label>&nbsp;
-	<select class='custom-select' name='month' id='month'>	
+	<select class='form-select' name='month' id='month'>	
 	<?php echo $month_html; ?>
 	</select>&nbsp;
 	<label for='year' >Year: </label>&nbsp;
-	<select class='custom-select' name='year' id='year'>
+	<select class='form-select' name='year' id='year'>
 	<?php echo $year_html; ?>
 	</select>&nbsp;
 	<input class='btn btn-primary' type='submit' value='Get Bill'>
@@ -216,33 +216,34 @@ require_once 'includes/header.inc.php';
 	</thead>
 	<?php echo $data_html; ?>
 </table>
-<form class='form-inline' method='post' action='report.php'>
+<form method='post' action='report.php'>
 	<input type='hidden' name='start_date' value='<?php echo $start_date; ?>'>
 	<input type='hidden' name='end_date' value='<?php echo $end_date; ?>'>
 	<input type='hidden' name='user_id' value='<?php echo $user_id;?>'>
-	<select name='report_type' class='custom-select'>
+	<select name='report_type' class='form-select'>
                 <option value='xlsx'>Excel</option>
                 <option value='csv'>CSV</option>
         </select>&nbsp;
 	<input class='btn btn-primary' type='submit' name='user_job_report' value='Download Cluster Usage Report'>
 </form>
 <br>
-<form class='form-inline' method='post' action='<?php echo $self_url; ?>'>
+<form method='post' action='<?php echo $self_url; ?>'>
 	<input class='btn btn-primary' type='submit'
 		name='email_bill' value='Email Bill to User'>
 </form>
 <br>
 <?php 
-if (isset($message)) { echo $message; }
-
-require_once 'includes/footer.inc.php'; ?>
+if (isset($message)) { echo $message; } ?>
 
 <script type='text/javascript'>
 $(document).ready(function() {
         $('#user_input').select2({
-                'placeholder': "Select a User"
+                'theme': "bootstrap-5",
+                'placeholder': $( this ).data( 'placeholder' )
         });
 });
 
 </script>
+
+<?php require_once 'includes/footer.inc.php'; ?>
 

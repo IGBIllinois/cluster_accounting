@@ -57,7 +57,7 @@ foreach ($graph_type_array as $graph) {
 
 }
 
-$graph_form .= "</select>";
+$graph_form .= "</select></form>";
 
 $url_navigation = html::get_url_navigation_year($_SERVER['PHP_SELF'],$year);
 

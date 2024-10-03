@@ -21,10 +21,10 @@ if (count($running_jobs)) {
 		$state_html = "";
                 switch($job['state']) {
                         case 'RUNNING':
-                                $state_html = "<span class='badge badge-pill badge-success'>&nbsp;</span>";
+                                $state_html = "<span class='badge rounded-pill bg-success'>&nbsp;</span>";
                                 break;
                         case 'PENDING':
-                                $state_html = "<span class='badge badge-pill badge-info'>&nbsp;</span>";
+                                $state_html = "<span class='badge rounded-pill bg-info'>&nbsp;</span>";
 
                 }
 
@@ -68,8 +68,8 @@ require_once 'includes/header.inc.php';
 <p>List of jobs currenting running or pending with the estimated current cost of the job.  Updated every 10 minutes</p>
 <div class='col-sm-4 col-md-5 col-lg-4 col-xl-4'>
 	<ul class='list-inline'>
-                <li class='list-inline-item'><span class='badge badge-pill badge-success'>&nbsp</span> Running Job</li>
-                <li class='list-inline-item'><span class='badge badge-pill badge-info'>&nbsp</span> Pending Job</li>
+                <li class='list-inline-item'><span class='badge rounded-pill bg-success'>&nbsp;</span> Running Job</li>
+                <li class='list-inline-item'><span class='badge rounded-pill bg-info'>&nbsp;</span> Pending Job</li>
         </ul>
 </div>
 

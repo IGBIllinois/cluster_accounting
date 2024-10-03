@@ -75,31 +75,30 @@ require_once 'includes/header.inc.php';
 <h3>Add Project</h3>
 <hr>
 <div class='col-sm-12 col-md-12 col-lg-12 col-xl-12'>
-<form class='form' name='form' method='post'
-	action='<?php echo $_SERVER['PHP_SELF']; ?>'>
-		<div class='form-group row'>
-			<label class='col-sm-4 col-form-label' for='name_input'>Project Name: </label>
-			<div class='col-sm-8'>
+<form class='form' name='form' method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>'>
+		<div class='row mb-3'>
+			<label class='col-sm-2 col-form-label' for='name_input'>Project Name: </label>
+			<div class='col-sm-2'>
 				<input class='form-control' type='text' name='name' id='name_input'
 					value='<?php if (isset($_POST['name'])) { echo $_POST['name']; } ?>' autocapitalize='none'>
 			</div>
 		</div>
-		<div class='form-group row'>
-			<label class='col-sm-4 col-form-label' for='owner_input'>Owner: </label>
-			<div class='col-sm-8'>
+		<div class='row mb-3'>
+			<label class='col-sm-2 col-form-label' for='owner_input'>Owner: </label>
+			<div class='col-sm-2'>
 				<?php echo $owner_html; ?>
 			</div>
 		</div>
-		<div class='form-group row'>
-			<label class='col-sm-4 col-form-label' for='ldap_group_input'>LDAP Group: </label>
-			<div class='col-sm-8'>
+		<div class='row mb-3'>
+			<label class='col-sm-2 col-form-label' for='ldap_group_input'>LDAP Group: </label>
+			<div class='col-sm-2'>
 				<input class='form-control' type='text' name='ldap_group' id='ldap_group_input'
 					value='<?php if(isset($_POST['ldap_group'])) { echo $_POST['ldap_group']; } ?>' autocapitalize='none'>
 			</div>
 		</div>
-		<div class='form-group row'>
-			<label class='col-sm-4 col-form-label' for='description_input'>Description: </label>
-			<div class='col-sm-8'>
+		<div class='row mb-3'>
+			<label class='col-sm-2 col-form-label' for='description_input'>Description: </label>
+			<div class='col-sm-2'>
 				<input class='form-control' type='text' name='description' id='description_input'
 					value='<?php if(isset($_POST['description'])) { echo $_POST['description']; } ?>'>
 			</div>
@@ -116,8 +115,8 @@ require_once 'includes/header.inc.php';
                 <!--------------------------------CFOP-------------------------->
                         <div class='tab-pane fade show active' id='nav-cfop' role='tabpanel'>
                                 <br>
-                                <div class='form-group row'>
-                                        <label class='col-sm-3 col-form-label' for='cfop_input'>CFOP:</label>
+                                <div class='row mb-3'>
+                                        <label class='col-sm-2 col-form-label' for='cfop_input'>CFOP:</label>
                                         <div class='col-sm-1'>
                                         <input class='form-control' type='text' name='cfop_1' id='cfop_input'
                                                 maxlength='1' onKeyUp='cfop_advance_1()'
@@ -142,18 +141,19 @@ require_once 'includes/header.inc.php';
                                         value='<?php if (isset($_POST['cfop_4'])) { echo $_POST['cfop_4']; } ?>'>
                                 </div>
                                 </div>
-                                <div class='form-group row'>
-                                        <label class='col-sm-3 col-form-label' for='activity_input'>Activity Code (optional):</label>
+                                <div class='row mb-3'>
+                                        <label class='col-sm-2 col-form-label' for='activity_input'>Activity Code (optional):</label>
                                         <div class='col-sm-2'>
                                                 <input class='form-control' type='text' name='activity' maxlength='6'
                                                 id='activity_input' value='<?php if (isset($_POST['activity'])) { echo $_POST['activity']; } ?>'>
                                         </div>
                                 </div>
-                                <div class='form-group row'>
-                                        <div class='col-sm-9 offset-sm-3'>
-                                        <div clas='form-check'>
+                                <div class='row mb-3'>
+                                        <div class='col-sm-2'>
+						<label class='form-check-label' for='hide_cfop_input'>Hide CFOP From User</label>
+					</div>
+					<div class='col-sm-2'>
                                                 <input class='form-check-input' type='checkbox' name='hide_cfop' id='hide_cfop_input' <?php if (isset($_POST['hide_cfop'])) { echo "checked='checked'"; } ?>>
-                                                <label class='form-check-label' for='hide_cfop_input'>Hide CFOP From User</label>
                                         </div>
                                         </div>
                                 </div>
@@ -201,19 +201,18 @@ if (isset($result['MESSAGE'])) {
 }
 ?>
 </div>
-<?php
-require_once 'includes/footer.inc.php';
-?>
-
 <script type="text/javascript">
 $(document).ready(function() {
         $('#owner_input').select2({
                 'placeholder': "Select a Owner"
         });
 
-	set_cfop_billtype_tab();
+        set_cfop_billtype_tab();
         set_cfop_billtype_value();
 });
 
 </script>
+<?php
+require_once 'includes/footer.inc.php';
+?>
 

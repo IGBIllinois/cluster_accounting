@@ -16,7 +16,7 @@
 		"components/jquery": "3.6.0",
 		"components/jqueryui": "1.12.1",
 		"select2/select2": "4.0.13",
-		"ttskch/select2-bootstrap4-theme": "1.5.2",
+		"apalfrey/select2-bootstrap-5-theme": "1.3.0",
 		"twbs/bootstrap": "v5.3.3",
 		"twig/twig": "v3.4.3",
 		"fortawesome/font-awesome": "5.15.4",
@@ -28,13 +28,13 @@
 		"mkdir -p html/vendor/twbs",
 		"mkdir -p html/vendor/fortawesome",
 		"mkdir -p html/vendor/select2",
-		"mkdir -p html/vendor/ttskch",
+		"mkdir -p html/vendor/apalfrey",
                 "cp -R vendor/twbs/bootstrap html/vendor/twbs/",
                 "cp -R vendor/components/jquery html/vendor/components/",
                 "cp -R vendor/components/jqueryui html/vendor/components/",
 		"cp -R vendor/fortawesome/font-awesome html/vendor/fortawesome/",
 		"cp -R vendor/select2/select2 html/vendor/select2",
-		"cp -R vendor/ttskch/select2-bootstrap4-theme html/vendor/ttskch"
+		"cp -R vendor/apalfrey/select2-bootstrap-5-theme html/vendor/apalfrey"
                 ]
 
         },

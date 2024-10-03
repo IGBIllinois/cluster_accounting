@@ -20,7 +20,7 @@ require_once 'includes/header.inc.php';
 <form class='form' method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>'>
 <input type='hidden' name='data_cost_id' value='<?php echo $data_cost->get_id(); ?>'>
 <table class='table table-bordered table-striped table-sm'>
-<thead><th colspan='2'></th>
+<thead>
 <tr><th>Cost (per TB)</th><th>Time Set</th></tr>
 </thead>
 <tr>

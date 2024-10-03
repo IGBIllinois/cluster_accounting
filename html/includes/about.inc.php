@@ -11,7 +11,7 @@ if (!$login_user->is_admin()) {
                 <h5 class='modal-title'>About</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-<div class='modal-body'>
+	<div class='modal-body'>
 
 	<table class='table table-bordered table-sm'>
 		<tbody>
@@ -60,8 +60,8 @@ if (!$login_user->is_admin()) {
 		<tr><td>REPORT_PREFIX</td><td><?php echo settings::get_report_prefix(); ?></td></tr>
 	</tbody>
 	</table>
-</div>
+	</div>
 
-</div>
-</div>
+	</div>
+	</div>
 </div>

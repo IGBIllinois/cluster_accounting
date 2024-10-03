@@ -3,7 +3,7 @@ require_once 'includes/main.inc.php';
 
 $user_id = $login_user->get_user_id();
 if (!$login_user->permission($user_id)) {
-        echo "<div class='alert alert-error'>Iinvalid Permissions</div>";
+        echo "<div class='alert alert-error'>Invalid Permissions</div>";
         exit;
 }
 $graph_type_array[0]['type'] = 'user_num_jobs_per_month';
@@ -99,20 +99,20 @@ if (count($user_list)) {
         $user_list_html .= "<option></option>";
         if ((!isset($_GET['user_id'])) || ($_GET['user_id'] == $login_user->get_user_id())) {
                 $user_list_html .= "<option value='" . $login_user->get_user_id(). "' selected='selected'>";
-                $user_list_html .= $login_user->get_username() . "</option>";
+                $user_list_html .= $login_user->get_username() . "</option>\n";
         }
         else {
                 $user_list_html .= "<option value='" . $login_user->get_user_id() . "'>";
-                $user_list_html .= $login_user->get_username() . "</option>";
+                $user_list_html .= $login_user->get_username() . "</option>\n";
         }
 
         foreach ($user_list as $user) {
 
                 if ($user['user_id'] == $user_id) {
-                        $user_list_html .= "<option value='" . $user['user_id'] . "' selected='selected'>" . $user['user_name'] . "</option>";
+                        $user_list_html .= "<option value='" . $user['user_id'] . "' selected='selected'>" . $user['user_name'] . "</option>\n";
                 }
                 else {
-                        $user_list_html .= "<option value='" . $user['user_id'] . "'>" . $user['user_name'] . "</option>";
+                        $user_list_html .= "<option value='" . $user['user_id'] . "'>" . $user['user_name'] . "</option>\n";
                 }
 
         }
@@ -127,7 +127,7 @@ require_once 'includes/header.inc.php';
 <form class='d-flex flex-row align-items-center flex-wrap' method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>'>
 <?php
         if ($login_user->is_supervisor() || $login_user->is_admin()) {
-        echo "<label class='my-1 me-2'>Username:</label>&nbsp";
+        echo "<label class='my-1 me-2'>Username:</label>&nbsp;";
         echo $user_list_html;
 
         }
@@ -144,15 +144,9 @@ require_once 'includes/header.inc.php';
 </form>
 
 <p>
-<div class=row'>
+<div class='row'>
 <?php echo $graph_image; ?>
 </div>
-
-
-<?php
-
-require_once 'includes/footer.inc.php';
-?>
 
 <script type="text/javascript">
 $(document).ready(function() {
@@ -163,4 +157,9 @@ $(document).ready(function() {
 
 });
 </script>
+
+<?php
+
+require_once 'includes/footer.inc.php';
+?>
 

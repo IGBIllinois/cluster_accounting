@@ -11,11 +11,11 @@
 <script src='includes/main.inc.js' type='text/javascript'></script>
 <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 
-<link rel='stylesheet' href='vendor/components/jqueryui/themes/base/jquery-ui.css'>
+<link rel="stylesheet" type="text/css" href='vendor/components/jqueryui/themes/base/jquery-ui.css'>
 <link rel="stylesheet" type="text/css" href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="vendor/fortawesome/font-awesome/css/all.min.css">
-<link rel="stylesheet" href="vendor/select2/select2/dist/css/select2.min.css" type="text/css" />
-<link rel="stylesheet" href="vendor/ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.min.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="vendor/select2/select2/dist/css/select2.min.css">
+<link rel="stylesheet" type="text/css" href="vendor/apalfrey/select2-bootstrap-5-theme/dist/select2-bootstrap-5-theme.min.css">
 <title><?php echo settings::get_title(); ?></title>
 
 </head>
@@ -47,25 +47,25 @@
 				<li class='nav-item'><a class='nav-link' href='user_graphs.php'>User Graphs</a></li>
 				<?php if ((isset($login_user)) && ($login_user->is_admin())) {
 					echo "<span class='border-top my-2'></span>";
-					echo "<li class='nav-item'><a class='nav-link' href='reports.php'>Reports</a></li>";
-					echo "<li class='nav-item'><a class='nav-link' href='job_billing.php'>Job Billing</a></li>";
-					echo "<li class='nav-item'><a class='nav-link' href='data_billing.php'>Data Billing</a></li>";
-					echo "<li class='nav-item'><a class='nav-link' href='stats_accumulated.php'>Accumulated Stats</a></li>";
-					echo "<li class='nav-item'><a class='nav-link' href='stats_monthly.php'>Monthly Stats</a></li>";
-					echo "<li class='nav-item'><a class='nav-link' href='stats_yearly.php'>Yearly Stats</a></li>";
-					echo "<li class='nav-item'><a class='nav-link' href='stats_fiscal.php'>Fiscal Stats</a></li>";
-					echo "<li class='nav-item'><a class='nav-link' href='list_users.php'>List Users</a></li>";
-					echo "<li class='nav-item'><a class='nav-link' href='add_user.php'>Add User</a></li>";
-					echo "<li class='nav-item'><a class='nav-link' href='projects.php'>Projects</a></li>";
-					echo "<li class='nav-item'><a class='nav-link' href='add_project.php'>Add Project</a></li>";
-					echo "<li class='nav-item'><a class='nav-link' href='queues.php'>Queues</a></li>";
-					echo "<li class='nav-item'><a class='nav-link' href='add_queue.php'>Add Queue</a></li>";
-					echo "<li class='nav-item'><a class='nav-link' href='data_dir_home.php'>Home Directories</a></li>";
-					echo "<li class='nav-item'><a class='nav-link' href='data_dir_custom.php'>Custom Data Directories</a></li>";
-					echo "<li class='nav-item'><a class='nav-link' href='add_data_dir.php'>Add Data Directory</a></li>";
-					echo "<li class='nav-item'><a class='nav-link' href='data_cost.php'>Data Cost</a></li>";
-					echo "<li class='nav-item'><a class='nav-link' href='verification.php'>Verify Users and Directories</a></li>";
-					echo "<li class='nav-item'><a class='nav-link' href='log.php'>View Log</a></li>";
+					echo "<li class='nav-item'><a class='nav-link' href='reports.php'>Reports</a></li>\n";
+					echo "<li class='nav-item'><a class='nav-link' href='job_billing.php'>Job Billing</a></li>\n";
+					echo "<li class='nav-item'><a class='nav-link' href='data_billing.php'>Data Billing</a></li>\n";
+					echo "<li class='nav-item'><a class='nav-link' href='stats_accumulated.php'>Accumulated Stats</a></li>\n";
+					echo "<li class='nav-item'><a class='nav-link' href='stats_monthly.php'>Monthly Stats</a></li>\n";
+					echo "<li class='nav-item'><a class='nav-link' href='stats_yearly.php'>Yearly Stats</a></li>\n";
+					echo "<li class='nav-item'><a class='nav-link' href='stats_fiscal.php'>Fiscal Stats</a></li>\n";
+					echo "<li class='nav-item'><a class='nav-link' href='list_users.php'>List Users</a></li>\n";
+					echo "<li class='nav-item'><a class='nav-link' href='add_user.php'>Add User</a></li>\n";
+					echo "<li class='nav-item'><a class='nav-link' href='projects.php'>Projects</a></li>\n";
+					echo "<li class='nav-item'><a class='nav-link' href='add_project.php'>Add Project</a></li>\n";
+					echo "<li class='nav-item'><a class='nav-link' href='queues.php'>Queues</a></li>\n";
+					echo "<li class='nav-item'><a class='nav-link' href='add_queue.php'>Add Queue</a></li>\n";
+					echo "<li class='nav-item'><a class='nav-link' href='data_dir_home.php'>Home Directories</a></li>\n";
+					echo "<li class='nav-item'><a class='nav-link' href='data_dir_custom.php'>Custom Data Directories</a></li>\n";
+					echo "<li class='nav-item'><a class='nav-link' href='add_data_dir.php'>Add Data Directory</a></li>\n";
+					echo "<li class='nav-item'><a class='nav-link' href='data_cost.php'>Data Cost</a></li>\n";
+					echo "<li class='nav-item'><a class='nav-link' href='verification.php'>Verify Users and Directories</a></li>\n";
+					echo "<li class='nav-item'><a class='nav-link' href='log.php'>View Log</a></li>\n";
 				} ?>
 			</ul>
 		</div>

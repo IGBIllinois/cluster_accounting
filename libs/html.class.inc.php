@@ -115,10 +115,10 @@ class html {
 	        		        }
 
 					if ($jobs[$i]['exit_status'] == "0:0") {
-						$jobs_html .= "<td><span class='badge badge-pill badge-success'>&nbsp</span></td>";
+						$jobs_html .= "<td><span class='badge rounded-pill bg-success'>&nbsp</span></td>";
 					}
 					elseif ($jobs[$i]['exit_status'] != "0:0") {
-						$jobs_html .= "<td><span class='badge badge-pill badge-danger'>&nbsp</span></td>";
+						$jobs_html .= "<td><span class='badge rounded-pill bg-danger'>&nbsp</span></td>";
 					}
 					$jobs_html .= "<td><a href='job.php?job=" . $jobs[$i]['job_number_full'] . "'>";
                                         $jobs_html .= $jobs[$i]['job_number_full'] . "</a></td>";
