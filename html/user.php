@@ -156,6 +156,7 @@ if (isset($result['MESSAGE'])) {
 ?>
 </div>
 </div>
+</div>
 <?php 
 require_once 'includes/footer.inc.php'; 
 

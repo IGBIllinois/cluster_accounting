@@ -80,15 +80,17 @@ require_once 'includes/header.inc.php';
 
 <p>
 <div class='row'>
-        <div class='col-sm-12 col-md-12 col-lg-12 col-xl-12'>
+        <div class='col-sm-2'>
         <a class='btn btn-sm btn-primary' href='<?php echo $url_navigation['back_url']; ?>'>Previous Month</a>
+	</div>
+	<div class='col'>
 
         <?php
                 if ($next_month > $current_month) {
-                        echo "<div class='float-right'><a class='btn btn-sm btn-primary' onclick='return false;'>Next Month</a></div>";
+                        echo "<div class='d-flex justify-content-end''><a class='btn btn-sm btn-primary' onclick='return false;'>Next Month</a></div>";
                 }
                 else {
-                        echo "<div class='float-right'><a class='btn btn-sm btn-primary' href='" . $url_navigation['forward_url'] . "'>Next Month</a></div>";
+                        echo "<div class='d-flex justify-content-end''><a class='btn btn-sm btn-primary' href='" . $url_navigation['forward_url'] . "'>Next Month</a></div>";
                 }
         ?>
         </div>
@@ -124,13 +126,19 @@ require_once 'includes/header.inc.php';
 <form class='form-inline' action='report.php' method='post'>
         <input type='hidden' name='month' value='<?php echo $month; ?>'>
 	<input type='hidden' name='year' value='<?php echo $year; ?>'>
-	<select class='form-select' name='report_type'>
-                <option value='xlsx'>Excel</option>
-                <option value='csv'>CSV</option>
-        </select>&nbsp;
-	<input class='btn btn-primary' type='submit' name='create_data_report' value='Download Full Report'>&nbsp;
-	<input class='btn btn-primary' type='submit' name='create_data_fbs_report' value='Download FBS Report'>&nbsp;
-        <input class='btn btn-primary' type='submit' name='create_data_custom_report' value='Download Custom Billing Report'>
+	<div class='row'>
+		<div class='col-sm-1'>
+			<select class='form-select' name='report_type'>
+                	<option value='xlsx'>Excel</option>
+	                <option value='csv'>CSV</option>
+	        	</select>
+		</div>
+		<div class='col'>
+			<input class='btn btn-primary' type='submit' name='create_data_report' value='Download Full Report'>
+			<input class='btn btn-primary' type='submit' name='create_data_fbs_report' value='Download FBS Report'>
+		        <input class='btn btn-primary' type='submit' name='create_data_custom_report' value='Download Custom Billing Report'>
+		</div>
+	</div>
 </form>
 
 <?php

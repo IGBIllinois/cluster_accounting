@@ -61,31 +61,34 @@ $stats = new statistics($db);
 require_once 'includes/header.inc.php';
 ?>
 <h3>Job Billing Monthly Reports - <?php echo $month_name . " " . $year; ?></h3>
-<form class='form-inline' action='<?php echo $_SERVER['PHP_SELF']; ?>' method='get'>
-<div class='form-group'>
-	<label for='month'>Month:</label>
-	&nbsp;<?php echo $month_html; ?>
-</div>&nbsp;
-<div class='form-group'>
-	<label for='year'>Year:</label>
-	&nbsp; <?php echo $year_html; ?>
-</div>
-&nbsp;
-<div class='form-group'>
-	<button class='btn btn-primary' type='submit' name='selectedDate'>Get Records</button>
-</div>
+<form action='<?php echo $_SERVER['PHP_SELF']; ?>' method='get'>
+	<div class='row'>
+		<div class='col-2'>
+			<label for='month'>Month:</label><div class='input-group'><?php echo $month_html; ?></div>
+		</div>
+		<div class='col-2'>
+			<label>Year:</label>
+			<div class='input-group'><?php echo $year_html; ?></div>
+		</div>
+		<div class='col'>
+			<div class='input-group'>
+			<button class='btn btn-primary' type='submit' name='selectedDate'>Get Records</button>
+			</div>
+		</div>
+	</div>
 </form>
 <p>
 <div class='row'>
-	<div class='col-sm-12 col-md-12 col-lg-12 col-xl-12'>
+	<div class='col-sm-2'>
         <a class='btn btn-sm btn-primary' href='<?php echo $url_navigation['back_url']; ?>'>Previous Month</a>
-
+	</div>
+	<div class='col'>
         <?php
                 if ($next_month > $current_month) {
-                        echo "<div class='float-right'><a class='btn btn-sm btn-primary' onclick='return false;'>Next Month</a></div>";
+                        echo "<div class='d-flex justify-content-end'><a class='btn btn-sm btn-primary' onclick='return false;'>Next Month</a></div>";
                 }
                 else {
-                        echo "<div class='float-right'><a class='btn btn-sm btn-primary' href='" . $url_navigation['forward_url'] . "'>Next Month</a></div>";
+                        echo "<div class='d-flex justify-content-end'><a class='btn btn-sm btn-primary' href='" . $url_navigation['forward_url'] . "'>Next Month</a></div>";
                 }
         ?>
 	</div>
@@ -118,18 +121,25 @@ require_once 'includes/header.inc.php';
 	</tbody>
 </table>
 <br>
-<form class='form-inline' action='report.php' method='post'>
+
+<form action='report.php' method='post'>
 	<input type='hidden' name='month' value='<?php echo $month; ?>'>
 	<input type='hidden' name='year' value='<?php echo $year; ?>'>
-	<select name='report_type' class='form-select'>
-		<option value='xlsx'>Excel</option>
-		<option value='csv'>CSV</option>
-	</select>&nbsp;
-	<input class='btn btn-primary' type='submit' name='create_job_report' value='Download Full Report'>&nbsp;
-	<input class='btn btn-primary' type='submit' name='create_job_fbs_report' value='Download FBS Report'>&nbsp;
-	<input class='btn btn-primary' type='submit' name='create_job_custom_report' value='Download Custom Billing Report'>
-
+	<div class='row'>
+		<div class='col-sm-1'>
+			<select name='report_type' class='form-select'>
+			<option value='xlsx'>Excel</option>
+			<option value='csv'>CSV</option>
+			</select>
+		</div>
+		<div class='col'>
+			<input class='btn btn-primary' type='submit' name='create_job_report' value='Download Full Report'>
+			<input class='btn btn-primary' type='submit' name='create_job_fbs_report' value='Download FBS Report'>
+			<input class='btn btn-primary' type='submit' name='create_job_custom_report' value='Download Custom Billing Report'>
+		</div>
+	</div>
 </form>
+</div>
 <?php
 
 require_once 'includes/footer.inc.php';

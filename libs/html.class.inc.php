@@ -194,20 +194,16 @@ class html {
 		$queues_html = "";
 		foreach ($queues as $queue) {
 			$queues_html .= "<tr>";
-			$queues_html .= "<td>" . $queue['name'] . " - " . $queue['description'] . "</td>";
-			$queues_html .= "<td>$" . number_format($queue['cost_cpu_day'],2) . "</td>";
-			$queues_html .= "<td>$" . number_format($queue['cost_memory_day'],2) . "</td>";
+			$queues_html .= "<td>" . $queue['name'] . " - " . $queue['description'] . "</td>\n";
+			$queues_html .= "<td>$" . number_format($queue['cost_cpu_day'],2) . "</td>\n";
+			$queues_html .= "<td>$" . number_format($queue['cost_memory_day'],2) . "</td>\n";
 			if ($queue['cost_gpu_day'] != 0.00) {
-				$queues_html .= "<td>$" . number_format($queue['cost_gpu_day'],2) . "</td>";
+				$queues_html .= "<td>$" . number_format($queue['cost_gpu_day'],2) . "</td>\n";
 			}
 			else {
-				$queues_html .= "<td>N/A</td>";
+				$queues_html .= "<td>N/A</td>\n";
 			}
-			$queues_html .= "</tr>";	
-
-
-
-
+			$queues_html .= "</tr>\n";
 
 		}
 
@@ -224,13 +220,13 @@ class html {
 	        	else {
         	        	$directory_exists = "<i class='fas fa-times'></i>";
 	        	}
-	        	$dir_html .= "<tr>";
-		        $dir_html .= "<td><a href='data_dir.php?data_dir_id=" . $directory['data_dir_id'] . "'>" . $directory['data_dir_path'] . "</a></td>";
-        		$dir_html .= "<td>" . $directory_exists . "</td>";
+	        	$dir_html .= "<tr>\n";
+		        $dir_html .= "<td><a href='data_dir.php?data_dir_id=" . $directory['data_dir_id'] . "'>" . $directory['data_dir_path'] . "</a></td>\n";
+        		$dir_html .= "<td>" . $directory_exists . "</td>\n";
 		        $dir_html .= "<td><a href='edit_project.php?project_id=";
-			$dir_html .= $directory['project_id'] ."'>" .  $directory['project_name'] . "</a></td>";
-        		$dir_html .= "<td>" .  $directory['data_dir_time'] . "</td>";
-		        $dir_html .= "</tr>";
+			$dir_html .= $directory['project_id'] ."'>" .  $directory['project_name'] . "</a></td>\n";
+        		$dir_html .= "<td>" .  $directory['data_dir_time'] . "</td>\n";
+		        $dir_html .= "</tr>\n";
 
 		}
 		return $dir_html;

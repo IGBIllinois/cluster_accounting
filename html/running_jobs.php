@@ -100,21 +100,23 @@ require_once 'includes/header.inc.php';
 ?>
 
 <h3>Search Jobs</h3>
-<div class='row'>
-<div class='col-sm-8 col-md-8 col-lg-8 col-xl-8'>
-	<form class='form-inline' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
+<form method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
+	<div class='row'>
+		<div class='col-sm-3'>	
                 <input type='text' name='search' class='form-control' placeholder='Search'
 			value='<?php if (isset($_GET['search'])) { echo $_GET['search']; } ?>' autocapitalize='none'>
+		</div>
 		<?php
 			if ($login_user->is_admin() || $login_user->is_supervisor()) {
-				echo $user_list_html;
+				echo "<div class='col-sm-2'>" . $user_list_html . "</div>";
 			}
 
 		?>
+		<div class='col'>
                 <input type='submit' class='btn btn-primary' value='Search'>
+		</div>
+	</div>
 	</form>
-</div>
-</div>
 <br>
 <div class='row'>
 	<div class='col-sm-4 col-md-5 col-lg-4 col-xl-4'>
@@ -148,11 +150,12 @@ require_once 'includes/header.inc.php';
 <div class='row justify-content-center'>
 <?php echo $pages_html; ?>
 </div>
-
+</div>
 <script type="text/javascript">
 
 $(document).ready(function() {
         $('#user_id_input').select2({
+		theme: 'bootstrap-5',
                 placeholder: 'Select a User'
         });
 });

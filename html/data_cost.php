@@ -27,7 +27,7 @@ require_once 'includes/header.inc.php';
 <td>$<?php echo $data_cost->get_cost(); ?></td>
 <td><?php echo $data_cost->get_time_created(); ?></td>
 </tr>
-<tr><td><div class='input-group'><div class='input-group-prepend'><div class='input-group-text'>$</div></div><input class='form-control' type='text' name='cost'></div></td>
+<tr><td><div class='input-group'><span class='input-group-text'>$</span><input class='form-control' type='text' name='cost'></div></td>
 <td><input class='btn btn-primary' type='submit' name='update_cost' value='Update Cost'></td></tr>
 </table>
 </form>

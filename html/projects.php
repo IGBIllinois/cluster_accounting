@@ -119,25 +119,23 @@ require_once 'includes/header.inc.php';
 <div class='row justify-content-center'>
 <?php echo $pages_html; ?>
 </div>
-<div class='row'>
-<div class='row'>
-<form class='form-inline' method='post' action='report.php'>
+<form method='post' action='report.php'>
         <input type='hidden' name='search' value='<?php echo $search; ?>'>
 	<input type='hidden' name='custom' value='<?php echo $custom; ?>'>
-        <div class='form-group'>
-        <select class='form-select' name='report_type'>
-                <option value='xlsx'>Excel</option>
-                <option value='csv'>CSV</option>
-        </select>
-        </div>
-        &nbsp;
-        <input class='btn btn-primary btn-sm' type='submit'
-                name='project_report' value='Download Projects Report'>
+        <div class='row'>
+		<div class='col-sm-1'>
+			<select class='form-select' name='report_type'>
+				<option value='xlsx'>Excel</option>
+				<option value='csv'>CSV</option>
+			</select>
+		</div>
+        	<div class='col'>
+			<input class='btn btn-primary' type='submit' name='project_report' value='Download Projects Report'>
+		</div>
+	</div>
 
 </form>
-</div>
 
-</div>
 <div class='row'>
 <?php
 if (isset($result['MESSAGE'])) {

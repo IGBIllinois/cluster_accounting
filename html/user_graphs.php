@@ -147,7 +147,7 @@ require_once 'includes/header.inc.php';
 <div class='row'>
 <?php echo $graph_image; ?>
 </div>
-
+</div>
 <script type="text/javascript">
 $(document).ready(function() {
         $('#user_id_input').select2({

@@ -204,7 +204,8 @@ if (isset($result['MESSAGE'])) {
 <script type="text/javascript">
 $(document).ready(function() {
         $('#owner_input').select2({
-                'placeholder': "Select a Owner"
+		theme: "bootstrap-5",
+                placeholder: "Select a Owner"
         });
 
         set_cfop_billtype_tab();

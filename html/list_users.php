@@ -73,13 +73,18 @@ require_once 'includes/header.inc.php';
 </div>
 <?php echo $pages_html; ?>
 
-<div class='row'>
 <form class='form-inline' method='post' action='report.php'>
-                <select class='form-select' name='report_type'>
-                <option value='xlsx'>Excel</option>
-                <option value='csv'>CSV</option>
-        </select> <input class='btn btn-primary' type='submit'
-                name='create_user_report' value='Download User List'>
+	<div class='row'>
+		<div class='col-sm-1'>
+	                <select class='form-select' name='report_type'>
+        	        <option value='xlsx'>Excel</option>
+                	<option value='csv'>CSV</option>
+			</select> 
+		</div>
+		<div class='col'>
+			<input class='btn btn-primary' type='submit' name='create_user_report' value='Download User List'>
+		</div>
+	</div>
 </form>
 
 </div>

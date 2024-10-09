@@ -111,7 +111,9 @@ require_once 'includes/header.inc.php';
 			<th>GPU cost per day</th>
 		</tr>
 	</thead>
+	<tbody>
 	<?php echo $public_queues_html; ?>
+	</tbody>
 </table>
 </div>
 <div class='col-sm-10 col-md-10 col-lg-10 col-xl-10'>
@@ -125,7 +127,9 @@ require_once 'includes/header.inc.php';
 			<th>GPU cost per day</th>
                 </tr>
         </thead>
+	<tbody>
         <?php echo $private_queues_html; ?>
+	</tbody>
 </table>
 </div>
 
@@ -140,6 +144,7 @@ require_once 'includes/header.inc.php';
 	<?php echo $data_html; ?>
 
 </table>
+</div>
 </div>
 <?php
 

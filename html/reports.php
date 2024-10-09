@@ -34,7 +34,7 @@ require_once 'includes/header.inc.php';
 <form method='post' action='report.php'>
 <h4>User Reports</h4>
 <div class='row'>
-	<div class='col-sm-3 col-md-3 col-lg-3 col-xl-3'>
+	<div class='col-sm-2 col-md-2 col-lg-2 col-xl-2'>
                 <select class='form-select' name='report_type'>
                 <option value='xlsx'>Excel</option>
                 <option value='csv'>CSV</option>
@@ -48,13 +48,13 @@ require_once 'includes/header.inc.php';
 <br>
 <h4>Select Date and Format</h4>
 <div class='row'>
-	<div class='col-sm-3 col-md-3 col-lg-3 col-xl-3'>
+	<div class='col-sm-2 col-md-2 col-lg-2 col-xl-2'>
 		<?php echo $year_html; ?>
 	</div>
-	<div class='col-sm-3 col-md-3 col-lg-3 col-xl-3'>
+	<div class='col-sm-2 col-md-2 col-lg-2 col-xl-2'>
 		<?php echo $month_html; ?>
 	</div>
-	<div class='col-sm-3 col-md-3 col-lg-3 col-xl-3'>
+	<div class='col-sm-2 col-md-2 col-lg-2 col-xl-2'>
         <select name='report_type' class='form-select'>
                 <option value='xlsx'>Excel</option>
                 <option value='csv'>CSV</option>

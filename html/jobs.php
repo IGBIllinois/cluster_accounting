@@ -93,42 +93,53 @@ require_once 'includes/header.inc.php';
 ?>
 
 <h3>Search Jobs</h3>
-<div class='row'>
-<div class='col-sm-9 col-md-9 col-lg-9 col-xl-9'>
-	<form method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
+<form method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
+	<div class='row'>
+		<div class='col-sm-3'>
                 <input type='text' name='search' class='form-control' placeholder='Search'
-			value='<?php if (isset($_GET['search'])) { echo $_GET['search']; } ?>' autocapitalize='none'>&nbsp;
+			value='<?php if (isset($_GET['search'])) { echo $_GET['search']; } ?>' autocapitalize='none'>
+		</div>
 		<?php
 			if ($login_user->is_admin() || $login_user->is_supervisor()) {
-				echo $user_list_html;
+				echo "<div class='col-sm-2'>" . $user_list_html . "</div>";
 			}
 
-		?>&nbsp;
-		<input class='form-control' type='text' name='start_date' id='start_date' placeholder='Start Date'
-			value='<?php if (isset($start_date)) { echo $start_date; } ?>'>&nbsp;
-		<input class='form-control' type='text' name='end_date' id='end_date' placeholder='End Date'
-			value='<?php if (isset($end_date)) { echo $end_date; } ?>'>&nbsp;
+		?>
+		<div class='col-sm-2'>
+		<input class='form-select' type='text' name='start_date' id='start_date' placeholder='Start Date'
+			value='<?php if (isset($start_date)) { echo $start_date; } ?>'>
+		</div>
+		<div class='col-sm-2'>
+		<input class='form-select' type='text' name='end_date' id='end_date' placeholder='End Date'
+			value='<?php if (isset($end_date)) { echo $end_date; } ?>'>
+		</div>
+		<div class='col'>
                 <input type='submit' class='btn btn-primary' value='Search'>
-	</form>
-</div>
-<div class='col-sm-3 col-md-3 col-lg-3 col-xl-3'>
-        <div class='btn-group' role='group'>
-                <a class='btn btn-primary' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array); ?>'>All Jobs</a>
-                <a class='btn btn-success' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array) . "&completed=1"; ?>'>Completed Jobs</a>
-                <a class='btn btn-danger' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array) . "&completed=0"; ?>'>Failed Jobs</a>
-        </div>
+		</div>
+		<div class='col'>
+	</div>
+</form>
 
-</div>
-</div>
-<br>
+<p>
 <div class='row'>
 	<div class='col-sm-4 col-md-5 col-lg-4 col-xl-4'>
 	<ul class='list-inline'>
 		<li class='list-inline-item'><span class='badge rounded-pill bg-success'>&nbsp;</span> Completed Job</li>
 		<li class='list-inline-item'><span class='badge rounded-pill bg-danger'>&nbsp;</span> Failed Job</li>
 	</ul>
-	</div> 
+	</div>
+	<div class='col'>
+	<div class='d-flex justify-content-end'>
+		
+	<div class='btn-group' role='group'>
+		<a class='btn btn-primary' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array); ?>'>All Jobs</a>
+		<a class='btn btn-success' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array) . "&completed=1"; ?>'>Completed Jobs</a>
+		<a class='btn btn-danger' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array) . "&completed=0"; ?>'>Failed Jobs</a>
+	</div>
+	</div>
+	</div>
 </div>
+<p>
 <div class='row'>
 <table class='table table-sm table-bordered table-striped'>
         <thead>
@@ -158,20 +169,21 @@ require_once 'includes/header.inc.php';
 <input type='hidden' name='user_id' value='<?php echo $user_id;?>'>
 <input type='hidden' name='completed' value='<?php echo $completed; ?>'>
 <div class='row g-3'>
-	<div class='col-sm-2'>
+	<div class='col-sm-1'>
 	<select class='form-select' name='report_type'>
                 <option value='xlsx'>Excel</option>
                 <option value='csv'>CSV</option>
         </select>
 	</div>
 	&nbsp;
-	<div class='col-sm-2'>
+	<div class='col'>
 	<input class='btn btn-primary' type='submit'
                 name='job_report' value='Download Detailed Report'>
 	</div>
 </div>	
 </form>
 
+</div>
 <script type="text/javascript">
 $(function() {
         $( "#start_date" ).datepicker({

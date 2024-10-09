@@ -188,23 +188,23 @@ require_once 'includes/header.inc.php';
 <br>
 <form name='form' method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>?project_id=<?php echo $project->get_project_id(); ?>'>
 	<input type='hidden' name='project_id' value='<?php echo $project->get_project_id(); ?>'>
-		<div class='form-group row'>
-			<label class='col-sm-4 form-label' for='ldap_group_input'>LDAP Group: </label>
-			<div class='col-sm-8'>
+		<div class='row mb-3'>
+			<label class='col-sm-2 form-label' for='ldap_group_input'>LDAP Group: </label>
+			<div class='col-sm-2'>
 				<input class='form-control' type='text' name='ldap_group' id='ldap_group_input'
 				<?php if ($project->get_default()) { echo "readonly='readonly'"; } ?>
 					value='<?php echo $project->get_ldap_group(); ?>'>
 			</div>
 		</div>
-		<div class='form-group row'>
-			<label class='col-sm-4 form-label' for='owner_input'>Owner: </label>
-			<div class='col-sm-8'>
+		<div class='row mb-3'>
+			<label class='col-sm-2' for='owner_input'>Owner: </label>
+			<div class='col-sm-2'>
 				<?php echo $owner_html; ?>
 			</div>
 		</div>
-		<div class='form-group row'>
-			<label class='col-sm-4 form-label' for='description_input'>Description: </label>
-			<div class='col-sm-8'>
+		<div class='row mb-3'>
+			<label class='col-sm-2 form-label' for='description_input'>Description: </label>
+			<div class='col-sm-4'>
 				<input class='form-control' type='text' name='description' id='description_input'
 				<?php if ($project->get_default()) { echo "readonly='readonly'"; } ?>
 					value='<?php echo $project->get_description(); ?>'>
@@ -357,7 +357,8 @@ require_once 'includes/footer.inc.php';
 <script type='text/javascript'>
 $(document).ready(function() {
 	$('#owner_input').select2({
-		'placeholder': "Select a Owner"
+		theme: 'bootstrap-5',
+		placeholder: "Select a Owner"
 	});
 
 	set_cfop_billtype_tab();

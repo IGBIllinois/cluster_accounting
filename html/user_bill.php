@@ -80,14 +80,10 @@ for ($i=2007; $i<=date("Y");$i++) {
 }
 
 ///////Month///////
-$month_array = array('01','02','03','04','05','06','07','08','09','10','11','12');
 $month_html = "";
-foreach ($month_array as $month_number) {
-	if ($month_number == $month) {
-		$month_html .= "<option value='" . $month_number . "' selected='true'>" . $month_number . "</option>";
-	}
-	else { $month_html .= "<option value='" . $month_number . "'>" . $month_number . "</option>";
-	}
+for ($i=1;$i<=12;$i++) {
+        if ($i == $month) { $month_html .= "<option value='$i' selected='true'>" . $i . " - " . date('F', mktime(0, 0, 0, $i, 10)) . "</option>"; }
+        else { $month_html .= "<option value='$i'>" . $i . " - " . date('F', mktime(0, 0, 0, $i, 10)) . "</option>"; }
 }
 
 $user = new user($db,$ldap,$user_id);
@@ -217,15 +213,24 @@ require_once 'includes/header.inc.php';
 	<?php echo $data_html; ?>
 </table>
 <form method='post' action='report.php'>
-	<input type='hidden' name='start_date' value='<?php echo $start_date; ?>'>
-	<input type='hidden' name='end_date' value='<?php echo $end_date; ?>'>
-	<input type='hidden' name='user_id' value='<?php echo $user_id;?>'>
-	<select name='report_type' class='form-select'>
+<input type='hidden' name='start_date' value='<?php echo $start_date; ?>'>
+<input type='hidden' name='end_date' value='<?php echo $end_date; ?>'>
+<input type='hidden' name='user_id' value='<?php echo $user_id;?>'>
+<div class='row g-3'>
+        <div class='col-sm-1'>
+        <select class='form-select' name='report_type'>
                 <option value='xlsx'>Excel</option>
                 <option value='csv'>CSV</option>
-        </select>&nbsp;
-	<input class='btn btn-primary' type='submit' name='user_job_report' value='Download Cluster Usage Report'>
+        </select>
+        </div>
+        &nbsp;
+        <div class='col-sm-2'>
+        <input class='btn btn-primary' type='submit'
+                name='user_job_report' value='Download Cluster Usage Report'>
+        </div>
+</div>
 </form>
+
 <br>
 <form method='post' action='<?php echo $self_url; ?>'>
 	<input class='btn btn-primary' type='submit'
@@ -235,11 +240,12 @@ require_once 'includes/header.inc.php';
 <?php 
 if (isset($message)) { echo $message; } ?>
 
+</div>
 <script type='text/javascript'>
 $(document).ready(function() {
         $('#user_input').select2({
-                'theme': "bootstrap-5",
-                'placeholder': $( this ).data( 'placeholder' )
+                theme: "bootstrap-5",
+                placeholder: $( this ).data( 'placeholder' )
         });
 });
 

@@ -102,7 +102,7 @@ require_once 'includes/header.inc.php';
         </tr>
         <tr>
                 <td>Billed Project:</td>
-                <td><select class='custom-select' name='billed_project'><?php echo $project_html; ?></td>
+                <td><select class='form-select' name='billed_project'><?php echo $project_html; ?></td>
 		<td><input class='btn btn-primary btn-small' type='submit' name='update_project' value='Update'></td>
         </tr>
         <tr>
@@ -175,9 +175,7 @@ require_once 'includes/header.inc.php';
                 <td>Amount Billed:</td>
 		<td>
 			<div class='input-group'>
-				<div class='input-group-prepend'>
-				<div class='input-group-text'>$</div>
-				</div>
+				<span class='input-group-text'>$</span>
 				<input class='form-control' type='text' name='billed_cost' value='<?php echo $billed_cost; ?>'>
 			</div>
 		</td>
@@ -188,8 +186,9 @@ require_once 'includes/header.inc.php';
 </div>
 
 <div class='row'>
-<br>&nbsp
-<input class='btn btn-primary' type='submit' name='cancel' value='Back'>
+	<div class='col'>
+		<input class='btn btn-primary' type='submit' name='cancel' value='Back'>
+	</div>
 </div>
 </form>
 <?php echo functions::output_message($messages); ?>
