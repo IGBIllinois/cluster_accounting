@@ -138,12 +138,13 @@ class data_functions {
 		return $data_result;
         }
 
-	public static function get_data_fbs_bill($db,$month,$year,$minimal_bill = 0.01) {
-		$sql = "SELECT 'IGB' as 'AreaCode','CNRG' as 'FacilityCode', ";
-		$sql .= "'' as 'LabCode', IF(users.user_supervisor <> 0,CONCAT(supervisors.user_lastname,', ',supervisors.user_firstname),CONCAT(users.user_lastname,', ',users.user_firstname)) as 'LabName',  ";
+	public static function get_data_fbs_bill($db,$month,$year,$minimal_bill = 0.01,$fbs_areacode,$fbs_facilitycode,$fbs_labcode,$fbs_data_skucode) {
+		$sql = "SELECT :fbs_areacode as 'AreaCode',:fbs_facilitycode as 'FacilityCode', ";
+		$sql .= ":fbs_labcode as 'LabCode', IF(users.user_supervisor <> 0,CONCAT(supervisors.user_lastname,', ',supervisors.user_firstname), ";
+		$sql .= "CONCAT(users.user_lastname,', ',users.user_firstname)) as 'LabName',  ";
 		$sql .= "CONCAT(users.user_firstname,users.user_lastname) as 'RequestedBy', ";
 		$sql .= "users.user_name as 'NAME', CONCAT(cfops.cfop_value,IF(cfops.cfop_activity <> '','-',''),cfops.cfop_activity) as 'CFOP', ";
-		$sql .= "'BIOCLUSTER' as 'SKU_Code', CONCAT(:month,'-',:year) as 'UsageDate', ";
+		$sql .= ":fbs_data_skucode as 'SKU_Code', CONCAT(:month,'-',:year) as 'UsageDate', ";
 		$sql .= "'1.000' as 'Quantity', ROUND(data_bill.data_bill_billed_cost,2) as 'UnitPriceOverride', ";
 		$sql .= "CONCAT('Biocluster Data - ',SUBSTRING_INDEX(data_dir.data_dir_path,'/',-1)) as 'PrintableComments', ";
 		$sql .= "'' as 'UsageRef', '' as 'OrderRef', '' as 'PO_Ref','' as 'PayAlias', ";
@@ -162,6 +163,10 @@ class data_functions {
                 $sql .= "ORDER BY LabName ASC";
 
                 $parameters = array(
+			':fbs_areacode'=>$fbs_areacode,
+			':fbs_facilitycode'=>$fbs_facilitycode,
+			':fbs_data_skucode'=>$fbs_data_skucode,
+			':fbs_labcode'=>$fbs_labcode,
                         ':month'=>$month,
                         ':year'=>$year,
                         ':terabytes'=>data_functions::CONVERT_TERABYTES,

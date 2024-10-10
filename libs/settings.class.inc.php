@@ -323,6 +323,42 @@ class settings {
 		return false;
 
 	}
+
+	public static function get_fbs_facility_code() {
+		if (defined("FBS_FACILITY_CODE")) {
+			return FBS_FACILITY_CODE;
+		}
+		return "";
+
+	}
+	public static function get_fbs_areacode() {
+		if (defined("FBS_AREACODE")) {
+			return FBS_AREACODE;
+		}
+		return "";
+
+	}
+	public static function get_fbs_labcode() {
+		if (defined("FBS_LABCODE")) {
+			return FBS_LABCODE;
+		}
+		return "";
+	}
+
+	public static function get_fbs_jobs_skucode() {
+		if (defined("FBS_JOBS_SKUCODE")) {
+			return FBS_JOBS_SKUCODE;
+		}
+		return "";
+	}
+
+	public static function get_fbs_data_skucode() {
+		if (defined("FBS_DATA_SKUCODE")) {
+			return FBS_DATA_SKUCODE;
+		}
+		return "";
+
+	}
 }
 
 ?>

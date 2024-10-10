@@ -65,7 +65,7 @@ $get_array  = array('graph_type'=>$graph_type,
 $graph_image = "<img src='graph.php?" . http_build_query($get_array) . "'>";
 
 
-$graph_form = "<form class='form-inline' name='select_graph' id='select_graph' method='post' action='" . $_SERVER['PHP_SELF'];
+$graph_form = "<form name='select_graph' id='select_graph' method='post' action='" . $_SERVER['PHP_SELF'];
 $graph_form .= "?year=" . $selected_month->format("Y") . "&month=" . $selected_month->format("m") . "'>";
 $graph_form .= "<select class='form-select' name='graph_type' onChange='document.select_graph.submit();'>";
 
@@ -148,7 +148,7 @@ require_once 'includes/header.inc.php';
                 	<td>$<?php echo data_stats::get_billed_cost($db,$selected_month,$selected_month,true); ?></td>
 	        </tr>
 		<tr>
-			<td colspan='2'><?php echo $graph_form; ?></td>
+			<td colspan='2'><div class='col-sm-2'><?php echo $graph_form; ?></div></td>
 		</tr>
 		<tr>
 			<td colspan='2'><?php echo $graph_image; ?></td>

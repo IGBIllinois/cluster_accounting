@@ -69,12 +69,14 @@ class job_functions {
 
         }
 
-	public static function get_jobs_fbs_bill($db,$month,$year) {
-                $sql = "SELECT 'IGB' as 'AreaCode','CNRG' as 'FacilityCode', ";
-                $sql .= "'' as 'LabCode', IF(users.user_supervisor <> 0,CONCAT(supervisors.user_lastname,', ',supervisors.user_firstname),CONCAT(users.user_lastname,', ',users.user_firstname)) as 'LabName',  ";
+	public static function get_jobs_fbs_bill($db,$month,$year,$fbs_areacode,$fbs_facilitycode,$fbs_labcode,$fbs_job_skucode) {
+                $sql = "SELECT :fbs_areacode as 'AreaCode',:fbs_facilitycode as 'FacilityCode', ";
+		$sql .= "CONCAT(:month,'-',:year) as 'UsageDate', ";
+                $sql .= ":fbs_labcode as 'LabCode', IF(users.user_supervisor <> 0,CONCAT(supervisors.user_lastname,' ',supervisors.user_firstname),";
+		$sql .= "CONCAT(users.user_lastname,', ',users.user_firstname)) as 'LabName',  ";
                 $sql .= "CONCAT(users.user_firstname,users.user_lastname) as 'RequestedBy', ";
+		$sql .= ":fbs_job_skucode as 'SKU_Code', ";
                 $sql .= "users.user_name as 'NAME', CONCAT(cfops.cfop_value,IF(cfops.cfop_activity <> '','-',''),cfops.cfop_activity) as 'CFOP', ";
-                $sql .= "'BIOCLUSTER' as 'SKU_Code', CONCAT(:month,'-',:year) as 'UsageDate', ";
                 $sql .= "'1.000' as 'Quantity', ROUND(SUM(job_bill.job_bill_billed_cost),2) as 'UnitPriceOverride', ";
                 $sql .= "CONCAT('Biocluster Jobs - ',users.user_name) as 'PrintableComments', ";
                 $sql .= "'' as 'UsageRef', '' as 'OrderRef', '' as 'PO_Ref','' as 'PayAlias', ";
@@ -90,6 +92,10 @@ class job_functions {
 		$sql .= "GROUP BY job_bill.job_bill_user_id ";
                 $sql .= "ORDER BY LabName ASC";
                 $parameters = array(
+			':fbs_areacode'=>$fbs_areacode,
+			':fbs_facilitycode'=>$fbs_facilitycode,
+			':fbs_labcode'=>$fbs_labcode,
+			':fbs_job_skucode'=>$fbs_job_skucode,
                         ':month'=>$month,
                         ':year'=>$year,
                         ':billtype'=>project::BILLTYPE_CFOP
