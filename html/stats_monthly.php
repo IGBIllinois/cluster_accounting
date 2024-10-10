@@ -86,19 +86,24 @@ require_once 'includes/header.inc.php';
 ?>
 
 <h3>Monthly Stats - <?php echo $month_name . " " . $year; ?></h3>
-<form class='form-inline' action='<?php echo $_SERVER['PHP_SELF']; ?>' method='get'>
-<div class='form-group'>
-        <label for='month'>Month:</label>
-        &nbsp;<?php echo $month_html; ?>
-</div>&nbsp;
-<div class='form-group'>
-        <label for='year'>Year:</label>
-        &nbsp; <?php echo $year_html; ?>
-</div>
-&nbsp;
-<div class='form-group'>
-        <button class='btn btn-primary' type='submit' name='selectedDate'>Get Records</button>
-</div>
+<form action='<?php echo $_SERVER['PHP_SELF']; ?>' method='get'>
+	<div class='row'>
+		<div class='col-auto'>
+        		<label class='form-label' for='month'>Month:</label>
+		</div>
+		<div class='col-sm-2'>
+        		<?php echo $month_html; ?>
+		</div>
+		<div class='col-auto'>
+		        <label class='form-label' for='year'>Year:</label>
+		</div>
+		<div class='col-sm-2'>
+			<?php echo $year_html; ?>
+		</div>
+		<div class='col'>
+			<button class='btn btn-primary' type='submit' name='selectedDate'>Get Records</button>
+		</div>
+	</div>
 </form>
 <p>
 <div class='row'>
@@ -109,10 +114,10 @@ require_once 'includes/header.inc.php';
 
         <?php
                 if ($next_month > $current_month) {
-                        echo "<div class='d-flex justify-content-end''><a class='btn btn-sm btn-primary' onclick='return false;'>Next Month</a></div>";
+                        echo "<div class='d-flex justify-content-end'><a class='btn btn-sm btn-primary' onclick='return false;'>Next Month</a></div>";
                 }
                 else {
-                        echo "<div class='d-flex justify-content-end''><a class='btn btn-sm btn-primary' href='" . $url_navigation['forward_url'] . "'>Next Month</a></div>";
+                        echo "<div class='d-flex justify-content-end'><a class='btn btn-sm btn-primary' href='" . $url_navigation['forward_url'] . "'>Next Month</a></div>";
                 }
         ?>
         </div>
@@ -150,7 +155,7 @@ require_once 'includes/header.inc.php';
 		</tr>
 	</tbody>
 </table>
-
+</div>
 <?php
 
 

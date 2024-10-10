@@ -80,14 +80,17 @@ require_once 'includes/header.inc.php';
 
 ?>
 <h3>Yearly Stats - <?php echo $year; ?></h3>
-<form class='form-inline' action='<?php echo $_SERVER['PHP_SELF']; ?>' method='get'>
-<div class='form-group'>
-        <label for='year'>Year:</label>
-        &nbsp; <?php echo $year_html; ?>
-</div>
-&nbsp;
-<div class='form-group'>
-        <button class='btn btn-primary' type='submit' name='selectedDate'>Get Records</button>
+<form action='<?php echo $_SERVER['PHP_SELF']; ?>' method='get'>
+	<div class='row'>
+		<div class='col-auto'>
+		        <label class='form-label' for='year'>Year:</label>
+		</div>
+		<div class='col-sm-2'>
+			<?php echo $year_html; ?>
+		</div>
+		<div class='col'>
+			<button class='btn btn-primary' type='submit' name='selectedDate'>Get Records</button>
+		</div>
 </div>
 </form>
 <p>
@@ -131,12 +134,13 @@ require_once 'includes/header.inc.php';
 		<td>$<?php echo data_stats::get_billed_cost($db,$start_date,$end_date,true); ?></td>
 	</tr>
 	<tr>
-		<td colspan='2'><?php echo $graph_form; ?></td>
+		<td colspan='2'><div class='col-sm-2'><?php echo $graph_form; ?></div></td>
 	</tr>
 	<tr>
 		<td colspan='2'><?php echo $graph_image; ?></td>
 	</tr>
 </table>
+</div>
 <?php
 
 require_once 'includes/footer.inc.php';

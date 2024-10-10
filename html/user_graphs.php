@@ -124,23 +124,35 @@ require_once 'includes/header.inc.php';
 
 ?>
 <h3>User Stats - <?php echo $year; ?></h3>
-<form class='d-flex flex-row align-items-center flex-wrap' method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>'>
-<?php
-        if ($login_user->is_supervisor() || $login_user->is_admin()) {
-        echo "<label class='my-1 me-2'>Username:</label>&nbsp;";
-        echo $user_list_html;
+<hr>
+<form method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>'>
+	<div class='row'>
+	<?php
+        	if ($login_user->is_supervisor() || $login_user->is_admin()) {
+		        echo "<div class='col-auto'><label class='form-label'>Username:</label></div>";
+		        echo "<div class='col-sm-2'>" . $user_list_html . "</div>";
 
-        }
-        else {
-                echo "<input type='hidden' name='user_id' value='" . $user_id . "'>";
-        }
-?>
-	&nbsp;
-        <label class='my-1 me-2'>Year:</label>&nbsp;
-        <?php echo $year_html; ?>&nbsp;
-        <label class='my-1 me-2'>Graph:</label>&nbsp;
-        <?php echo $graph_form; ?>
-        &nbsp;<input class='btn btn-primary' type='submit' name='get_job_graph' value='Get Graph'>
+	        }
+        	else {
+                	echo "<input type='hidden' name='user_id' value='" . $user_id . "'>";
+	        }
+	?>
+		<div class='col-auto'>
+	        	<label class='form-label'>Year:</label>
+		</div>
+		<div class='col-sm-2'>
+	        	<?php echo $year_html; ?>
+		</div>
+		<div class='col-auto'>
+        		<label class='form-label'>Graph:</label>
+		</div>
+		<div class='col-sm-2'>
+		        <?php echo $graph_form; ?>
+		</div>
+        	<div class='col'>
+			<input class='btn btn-primary' type='submit' name='get_job_graph' value='Get Graph'>
+		</div>
+	</div>
 </form>
 
 <p>
@@ -151,7 +163,8 @@ require_once 'includes/header.inc.php';
 <script type="text/javascript">
 $(document).ready(function() {
         $('#user_id_input').select2({
-                'placeholder': "Select a User"
+		theme: "bootstrap-5",
+                placeholder: "Select a User"
         });
 
 

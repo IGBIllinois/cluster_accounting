@@ -63,17 +63,20 @@ require_once 'includes/header.inc.php';
 <h3>Job Billing Monthly Reports - <?php echo $month_name . " " . $year; ?></h3>
 <form action='<?php echo $_SERVER['PHP_SELF']; ?>' method='get'>
 	<div class='row'>
-		<div class='col-2'>
-			<label for='month'>Month:</label><div class='input-group'><?php echo $month_html; ?></div>
+		<div class='col-auto'>
+			<label class='form-label' for='month'>Month:</label>
 		</div>
-		<div class='col-2'>
-			<label>Year:</label>
-			<div class='input-group'><?php echo $year_html; ?></div>
+		<div class='col-sm-2'>
+			<?php echo $month_html; ?>
+		</div>
+		<div class='col-auto'>
+			<label class='form-label for='year'>Year:</label>
+		</div>
+		<div class='col-sm-2'>
+			<?php echo $year_html; ?>
 		</div>
 		<div class='col'>
-			<div class='input-group'>
 			<button class='btn btn-primary' type='submit' name='selectedDate'>Get Records</button>
-			</div>
 		</div>
 	</div>
 </form>
@@ -126,7 +129,7 @@ require_once 'includes/header.inc.php';
 	<input type='hidden' name='month' value='<?php echo $month; ?>'>
 	<input type='hidden' name='year' value='<?php echo $year; ?>'>
 	<div class='row'>
-		<div class='col-sm-1'>
+		<div class='col-sm-2'>
 			<select name='report_type' class='form-select'>
 			<option value='xlsx'>Excel</option>
 			<option value='csv'>CSV</option>

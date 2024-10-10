@@ -102,14 +102,14 @@ require_once 'includes/header.inc.php';
 <div class='card-body'>
 <br>
 <div class='col-sm-8 col-md-8 col-lg-8 col-xl-8'>
-	<div class='form-group row'>
+	<div class='mb-3 row'>
 		<label class='col-sm-4 col-form-label' for='username_input'>Username:</label>
 		<div class='col-sm-8'>
 		<input class='form-control' type='text' name='new_username' id='username_input'
 			value='<?php if (isset($_POST['new_username'])) { echo $_POST['new_username']; } ?>'>
 		</div>
 	</div>
-	<div class='form-group row'>
+	<div class='mb-3 row'>
 		<div class='col-sm-8 offset-sm-4'>
 		<div class='form-check'>
 		<input class='form-check-input' type='checkbox' name='is_admin' id='is_admin_input'
@@ -118,7 +118,7 @@ require_once 'includes/header.inc.php';
 		</div>
 		</div>
 	</div>
-	<div class='form-group row'>
+	<div class='mb-3 row'>
 		<div class='col-sm-8 offset-sm-4'>
 		<div class='form-check'>
 		<input class='form-check-input' type='checkbox' name='is_supervisor' id='is_supervisor_input'
@@ -127,7 +127,7 @@ require_once 'includes/header.inc.php';
 		</div>
 		</div>
 	</div>
-	<div class='form-group row'>
+	<div class='mb-3 row'>
 		<label class='col-sm-4 col-form-label' for='supervisor_input'>Supervisor:</label>
 		<div class='col-sm-8'>
 			<?php echo $supervisors_html; ?>
@@ -143,16 +143,16 @@ require_once 'includes/header.inc.php';
 	<div class='col-sm-12 col-md-12 col-lg-12 col-xl-12'>
 		<nav>
 			<div class='nav nav-tabs' role='tablist' id='billing_tab'>
-				<a class='nav-item nav-link active' data-toggle='tab' data-target='#nav-cfop' type='button'>CFOP</a>
-				<a class='nav-item nav-link' data-toggle='tab' data-target='#nav-custom' type='button'>Custom Billing</a>
-				<a class='nav-item nav-link' data-toggle='tab' data-target='#nav-nobill' type='button'>Do Not Bill</a>
+				<a class='nav-item nav-link active' data-bs-toggle='tab' data-bs-target='#nav-cfop' type='button'>CFOP</a>
+				<a class='nav-item nav-link' data-bs-toggle='tab' data-bs-target='#nav-custom' type='button'>Custom Billing</a>
+				<a class='nav-item nav-link' data-bs-toggle='tab' data-bs-target='#nav-nobill' type='button'>Do Not Bill</a>
 			</div>
 		</nav>
 		<div class='tab-content'>
 		<!--------------------------------CFOP-------------------------->
 			<div class='tab-pane fade show active' id='nav-cfop' role='tabpanel'>
 				<br>	
-				<div class='form-group row'>
+				<div class='mb-3 row'>
 	                        	<label class='col-sm-3 col-form-label' for='cfop_input'>CFOP:</label>
 					<div class='col-sm-1'>
                 	                <input class='form-control' type='text' name='cfop_1' id='cfop_input'
@@ -178,19 +178,17 @@ require_once 'includes/header.inc.php';
                         	                value='<?php if (isset($_POST['cfop_4'])) { echo $_POST['cfop_4']; } ?>'>
 					</div>
 				</div>
-                		<div class='form-group row'>
+                		<div class='mb-3 row'>
 		                        <label class='col-sm-3 col-form-label' for='activity_input'>Activity Code (optional):</label>
 					<div class='col-sm-2'>
                 		                <input class='form-control' type='text' name='activity' maxlength='6'
                                 	        id='activity_input' value='<?php if (isset($_POST['activity'])) { echo $_POST['activity']; } ?>'>
 		                	</div>
 				</div>
-        	        	<div class='form-group row'>
-					<div class='col-sm-9 offset-sm-3'>
-					<div clas='form-check'>
+        	        	<div class='mb-3 row'>
+					<div class='form-check form-switch offset-md-3'>
+						<label for='hide_cfop_input'>Hide CFOP From User</label>
                                 		<input class='form-check-input' type='checkbox' name='hide_cfop' id='hide_cfop_input' <?php if (isset($_POST['hide_cfop'])) { echo "checked='checked'"; } ?>>
-						<label class='form-check-label' for='hide_cfop_input'>Hide CFOP From User</label>
-					</div>
 					</div>
                 		</div>
 			</div>
@@ -198,7 +196,7 @@ require_once 'includes/header.inc.php';
 
 			<div class='tab-pane fade' id='nav-custom' role='tabpanel'>
 				<br>
-				<div class='form-group'>
+				<div class='mb-3'>
 					<label class='col-form-label' style='min-width: 200px' for='custom_bill_description'>Custom Bill Description: &nbsp;
 						<br>(e.g. Check, Personal Credit Card, Government Credit Card) &nbsp;
 					</label>
@@ -210,7 +208,7 @@ require_once 'includes/header.inc.php';
 		<!------------------Do Not Bill----------------->
 			<div class='tab-pane fade' id='nav-nobill' role='tabpanel'>
 				<br>
-		                <div class='form-group row'>
+		                <div class='mb-3 row'>
 					<div class='col-sm-9 offset-sm-3'>
 						<p>Selecting 'Do Not Bill' will not enabling billing for this user</p>
 					</div>
@@ -224,7 +222,7 @@ require_once 'includes/header.inc.php';
 </div>
 </div>	
 <br>
-	<div class='form-group row'>
+	<div class='mb-3 row'>
 		<div class='col-sm-12'>
 			<input type='hidden' name='cfop_billtype' id='cfop_billtype' value='<?php if (isset($_POST['cfop_billtype'])) { echo $_POST['cfop_billtype']; } ?>'>
 			<input class='btn btn-primary' type='submit' name='add_user' value='Add User'>&nbsp;
@@ -242,7 +240,8 @@ if (isset($message)) { echo $message; }
 $(document).ready(function() {
         enable_supervisors();
         $('#supervisors_input').select2({
-                'placeholder': "Select a Supervisor"
+		theme:	"bootstrap-5",
+                placeholder: "Select a Supervisor"
         });
 
         set_cfop_billtype_tab();

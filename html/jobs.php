@@ -116,7 +116,6 @@ require_once 'includes/header.inc.php';
 		<div class='col'>
                 <input type='submit' class='btn btn-primary' value='Search'>
 		</div>
-		<div class='col'>
 	</div>
 </form>
 
@@ -128,15 +127,12 @@ require_once 'includes/header.inc.php';
 		<li class='list-inline-item'><span class='badge rounded-pill bg-danger'>&nbsp;</span> Failed Job</li>
 	</ul>
 	</div>
-	<div class='col'>
-	<div class='d-flex justify-content-end'>
-		
-	<div class='btn-group' role='group'>
-		<a class='btn btn-primary' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array); ?>'>All Jobs</a>
-		<a class='btn btn-success' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array) . "&completed=1"; ?>'>Completed Jobs</a>
-		<a class='btn btn-danger' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array) . "&completed=0"; ?>'>Failed Jobs</a>
-	</div>
-	</div>
+	<div class='col d-flex justify-content-end'>
+		<div class='btn-group' role='group'>
+			<a class='btn btn-primary' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array); ?>'>All Jobs</a>
+			<a class='btn btn-success' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array) . "&completed=1"; ?>'>Completed Jobs</a>
+			<a class='btn btn-danger' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($completed_get_array) . "&completed=0"; ?>'>Failed Jobs</a>
+		</div>
 	</div>
 </div>
 <p>
@@ -169,7 +165,7 @@ require_once 'includes/header.inc.php';
 <input type='hidden' name='user_id' value='<?php echo $user_id;?>'>
 <input type='hidden' name='completed' value='<?php echo $completed; ?>'>
 <div class='row g-3'>
-	<div class='col-sm-1'>
+	<div class='col-sm-2'>
 	<select class='form-select' name='report_type'>
                 <option value='xlsx'>Excel</option>
                 <option value='csv'>CSV</option>

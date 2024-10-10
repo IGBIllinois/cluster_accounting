@@ -217,7 +217,7 @@ require_once 'includes/header.inc.php';
 <input type='hidden' name='end_date' value='<?php echo $end_date; ?>'>
 <input type='hidden' name='user_id' value='<?php echo $user_id;?>'>
 <div class='row g-3'>
-        <div class='col-sm-1'>
+        <div class='col-sm-2'>
         <select class='form-select' name='report_type'>
                 <option value='xlsx'>Excel</option>
                 <option value='csv'>CSV</option>

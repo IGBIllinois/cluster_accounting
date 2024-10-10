@@ -82,23 +82,26 @@ require_once 'includes/header.inc.php';
 ?>
 <h3>Projects</h3>
 <hr>
-<div class='row'>
-	<form class='form-inline' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
-		<div class='form-group'>
+<form method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
+	<input type='hidden' name='custom' value='<?php echo $custom; ?>'>
+	<div class='row'>
+		<div class='col-sm-3'>
                 <input class='form-control' type='text' name='search' placeholder='Search'
                         value='<?php if (isset($search)) { echo $search; } ?>' autocapitalize='none'>
-		<input type='hidden' name='custom' value='<?php echo $custom; ?>'>
+		</div>
+		<div class='col'>
                 <button type='submit' class='btn btn-primary'>Search</button>
 		</div>
-	</form>
-	<div class='btn-group pull-right ml-auto' role='group' aria-label='test'>
-		<a class='btn btn-primary' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&custom=ALL"; ?>'>All Projects</a>
-		<a class='btn btn-secondary' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&custom=CUSTOM"; ?>'>Custom Projects</a>
-		<a class='btn btn-info' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&custom=DEFAULT"; ?>'>User Projects</a>
-	</div>
+		<div class='col d-flex justify-content-end'>
+			<div class='btn-group pull-right ml-auto' role='group' aria-label='test'>
+				<a class='btn btn-primary' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&custom=ALL"; ?>'>All Projects</a>
+			<a class='btn btn-secondary' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&custom=CUSTOM"; ?>'>Custom Projects</a>
+			<a class='btn btn-info' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&custom=DEFAULT"; ?>'>User Projects</a>
+		</div>
 
 </div>
-<br>
+</form>
+<p>
 <div class='row'>
 <table class='table table-bordered table-sm table-striped'>
 	<thead>
@@ -123,7 +126,7 @@ require_once 'includes/header.inc.php';
         <input type='hidden' name='search' value='<?php echo $search; ?>'>
 	<input type='hidden' name='custom' value='<?php echo $custom; ?>'>
         <div class='row'>
-		<div class='col-sm-1'>
+		<div class='col-sm-2'>
 			<select class='form-select' name='report_type'>
 				<option value='xlsx'>Excel</option>
 				<option value='csv'>CSV</option>

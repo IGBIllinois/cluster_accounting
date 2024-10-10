@@ -136,20 +136,20 @@ $year = $selected_month->format('Y');
 
 //////Year////////
 $min_year = job_bill::get_minimal_year($db);
-$year_html = "<select class='form-select' name='year'>";
+$year_html = "<div class='col-sm-2'><select class='form-select' name='year'>";
 for ($i=$min_year; $i<=date("Y");$i++) {
         if ($i == $year) { $year_html .= "<option value='" . $i . "' selected='true'>" . $i . "</option>"; }
         else { $year_html .= "<option value='" . $i . "'>" . $i . "</option>"; }
 }
-$year_html .= "</select>&nbsp;";
+$year_html .= "</select></div>";
 
 ///////Month///////
-$month_html = "<select class='form-select' name='month'>";
+$month_html = "<div class='col-sm-2'><select class='form-select' name='month'>";
 for ($i=1;$i<=12;$i++) {
         if ($i == $month) { $month_html .= "<option value='$i' selected='true'>" . $i . " - " . date('F', mktime(0, 0, 0, $i, 10)) . "</option>"; }
         else { $month_html .= "<option value='$i'>" . $i . " - " . date('F', mktime(0, 0, 0, $i, 10)) . "</option>"; }
 }
-$month_html .= "</select>";
+$month_html .= "</select></div>";
 
 $previous_bill_html = $year_html . $month_html;
 
@@ -182,53 +182,54 @@ require_once 'includes/header.inc.php';
 </div>
 
 <br>
+<form name='form' method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>?project_id=<?php echo $project->get_project_id(); ?>'>
 <div class='card'>
 <div class='card-header'>Edit Project</div>
 <div class='col-sm-12 col-md-12 col-lg-12 col-xl-12'>
+<div class='card-body'>
 <br>
-<form name='form' method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>?project_id=<?php echo $project->get_project_id(); ?>'>
 	<input type='hidden' name='project_id' value='<?php echo $project->get_project_id(); ?>'>
-		<div class='row mb-3'>
-			<label class='col-sm-2 form-label' for='ldap_group_input'>LDAP Group: </label>
-			<div class='col-sm-2'>
-				<input class='form-control' type='text' name='ldap_group' id='ldap_group_input'
-				<?php if ($project->get_default()) { echo "readonly='readonly'"; } ?>
-					value='<?php echo $project->get_ldap_group(); ?>'>
-			</div>
+	<div class='mb-3 row'>
+		<label class='col-sm-2 form-label' for='ldap_group_input'>LDAP Group: </label>
+		<div class='col-sm-2'>
+			<input class='form-control' type='text' name='ldap_group' id='ldap_group_input'
+			<?php if ($project->get_default()) { echo "readonly='readonly'"; } ?>
+				value='<?php echo $project->get_ldap_group(); ?>'>
 		</div>
-		<div class='row mb-3'>
-			<label class='col-sm-2' for='owner_input'>Owner: </label>
-			<div class='col-sm-2'>
-				<?php echo $owner_html; ?>
-			</div>
+	</div>
+	<div class='mb-3 row'>
+		<label class='col-sm-2' for='owner_input'>Owner: </label>
+		<div class='col-sm-2'>
+			<?php echo $owner_html; ?>
 		</div>
-		<div class='row mb-3'>
-			<label class='col-sm-2 form-label' for='description_input'>Description: </label>
-			<div class='col-sm-4'>
-				<input class='form-control' type='text' name='description' id='description_input'
-				<?php if ($project->get_default()) { echo "readonly='readonly'"; } ?>
-					value='<?php echo $project->get_description(); ?>'>
-			</div>
+	</div>
+	<div class='mb-3 row'>
+		<label class='col-sm-2 form-label' for='description_input'>Description: </label>
+		<div class='col-sm-4'>
+			<input class='form-control' type='text' name='description' id='description_input'
+			<?php if ($project->get_default()) { echo "readonly='readonly'"; } ?>
+				value='<?php echo $project->get_description(); ?>'>
 		</div>
+	</div>
 
-		<nav>
-                        <div class='nav nav-tabs' role='tablist' id='billing_tab'>
-                                <a class='nav-item nav-link active' data-toggle='tab' data-target='#nav-cfop' type='button'>CFOP</a>
-                                <a class='nav-item nav-link' data-toggle='tab' data-target='#nav-custom' type='button'>Custom Billing</a>
-                                <a class='nav-item nav-link' data-toggle='tab' data-target='#nav-nobill' type='button'>Do Not Bill</a>
-                        </div>
-                </nav>
-		<div class='tab-content'>
-                <!--------------------------------CFOP-------------------------->
-                        <div class='tab-pane fade show active' id='nav-cfop' role='tabpanel'>
-                                <br>
-                                <div class='form-group row'>
-                                        <label class='col-sm-3 col-form-label' for='cfop_input'>CFOP:</label>
-                                        <div class='col-sm-1'>
-                                        <input class='form-control' type='text' name='cfop_1' id='cfop_input'
+	<nav>
+		<div class='nav nav-tabs' role='tablist' id='billing_tab'>
+			<button class='nav-link active' data-bs-toggle='tab' data-bs-target='#nav-cfop' type='button' role='tab'>CFOP</button>
+			<button class='nav-link' data-bs-toggle='tab' data-bs-target='#nav-custom' type='button' role='tab'>Custom Billing</button>
+			<button class='nav-link' data-bs-toggle='tab' data-bs-target='#nav-nobill' type='button' role='tab'>Do Not Bill</button>
+		</div>
+	</nav>
+	<div class='tab-content'>
+	<!--------------------------------CFOP-------------------------->
+		<div class='tab-pane fade show active' id='nav-cfop' role='tabpanel'>
+			<br>
+			<div class='mb-3 row'>
+				<label class='col-sm-3 col-form-label' for='cfop_input'>CFOP:</label>
+				<div class='col-sm-1'>
+					<input class='form-control' type='text' name='cfop_1' id='cfop_input'
                                                 maxlength='1' onKeyUp='cfop_advance_1()'
                                                 value='<?php if (isset($_POST['cfop_1'])) { echo $_POST['cfop_1']; } ?>'>
-                                        </div>
+				</div>
                                 -
                                 <div class='col-sm-2'>
                                 <input class='form-control' type='text' name='cfop_2'
@@ -247,63 +248,56 @@ require_once 'includes/header.inc.php';
                                         id='cfop_input' maxlength='6'
                                         value='<?php if (isset($_POST['cfop_4'])) { echo $_POST['cfop_4']; } ?>'>
                                 </div>
-                                </div>
-                                <div class='form-group row'>
-                                        <label class='col-sm-3 col-form-label' for='activity_input'>Activity Code (optional):</label>
-                                        <div class='col-sm-2'>
-                                                <input class='form-control' type='text' name='activity' maxlength='6'
-                                                id='activity_input' value='<?php if (isset($_POST['activity'])) { echo $_POST['activity']; } ?>'>
-                                        </div>
-                                </div>
-                                <div class='form-group row'>
-                                        <div class='col-sm-9 offset-sm-3'>
-                                        <div clas='form-check'>
-                                                <input class='form-check-input' type='checkbox' name='hide_cfop' id='hide_cfop_input' <?php if (isset($_POST['hide_cfop'])) { echo "checked='checked'"; } ?>>
-                                                <label class='form-check-label' for='hide_cfop_input'>Hide CFOP From User</label>
-                                        </div>
-                                        </div>
-                                </div>
-                        </div>
-                <!-----------------Custom Billing------------------->
-
-                        <div class='tab-pane fade' id='nav-custom' role='tabpanel'>
-                                <br>
-                                <div class='form-group'>
-                                        <label class='col-form-label' style='min-width: 200px' for='custom_bill_description'>Custom Bill Description: &nbsp;
-                                                <br>(e.g. Check, Personal Credit Card, Government Credit Card) &nbsp;
-                                        </label>
-                                        <textarea class='form-control' rows='5' cols='80' id='custom_bill_description'
-                                                name='custom_bill_description'><?php if (isset($_POST['custom_bill_description'])) { echo $_POST['custom_bill_description']; } ?></textarea>
-
-                                </div>
-                        </div>
-                <!------------------Do Not Bill----------------->
-                        <div class='tab-pane fade' id='nav-nobill' role='tabpanel'>
-                                <br>
-                                <div class='form-group row'>
-                                        <div class='col-sm-9 offset-sm-3'>
-						<p>Selecting 'Do Not Bill' will not enabling billing for this user</p>
-                                        </div>
-                                </div>
-
-                        </div>
-
-
-                </div>
-		<br>
-		<div class='form-group row'>
-                        <div class='col-sm-8'>
-				<input type='hidden' name='cfop_billtype' id='cfop_billtype' value='<?php if (isset($_POST['cfop_billtype'])) { echo $_POST['cfop_billtype']; } ?>'>
-				<input class='btn btn-primary' type='submit' name='edit_project' value='Edit Project'>
-				<?php if (!$project->get_default()) {
-					echo "<input class='btn btn-danger' type='submit' name='delete_project' value='Delete Project'>";
-			} ?>
+			</div>
+			<div class='mb-3 row'>
+				<label class='col-sm-3 col-form-label' for='activity_input'>Activity Code (optional):</label>
+				<div class='col-sm-2'>
+					<input class='form-control' type='text' name='activity' maxlength='6'
+					id='activity_input' value='<?php if (isset($_POST['activity'])) { echo $_POST['activity']; } ?>'>
+				</div>
+			</div>
+			<div class='mb-3 row'>
+				<div class='form-check form-switch offset-md-3'>
+					<input class='form-check-input' type='checkbox' name='hide_cfop' id='hide_cfop_input' <?php if (isset($_POST['hide_cfop'])) { echo "checked='checked'"; } ?>>
+					<label class='form-check-label' for='hide_cfop_input'>Hide CFOP From User</label>
+				</div>
 			</div>
 		</div>
+                <!-----------------Custom Billing------------------->
+		<div class='tab-pane fade' id='nav-custom' role='tabpanel'>
+			<br>
+			<div class='mb-3'>
+				<label class='col-form-label' style='min-width: 200px' for='custom_bill_description'>Custom Bill Description: &nbsp;
+					<br>(e.g. Check, Personal Credit Card, Government Credit Card) &nbsp;
+				</label>
+				<textarea class='form-control' rows='5' cols='80' id='custom_bill_description'
+					name='custom_bill_description'><?php if (isset($_POST['custom_bill_description'])) { echo $_POST['custom_bill_description']; } ?></textarea>
+			</div>
+		</div>
+                <!------------------Do Not Bill----------------->
+		<div class='tab-pane fade' id='nav-nobill' role='tabpanel'>
+			<br>
+			<div class='mb-3 row'>
+				<div class='col-sm-9 offset-sm-3'>
+				<p>Selecting 'Do Not Bill' will not enabling billing for this user</p>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+</div>
+</div>
+<br>
+<div class='mb-3 row'>
+	<div class='col-sm-8'>
+		<input type='hidden' name='cfop_billtype' id='cfop_billtype' value='<?php if (isset($_POST['cfop_billtype'])) { echo $_POST['cfop_billtype']; } ?>'>
+		<input class='btn btn-primary' type='submit' name='edit_project' value='Edit Project'>
+		<?php if (!$project->get_default()) { echo "<input class='btn btn-danger' type='submit' name='delete_project' value='Delete Project'>"; } ?>
+	</div>
+</div>
 </form>
 <br>
-</div>
-</div>
 <br>
 <div class='card'>
 <div class='card-header'>Previous Billings</div>
@@ -328,10 +322,14 @@ require_once 'includes/header.inc.php';
 <div class='card'>
 <div class='card-header'>Update Previous Bill</div>
 <div class='card-body'>
-	<form class='form-inline' action='<?php echo $_SERVER['PHP_SELF']; ?>?project_id=<?php echo $project->get_project_id(); ?>' method='post'>
-	<?php echo $previous_bill_html; ?>&nbsp;
-	<input type='hidden' name='project_id' value='<?php echo $project_id; ?>'>
-	<input class='btn btn-primary' type='submit' name='update_bill' value='Update Bill'>	
+	<form action='<?php echo $_SERVER['PHP_SELF']; ?>?project_id=<?php echo $project->get_project_id(); ?>' method='post'>
+		<input type='hidden' name='project_id' value='<?php echo $project_id; ?>'>
+		<div class='row'>
+			<?php echo $previous_bill_html; ?>
+			<div class='col'>
+				<input class='btn btn-primary' type='submit' name='update_bill' value='Update Bill'>	
+			</div>
+		</div>
 	</form>
 </div>
 </div>
@@ -350,19 +348,20 @@ require_once 'includes/header.inc.php';
 if (isset($message)) {
 	echo $message;
 }
-
-require_once 'includes/footer.inc.php';
 ?>
-
+</div>
 <script type='text/javascript'>
 $(document).ready(function() {
-	$('#owner_input').select2({
-		theme: 'bootstrap-5',
-		placeholder: "Select a Owner"
-	});
+        $('#owner_input').select2({
+                theme: 'bootstrap-5',
+                placeholder: "Select a Owner"
+        });
 
-	set_cfop_billtype_tab();
+        set_cfop_billtype_tab();
         set_cfop_billtype_value();
 });
 </script>
+<?php
+require_once 'includes/footer.inc.php';
+?>
 

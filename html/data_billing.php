@@ -63,18 +63,23 @@ else {
 require_once 'includes/header.inc.php';
 ?>
 <h3>Data Billing Monthly Report - <?php echo $month_name . " " . $year; ?></h3>
-<form class='form-inline' action='<?php echo $_SERVER['PHP_SELF']; ?>' method='get'>
-<div class='form-group'>
-        <label for='month'>Month:</label>
-        &nbsp;<?php echo $month_html; ?>
-</div>&nbsp;
-<div class='form-group'>
-        <label for='year'>Year:</label>
-        &nbsp; <?php echo $year_html; ?>
-</div>
-&nbsp;
-<div class='form-group'>
-        <button class='btn btn-primary' type='submit' name='selectedDate'>Get Records</button>
+<form action='<?php echo $_SERVER['PHP_SELF']; ?>' method='get'>
+<div class='row'>
+	<div class='col-auto'>
+        	<label class='form-label' for='month'>Month:</label>
+	</div>
+	<div class='col-sm-2'>
+	        <?php echo $month_html; ?>
+	</div>
+	<div class='col-auto'>
+        	<label class='form-label' for='year'>Year:</label>
+	</div>
+	<div class='col-sm-2'>
+	        <?php echo $year_html; ?>
+	</div>
+	<div class='col'>
+        	<button class='btn btn-primary' type='submit' name='selectedDate'>Get Records</button>
+	</div>
 </div>
 </form>
 
@@ -127,7 +132,7 @@ require_once 'includes/header.inc.php';
         <input type='hidden' name='month' value='<?php echo $month; ?>'>
 	<input type='hidden' name='year' value='<?php echo $year; ?>'>
 	<div class='row'>
-		<div class='col-sm-1'>
+		<div class='col-sm-2'>
 			<select class='form-select' name='report_type'>
                 	<option value='xlsx'>Excel</option>
 	                <option value='csv'>CSV</option>

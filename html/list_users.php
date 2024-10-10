@@ -40,20 +40,24 @@ require_once 'includes/header.inc.php';
 
 ?>
 <h3>List of Users - <?php echo $enabled ? "Active" : "Deactived"; ?></h3>
-<div class='row'>
-	<form class='form-inline' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
-        	<div class='form-group'>
+<form method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
+	<input type='hidden' name='enabled' value='<?php echo $enabled; ?>'>
+	<div class='row'>
+        	<div class='col-sm-3'>
                 	<input class='form-control' type='text' name='search' placeholder='Search' value='<?php if (isset($search)) { echo $search; } ?>'>
-			<input type='hidden' name='enabled' value='<?php echo $enabled; ?>'>
+		</div>
+		<div class='col'>
         	        <button type='submit' class='btn btn-primary'>Search</button>
 	        </div>
-	</form>
-        <div class='btn-group pull-right ml-auto' role='group'>
-                <a class='btn btn-primary' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&enabled=1"; ?>'>Active</a>
-                <a class='btn btn-warning' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&enabled=0"; ?>'>Deactived</a>
-        </div>
+		<div class='col d-flex justify-content-end'>
+		        <div class='btn-group pull-right ml-auto' role='group'>
+                		<a class='btn btn-primary' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&enabled=1"; ?>'>Active</a>
+		                <a class='btn btn-warning' href='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query(array('search'=>$search)) . "&enabled=0"; ?>'>Deactived</a>
+		        </div>
+		</div>
 
 </div>
+</form>
 <br>
 <div class='row'>
 <table class='table table-striped table-sm table-bordered'>
@@ -75,7 +79,7 @@ require_once 'includes/header.inc.php';
 
 <form class='form-inline' method='post' action='report.php'>
 	<div class='row'>
-		<div class='col-sm-1'>
+		<div class='col-sm-2'>
 	                <select class='form-select' name='report_type'>
         	        <option value='xlsx'>Excel</option>
                 	<option value='csv'>CSV</option>

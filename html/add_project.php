@@ -106,9 +106,9 @@ require_once 'includes/header.inc.php';
 		<br>
                 <nav>
                         <div class='nav nav-tabs' role='tablist' id='billing_tab'>
-                                <a class='nav-item nav-link active' data-toggle='tab' data-target='#nav-cfop' type='button'>CFOP</a>
-                                <a class='nav-item nav-link' data-toggle='tab' data-target='#nav-custom' type='button'>Custom Billing</a>
-                                <a class='nav-item nav-link' data-toggle='tab' data-target='#nav-nobill' type='button'>Do Not Bill</a>
+                                <a class='nav-item nav-link active' data-bs-toggle='tab' data-bs-target='#nav-cfop' type='button'>CFOP</a>
+                                <a class='nav-item nav-link' data-bs-toggle='tab' data-bs-target='#nav-custom' type='button'>Custom Billing</a>
+                                <a class='nav-item nav-link' data-bs-toggle='tab' data-bs-target='#nav-nobill' type='button'>Do Not Bill</a>
                         </div>
                 </nav>
                 <div class='tab-content'>
@@ -149,12 +149,10 @@ require_once 'includes/header.inc.php';
                                         </div>
                                 </div>
                                 <div class='row mb-3'>
-                                        <div class='col-sm-2'>
-						<label class='form-check-label' for='hide_cfop_input'>Hide CFOP From User</label>
-					</div>
-					<div class='col-sm-2'>
+                                        <div class='form-checkbox form-switch offset-md-2'>
                                                 <input class='form-check-input' type='checkbox' name='hide_cfop' id='hide_cfop_input' <?php if (isset($_POST['hide_cfop'])) { echo "checked='checked'"; } ?>>
-                                        </div>
+						<label class='form-check-label' for='hide_cfop_input'>Hide CFOP From User</label>
+
                                         </div>
                                 </div>
                         </div>
@@ -162,7 +160,7 @@ require_once 'includes/header.inc.php';
 
                         <div class='tab-pane fade' id='nav-custom' role='tabpanel'>
                                 <br>
-                                <div class='form-group'>
+                                <div class='mb-3'>
                                         <label class='col-form-label' style='min-width: 200px' for='custom_bill_description'>Custom Bill Description: &nbsp;
                                                 <br>(e.g. Check, Personal Credit Card, Government Credit Card) &nbsp;
                                         </label>
@@ -174,7 +172,7 @@ require_once 'includes/header.inc.php';
                 <!------------------Do Not Bill----------------->
                         <div class='tab-pane fade' id='nav-nobill' role='tabpanel'>
                                 <br>
-                                <div class='form-group row'>
+                                <div class='mb-3 row'>
                                         <div class='col-sm-9 offset-sm-3'>
 						<p>Selecting 'Do Not Bill' will not enabling billing for this user</p>
                                         </div>
@@ -186,7 +184,7 @@ require_once 'includes/header.inc.php';
                 </div>
 
 		<br>
-		<div class='form-group row'>
+		<div class='mb-3 row'>
 			<div class='col-sm-8'>
 				<input type='hidden' name='cfop_billtype' id='cfop_billtype' value='<?php if (isset($_POST['cfop_billtype'])) { echo $_POST['cfop_billtype']; } ?>'>
 				<input class='btn btn-primary' type='submit' name='add_project'

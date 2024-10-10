@@ -82,9 +82,10 @@ require_once 'includes/header.inc.php';
 </div>
 <p>
 <div class='row'>
-<?php echo $graph_form; ?>
+	<div class='col-auto'>
+		<?php echo $graph_form; ?>
+	</div>
 </div>
-<br>
 <div class='row'>
 <?php echo $graph_image; ?>
 </div>

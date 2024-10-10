@@ -16,7 +16,7 @@ require_once 'includes/header.inc.php';
 ?>
 <h3>Data Cost</h3>
 <hr>
-<div class='col-sm-4 col-md-4 col-lg-4 col-xl-4'>
+<div class='col-sm-6'>
 <form class='form' method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>'>
 <input type='hidden' name='data_cost_id' value='<?php echo $data_cost->get_id(); ?>'>
 <table class='table table-bordered table-striped table-sm'>
