@@ -25,7 +25,7 @@ $user = new user($db,$ldap,$user_id);
 
 if (isset($_POST['email_bill'])) {
 	try {
-		$email_result = $user->email_bill(settings::get_admin_email(),$year,$month);
+		$email_result = $user->email_bill(settings::get_admin_email(),$year,$month,settings::get_website_url());
 		$message = "<div class='alert alert-success'>Email Bill - User " . $user->get_username() . " successfully sent to " . $user->get_email() . "</div>";
 	}
 	catch (\Exception $e) {
@@ -46,7 +46,8 @@ if ($login_user->is_admin()) {
 }
 $user_list_html = "";
 if (count($user_list)) {
-	$user_list_html = "<label>User: </label>&nbsp;<select class='form-select' name='user_id' id='user_input' data-placeholder='Select a User'>";
+	$user_list_html = "<div class='col-auto'><label class='form-label'>User: </label></div>";
+	$user_list_html .= "<div class='col-sm-2'><select class='form-select' name='user_id' id='user_input' data-placeholder='Select a User'>";
 	if ((!isset($_GET['user_id'])) || ($_GET['user_id'] == $login_user->get_user_id())) {
                 $user_list_html .= "<option value='" . $login_user->get_user_id(). "' selected='selected'>";
                 $user_list_html .= $login_user->get_username() . "</option>";
@@ -66,7 +67,7 @@ if (count($user_list)) {
 		}
 
 	}
-	$user_list_html .= "</select>";
+	$user_list_html .= "</select></div>";
 }
 
 //////Year////////
@@ -146,20 +147,31 @@ require_once 'includes/header.inc.php';
 <h3>User Bill - <?php echo $month_name . " " . $year; ?></h3>
 <hr>
 <form action='<?php echo $_SERVER['PHP_SELF']; ?>' method='get'>
-	<?php if ($login_user->is_admin() || $login_user->is_supervisor()) {
-		echo $user_list_html;
-
-		} 
-	?>&nbsp;
-	<label class='form-label' for='month'>Month: </label>&nbsp;
-	<select class='form-select' name='month' id='month'>	
-	<?php echo $month_html; ?>
-	</select>&nbsp;
-	<label for='year' >Year: </label>&nbsp;
-	<select class='form-select' name='year' id='year'>
-	<?php echo $year_html; ?>
-	</select>&nbsp;
-	<input class='btn btn-primary' type='submit' value='Get Bill'>
+	<div class='row mb-3'>
+		<?php if ($login_user->is_admin() || $login_user->is_supervisor()) {
+				echo $user_list_html;
+			} 
+		?>
+		<div class='col-auto'>
+			<label class='form-label' for='month'>Month: </label>
+		</div>
+		<div class='col-sm-2'>
+			<select class='form-select' name='month' id='month'>
+			<?php echo $month_html; ?>
+			</select>
+		</div>
+		<div class='col-auto'>
+			<label class='form-label' for='year' >Year: </label>
+		</div>
+		<div class='col-sm-2'>
+			<select class='form-select' name='year' id='year'>
+			<?php echo $year_html; ?>
+			</select>
+		</div>
+		<div class='col'>
+			<input class='btn btn-primary' type='submit' value='Get Bill'>
+		</div>
+	</div>
 </form>
 <br>
 <table class='table table-sm table-striped table-bordered'>

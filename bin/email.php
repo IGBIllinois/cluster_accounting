@@ -84,7 +84,7 @@ foreach ($user_list as $user) {
 	$user_object = new user($db,$ldap,$user['user_id']);
 	$level = \IGBIllinois\log::NOTICE;
 	try {
-		$user_object->email_bill(settings::get_admin_email(),$year,$month);
+		$user_object->email_bill(settings::get_admin_email(),$year,$month,settings::get_website_url());
 		$message = "Email Bill - User " . $user_object->get_username() . " successfully sent to " . $user_object->get_email();
 	}
 	catch (\Exception $e) {

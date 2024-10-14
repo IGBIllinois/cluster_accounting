@@ -234,10 +234,13 @@ class settings {
 
 	}
 
+	public static function get_git_url() {
+		return GIT_URL;
+	}
+
 	public static function get_website_url() {
 		return WEBSITE_URL;
 	}
-
 	public static function get_smtp_host() {
 		if (defined("SMTP_HOST")) {
 			return SMTP_HOST;

@@ -455,7 +455,7 @@ class user {
 		return FALSE;
 
 	}
-	public function email_bill($admin_email,$year,$month) {
+	public function email_bill($admin_email,$year,$month,$website_url) {
 
 		if (!$this->ldap->is_ldap_user($this->get_username())) {
 			throw new \Exception("Email Bill - User " . $this->get_username() . " not in ldap");
@@ -475,15 +475,30 @@ class user {
 			if (settings::get_debug()) {
 				$to = $admin_email;
 			}
+			$job_summary = $this->get_jobs_summary($month,$year);
+			$data_summary = $this->get_data_summary($month,$year);
+			if ($this->is_supervisor()) {
+				foreach ($this->get_supervising_users() as $supervising_user) {
+					$supervising_user_object = new user($this->db,$this->ldap,$supervising_user['user_id']);
+					$supervising_user_jobs = $supervising_user_object->get_jobs_summary($month,$year);
+					$supervising_user_data = $supervising_user_object->get_data_summary($month,$year);
+					foreach ($supervising_user_jobs as $user_jobs) {
+						array_push($job_summary,$user_jobs);
+					}
+					foreach ($supervising_user_data as $user_data) {
+						array_push($data_summary,$user_data);
+					}
+				}
+			}
 			$twig_variables = array(
         	                'css' => settings::get_email_css_contents(),
                 	        'month' => $bill_month->format('F'),
                         	'year' => $bill_month->format('Y'),
 	                        'full_name' => $this->get_full_name(),
         	                'username' => $this->get_username(),
-                	        'website_url' => "https://bioapps3.igb.illinois.edu/accounting/",
-                        	'jobs_table' => $this->get_jobs_summary($month,$year),
-	                        'data_table' => $this->get_data_summary($month,$year),
+                	        'website_url' => $website_url,
+                        	'jobs_table' => $job_summary,
+	                        'data_table' => $data_summary,
 				'admin_email'=> $admin_email
 	                );
 
