@@ -79,6 +79,7 @@ class data_functions {
 
 	public static function get_data_bill($db,$month,$year) {
 		$sql = "SELECT data_dir.data_dir_path as 'Directory', ";
+		$sql .= "DATE_FORMAT(data_bill.data_bill_date,'%c/%e/%Y') as 'DATE' , ";
 	        $sql .= "ROUND(data_bill.data_bill_avg_bytes / :terabytes,3) as 'Terabytes', ";
         	$sql .= "ROUND(data_cost.data_cost_value,2) as 'Rate ($/Terabyte)', ";
         	$sql .= "ROUND(data_bill.data_bill_total_cost,2) as 'Total Cost', ";
@@ -103,7 +104,7 @@ class data_functions {
 	}
 
 	public static function get_data_custom_bill($db,$month,$year,$minimal_bill = 0.01) {
-                $sql = "SELECT CONCAT(:month '/' :year)  as 'DATE', ";
+		$sql = "SELECT DATE_FORMAT(data_bill.data_bill_date,'%c/%e/%Y') as 'DATE' , ";
                 $sql .= "projects.project_name as 'NAME', ";
                 $sql .= "ROUND(data_bill.data_bill_billed_cost,2) as 'COST', ";
                 $sql .= "CONCAT('Biocluster Data - ',data_dir.data_dir_path) as 'DESCRIPTION', ";

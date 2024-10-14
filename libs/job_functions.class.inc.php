@@ -7,6 +7,7 @@ class job_functions {
 	public static function get_jobs_bill($db,$month,$year) {
 	
 		$sql = "SELECT users.user_name as 'Username', ";
+		$sql .= "DATE_FORMAT(job_bill.job_bill_date,'%c/%e/%Y') as 'DATE', ";
 		$sql .= "projects.project_name as 'Project', ";
 		$sql .= "queues.queue_name as 'Queue', ";
 		$sql .= "queue_cost.queue_cost_cpu as 'Queue CPU Cost (Per Second)', ";
@@ -121,7 +122,7 @@ class job_functions {
         public static function get_jobs_custom_bill($db,$month,$year) {
 
 
-                $sql = "SELECT '' as 'DATE', ";
+                $sql = "SELECT DATE_FORMAT(job_bill.job_bill_date,'%c/%e/%Y') as 'DATE', ";
                 $sql .= "users.user_name as 'NAME', ";
                 $sql .= "cfops.cfop_custom_description as 'DESCRIPTION', ";
                 $sql .= "ROUND(SUM(jobs.job_billed_cost),2) as 'COST', ";
