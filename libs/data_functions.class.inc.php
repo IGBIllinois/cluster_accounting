@@ -140,15 +140,15 @@ class data_functions {
 
 	public static function get_data_fbs_bill($db,$month,$year,$minimal_bill = 0.01,$fbs_areacode,$fbs_facilitycode,$fbs_labcode,$fbs_data_skucode) {
 		$sql = "SELECT :fbs_areacode as 'AreaCode',:fbs_facilitycode as 'FacilityCode', ";
-		$sql .= ":fbs_labcode as 'LabCode', IF(users.user_supervisor <> 0,CONCAT(supervisors.user_lastname,', ',supervisors.user_firstname), ";
-		$sql .= "CONCAT(users.user_lastname,', ',users.user_firstname)) as 'LabName',  ";
-		$sql .= "CONCAT(users.user_firstname,users.user_lastname) as 'RequestedBy', ";
-		$sql .= "users.user_name as 'NAME', CONCAT(cfops.cfop_value,IF(cfops.cfop_activity <> '','-',''),cfops.cfop_activity) as 'CFOP', ";
-		$sql .= ":fbs_data_skucode as 'SKU_Code', CONCAT(:month,'-',:year) as 'UsageDate', ";
-		$sql .= "'1.000' as 'Quantity', ROUND(data_bill.data_bill_billed_cost,2) as 'UnitPriceOverride', ";
+		$sql .= "DATE_FORMAT(data_bill.data_bill_date,'%c/%e/%Y') as 'UsageDate,' , ";
+		$sql .= ":fbs_labcode as 'LabCode', '' AS PI_Name, ";
+		$sql .= "CONCAT(users.user_firstname,'',users.user_lastname) as 'RequestedBy', ";
+		$sql .= ":fbs_data_skucode as 'SKU_Code', ";
+		$sql .= "'' AS UsageType,'' AS Service,'' AS TimeUse, ";
 		$sql .= "CONCAT('Biocluster Data - ',SUBSTRING_INDEX(data_dir.data_dir_path,'/',-1)) as 'PrintableComments', ";
-		$sql .= "'' as 'UsageRef', '' as 'OrderRef', '' as 'PO_Ref','' as 'PayAlias', ";
-		$sql .= "'' as 'bNonBillable','' as 'NonPrintableComments' ";
+		$sql .= "ROUND(data_bill.data_bill_billed_cost,2) as 'UnitPriceOverride', ";
+		$sql .= "'1' AS Quantity, '' AS DateTimeStart, '' AS DateTimeEnd, ";
+		$sql .= "CONCAT(cfops.cfop_value,IF(cfops.cfop_activity <> '','-',''),cfops.cfop_activity) as 'CFOP' ";
                	$sql .= "FROM data_bill ";
                 $sql .= "LEFT JOIN cfops ON cfops.cfop_id=data_bill.data_bill_cfop_id ";
                 $sql .= "LEFT JOIN projects ON projects.project_id=data_bill.data_bill_project_id ";
@@ -160,8 +160,6 @@ class data_functions {
                 $sql .= "AND MONTH(data_bill.data_bill_date)=:month ";
 		$sql .= "AND ROUND(data_bill.data_bill_billed_cost,2)>=:minimal_bill ";
 		$sql .= "AND cfops.cfop_billtype=:billtype ";
-                $sql .= "ORDER BY LabName ASC";
-
                 $parameters = array(
 			':fbs_areacode'=>$fbs_areacode,
 			':fbs_facilitycode'=>$fbs_facilitycode,
@@ -169,7 +167,6 @@ class data_functions {
 			':fbs_labcode'=>$fbs_labcode,
                         ':month'=>$month,
                         ':year'=>$year,
-                        ':terabytes'=>data_functions::CONVERT_TERABYTES,
 			':minimal_bill'=>$minimal_bill,
 			':billtype'=>project::BILLTYPE_CFOP
                 );

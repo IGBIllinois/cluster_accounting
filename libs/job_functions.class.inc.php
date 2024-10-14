@@ -71,16 +71,15 @@ class job_functions {
 
 	public static function get_jobs_fbs_bill($db,$month,$year,$fbs_areacode,$fbs_facilitycode,$fbs_labcode,$fbs_job_skucode) {
                 $sql = "SELECT :fbs_areacode as 'AreaCode',:fbs_facilitycode as 'FacilityCode', ";
-		$sql .= "CONCAT(:month,'-',:year) as 'UsageDate', ";
-                $sql .= ":fbs_labcode as 'LabCode', IF(users.user_supervisor <> 0,CONCAT(supervisors.user_lastname,' ',supervisors.user_firstname),";
-		$sql .= "CONCAT(users.user_lastname,', ',users.user_firstname)) as 'LabName',  ";
-                $sql .= "CONCAT(users.user_firstname,users.user_lastname) as 'RequestedBy', ";
+		$sql .= "DATE_FORMAT(job_bill.job_bill_date,'%c/%e/%Y') as 'UsageDate', ";
+                $sql .= ":fbs_labcode as 'LabCode', '' AS PI_Name, ";
+                $sql .= "CONCAT(users.user_firstname,'',users.user_lastname) as 'RequestedBy', ";
 		$sql .= ":fbs_job_skucode as 'SKU_Code', ";
-                $sql .= "users.user_name as 'NAME', CONCAT(cfops.cfop_value,IF(cfops.cfop_activity <> '','-',''),cfops.cfop_activity) as 'CFOP', ";
-                $sql .= "'1.000' as 'Quantity', ROUND(SUM(job_bill.job_bill_billed_cost),2) as 'UnitPriceOverride', ";
-                $sql .= "CONCAT('Biocluster Jobs - ',users.user_name) as 'PrintableComments', ";
-                $sql .= "'' as 'UsageRef', '' as 'OrderRef', '' as 'PO_Ref','' as 'PayAlias', ";
-                $sql .= "'' as 'bNonBillable','' as 'NonPrintableComments' ";
+		$sql .= "'' AS UsageType,'' AS Service,'' AS TimeUse, ";
+		$sql .= "CONCAT('Biocluster Jobs - ',users.user_name) as 'PrintableComments', ";
+		$sql .= "ROUND(SUM(job_bill.job_bill_billed_cost),2) as 'UnitPriceOverride', ";
+		$sql .= "'1' AS Quantity, '' AS DateTimeStart, '' AS DateTimeEnd, ";
+                $sql .= "CONCAT(cfops.cfop_value,IF(cfops.cfop_activity <> '','-',''),cfops.cfop_activity) as 'CFOP' ";
                 $sql .= "FROM job_bill ";
                 $sql .= "LEFT JOIN cfops ON cfops.cfop_id=job_bill.job_bill_cfop_id ";
                 $sql .= "LEFT JOIN projects ON projects.project_id=job_bill.job_bill_project_id ";
@@ -89,8 +88,8 @@ class job_functions {
                 $sql .= "WHERE YEAR(job_bill.job_bill_date)=:year ";
                 $sql .= "AND MONTH(job_bill.job_bill_date)=:month ";
                 $sql .= "AND cfops.cfop_billtype=:billtype ";
+		$sql .= "AND job_bill.job_bill_billed_cost>=0.01 ";
 		$sql .= "GROUP BY job_bill.job_bill_user_id ";
-                $sql .= "ORDER BY LabName ASC";
                 $parameters = array(
 			':fbs_areacode'=>$fbs_areacode,
 			':fbs_facilitycode'=>$fbs_facilitycode,
