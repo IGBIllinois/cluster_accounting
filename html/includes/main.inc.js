@@ -13,6 +13,10 @@ function confirm_delete_queue() {
 function confirm_delete_dir() {
 	return confirm("Are you sure want to remove this directory from the accounting software?");
 }
+
+function confirm_edit_project_bill() {
+	return confirm("Are you sure you want to update the previous bill for this project?");
+}
 function enable_supervisors() {
 	if (document.form.is_supervisor.checked == false) {
 		document.form.supervisor_id.disabled = false;

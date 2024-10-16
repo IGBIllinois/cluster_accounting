@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3db773d97c711acada774483d69d3b3c",
+    "content-hash": "052b293b3dc56f52679af7265d302c73",
     "packages": [
         {
             "name": "amenadiel/jpgraph",
@@ -390,16 +390,16 @@
         },
         {
             "name": "igbillinois/igbillinois-php",
-            "version": "1.4.0",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/IGBIllinois/IGBIllinois-php.git",
-                "reference": "81f734c681bf91c59f540f0b5b95a88885944006"
+                "reference": "c6bf6a5af38c05da6ed34db9db575a4b60244070"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/IGBIllinois/IGBIllinois-php/zipball/81f734c681bf91c59f540f0b5b95a88885944006",
-                "reference": "81f734c681bf91c59f540f0b5b95a88885944006",
+                "url": "https://api.github.com/repos/IGBIllinois/IGBIllinois-php/zipball/c6bf6a5af38c05da6ed34db9db575a4b60244070",
+                "reference": "c6bf6a5af38c05da6ed34db9db575a4b60244070",
                 "shasum": ""
             },
             "require": {
@@ -414,7 +414,7 @@
                 "pear/mail_mime": "1.10.11",
                 "pear/net_smtp": "1.10.1",
                 "php": ">=7.1",
-                "phpoffice/phpspreadsheet": ">=1.16"
+                "phpoffice/phpspreadsheet": ">=1.16 <=1.29.2"
             },
             "require-dev": {
                 "phpdocumentor/phpdocumentor": "v3.0.0"
@@ -442,10 +442,10 @@
                 "template"
             ],
             "support": {
-                "source": "https://github.com/IGBIllinois/IGBIllinois-php/tree/1.4.0",
+                "source": "https://github.com/IGBIllinois/IGBIllinois-php/tree/1.4.1",
                 "issues": "https://github.com/IGBIllinois/IGBIllinois-php/issues"
             },
-            "time": "2023-05-24T22:26:15+00:00"
+            "time": "2024-10-14T18:19:30+00:00"
         },
         {
             "name": "maennchen/zipstream-php",

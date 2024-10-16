@@ -327,7 +327,7 @@ require_once 'includes/header.inc.php';
 		<div class='row'>
 			<?php echo $previous_bill_html; ?>
 			<div class='col'>
-				<input class='btn btn-primary' type='submit' name='update_bill' value='Update Bill'>	
+				<input class='btn btn-primary' type='submit' name='update_bill' value='Update Bill' onClick='return confirm_edit_project_bill()'>	
 			</div>
 		</div>
 	</form>

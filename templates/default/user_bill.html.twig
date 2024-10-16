@@ -1,8 +1,11 @@
+<!doctype html>
 <html>
 <style>
 {{ css }}
 </style>
-<div class='container-fluid'><div class='col-sm-12 col-md-12 col-lg-12 col-xl-12'>
+</head>
+<div class='container-fluid'>
+<div class='col-sm-12 col-md-12 col-lg-12 col-xl-12'>
 <br>
 <p>{{ full_name }}, </p>
 <p>Below is your bill.  You can go to <a href='{{ website_url }}'>{{ website_url }}</a>
@@ -18,7 +21,7 @@ to view a detail listing of your jobs.
 <h4>Cluster Usage</h4>
 
 <p>
-<table class='table table-bordered table-sm table-stripped'>
+<table class='table table-bordered table-sm'>
 <thead>
 <th>Queue</th>
 <th>Project</th>
@@ -81,3 +84,4 @@ to view a detail listing of your jobs.
 
 </div>
 </div>
+</html>
