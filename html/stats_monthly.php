@@ -60,7 +60,7 @@ if (isset($_POST['graph_type'])) {
 }
 $get_array  = array('graph_type'=>$graph_type,
 		'start_date'=>$selected_month->format("Ymd"),
-		'end_date'=>$selected_month->format("Ymd")
+		'end_date'=>$selected_month->format("Ymt")
 	);
 $graph_image = "<img src='graph.php?" . http_build_query($get_array) . "'>";
 
@@ -148,7 +148,7 @@ require_once 'includes/header.inc.php';
                 	<td>$<?php echo data_stats::get_billed_cost($db,$selected_month,$selected_month,true); ?></td>
 	        </tr>
 		<tr>
-			<td colspan='2'><div class='col-sm-2'><?php echo $graph_form; ?></div></td>
+			<td colspan='2'><div class='col-sm-3'><?php echo $graph_form; ?></div></td>
 		</tr>
 		<tr>
 			<td colspan='2'><?php echo $graph_image; ?></td>

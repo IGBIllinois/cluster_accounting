@@ -134,7 +134,7 @@ require_once 'includes/header.inc.php';
 		<td>$<?php echo data_stats::get_billed_cost($db,$start_date,$end_date,true); ?></td>
 	</tr>
 	<tr>
-		<td colspan='2'><div class='col-sm-2'><?php echo $graph_form; ?></div></td>
+		<td colspan='2'><div class='col-sm-3'><?php echo $graph_form; ?></div></td>
 	</tr>
 	<tr>
 		<td colspan='2'><?php echo $graph_image; ?></td>
