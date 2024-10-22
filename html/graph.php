@@ -149,7 +149,7 @@ switch ($graph_type) {
 
 	//Top 5 Data Users
 	case 'top_data_usage':
-
+		$top_count = 15;
 		$title = "Top Data Usage";
 		$result = data_stats::get_top_data_usage($db,$start_date_obj,$end_date_obj,$top_count);
 		$data = array();
