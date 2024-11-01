@@ -162,8 +162,6 @@ class project {
 					':owner_id'=>$owner_id,
 					':project_id'=>$this->get_project_id()
 				);
-				echo "<br>SQL: " . $sql;
-				echo "<br>Parameters: " . print_r($parameters);
 				$this->db->non_select_query($sql,$parameters);
 				$this->get_project($this->get_project_id());
 				return array('RESULT'=>true,

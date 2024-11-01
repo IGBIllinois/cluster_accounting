@@ -63,5 +63,13 @@ ln -s /var/www/accounting/conf/cron /etc/cron.d/cluster_accounting
 cp /var/www/accounting/conf/log_rotate.conf.dist /var/www/accounting/conf/log_rotate.conf
 ln -s /var/www/accounting/conf/log_rotate.conf /etc/logrotate.d/accounting
 ```
+9. Update PHP settings
+```
+max_execution_time = 120
+```
+10.  Restart apache and php-fpm
+```
+systemctl restart httpd php-fpm
+```
 
 

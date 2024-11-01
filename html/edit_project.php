@@ -144,7 +144,7 @@ for ($i=$min_year; $i<=date("Y");$i++) {
 $year_html .= "</select></div>";
 
 ///////Month///////
-$month_html = "<div class='col-sm-2'><select class='form-select' name='month'>";
+$month_html = "<div class='col-sm-3'><select class='form-select' name='month'>";
 for ($i=1;$i<=12;$i++) {
         if ($i == $month) { $month_html .= "<option value='$i' selected='true'>" . $i . " - " . date('F', mktime(0, 0, 0, $i, 10)) . "</option>"; }
         else { $month_html .= "<option value='$i'>" . $i . " - " . date('F', mktime(0, 0, 0, $i, 10)) . "</option>"; }

@@ -89,6 +89,7 @@ require_once 'includes/header.inc.php';
 			<input class='form-control-plaintext' type='text' readonly value="<?php echo $user->get_username(); ?>">
 		</div>
 	</div>
+	<br>
 	<div class='form-group row'>
 		<div class='col-sm-8 offset-sm-4'>
 		<div clas='form-check'>
@@ -98,6 +99,7 @@ require_once 'includes/header.inc.php';
 		</div>
 		</div>
 	</div>
+	<br>
 	<div class='form-group row'>
 		<div class='col-sm-8 offset-sm-4'>
 		<div clas='form-check'>
@@ -107,13 +109,14 @@ require_once 'includes/header.inc.php';
 		</div>
 		</div>	
 	</div>
+	<br>
 	<div class='form-group row'>
 		<label class='col-sm-4 col-form-label' for='supervisor_input'>Supervisor:</label>
 		<div class='col-sm-8'>
 			<?php echo $supervisors_html; ?>
 		</div>
 	</div>
-
+	<br>
 	<div class='form-group row'>
 		<div class='col-sm-8'>
 			<input class='btn btn-primary' type='submit' name='edit_user' value='Edit User'> 
@@ -137,6 +140,7 @@ require_once 'includes/footer.inc.php';
 $(document).ready(function() {
 	enable_supervisors();
 	$('#supervisors_input').select2({
+		theme: 'bootstrap-5',
 		placeholder: 'Select a Supervisor'
 	});
 });

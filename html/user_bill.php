@@ -47,7 +47,7 @@ if ($login_user->is_admin()) {
 $user_list_html = "";
 if (count($user_list)) {
 	$user_list_html = "<div class='col-auto'><label class='form-label'>User: </label></div>";
-	$user_list_html .= "<div class='col-sm-2'><select class='form-select' name='user_id' id='user_input' data-placeholder='Select a User'>";
+	$user_list_html .= "<div class='col-sm-3'><select class='form-select' name='user_id' id='user_input' data-placeholder='Select a User'>";
 	if ((!isset($_GET['user_id'])) || ($_GET['user_id'] == $login_user->get_user_id())) {
                 $user_list_html .= "<option value='" . $login_user->get_user_id(). "' selected='selected'>";
                 $user_list_html .= $login_user->get_username() . "</option>";
@@ -155,7 +155,7 @@ require_once 'includes/header.inc.php';
 		<div class='col-auto'>
 			<label class='form-label' for='month'>Month: </label>
 		</div>
-		<div class='col-sm-2'>
+		<div class='col-sm-3'>
 			<select class='form-select' name='month' id='month'>
 			<?php echo $month_html; ?>
 			</select>

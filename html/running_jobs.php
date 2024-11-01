@@ -108,7 +108,7 @@ require_once 'includes/header.inc.php';
 		</div>
 		<?php
 			if ($login_user->is_admin() || $login_user->is_supervisor()) {
-				echo "<div class='col-sm-2'>" . $user_list_html . "</div>";
+				echo "<div class='col-sm-3'>" . $user_list_html . "</div>";
 			}
 
 		?>
