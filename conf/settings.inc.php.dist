@@ -60,7 +60,6 @@ define('FBS_SECRET_KEY','');
 define('FBS_FACILITY_ID','');
 define('FBS_FACILITY_CODE','');
 define('FBS_AREACODE','');
-define('FBS_LABCODE','');
 define('FBS_JOBS_SKUCODE','');
 define('FBS_DATA_SKUCODE','');
 

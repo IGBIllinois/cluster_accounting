@@ -139,10 +139,10 @@ class data_functions {
 		return $data_result;
         }
 
-	public static function get_data_fbs_bill($db,$month,$year,$minimal_bill = 0.01,$fbs_areacode,$fbs_facilitycode,$fbs_labcode,$fbs_data_skucode) {
+	public static function get_data_fbs_bill($db,$month,$year,$minimal_bill = 0.01,$fbs_areacode,$fbs_facilitycode,$fbs_data_skucode) {
 		$sql = "SELECT :fbs_areacode as 'AreaCode',:fbs_facilitycode as 'FacilityCode', ";
 		$sql .= "DATE_FORMAT(data_bill.data_bill_date,'%c/%e/%Y') as 'UsageDate,' , ";
-		$sql .= ":fbs_labcode as 'LabCode', ";
+		$sql .= "'' as 'LabCode', ";
 		$sql .= "IF(users.user_supervisor <> 0,CONCAT(supervisors.user_lastname,', ',supervisors.user_firstname),CONCAT(users.user_lastname,', ',users.user_firstname)) AS PI_Name, ";
 		$sql .= "CONCAT(users.user_firstname,' ',users.user_lastname) as 'RequestedBy', ";
 		$sql .= ":fbs_data_skucode as 'SKU_Code', ";
@@ -166,7 +166,6 @@ class data_functions {
 			':fbs_areacode'=>$fbs_areacode,
 			':fbs_facilitycode'=>$fbs_facilitycode,
 			':fbs_data_skucode'=>$fbs_data_skucode,
-			':fbs_labcode'=>$fbs_labcode,
                         ':month'=>$month,
                         ':year'=>$year,
 			':minimal_bill'=>$minimal_bill,
@@ -174,11 +173,10 @@ class data_functions {
                 );
                 $report = $db->query($sql,$parameters);
 
-		/*commenting this out fixes the program and also makes labcodes blank, not needed per cecil
 		$fbs_customers = functions::get_fbs_labcodes();
                 foreach ($report as &$record) {
                         for ($i=0; $i<count($fbs_customers); $i++) {
-                                if (trim($record['LabName']) == trim($fbs_customers[$i]['CustomerDirectoryName'])) {
+                                if (trim($record['PI_Name']) == trim($fbs_customers[$i]['CustomerDirectoryName'])) {
                                         $record['LabCode'] = $fbs_customers[$i]['CustomerCode'];
                                         break;
                                 }
@@ -186,7 +184,6 @@ class data_functions {
                         }
 
                 }
-		*/
                 return $report;
 
         }

@@ -341,13 +341,6 @@ class settings {
 		return "";
 
 	}
-	public static function get_fbs_labcode() {
-		if (defined("FBS_LABCODE")) {
-			return FBS_LABCODE;
-		}
-		return "";
-	}
-
 	public static function get_fbs_jobs_skucode() {
 		if (defined("FBS_JOBS_SKUCODE")) {
 			return FBS_JOBS_SKUCODE;

@@ -71,10 +71,10 @@ class job_functions {
 
         }
 
-	public static function get_jobs_fbs_bill($db,$month,$year,$fbs_areacode,$fbs_facilitycode,$fbs_labcode,$fbs_job_skucode) {
+	public static function get_jobs_fbs_bill($db,$month,$year,$fbs_areacode,$fbs_facilitycode,$fbs_job_skucode) {
                 $sql = "SELECT :fbs_areacode as 'AreaCode',:fbs_facilitycode as 'FacilityCode', ";
 		$sql .= "DATE_FORMAT(job_bill.job_bill_date,'%c/%e/%Y') as 'UsageDate', ";
-                $sql .= ":fbs_labcode as 'LabCode', ";
+                $sql .= "'' as 'LabCode', ";
 		$sql .= "IF(users.user_supervisor <> 0,CONCAT(supervisors.user_lastname,', ',supervisors.user_firstname),CONCAT(users.user_lastname,', ',users.user_firstname)) AS PI_Name, ";
                 $sql .= "CONCAT(users.user_firstname,' ',users.user_lastname) as 'RequestedBy', ";
 		$sql .= ":fbs_job_skucode as 'SKU_Code', ";
@@ -96,7 +96,6 @@ class job_functions {
                 $parameters = array(
 			':fbs_areacode'=>$fbs_areacode,
 			':fbs_facilitycode'=>$fbs_facilitycode,
-			':fbs_labcode'=>$fbs_labcode,
 			':fbs_job_skucode'=>$fbs_job_skucode,
                         ':month'=>$month,
                         ':year'=>$year,
@@ -104,11 +103,11 @@ class job_functions {
                 );
                 $report = $db->query($sql,$parameters);
 
-		/**this is currently breaking the report and according to fbs, we dont need to worry about doing this - this comment make labcodes blank
 		$fbs_customers = functions::get_fbs_labcodes();
+		
 		foreach ($report as &$record) {
 			for ($i=0; $i<count($fbs_customers); $i++) {
-				if (trim($record['LabName']) == trim($fbs_customers[$i]['CustomerDirectoryName'])) {
+				if (trim($record['PI_Name']) == trim($fbs_customers[$i]['CustomerDirectoryName'])) {
 					$record['LabCode'] = $fbs_customers[$i]['CustomerCode'];
 					break;
 				}
@@ -116,7 +115,6 @@ class job_functions {
 			}
 
 		}
-		*/
 		return $report;
 		
         }

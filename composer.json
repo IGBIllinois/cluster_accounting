@@ -18,9 +18,9 @@
 		"select2/select2": "4.0.13",
 		"apalfrey/select2-bootstrap-5-theme": "1.3.0",
 		"twbs/bootstrap": "v5.3.3",
-		"twig/twig": "v3.4.3",
+		"twig/twig": "v3.11.3",
 		"fortawesome/font-awesome": "5.15.4",
-		"igbillinois/igbillinois-php": "1.4.1"
+		"igbillinois/igbillinois-php": "1.4.2"
 	},
 	 "scripts": {
                 "post-update-cmd": [
