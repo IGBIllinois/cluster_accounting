@@ -72,6 +72,7 @@ function enable_new_cfop() {
 }
 
 function set_cfop_billtype_tab() {
+	alert('billtype tab');
 	switch (cfop_billtype.value) {
                 case 'cfop':
                         $('#billing_tab a[data-target="#nav-cfop"]').tab('show');
@@ -92,9 +93,10 @@ function set_cfop_billtype_tab() {
 }
 
 function set_cfop_billtype_value() {
+	alert('billtype value');
 	cfop_billtype.value = 'cfop';
-	$('#billing_tab a[data-toggle="tab"]').bind('click',function (e) {
-                var tab = $(this).attr("data-target");
+	$('#billing_tab a[data-bs-toggle="tab"]').bind('click',function (e) {
+                var tab = $(this).attr("data-bs-target");
 
                 switch (tab) {
                         case '#nav-cfop':
@@ -115,6 +117,6 @@ function set_cfop_billtype_value() {
 }
 
 
-$.fn.select2.defaults.set( "theme", "bootstrap4" );
+$.fn.select2.defaults.set( "theme", "bootstrap-5" );
 $.fn.select2.defaults.set( "width", "resolve" );
 

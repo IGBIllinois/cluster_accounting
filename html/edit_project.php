@@ -4,7 +4,7 @@ require_once 'includes/main.inc.php';
 if (!$login_user->is_admin()) {
         exit;
 }
-
+print_r($_POST);
 $message = "";
 if (isset($_POST['delete_project'])) {
 	$project_id = $_POST['project_id'];

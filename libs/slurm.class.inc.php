@@ -16,6 +16,7 @@ class slurm {
 	public const SLURM_RUNNING_STATES = "PD,R";	
 	private const SLURM_DELIMITER = "|";
 	private const SLURM_TIME_FORMAT = "%Y-%m-%d %H:%M:%s";
+	private const TRES_GPU = "gpu";
 
 	public static function get_accounting($start_time,$end_time) {
 
@@ -111,8 +112,11 @@ class slurm {
 			}
 			
 			$gpu = 0;
-			if (isset($job_data['AllocGRES']) && ($job_data['AllocGRES'] != "")) {
-				$gpu = substr($job_data['AllocGRES'],strpos($job_data['AllocGRES'],':') +1 );
+			if (isset($job_data['AllocTRES']) && ($job_data['AllocTRES'] != "") && (str_contains($job_data['AllocTRES'],self::TRES_GPU))) {
+				$search = "gres/" . self::TRES_GPU . "=";
+				$start_position = strpos($job_data['AllocTRES'],$search) + strlen($search);
+				$length = 1;
+				$gpu = substr($job_data['AllocTRES'],$start_position,$length);
 			}
 		
                 	//creates array that gets submitted to the job.class.inc.php with the required information
