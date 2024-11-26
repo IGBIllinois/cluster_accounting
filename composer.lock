@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e0433ddc2858d41658a1b5ec411c1179",
+    "content-hash": "4eb2178b67d53bc39f95994ed63ff03e",
     "packages": [
         {
             "name": "amenadiel/jpgraph",
@@ -390,16 +390,16 @@
         },
         {
             "name": "igbillinois/igbillinois-php",
-            "version": "1.4.2",
+            "version": "1.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/IGBIllinois/IGBIllinois-php.git",
-                "reference": "0cd2515be3ca8ef5afcc39b86c35f0a6ac166623"
+                "reference": "00cbeee689ec6523004ed8cf63a57ce1cae9658d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/IGBIllinois/IGBIllinois-php/zipball/0cd2515be3ca8ef5afcc39b86c35f0a6ac166623",
-                "reference": "0cd2515be3ca8ef5afcc39b86c35f0a6ac166623",
+                "url": "https://api.github.com/repos/IGBIllinois/IGBIllinois-php/zipball/00cbeee689ec6523004ed8cf63a57ce1cae9658d",
+                "reference": "00cbeee689ec6523004ed8cf63a57ce1cae9658d",
                 "shasum": ""
             },
             "require": {
@@ -414,7 +414,7 @@
                 "pear/mail_mime": "1.10.11",
                 "pear/net_smtp": "1.10.1",
                 "php": ">=7.1",
-                "phpoffice/phpspreadsheet": ">=1.16 <=1.29.2"
+                "phpoffice/phpspreadsheet": ">=1.29.4 <2.0.0"
             },
             "require-dev": {
                 "phpdocumentor/phpdocumentor": "v3.0.0"
@@ -442,10 +442,10 @@
                 "template"
             ],
             "support": {
-                "source": "https://github.com/IGBIllinois/IGBIllinois-php/tree/1.4.2",
+                "source": "https://github.com/IGBIllinois/IGBIllinois-php/tree/1.4.3",
                 "issues": "https://github.com/IGBIllinois/IGBIllinois-php/issues"
             },
-            "time": "2024-11-18T17:27:27+00:00"
+            "time": "2024-11-26T20:27:26+00:00"
         },
         {
             "name": "maennchen/zipstream-php",
@@ -1046,16 +1046,16 @@
         },
         {
             "name": "pear/pear-core-minimal",
-            "version": "v1.10.15",
+            "version": "v1.10.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/pear-core-minimal.git",
-                "reference": "ce0adade8b97561656ace07cdaac4751c271ea8c"
+                "reference": "c0f51b45f50683bf5bbf558036854ebc9b54d033"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/pear-core-minimal/zipball/ce0adade8b97561656ace07cdaac4751c271ea8c",
-                "reference": "ce0adade8b97561656ace07cdaac4751c271ea8c",
+                "url": "https://api.github.com/repos/pear/pear-core-minimal/zipball/c0f51b45f50683bf5bbf558036854ebc9b54d033",
+                "reference": "c0f51b45f50683bf5bbf558036854ebc9b54d033",
                 "shasum": ""
             },
             "require": {
@@ -1091,7 +1091,7 @@
                 "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=PEAR",
                 "source": "https://github.com/pear/pear-core-minimal"
             },
-            "time": "2024-03-16T18:41:45+00:00"
+            "time": "2024-11-24T22:27:58+00:00"
         },
         {
             "name": "pear/pear_exception",
@@ -1154,16 +1154,16 @@
         },
         {
             "name": "phpoffice/phpspreadsheet",
-            "version": "1.29.2",
+            "version": "1.29.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "3a5a818d7d3e4b5bd2e56fb9de44dbded6eae07f"
+                "reference": "727cb704d5479fe4ddc291497ee471c4ec08f1b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/3a5a818d7d3e4b5bd2e56fb9de44dbded6eae07f",
-                "reference": "3a5a818d7d3e4b5bd2e56fb9de44dbded6eae07f",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/727cb704d5479fe4ddc291497ee471c4ec08f1b6",
+                "reference": "727cb704d5479fe4ddc291497ee471c4ec08f1b6",
                 "shasum": ""
             },
             "require": {
@@ -1253,9 +1253,9 @@
             ],
             "support": {
                 "issues": "https://github.com/PHPOffice/PhpSpreadsheet/issues",
-                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/1.29.2"
+                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/1.29.5"
             },
-            "time": "2024-09-29T07:04:47+00:00"
+            "time": "2024-11-22T05:57:44+00:00"
         },
         {
             "name": "psr/http-client",
