@@ -15,7 +15,6 @@ if (isset($_GET['start_date']) && isset($_GET['end_date'])) {
 		$data[$i]['value'] = $row['num_jobs'];
 		$i++;
 	}
-//	print_r($data);
 	$title = "User Jobs";
 	\IGBIllinois\graphs::pie_graph($data,$title);
 }

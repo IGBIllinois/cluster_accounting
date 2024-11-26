@@ -4,7 +4,6 @@ require_once 'includes/main.inc.php';
 if (!$login_user->is_admin()) {
         exit;
 }
-print_r($_POST);
 $message = "";
 if (isset($_POST['delete_project'])) {
 	$project_id = $_POST['project_id'];
@@ -214,9 +213,9 @@ require_once 'includes/header.inc.php';
 
 	<nav>
 		<div class='nav nav-tabs' role='tablist' id='billing_tab'>
-			<button class='nav-link active' data-bs-toggle='tab' data-bs-target='#nav-cfop' type='button' role='tab'>CFOP</button>
-			<button class='nav-link' data-bs-toggle='tab' data-bs-target='#nav-custom' type='button' role='tab'>Custom Billing</button>
-			<button class='nav-link' data-bs-toggle='tab' data-bs-target='#nav-nobill' type='button' role='tab'>Do Not Bill</button>
+			<a class='nav-link active' data-bs-toggle='tab' data-bs-target='#nav-cfop' type='button'>CFOP</a>
+			<a class='nav-link' data-bs-toggle='tab' data-bs-target='#nav-custom' type='button'>Custom Billing</a>
+			<a class='nav-link' data-bs-toggle='tab' data-bs-target='#nav-nobill' type='button'>Do Not Bill</a>
 		</div>
 	</nav>
 	<div class='tab-content'>

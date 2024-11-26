@@ -4,6 +4,7 @@ require_once 'includes/main.inc.php';
 if (!$login_user->is_admin()) {
         exit;
 }
+
 if (isset($_POST['add_project'])) {
 	$_POST = array_map('trim',$_POST);
 

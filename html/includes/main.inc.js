@@ -72,7 +72,6 @@ function enable_new_cfop() {
 }
 
 function set_cfop_billtype_tab() {
-	alert('billtype tab');
 	switch (cfop_billtype.value) {
                 case 'cfop':
                         $('#billing_tab a[data-target="#nav-cfop"]').tab('show');
@@ -93,11 +92,9 @@ function set_cfop_billtype_tab() {
 }
 
 function set_cfop_billtype_value() {
-	alert('billtype value');
 	cfop_billtype.value = 'cfop';
 	$('#billing_tab a[data-bs-toggle="tab"]').bind('click',function (e) {
                 var tab = $(this).attr("data-bs-target");
-
                 switch (tab) {
                         case '#nav-cfop':
                                 cfop_billtype.value = 'cfop';
