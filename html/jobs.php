@@ -200,7 +200,6 @@ $(function() {
 
 $(document).ready(function() {
         $('#user_id_input').select2({
-		theme: 'bootstrap-5',
                 placeholder: $( this ).data( 'placeholder' )
         });
 });

@@ -256,7 +256,6 @@ if (isset($message)) { echo $message; } ?>
 <script type='text/javascript'>
 $(document).ready(function() {
         $('#user_input').select2({
-                theme: "bootstrap-5",
                 placeholder: $( this ).data( 'placeholder' )
         });
 });

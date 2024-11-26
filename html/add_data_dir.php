@@ -65,7 +65,6 @@ if (isset($result['MESSAGE'])) { echo $result['MESSAGE']; }
 <script type='text/javascript'>
 $(document).ready(function() {
         $('#project_input').select2({
-		theme: "bootstrap-5",
                 placeholder: "Select a Project"
         });
 });

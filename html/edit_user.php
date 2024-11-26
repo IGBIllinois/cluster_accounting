@@ -140,7 +140,6 @@ require_once 'includes/footer.inc.php';
 $(document).ready(function() {
 	enable_supervisors();
 	$('#supervisors_input').select2({
-		theme: 'bootstrap-5',
 		placeholder: 'Select a Supervisor'
 	});
 });

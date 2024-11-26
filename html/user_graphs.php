@@ -163,7 +163,6 @@ require_once 'includes/header.inc.php';
 <script type="text/javascript">
 $(document).ready(function() {
         $('#user_id_input').select2({
-		theme: "bootstrap-5",
                 placeholder: "Select a User"
         });
 

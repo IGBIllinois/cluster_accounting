@@ -155,7 +155,6 @@ require_once 'includes/header.inc.php';
 
 $(document).ready(function() {
         $('#user_id_input').select2({
-		theme: 'bootstrap-5',
                 placeholder: 'Select a User'
         });
 });

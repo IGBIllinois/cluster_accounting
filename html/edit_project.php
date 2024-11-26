@@ -353,7 +353,6 @@ if (isset($message)) {
 <script type='text/javascript'>
 $(document).ready(function() {
         $('#owner_input').select2({
-                theme: 'bootstrap-5',
                 placeholder: "Select a Owner"
         });
 
