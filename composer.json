@@ -1,6 +1,6 @@
 {
 	"name": "igbillinois/cluster_accounting",
-	"description": "A billing interfaceo for HPC Clusters",
+	"description": "A billing interface for HPC Clusters",
 	"license": "GPL-3.0-only",
 	"repositories" : [
         {
