@@ -59,7 +59,6 @@ class statistics {
 
 
 	public function get_num_jobs($start_date,$end_date, $format = 0) {
-
 		$sql = "SELECT SUM(job_bill_num_jobs) as num_jobs ";
 		$sql .= "FROM job_bill ";
 		$sql .= "WHERE DATE(job_bill_date) BETWEEN :start_date AND :end_date";

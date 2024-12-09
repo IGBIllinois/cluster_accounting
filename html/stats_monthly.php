@@ -6,13 +6,16 @@ if (!$login_user->is_admin()) {
 }
 
 $selected_month = new DateTime(date('Y-m-01 00:00:00'));
+$end_time = date("Y-m-t H:i:s");
+$selected_month_end = DateTime::createFromFormat("Y-m-d H:i:s",$end_time);
 
 if (isset($_GET['year']) && isset($_GET['month'])) {
         $year = $_GET['year'];
         $month = $_GET['month'];
         $selected_month = DateTime::createFromFormat("Y-m-d H:i:s",$year . "-" . $month . "-01 00:00:00");
+	$end_time = date("Y-m-t H:i:s",strtotime($year . "-" . $month . "-01 23:59:59"));
+	$selected_month_end = DateTime::createFromFormat("Y-m-d H:i:s",$end_time);
 }
-
 $month_name = $selected_month->format('F');
 $month = $selected_month->format('m');
 $year = $selected_month->format('Y');
@@ -127,25 +130,25 @@ require_once 'includes/header.inc.php';
 	<tbody>
 		<tr>
 			<td>Number Of Jobs:</td>
-			<td><?php echo $stats->get_num_jobs($selected_month,$selected_month,true); ?></td>
+			<td><?php echo $stats->get_num_jobs($selected_month,$selected_month_end,true); ?></td>
 		</tr>
 		<tr>
 			<td>Job Total Cost:</td>
-			<td>$<?php echo $stats->get_job_total_cost($selected_month,$selected_month,true); ?>
+			<td>$<?php echo $stats->get_job_total_cost($selected_month,$selected_month_end,true); ?>
 			</td>
 		</tr>
 		<tr>
 			<td>Job Billed Cost:</td>
-			<td>$<?php echo $stats->get_job_total_billed_cost($selected_month,$selected_month,true); ?>
+			<td>$<?php echo $stats->get_job_total_billed_cost($selected_month,$selected_month_end,true); ?>
 			</td>
 		</tr>
 	        <tr>
 	                <td>Data Total Cost:</td>
-        	        <td>$<?php echo data_stats::get_total_cost($db,$selected_month,$selected_month,true); ?></td>
+        	        <td>$<?php echo data_stats::get_total_cost($db,$selected_month,$selected_month_end,true); ?></td>
 	        </tr>
         	<tr>    
 			<td>Data Billed Cost:</td>
-                	<td>$<?php echo data_stats::get_billed_cost($db,$selected_month,$selected_month,true); ?></td>
+                	<td>$<?php echo data_stats::get_billed_cost($db,$selected_month,$selected_month_end,true); ?></td>
 	        </tr>
 		<tr>
 			<td colspan='2'><div class='col-sm-3'><?php echo $graph_form; ?></div></td>
