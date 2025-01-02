@@ -71,8 +71,9 @@ if (count($user_list)) {
 }
 
 //////Year////////
+$min_year = job_bill::get_minimal_year($db);
 $year_html = "";
-for ($i=2007; $i<=date("Y");$i++) {
+for ($i=$min_year; $i<=date("Y");$i++) {
 	if ($i == $year) {
 		$year_html .= "<option value='$i' selected='true'>$i</option>";
 	}

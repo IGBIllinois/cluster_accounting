@@ -143,8 +143,8 @@ class data_functions {
 		$sql = "SELECT :fbs_areacode as 'AreaCode',:fbs_facilitycode as 'FacilityCode', ";
 		$sql .= "DATE_FORMAT(data_bill.data_bill_date,'%c/%e/%Y') as 'UsageDate,' , ";
 		$sql .= "'' as 'LabCode', ";
-		$sql .= "IF(users.user_supervisor <> 0,CONCAT(supervisors.user_lastname,', ',supervisors.user_firstname),CONCAT(users.user_lastname,', ',users.user_firstname)) AS PI_Name, ";
-		$sql .= "CONCAT(users.user_firstname,' ',users.user_lastname) as 'RequestedBy', ";
+		$sql .= "IF(users.user_supervisor <> 0,supervisors.user_name,users.user_name) AS PI_Name, ";
+		$sql .= "CONCAT(users.user_firstname,'',users.user_lastname) as 'RequestedBy', ";
 		$sql .= ":fbs_data_skucode as 'SKU_Code', ";
 		$sql .= "'' AS UsageType,'' AS Service,'' AS TimeUse, ";
 		$sql .= "CONCAT('Biocluster Data - ',SUBSTRING_INDEX(data_dir.data_dir_path,'/',-1)) as 'PrintableComments', ";
