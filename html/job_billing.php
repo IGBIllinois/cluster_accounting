@@ -6,11 +6,15 @@ if (!$login_user->is_admin()) {
 }
 
 $selected_month = new DateTime(date('Y-m-01 00:00:00'));
+$end_time = date("Y-m-t H:i:s");
+$selected_month_end = DateTime::createFromFormat("Y-m-d H:i:s",$end_time);
 
 if (isset($_GET['year']) && isset($_GET['month'])) {
 	$year = $_GET['year'];
 	$month = $_GET['month'];
 	$selected_month = DateTime::createFromFormat("Y-m-d H:i:s",$year . "-" . $month . "-01 00:00:00");
+	$end_time = date("Y-m-t H:i:s",strtotime($year . "-" . $month . "-01 23:59:59"));
+        $selected_month_end = DateTime::createFromFormat("Y-m-d H:i:s",$end_time);
 }
 
 $month_name = $selected_month->format('F');
@@ -113,12 +117,12 @@ require_once 'includes/header.inc.php';
 	<?php echo $jobs_html; ?>
 	<tr>
 		<td>Monthly Total Cost:</td>
-		<td colspan='7'>$<?php echo $stats->get_job_total_cost($selected_month,$selected_month,true); ?>
+		<td colspan='7'>$<?php echo $stats->get_job_total_cost($selected_month,$selected_month_end,true); ?>
 		</td>
 	</tr>
 	<tr>
-		<td>Monthly Billed  Cost:</td>
-		<td colspan='7'>$<?php echo $stats->get_job_total_billed_cost($selected_month,$selected_month,true); ?>
+		<td>Monthly Billed Cost:</td>
+		<td colspan='7'>$<?php echo $stats->get_job_total_billed_cost($selected_month,$selected_month_end,true); ?>
 		</td>
 	</tr>
 	</tbody>

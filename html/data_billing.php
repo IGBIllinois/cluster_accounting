@@ -5,11 +5,16 @@ if (!$login_user->is_admin()) {
         exit;
 }
 $selected_month = new DateTime(date('Y-m-01 00:00:00'));
+$end_time = date("Y-m-t H:i:s");
+$selected_month_end = DateTime::createFromFormat("Y-m-d H:i:s",$end_time);
 
 if (isset($_GET['year']) && isset($_GET['month'])) {
         $year = $_GET['year'];
         $month = $_GET['month'];
         $selected_month = DateTime::createFromFormat("Y-m-d H:i:s",$year . "-" . $month . "-01 00:00:00");
+	$end_time = date("Y-m-t H:i:s",strtotime($year . "-" . $month . "-01 23:59:59"));
+        $selected_month_end = DateTime::createFromFormat("Y-m-d H:i:s",$end_time);
+
 }
 
 $month_name = $selected_month->format('F');
@@ -118,12 +123,12 @@ require_once 'includes/header.inc.php';
 
         <tr>
                 <td>Total Cost:</td>
-                <td colspan='7'>$<?php echo data_stats::get_total_cost($db,$selected_month,$selected_month,1); ?>
+                <td colspan='7'>$<?php echo data_stats::get_total_cost($db,$selected_month,$selected_month_end,1); ?>
                 </td>
 	</tr>
 	<tr>
 		<td>Billed Cost:</td>
-		<td colspan='7'>$<?php echo data_stats::get_billed_cost($db,$selected_month,$selected_month,1); ?>
+		<td colspan='7'>$<?php echo data_stats::get_billed_cost($db,$selected_month,$selected_month_end,1); ?>
         </tr>
 
 </table>
