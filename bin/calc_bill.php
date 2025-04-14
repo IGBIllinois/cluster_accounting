@@ -110,6 +110,7 @@ if ($calc_data) {
 			$sum += $usage['data_usage_bytes'];
 		}
 		$average = round($sum / $count);
+		$result = array('MESSAGE'=>'');
 		if (!$dry_run) {
 			$result = $data_dir->add_data_bill($month,$year,$average);
 		}

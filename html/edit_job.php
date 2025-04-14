@@ -191,6 +191,7 @@ require_once 'includes/header.inc.php';
 	</div>
 </div>
 </form>
+<br>
 <?php echo functions::output_message($messages); ?>
 </div>
 <?php 

@@ -52,6 +52,35 @@ class data_functions {
 
 
 	}
+
+	public static function get_all_data_usage($db,$month,$year) {
+		$sql = "SELECT data_dir.*, ";
+		$sql .= "projects.project_name, projects.project_id ";
+		$sql .= "FROM data_usage ";
+		$sql .= "LEFT JOIN data_dir ON data_dir.data_dir_id=data_usage.data_usage_data_dir_id ";
+		$sql .= "LEFT JOIN projects ON projects.project_id=data_usage.data_usage_project_id ";
+		$sql .= "WHERE YEAR(data_usage.data_usage_time)=:year ";
+                $sql .= "AND MONTH(data_usage.data_usage_time)=:month ";
+		$sql .= "GROUP BY data_usage.data_usage_data_dir_id ";
+		$sql .= "ORDER BY data_dir.data_dir_path ASC ";
+		$parameters = array(
+                        ':month'=>$month,
+                        ':year'=>$year,
+                );
+		$result = $db->query($sql,$parameters);
+
+                for ($i=0;$i<count($result);$i++) {
+                        if (is_dir($result[$i]['data_dir_path'])) {
+                                $result[$i]['dir_exists'] = true;
+                        }
+                        else {
+                                $result[$i]['dir_exists'] = false;
+                        }
+                }
+                return $result;
+
+
+	}
 	public static function get_num_directories($db,$default = 1) {
 		$sql = "SELECT count(1) as count FROM data_dir ";
 		$sql .= "WHERE data_dir_enabled='1' ";
