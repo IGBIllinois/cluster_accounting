@@ -135,9 +135,7 @@ CREATE TABLE data_dir (
 
 CREATE TABLE data_usage (
 	data_usage_id INT NOT NULL AUTO_INCREMENT,
-	data_usage_project_id INT REFERENCES projects(project_id),
 	data_usage_data_dir_id INT REFERENCES data_dir(data_dir_id),
-	data_usage_cfop_id INT REFERENCES cfops(cfop_id),
 	data_usage_bytes BIGINT UNSIGNED,
 	data_usage_files BIGINT UNSIGNED,
 	data_usage_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -214,11 +212,8 @@ SELECT data_usage.data_usage_id AS id,
 data_usage.data_usage_bytes AS bytes,
 data_usage.data_usage_time AS time,
 projects.project_name AS project_name,
-data_dir.data_dir_path AS path,
-cfops.cfop_value AS `cfop`,
-`cfops`.`cfop_activity` AS cfop_activity 
-FROM data_usage 
-LEFT JOIN projects on projects.project_id = data_usage.data_usage_project_id 
+data_dir.data_dir_path AS path
+FROM data_usage
 LEFT JOIN data_dir on data_dir.data_dir_id = data_usage.data_usage_data_dir_id 
-LEFT JOIN cfops on cfops.cfop_id = data_usage.data_usage_cfop_id;
+LEFT JOIN projects on projects.project_id = data_dir.data_dir_project_id 
 
