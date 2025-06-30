@@ -58,7 +58,7 @@ class data_functions {
 		$sql .= "projects.project_name, projects.project_id ";
 		$sql .= "FROM data_usage ";
 		$sql .= "LEFT JOIN data_dir ON data_dir.data_dir_id=data_usage.data_usage_data_dir_id ";
-		$sql .= "LEFT JOIN projects ON projects.project_id=data_usage.data_usage_project_id ";
+		$sql .= "LEFT JOIN projects ON projects.project_id=data_dir.data_dir_project_id ";
 		$sql .= "WHERE YEAR(data_usage.data_usage_time)=:year ";
                 $sql .= "AND MONTH(data_usage.data_usage_time)=:month ";
 		$sql .= "GROUP BY data_usage.data_usage_data_dir_id ";

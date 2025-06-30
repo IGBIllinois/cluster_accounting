@@ -275,11 +275,11 @@ class data_dir {
 			':bill_date'=>$bill_date
 		);
 		$check_exists = $this->db->query($sql,$parameters);
-		$result = true;
+		$result = false;
 		$insert_id = 0;
 		if ($check_exists[0]['count']) {
 			$result = false;
-			$message = "Data Bill: Directory: " . $this->get_directory() . " Bill already calculated";
+			$message = "Data Bill: Date: " . $month . "-" . $year . ": Directory: " . $this->get_directory() . " Bill already calculated";
 		}
 		else {
 	                $project = new project($this->db,$this->get_project_id());
@@ -289,9 +289,10 @@ class data_dir {
 			if ($project->get_billtype() != project::BILLTYPE_NO_BILL) {
 				$billed_cost = $total_cost;
 			}
+			$current_date = date('Y-m-d h:i:s'); 
         	        $insert_array = array('data_bill_data_dir_id'=>$this->get_data_dir_id(),
                 	                'data_bill_project_id'=>$project->get_project_id(),
-                        	        'data_bill_cfop_id'=>$project->get_cfop_id(),
+                        	        'data_bill_cfop_id'=>$project->get_cfop_id_by_date($current_date),
                                 	'data_bill_data_cost_id'=>$data_cost->get_id(),
 	                                'data_bill_avg_bytes'=>$bytes,
 					'data_bill_total_cost'=>$total_cost,
@@ -299,7 +300,14 @@ class data_dir {
 					'data_bill_date'=>$bill_date
 	                                );
         	        $insert_id = $this->db->build_insert('data_bill',$insert_array);
-			$message = "Data Bill: Directory: " . $this->get_directory() . " Successfully added data bill";
+			if ($insert_id) {
+				$result = true;
+				$message = "Data Bill: Date: " . $month . "-" . $year . ": Directory: " . $this->get_directory() . " Successfully added data bill";
+			}
+			else {
+				$result = false;
+				$message = "Data Bill: Date: " . $month . "-" . $year . ": Directory: " . $this->get_directory() . " Failed adding data bill";
+			}
 		}
 		return array('RESULT'=>$result,'MESSAGE'=>$message,'id'=>$insert_id);
 	}

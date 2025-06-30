@@ -36,7 +36,6 @@ class job_functions {
 	public static function get_all_jobs_by_month($db,$month,$year) {
 		$sql = "SELECT users.user_id, users.user_name, ";
                 $sql .= "projects.project_id, ";
-                $sql .= "cfops.cfop_id, ";
                 $sql .= "queues.queue_id, ";
                 $sql .= "queue_cost.queue_cost_id, ";
                 $sql .= "COUNT(1) as num_jobs, ";
@@ -51,7 +50,6 @@ class job_functions {
                 $sql .= "LEFT JOIN queue_cost ON queue_cost.queue_cost_id=jobs.job_queue_cost_id ";
                 $sql .= "LEFT JOIN queues ON queues.queue_id=jobs.job_queue_id ";
                 $sql .= "WHERE (YEAR(jobs.job_end_time)=:year AND month(jobs.job_end_time)=:month) ";
-		$sql .= "AND MAX(cfops.cfop_time_created) ";
                 $sql .= "GROUP BY ";
                 $sql .= "queue_cost.queue_cost_id, ";
                 $sql .= "jobs.job_project_id, ";

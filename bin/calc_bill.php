@@ -100,7 +100,7 @@ $db = new \IGBIllinois\db(settings::get_mysql_host(),
 $log = new \IGBIllinois\log(settings::get_log_enabled(),settings::get_logfile());
 
 if ($calc_data) {
-	$directories = data_functions::get_all_directories($db);
+	$directories = data_functions::get_all_data_usage($db,$month,$year);
 	foreach ($directories as $directory) {
 		$data_dir = new data_dir($db,$directory['data_dir_id']);
 		$data_usage = $data_dir->get_usage($month,$year);
@@ -110,11 +110,16 @@ if ($calc_data) {
 			$sum += $usage['data_usage_bytes'];
 		}
 		$average = round($sum / $count);
-		$result = array('MESSAGE'=>'');
+		$result = array('RESULT'=>true,'MESSAGE'=>'');
 		if (!$dry_run) {
 			$result = $data_dir->add_data_bill($month,$year,$average);
 		}
-		$log->send_log($result['MESSAGE']);
+		if ($result['RESULT']) {
+			$log->send_log($result['MESSAGE']);
+		}
+		else {
+			$log->send_log($result['MESSAGE'],$log::ERROR);
+		}
 	}
 }
 
@@ -123,7 +128,12 @@ if ($calc_jobs) {
 	foreach ($jobs_bill as $job_info) {
 		if (!$dry_run) {
 			$result = job_bill::add_job_bill($db,$job_info);
-			$log->send_log($result['MESSAGE']);
+			if ($result['RESULT']) {
+				$log->send_log($result['MESSAGE']);
+			}
+			else {
+				$log->send_log($result['MESSAGE'],$log::ERROR);
+			}
 		}
 	}
 }

@@ -36,33 +36,32 @@ class job_bill {
 
 		$date = strtotime($job_info['year'] . "-" . $job_info['month'] . "-01");
 		$bill_date = date("Y-m-t 00:00:00",$date);
-
+		$year = $job_info['year'];
+		$month = $job_info['month'];
 		$project = new project($db,$job_info['project_id']);
-
+		$current_date = date('Y-m-d h:i:s');
 		$sql = "SELECT count(1) as count FROM job_bill ";
 		$sql .= "WHERE job_bill_user_id=:user_id "; 
 		$sql .= "AND job_bill_project_id=:project_id ";
-		$sql .= "AND job_bill_cfop_id=:cfop_id ";
 		$sql .= "AND job_bill_queue_id=:queue_id ";
 		$sql .= "AND job_bill_date=:date ";
 		$sql .= "LIMIT 1";
 		$parameters = array(':user_id'=>$job_info['user_id'],
                         ':project_id'=>$job_info['project_id'],
-                        ':cfop_id'=>$project->get_cfop_id(),
                         ':queue_id'=>$job_info['queue_id'],
                         ':date'=>$bill_date,
                 );
 		$check_exists = $db->query($sql,$parameters);
-		$result = true;
+		$result = false;
 		if ($check_exists[0]['count']) {
 			$result = false;
-			$message = "Job Bill: Job Bill already calculated";
+			$message = "Job Bill: Date: " . $month . "-" . $year . ": User: " . $job_info['user_name'] . " : Job Bill already calculated";
 		}
 		else {
 			$insert_array = array(
 				'job_bill_user_id'=>$job_info['user_id'],
 				'job_bill_project_id'=>$job_info['project_id'],
-				'job_bill_cfop_id'=>$project->get_cfop_id(),
+				'job_bill_cfop_id'=>$project->get_cfop_id_by_date($current_date),
 				'job_bill_queue_id'=>$job_info['queue_id'],
 				'job_bill_queue_cost_id'=>$job_info['queue_cost_id'],
 				'job_bill_date'=>$bill_date,
@@ -71,7 +70,14 @@ class job_bill {
 				'job_bill_billed_cost'=>$job_info['billed_cost']
 			);
 			$insert_id = $db->build_insert('job_bill',$insert_array);
-			$message = "Job Bill: " . $job_info['user_name'] . " : Job Bill successfully added";
+			if ($insert_id) {
+				$result = true;
+				$message = "Job Bill: Date: " . $month . "-" . $year . ": User: " . $job_info['user_name'] . " : Job Bill successfully added";
+			}
+			else {
+				$result = false;
+				$message = "Job Bill: Date: " . $month . "-" . $year . ": User: " . $job_info['user_name'] . " : Error adding Job Bill";
+			}
 		}
 		return array('RESULT'=>$result,'MESSAGE'=>$message);
 	}
