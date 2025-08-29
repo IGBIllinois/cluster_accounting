@@ -1,0 +1,6 @@
+ALTER TABLE projects ADD CONSTRAINT projectname UNIQUE(project_name);
+ALTER TABLE queues ADD CONSTRAINT queuename UNIQUE(queue_name);
+ALTER TABLE queues MODIFY COLUMN queue_name VARCHAR(50) NOT NULL;
+ALTER TABLE queues MODIFY COLUMN queue_ldap_group VARCHAR(50) NOT NULL;
+ALTER TABLE data_dir MODIFY COLUMN data_dir_path VARCHAR(255) NOT NULL;
+

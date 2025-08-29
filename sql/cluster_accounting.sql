@@ -20,6 +20,7 @@ CREATE TABLE projects (
 	project_time_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	project_default BOOLEAN DEFAULT 0,
 	project_enabled BOOLEAN DEFAULT 1,
+	CONSTRAINT projectname UNIQUE(project_name),
 	PRIMARY KEY(project_id)
 );
 
@@ -37,11 +38,12 @@ CREATE TABLE cfops(
 
 CREATE TABLE queues (
 	queue_id INT NOT NULL AUTO_INCREMENT,
-	queue_name VARCHAR(50),
-	queue_ldap_group VARCHAR(50),
+	queue_name VARCHAR(50) NOT NULL,
+	queue_ldap_group VARCHAR(50) NOT NULL,
 	queue_description VARCHAR(100),
 	queue_time_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	queue_enabled BOOLEAN DEFAULT TRUE,
+	CONSTRAINT queuename UNIQUE(queue_name),
 	PRIMARY KEY(queue_id)
 );
 
@@ -126,7 +128,7 @@ CREATE TABLE data_cost(
 CREATE TABLE data_dir (
         data_dir_id INT NOT NULL AUTO_INCREMENT,
         data_dir_project_id INT REFERENCES projects(project_id),
-        data_dir_path VARCHAR(255),
+        data_dir_path VARCHAR(255) NOT NULL,
         data_dir_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         data_dir_enabled BOOLEAN DEFAULT TRUE,
         data_dir_default BOOLEAN DEFAULT FALSE,
