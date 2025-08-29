@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0dfb691882a988ed42748d5f8e467f77",
+    "content-hash": "74c72f501ecc3d17483d517fe48d563b",
     "packages": [
         {
             "name": "amenadiel/jpgraph",
@@ -470,16 +470,16 @@
         },
         {
             "name": "igbillinois/igbillinois-php",
-            "version": "dev-main",
+            "version": "1.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/IGBIllinois/IGBIllinois-php.git",
-                "reference": "4fc5f6251f20d0f5b0685875e04da598e6148df3"
+                "reference": "9c122865343d04198ee6172e2037ba310acc04ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/IGBIllinois/IGBIllinois-php/zipball/4fc5f6251f20d0f5b0685875e04da598e6148df3",
-                "reference": "4fc5f6251f20d0f5b0685875e04da598e6148df3",
+                "url": "https://api.github.com/repos/IGBIllinois/IGBIllinois-php/zipball/9c122865343d04198ee6172e2037ba310acc04ef",
+                "reference": "9c122865343d04198ee6172e2037ba310acc04ef",
                 "shasum": ""
             },
             "require": {
@@ -499,7 +499,6 @@
             "require-dev": {
                 "phpdocumentor/phpdocumentor": "v3.0.0"
             },
-            "default-branch": true,
             "type": "project",
             "autoload": {
                 "classmap": [
@@ -523,10 +522,10 @@
                 "template"
             ],
             "support": {
-                "source": "https://github.com/IGBIllinois/IGBIllinois-php/tree/main",
+                "source": "https://github.com/IGBIllinois/IGBIllinois-php/tree/1.4.6",
                 "issues": "https://github.com/IGBIllinois/IGBIllinois-php/issues"
             },
-            "time": "2025-08-29T15:44:03+00:00"
+            "time": "2025-08-29T15:58:00+00:00"
         },
         {
             "name": "maennchen/zipstream-php",
@@ -2754,9 +2753,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "igbillinois/igbillinois-php": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
