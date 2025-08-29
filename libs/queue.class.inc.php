@@ -72,17 +72,45 @@ class queue {
 			$errors = true;
 			$message .= "<div class='alert alert-danger'>Please enter valid GPU cost.</div>";
 		}
+		if (self::get_queue_exists($name)) {
+			$errors = true;
+			$message .= "<div class='alert alert-danger'>Queue Name already exists.</div>";
+		}
 		if ($errors == 0) {
-			$queue_array = array('queue_name'=>$name,
-					'queue_description'=>$description,
-					'queue_ldap_group'=>$ldap_group);
+			$result = false;
+			$public = 0;
+			if ($ldap_group == "") {
+				$public = 1;
+			}
+			try {
+				$sql = "INSERT INTO queues(queue_name,queue_description,queue_ldap_group,queue_public) ";
+				$sql .= "VALUES(:queue_name,:queue_description,:queue_ldap_group,:queue_public) ";
+				$sql .= "ON DUPLICATE KEY UPDATE queue_description=:queue_description,";
+				$sql .= "queue_ldap_group=:queue_ldap_group,queue_enabled='1',queue_public=:queue_public";
+				$parameters = array(':queue_name'=>$name,
+                                        ':queue_description'=>$description,
+                                        ':queue_ldap_group'=>$ldap_group,
+					':queue_public'=>$public);
+				$this->id = $this->db->insert_query($sql,$parameters);
+				if ($this->id) {
+					$this->update_cost($cpu,$mem,$gpu);
+					$message = "<div class='alert alert-success'>Queue " . $name . " successfully created.</div>";
+					$result = true;
+				}
+			}
+			catch(\PDOException $e) {
+                        	$message = "<div class='alert alert-danger'>" . $e->getMessage() . "</div>";
 
-			$this->id = $this->db->build_insert("queues",$queue_array);
-			$this->update_cost($cpu,$mem,$gpu);
-			$message = "<div class='alert alert-success'>Queue " . $name . " successfully created.</div>";
-			return array ('RESULT'=>True,
-					'ID'=>$this->get_queue_id(),
-					'MESSAGE'=>$message);
+                	}
+			if ($result) {
+				return array ('RESULT'=>$result,
+                                        'ID'=>$this->get_queue_id(),
+                                        'MESSAGE'=>$message);
+			}
+			else {
+				return array('RESULT'=>$result,
+                                        'MESSAGE'=>$message);
+			}
 		}
 		else {
 			return array('RESULT'=>False,
@@ -185,11 +213,17 @@ class queue {
 					'MESSAGE'=>$message);
 		}
 		else {
+			try {
 			$insert_array = array('queue_cost_queue_id'=>$this->get_queue_id(),
 					'queue_cost_mem'=>$mem_cost,
 					'queue_cost_cpu'=>$cpu_cost,
 					'queue_cost_gpu'=>$gpu_cost);
 			$result = $this->db->build_insert("queue_cost",$insert_array);
+			}
+			catch (\PDOException $e) {
+				throw $e;
+				return array('RESULT'=>false);
+			}
 			if ($result) {
 				return array('RESULT'=>true);
 			}
@@ -236,6 +270,7 @@ class queue {
 
 	}
 
+
 	public function calculate_cost($cpu_time,$wallclock_time,$slots,$mem,$start_time,$end_time,$num_gpu) {
 		if ($start_time == "0000-00-00 00:00:00") {
 			return 0;
@@ -256,6 +291,17 @@ class queue {
 		$sql .= "ORDER BY queue_cost_time_created ASC ";
 		$parameters = array(':queue_id'=>$this->get_queue_id());
 		return $this->db->query($sql,$parameters);
+
+	}
+
+	public function get_queue_exists($queue_name) {
+		$sql = "SELECT count(1) FROM queues WHERE queue_name=:queue_name AND queue_enabled=:queue_enabled";
+		$parameters = array(':queue_name'=>$queue_name,':queue_enabled'=>1);
+		$result = $this->db->query($sql,$parameters);
+		if (count($result)) {
+			return true;
+		}
+		return false;
 
 	}
 	////////////////Private Functions//////////
