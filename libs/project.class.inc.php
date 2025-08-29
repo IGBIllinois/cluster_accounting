@@ -48,7 +48,11 @@ class project {
 			$error = true;
 			$message .= "<div class='alert alert-danger'>Please enter a valid project name.</div>";
 		}
+		if ($this->project_exists($name,$default)) {
+			$error = true;
+			$message .= "<div class='alert alert-danger'>Project " . $name . " already exists</div>";
 
+		}
 		if (!$this->verify_ldap_group($ldap,$ldap_group)) {
 			$error = true;
 			$message .= "<div class='alert alert-danger'>Please enter a valid LDAP group.</div>";
@@ -82,17 +86,33 @@ class project {
 					'MESSAGE'=>$message);
 		}
 		else {
-			$project_array = array('project_owner'=>$owner_id,
-					'project_name'=>$name,
-					'project_ldap_group'=>$ldap_group,
-					'project_description'=>$description,
-					'project_default'=>$default
-				);
-			$this->id = $this->db->build_insert("projects",$project_array);
-			$this->set_cfop($cfop_billtype,$cfop,$activity,$hide_cfop,$custom_bill_description);
-			return array('RESULT'=>true,
-					'MESSAGE'=>"<div class='alert alert-success'>Project successfully created.</div>",
-					'project_id'=>$this->id);
+			try {
+				$sql = "INSERT INTO projects(project_owner,project_name,project_ldap_group,project_description,project_default) ";
+				$sql .= "VALUES(:project_owner,:project_name,:project_ldap_group,:project_description,:project_default) ";
+				$sql .= "ON DUPLICATE KEY UPDATE project_owner=:project_owner,project_ldap_group=:project_ldap_group,project_description=:project_description, ";
+				$sql .= "project_default=:project_default,project_enabled=:project_enabled";
+				$parameters = array(':project_owner'=>$owner_id,
+                                        ':project_name'=>$name,
+                                        ':project_ldap_group'=>$ldap_group,
+                                        ':project_description'=>$description,
+                                        ':project_default'=>$default,
+					':project_enabled'=>1
+                                );
+ 				$this->id = $this->db->insert_query($sql,$parameters);
+				if ($this->id) {
+					$this->set_cfop($cfop_billtype,$cfop,$activity,$hide_cfop,$custom_bill_description);
+					$message = "<div class='alert alert-success'>Project " . $name . " successfully created.</div>";
+					return array('RESULT'=>true,
+						'MESSAGE'=>$message,
+						'project_id'=>$this->id);
+				}
+			}
+			catch (\PDOException $e) {
+				$message = "<div class='alert alert-danger'>" . $e->getMessage() . "</div>";
+				return array('RESULT'=>false,
+					'MESSAGE'=>$message);
+				
+			}
 		}
 
 	}
@@ -333,6 +353,27 @@ class project {
 	public static function verify_project_name($name) {
 		if (!($name == "") && (preg_match('/^[-_a-z0-9]+$/',$name))) {
 			return true;
+		}
+		return false;
+
+	}
+
+	public function project_exists($name,$default=0) {
+		try {
+			$sql = "SELECT count(1) FROM projects ";
+			$sql .= "WHERE project_name=:project_name ";
+			$sql .= "AND project_default=:project_default ";
+			$sql .= "AND project_enabled=:project_enabled ";
+			$parameters = array(':project_name'=>$name,
+				':project_default'=>$default,
+				':project_enabled'=>1);
+			$result = $this->db->query($sql,$parameters);
+			if (count($result)) {
+				return true;
+			}
+		}
+		catch (\PDOException $e) {
+			throw e;
 		}
 		return false;
 
