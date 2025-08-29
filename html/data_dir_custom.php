@@ -37,9 +37,7 @@ require_once 'includes/header.inc.php';
 		<?php echo $dir_html; ?>
 	</tbody>
 </table>
-<?php 
-	echo $pages_html;
+<?php echo $pages_html; ?>
+</div>
 
-
-require_once 'includes/footer.inc.php';
-?>
+<?php require_once 'includes/footer.inc.php'; ?>

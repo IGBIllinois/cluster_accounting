@@ -77,7 +77,7 @@ require_once 'includes/header.inc.php';
 if (isset($result['MESSAGE'])) { echo $result['MESSAGE']; }
 ?>
 </div>
-
+</div>
 <?php
 
 require_once 'includes/footer.inc.php';

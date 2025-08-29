@@ -43,7 +43,6 @@ require_once 'includes/header.inc.php';
 </table>
 </div>
 </div>
-<?php
+</div>
 
-require_once 'includes/footer.inc.php';
-?>
+<?php require_once 'includes/footer.inc.php'; ?>

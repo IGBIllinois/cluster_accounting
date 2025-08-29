@@ -48,7 +48,6 @@ if (count($exec_hosts)) {
 else {
 	$exec_host_html .= "<tr><td>No Data</td></tr>";
 }
-$exec_host_html .= "</table>";
 
 require_once 'includes/header.inc.php';
 ?>
@@ -86,7 +85,7 @@ require_once 'includes/header.inc.php';
 	<tr>
                 <td>Job State:</td>
                 <td><?php echo $job->get_job_state(); ?></td>
-        </tr
+        </tr>
 	<tr>
 		<td>Exit Status:</td>
 		<td><?php echo $job->get_exit_status(); ?></td>
@@ -154,7 +153,7 @@ require_once 'includes/header.inc.php';
 	<tr>
 		<td>Cost:</td>
 		<?php if ($job->get_total_cost() < 0.01) { 
-			echo "<td>$ < 0.01</td>";
+			echo "<td>$ &lt; 0.01</td>";
 		}
 		else { echo "<td>$" . $job->get_formated_total_cost() . "</td>";
 		}
@@ -178,7 +177,7 @@ require_once 'includes/header.inc.php';
 <tbody>
 <?php echo $exec_host_html; ?>
 </tbody>
-
+</table>
 </div>
 </div>
 <div class='row'>

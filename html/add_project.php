@@ -200,6 +200,7 @@ if (isset($result['MESSAGE'])) {
 }
 ?>
 </div>
+</div>
 <script type="text/javascript">
 $(document).ready(function() {
         $('#owner_input').select2({

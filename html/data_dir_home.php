@@ -48,5 +48,7 @@ require_once 'includes/header.inc.php';
 
 <?php
 if (isset($message)) { echo $message; }
-require_once 'includes/footer.inc.php';
 ?>
+</div>
+
+<?php require_once 'includes/footer.inc.php'; ?>

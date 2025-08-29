@@ -69,22 +69,6 @@ $graph_form .= "</select>";
 $graph_image = "<img src='graph.php?" . http_build_query($get_array) . "'>";
 
 
-$graph_form = "<form class='d-flex flex-row align-items-center flex-wrap' name='select_graph' id='select_graph' method='post' action='" . $_SERVER['PHP_SELF'];
-$graph_form .= "?year=" . $selected_year->format("Y") . "'>";
-$graph_form .= "<select class='form-select' name='graph_type' onChange='document.select_graph.submit();'>";
-
-foreach ($graph_type_array as $graph) {
-        $graph_form .= "<option value='" . $graph['type'] . "' ";
-        if ($graph_type == $graph['type']) {
-                $graph_form .= "selected='selected'";
-        }
-        $graph_form .= ">" . $graph['title'] . "</option>\n";
-
-
-}
-
-$graph_form .= "</select>";
-
 //list of users to select from
 $user_list = array();
 if ($login_user->is_supervisor()) {

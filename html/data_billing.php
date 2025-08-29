@@ -150,7 +150,7 @@ require_once 'includes/header.inc.php';
 		</div>
 	</div>
 </form>
-
+</div>
 <?php
 
 require_once 'includes/footer.inc.php';

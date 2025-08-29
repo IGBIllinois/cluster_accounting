@@ -14,6 +14,7 @@ require_once 'includes/header.inc.php';
 <hr>
 <textarea class='form-control' rows='50' readonly><?php echo $log_contents; ?></textarea>
 
+</div>
 <?php
 
 require_once 'includes/footer.inc.php';

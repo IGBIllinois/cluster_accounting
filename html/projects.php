@@ -100,6 +100,7 @@ require_once 'includes/header.inc.php';
 		</div>
 
 </div>
+</div>
 </form>
 <p>
 <div class='row'>
@@ -138,7 +139,7 @@ require_once 'includes/header.inc.php';
 	</div>
 
 </form>
-
+</div>
 <div class='row'>
 <?php
 if (isset($result['MESSAGE'])) {
