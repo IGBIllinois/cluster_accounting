@@ -130,14 +130,16 @@ class job {
 				$job_data['job_project_id'] = $this->project->get_project_id();
 				$job_data['job_queue_id'] = $this->queue->get_queue_id();
 				$job_data['job_queue_cost_id'] = $this->queue->get_queue_cost_id();
-				$job_id = $this->db->build_insert("jobs",$job_data);
-				if ($job_id) {
-					return array('RESULT'=>true,
-						'job_id'=>$job_id,'MESSAGE'=>"Job Number: " . $job_number . " - User: " . $job_data['job_user'] . " - Successfully added to database");
+				try {
+					$job_id = $this->db->build_insert("jobs",$job_data);
+					if ($job_id) {
+						return array('RESULT'=>true,
+							'job_id'=>$job_id,'MESSAGE'=>"Job Number: " . $job_number . " - User: " . $job_data['job_user'] . " - Successfully added to database");
+					}
 				}
-				else {
+				catch (\PDOException $e) {
 					return array('RESULT'=>0,
-						'MESSAGE'=>'ERROR: Error adding job ' . $job_number);
+                                                'MESSAGE'=>'ERROR: Error adding job ' . $job_number . ": " . $e->getMessage());
 				}
 				
 			}
