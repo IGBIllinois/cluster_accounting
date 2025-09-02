@@ -46,7 +46,6 @@ class job_functions {
                 $sql .= "FROM jobs ";
                 $sql .= "LEFT JOIN users ON users.user_id=jobs.job_user_id ";
                 $sql .= "LEFT JOIN projects ON projects.project_id=jobs.job_project_id ";
-                $sql .= "LEFT JOIN cfops ON cfops.cfop_project_id=projects.project_id ";
                 $sql .= "LEFT JOIN queue_cost ON queue_cost.queue_cost_id=jobs.job_queue_cost_id ";
                 $sql .= "LEFT JOIN queues ON queues.queue_id=jobs.job_queue_id ";
                 $sql .= "WHERE (YEAR(jobs.job_end_time)=:year AND month(jobs.job_end_time)=:month) ";
@@ -63,7 +62,7 @@ class job_functions {
 	                $result = $db->query($sql,$parameters);
 		}
 		catch(\PDOException $e) {
-			echo $e->getMessage();
+			throw $e;
 		}
 		return $result;
 
