@@ -27,9 +27,7 @@ define("LDAP_BIND_PASS","");
 define("LDAP_SSL",false);
 define("LDAP_TLS",false);
 define("LDAP_PORT",389);
-define("JOB_SCHEDULER","");
-define("TORQUE_ACCOUNTING","/var/spool/torque/server_priv/accounting/");
-define("TORQUE_JOBS_LOG","/var/spool/torque/job_logs/");
+define("JOB_SCHEDULER","SLURM");
 
 /////////Email Settings///////////
 define("SMTP_HOST","localhost");

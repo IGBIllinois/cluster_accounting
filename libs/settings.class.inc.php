@@ -168,22 +168,11 @@ class settings {
 	public static function get_reserve_memory_factor() {
 		return RESERVE_MEMORY_FACTOR;
 	}
-	public static function get_torque_job_dir() {
-		return TORQUE_JOBS_LOG;
-
-	}
 	
 	public static function get_admin_email() {
 		return ADMIN_EMAIL;
 	}
 	
-	public static function get_torque_accounting_dir() {
-		return TORQUE_ACCOUNTING;
-	}
-	public static function get_torque_job_logs_dir() {
-		return TORQUE_JOBS_LOG;
-	}
-
 
 	public static function get_job_scheduler() {
 		return JOB_SCHEDULER;
