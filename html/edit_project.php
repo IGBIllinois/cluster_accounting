@@ -8,8 +8,12 @@ $message = "";
 if (isset($_POST['delete_project'])) {
 	$project_id = $_POST['project_id'];
 	$project = new project($db,$project_id);
-	$project->disable();
-	header('Location: projects.php');
+	$result = $project->disable();
+	if ($result['RESULT']) {
+		$log->send_log($result['MESSAGE']);
+		header('Location: projects.php');	
+	}
+	$message = $result['MESSAGE'];
 }
 elseif (isset($_POST['update_bill'])) {
 	$project_id = $_POST['project_id'];
@@ -292,7 +296,7 @@ require_once 'includes/header.inc.php';
 	<div class='col-sm-8'>
 		<input type='hidden' name='cfop_billtype' id='cfop_billtype' value='<?php if (isset($_POST['cfop_billtype'])) { echo $_POST['cfop_billtype']; } ?>'>
 		<input class='btn btn-primary' type='submit' name='edit_project' value='Edit Project'>
-		<?php if (!$project->get_default()) { echo "<input class='btn btn-danger' type='submit' name='delete_project' value='Delete Project'>"; } ?>
+		<?php if (!$project->get_default()) { echo "<input class='btn btn-danger' type='submit' name='delete_project' value='Delete Project' onClick='return confirm_delete_project()'>"; } ?>
 	</div>
 </div>
 </form>

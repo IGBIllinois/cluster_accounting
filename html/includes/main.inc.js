@@ -11,11 +11,15 @@ function confirm_delete_queue() {
 	return confirm("Are you sure you want to delete this queue?");
 }
 function confirm_delete_dir() {
-	return confirm("Are you sure want to remove this directory from the accounting software?");
+	return confirm("Are you sure you want to remove this directory from the accounting software?");
 }
 
 function confirm_edit_project_bill() {
 	return confirm("Are you sure you want to update the previous bill for this project?");
+}
+
+function confirm_delete_project() {
+	return confirm("Are you sure you want to delete this project?");
 }
 function enable_supervisors() {
 	if (document.form.is_supervisor.checked == false) {

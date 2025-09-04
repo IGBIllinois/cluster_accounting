@@ -341,6 +341,17 @@ class project {
 		return $result;
 	}
 	public function disable() {
+		$message = "";
+		$error = false;
+		if (count($this->get_directories())) {
+			$error = true;
+			$message .= "<div class='alert alert-danger'>Unable to delete project.  Project contains active directories</div>";
+		}
+		if ($error) {
+			$result = false;
+			return array('RESULT'=>$result,'MESSAGE'=>$message);
+		}
+
 		$cfop_result = $this->disable_all_cfops();
 		$sql = "UPDATE projects SET project_enabled='0' ";
 		$sql .= "WHERE project_id=:project_id LIMIT 1";
@@ -348,8 +359,14 @@ class project {
                         ':project_id'=>$this->get_project_id()
                 );
 		$result = $this->db->non_select_query($sql,$parameters);
-		$this->enabled = 0;
-		return $result;
+		if ($result) {
+			$this->enabled = 0;
+			$message = "Project " . $this->get_name() . " successfully disabled";
+		}
+		else {
+			$message = "Failed disabling project " . $this->get_name();
+		}	
+		return array('RESULT'=>$result,'MESSAGE'=>$message);
 	}
 
 	public static function verify_project_name($name) {

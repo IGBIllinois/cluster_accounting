@@ -13,7 +13,8 @@ if (isset($_POST['remove_data_dir'])) {
 	$data_dir_id = $_POST['data_dir_id'];
 	$data_dir  = new data_dir($db,$data_dir_id);
 	if (!$data_dir->is_default()) {
-		$data_dir->disable();
+		$result = $data_dir->disable();
+		$log->send_log($result['MESSAGE']);
 		header('Location: data_dir_custom.php');	
 	}
 
