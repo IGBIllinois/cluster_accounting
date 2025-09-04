@@ -197,9 +197,16 @@ class functions {
 	}
 
 	public static function get_fbs_labcodes() {
-		$fbs = new \IGBIllinois\fbs(settings::get_fbs_access_key(),settings::get_fbs_secret_key());
-		$fbs->login();
-		return $fbs->get_customers(settings::get_fbs_facility_id());
+		try {
+			$fbs = new \IGBIllinois\fbs(settings::get_fbs_access_key(),settings::get_fbs_secret_key());
+			$fbs->login();
+			return $fbs->get_customers(settings::get_fbs_facility_id());
+		}
+		catch (\Exception $e) {
+			$message = "Error contacting FBS, " . $e->getMessage();
+			throw new \Exception($message);
+		}
+		return array();
 
 
 	}

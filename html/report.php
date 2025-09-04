@@ -41,10 +41,16 @@ elseif (isset($_POST['create_job_fbs_report'])) {
         $month = $_POST['month'];
         $year = $_POST['year'];
         $type = $_POST['report_type'];
-        $data = job_functions::get_jobs_fbs_bill($db,$month,$year,
-		settings::get_fbs_areacode(),settings::get_fbs_facility_code(),
-		settings::get_fbs_jobs_skucode()
-	);
+	try {
+        	$data = job_functions::get_jobs_fbs_bill($db,$month,$year,
+			settings::get_fbs_areacode(),settings::get_fbs_facility_code(),
+			settings::get_fbs_jobs_skucode()
+		);
+	}
+	catch (\Exception $e) {
+		echo $e->getMessage();
+		exit;
+	}
         $filename = $prefix . "-job-fbs-" . $month . "-" . $year . "." . $type;
 
 
@@ -81,10 +87,16 @@ elseif (isset($_POST['create_data_fbs_report'])) {
 	$month = $_POST['month'];
         $year = $_POST['year'];
         $type = $_POST['report_type'];
+	try {
         $data = data_functions::get_data_fbs_bill($db,$month,$year,settings::get_data_minimal_bill(),
 		settings::get_fbs_areacode(),settings::get_fbs_facility_code(),
 		settings::get_fbs_data_skucode()
 	);
+	}
+	catch (\Exception $e) {
+		echo $e->getMessage();
+		exit;
+	}
         $filename = $prefix . "-data-fbs-" . $month . "-" . $year . "." . $type;
 
 

@@ -201,19 +201,24 @@ class data_functions {
 			':billtype'=>project::BILLTYPE_CFOP
                 );
                 $report = $db->query($sql,$parameters);
+		try {
+			$fbs_customers = functions::get_fbs_labcodes();
+        	        foreach ($report as &$record) {
+                	        for ($i=0; $i<count($fbs_customers); $i++) {
+                        	        if (trim($record['PI_Name']) == trim($fbs_customers[$i]['CustomerDirectoryName'])) {
+                                	        $record['LabCode'] = $fbs_customers[$i]['CustomerCode'];
+                                        	break;
+                        	        }
 
-		$fbs_customers = functions::get_fbs_labcodes();
-                foreach ($report as &$record) {
-                        for ($i=0; $i<count($fbs_customers); $i++) {
-                                if (trim($record['PI_Name']) == trim($fbs_customers[$i]['CustomerDirectoryName'])) {
-                                        $record['LabCode'] = $fbs_customers[$i]['CustomerCode'];
-                                        break;
-                                }
+                	        }
 
-                        }
-
-                }
-                return $report;
+        	        }
+	                return $report;
+		}
+		catch (\Exception $e) {
+			throw $e;
+		}
+		return array();
 
         }
 
