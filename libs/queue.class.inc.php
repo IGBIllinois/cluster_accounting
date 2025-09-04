@@ -295,7 +295,8 @@ class queue {
 	}
 
 	public function get_queue_exists($queue_name) {
-		$sql = "SELECT count(1) FROM queues WHERE queue_name=:queue_name AND queue_enabled=:queue_enabled";
+		$sql = "SELECT 1 FROM queues ";
+		$sql .= "WHERE queue_name=:queue_name AND queue_enabled=:queue_enabled LIMIT 1";
 		$parameters = array(':queue_name'=>$queue_name,':queue_enabled'=>1);
 		$result = $this->db->query($sql,$parameters);
 		if (count($result)) {

@@ -27,6 +27,7 @@ define("LDAP_BIND_PASS","");
 define("LDAP_SSL",false);
 define("LDAP_TLS",false);
 define("LDAP_PORT",389);
+define("LDAP_HOST_ATTRIBUTE","");
 define("JOB_SCHEDULER","SLURM");
 
 /////////Email Settings///////////

@@ -13,8 +13,8 @@ foreach ($dirs as $dir) {
 	$dirs_html .= "<tr><td>" . $dir . "</td></tr>";	
 }
 
-$server_name = $_SERVER['SERVER_NAME'];
-$cluster_users = user_functions::get_users_not_in_accounting($db,$ldap,$server_name);
+$ldap_host_attribute = settings::get_ldap_host_attribute();
+$cluster_users = user_functions::get_users_not_in_accounting($db,$ldap,$ldap_host_attribute);
 
 $users_html = "";
 foreach ($cluster_users as $cluster_user) {

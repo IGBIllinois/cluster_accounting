@@ -104,6 +104,13 @@ class settings {
 		return self::LDAP_BIND_PASS;
 	}
 
+	public static function get_ldap_host_attribute() {
+		if (defined("LDAP_HOST_ATTRIBUTE")) {
+			return LDAP_HOST_ATTRIBUTE;
+		}
+		return false;
+
+	}
 	public static function get_session_name() {
 		if (defined("SESSION_NAME")) {
 			return SESSION_NAME;
@@ -344,6 +351,7 @@ class settings {
 		return "";
 
 	}
+
 }
 
 ?>
