@@ -352,6 +352,12 @@ class settings {
 
 	}
 
+	public static function get_ignore_directories() {
+		if (defined("IGNORE_DIRECTORIES") && is_array(IGNORE_DIRECTORIES)) {
+			return IGNORE_DIRECTORIES;
+		}
+		return array();
+	}
 }
 
 ?>

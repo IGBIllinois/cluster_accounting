@@ -62,4 +62,5 @@ define('FBS_AREACODE','');
 define('FBS_JOBS_SKUCODE','');
 define('FBS_DATA_SKUCODE','');
 
+define('IGNORE_DIRECTORIES',array());
 ?>

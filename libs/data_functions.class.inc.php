@@ -244,8 +244,9 @@ class data_functions {
 	}
 	public static function get_unmonitored_dirs($db) {
 		$full_monitored_dirs = self::get_all_directories($db);
-
 		$existing_dirs = self::get_existing_dirs();
+		$ignore_dirs = settings::get_ignore_directories();
+		$existing_dirs = array_diff($existing_dirs,$ignore_dirs);	
 		$monitored_dirs = array();
 		foreach ($full_monitored_dirs as $dir) {
 			array_push($monitored_dirs,$dir['data_dir_path']);
