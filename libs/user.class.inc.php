@@ -58,11 +58,11 @@ class user {
 		}
 		elseif ($this->get_user_exist($username)) {
 			$error = true;
-			$message .= "<div class='alert alert-danger'>User already exists in database</div>";
+			$message .= "<div class='alert alert-danger'>User " . $username . " already exists in database</div>";
 		}
 		elseif (!$this->ldap->is_ldap_user($username)) {
 			$error = true;
-			$message .= "<div class='alert alert-danger'>User does not exist in LDAP database.</div>";
+			$message .= "<div class='alert alert-danger'>User " . $username . " does not exist in LDAP database.</div>";
 		}
 
 		if (is_null($supervisor_id)) {
@@ -80,7 +80,7 @@ class user {
 			$cfop_obj->validate_cfop($cfop,$activity);
 			
 		}
-		catch (\PDOException $e) {
+		catch (\Exception $e) {
 			$error = true;
 			$message .= "<div class='alert alert-danger'>" . $e->getMessage() . "</div>";
 		}
@@ -96,62 +96,50 @@ class user {
 
 		//Everything looks good, add user and default user project
 		else {
-			if ($this->is_disabled($username)) {
-				$this->load_by_username($username);
-				$this->enable();
-				if ($supervisor_id) {
-					$this->set_supervisor($supervisor_id);
-				}
-				$this->default_project()->enable();
-				$this->default_data_dir()->enable();
-				$this->default_project()->set_cfop($cfop_billtype,$cfop,$activity,$hide_cfop,$custom_bill_description);
+			$ldap_filter = "(" . $this->ldap_attributes['username'] . "=" . $username . ")";
+			$attributes = array_values($this->ldap_attributes);
+			$ou = settings::get_ldap_base_dn();
+			$ldap_result = $this->ldap->search($ldap_filter,$ou,$attributes);
+			$firstname = "";
+			$lastname = "";
+			$home_dir = "";
+			if ($ldap_result['count'] == 1) {
+				$firstname = $ldap_result[0][$this->ldap_attributes['firstname']][0];
+				$lastname = $ldap_result[0][$this->ldap_attributes['lastname']][0];
+				$home_dir = $ldap_result[0][$this->ldap_attributes['homedir']][0];
 			}
-			else {
-				$ldap_filter = "(" . $this->ldap_attributes['username'] . "=" . $username . ")";
-				$attributes = array_values($this->ldap_attributes);
-				$ou = settings::get_ldap_base_dn();
-				$ldap_result = $this->ldap->search($ldap_filter,$ou,$attributes);
-				$firstname = "";
-				$lastname = "";
-				$home_dir = "";
-				if ($ldap_result['count'] == 1) {
-					$firstname = $ldap_result[0][$this->ldap_attributes['firstname']][0];
-					$lastname = $ldap_result[0][$this->ldap_attributes['lastname']][0];
-					$home_dir = $ldap_result[0][$this->ldap_attributes['homedir']][0];
-				}
-				try {
-					$sql = "INSERT INTO users(user_name,user_firstname,user_lastname,user_admin,user_supervisor,user_enabled) ";
-					$sql .= "VALUES(:username,:firstname,:lastname,:admin,:supervisor_id,:enabled) ";
-					$sql .= "ON DUPLICATE KEY UPDATE user_firstname=:firstname,user_lastname=:lastname,user_admin:admin,";
-					$sql .= "user_supervisor=:supervisor_id,user_enabled=:enabled";
-					$parameters = array(':username'=>$username,
-                                                ':firstname'=>$firstname,
-                                                ':lastname'=>$lastname,
-                                                ':admin'=>$admin,
-                                                ':supervisor_id'=>$supervisor_id,
-                                                ':enabled'=>1
-					);
-					$user_id = $this->db->insert($sql,$parameters);
-					$this->load_by_id($user_id);
-					$description = "default";
-					$default = 1;
-					$project = new project($this->db);
-					$project->create($this->ldap,$username,$username,$description,$default,$cfop_billtype,$user_id,$cfop,$activity,$hide_cfop,$custom_bill_description);
-					$data_dir = new data_dir($this->db);
-					$default = 1;
-					$data_dir->create($project->get_project_id(),$home_dir,$default);
-				}
-				catch (\Exception $e) {
-					throw e;
-					return array('RESULT'=>false,
-						'MESSAGE'=>$e->getMessage()
-					);
+			try {
+				$sql = "INSERT INTO users(user_name,user_firstname,user_lastname,user_admin,user_supervisor,user_enabled) ";
+				$sql .= "VALUES(:username,:firstname,:lastname,:admin,:supervisor_id,:enabled) ";
+				$sql .= "ON DUPLICATE KEY UPDATE user_firstname=:firstname,user_lastname=:lastname,user_admin=:admin,";
+				$sql .= "user_supervisor=:supervisor_id,user_enabled=:enabled";
+				$parameters = array(':username'=>$username,
+					':firstname'=>$firstname,
+					':lastname'=>$lastname,
+					':admin'=>$admin,
+					':supervisor_id'=>$supervisor_id,
+					':enabled'=>1
+				);
+				$user_id = $this->db->insert_query($sql,$parameters);
+				$this->load_by_id($user_id);
+				$description = "default";
+				$default = 1;
+				$project = new project($this->db);
+				$project->create($this->ldap,$username,$username,$description,$default,$cfop_billtype,$user_id,$cfop,$activity,$hide_cfop,$custom_bill_description);
+				$data_dir = new data_dir($this->db);
+				$default = 1;
+				$data_dir->create($project->get_project_id(),$home_dir,$default);
+			}
+			catch (\Exception $e) {
+				throw $e;
+				return array('RESULT'=>false,
+					'MESSAGE'=>$e->getMessage()
+				);
 					
-				}
 			}
 			return array('RESULT'=>true,
-					'MESSAGE'=>'User succesfully added.',
-					'user_id'=>$this->get_user_id());
+				'MESSAGE'=>'User succesfully added.',
+				'user_id'=>$this->get_user_id());
 		}
 
 	}

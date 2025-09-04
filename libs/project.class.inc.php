@@ -110,7 +110,7 @@ class project {
 			}
 			catch (\PDOException $e) {
 				$message = "<div class='alert alert-danger'>" . $e->getMessage() . "</div>";
-				$throw new \Exception($message);
+				throw new \Exception($message);
 				return array('RESULT'=>false,
 					'MESSAGE'=>$message);
 				
