@@ -1,13 +1,21 @@
 <?php
 require_once 'includes/main.inc.php';
 
+$message = "";
+
 if (!$login_user->is_admin()) {
         exit;
 }
 
 if (isset($_POST['update_cost'])) {
-	$data_cost = new data_cost($db,$_POST['data_cost_id']);
-	$result = $data_cost->update_cost($_POST['cost']);
+	try {
+		$data_cost = new data_cost($db,$_POST['data_cost_id']);
+		$result = $data_cost->update_cost($_POST['cost']);
+		$message = $result['MESSAGE'];
+	}
+	catch (\Exception $e) {
+		$message = "<div class='alert alert-danger'>Error updating data storage cost: " . $e->getMessage() . "</div>";
+	}
 
 }
 
@@ -34,8 +42,8 @@ require_once 'includes/header.inc.php';
 </div>
 
 <?php
-if (isset($result['MESSAGE'])) {
-	echo $result['MESSAGE'];
+if (isset($message)) {
+	echo $message;
 }
 
 ?>

@@ -37,13 +37,30 @@ class data_cost {
 	}
 
 	public function update_cost($cost) {
-		$insert_array = array('data_cost_value'=>$cost);
-		$result = $this->db->build_insert("data_cost",$insert_array);
-		if ($result) {
-			$this->disable();
-			$message = "<div class='alert alert-success'>Cost successfully updated.</div>";
-			return array('RESULT'=>true,'ID'=>$result,'MESSAGE'=>$message);
+		$message = "";
+		$error = false;
+		if (($cost == "") || !is_numeric($cost)) {
+			$error = true;
+			$message = "<div class='alert alert-danger'>Data Storage Cost must be numeric</div>";
+		}
+		if ($error) {
+			return array('RESULT'=>false,'MESSAGE'=>$message);
+		}
+		else {
+			try {
+				$insert_array = array('data_cost_value'=>$cost);
+				$result = $this->db->build_insert("data_cost",$insert_array);
+				if ($result) {
+					$this->disable();
+					$message = "<div class='alert alert-success'>Cost successfully updated.</div>";
+					return array('RESULT'=>true,'ID'=>$result,'MESSAGE'=>$message);
 			
+				}
+			}
+			catch (\PDOException $e) {
+				throw new \Exception($e);
+				return array('RESULT'=>false);
+			}
 		}
 	}
 	public function enable() {
