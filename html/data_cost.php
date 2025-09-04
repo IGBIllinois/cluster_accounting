@@ -14,7 +14,7 @@ if (isset($_POST['update_cost'])) {
 $data_cost = data_functions::get_current_data_cost($db);
 require_once 'includes/header.inc.php';
 ?>
-<h3>Data Cost</h3>
+<h3>Data Storage Cost</h3>
 <hr>
 <div class='col-sm-6'>
 <form class='form' method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>'>
@@ -28,7 +28,7 @@ require_once 'includes/header.inc.php';
 <td><?php echo $data_cost->get_time_created(); ?></td>
 </tr>
 <tr><td><div class='input-group'><span class='input-group-text'>$</span><input class='form-control' type='text' name='cost'></div></td>
-<td><input class='btn btn-primary' type='submit' name='update_cost' value='Update Cost'></td></tr>
+<td><input class='btn btn-primary' type='submit' name='update_cost' value='Update Cost' onClick='return confirm_update_data_cost();'></td></tr>
 </table>
 </form>
 </div>

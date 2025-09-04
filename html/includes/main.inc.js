@@ -11,7 +11,7 @@ function confirm_delete_queue() {
 	return confirm("Are you sure you want to delete this queue?");
 }
 function confirm_delete_dir() {
-	return confirm("Are you sure you want to remove this directory from the accounting software?");
+	return confirm("Are you sure you want to remove this directory?");
 }
 
 function confirm_edit_project_bill() {
@@ -20,6 +20,10 @@ function confirm_edit_project_bill() {
 
 function confirm_delete_project() {
 	return confirm("Are you sure you want to delete this project?");
+}
+
+function confirm_update_data_cost() {
+	return confirm("Are you sure want to update the data storage cost?");
 }
 function enable_supervisors() {
 	if (document.form.is_supervisor.checked == false) {
