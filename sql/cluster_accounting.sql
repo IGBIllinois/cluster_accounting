@@ -132,6 +132,7 @@ CREATE TABLE data_dir (
         data_dir_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         data_dir_enabled BOOLEAN DEFAULT TRUE,
         data_dir_default BOOLEAN DEFAULT FALSE,
+	CONSTRAINT datadirpath UNIQUE(data_dir_path);
         PRIMARY KEY (data_dir_id)
 );
 

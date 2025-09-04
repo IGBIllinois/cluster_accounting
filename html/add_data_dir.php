@@ -1,7 +1,7 @@
 <?php
 require_once 'includes/main.inc.php';
 
-
+$message = "";
 if (!$login_user->is_admin()) {
         exit;
 }
@@ -10,10 +10,15 @@ if (isset($_POST['add_dir'])) {
 	$_POST = array_map('trim',$_POST);
 	$data_dir = new data_dir($db);
 	$default = 0;
-	$result = $data_dir->create($_POST['project_id'],$_POST['directory'],$default);
-	if ($result['RESULT']) {
-		unset($_POST);
-		header('Location: data_dir_custom.php');
+	try {
+		$result = $data_dir->create($_POST['project_id'],$_POST['directory'],$default);
+		if ($result['RESULT']) {
+	                unset($_POST);
+        	        //header('Location: data_dir_custom.php');
+		}
+        }
+	catch (\Exception $e) {
+		$message = "<div class='alert alert-danger'>" . $e->getMessage() . "</div>";
 	}
 }
 
@@ -56,9 +61,9 @@ require_once 'includes/header.inc.php';
 	<input class='btn btn-warning' type='submit' name='cancel_dir' value='Cancel'>
 </form>
 </div>
-
+<br>
 <?php
-if (isset($result['MESSAGE'])) { echo $result['MESSAGE']; }
+if (isset($message)) { echo $message; }
 ?>
 </div>
 

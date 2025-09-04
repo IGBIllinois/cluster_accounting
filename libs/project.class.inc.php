@@ -77,6 +77,7 @@ class project {
 
                 }
                 catch (\Exception $e) {
+			throw $e;
                         $error = true;
                         $message .= "<div class='alert alert-danger'>" . $e->getMessage() . "</div>";
                 }
@@ -109,6 +110,7 @@ class project {
 			}
 			catch (\PDOException $e) {
 				$message = "<div class='alert alert-danger'>" . $e->getMessage() . "</div>";
+				$throw new \Exception($message);
 				return array('RESULT'=>false,
 					'MESSAGE'=>$message);
 				
@@ -360,15 +362,15 @@ class project {
 
 	public function project_exists($name,$default=0) {
 		try {
-			$sql = "SELECT count(1) FROM projects ";
+			$sql = "SELECT 1 FROM projects ";
 			$sql .= "WHERE project_name=:project_name ";
 			$sql .= "AND project_default=:project_default ";
-			$sql .= "AND project_enabled=:project_enabled ";
+			$sql .= "AND project_enabled=:project_enabled LIMIT 1";
 			$parameters = array(':project_name'=>$name,
 				':project_default'=>$default,
 				':project_enabled'=>1);
 			$result = $this->db->query($sql,$parameters);
-			if (count($result)) {
+			if ($result) {
 				return true;
 			}
 		}

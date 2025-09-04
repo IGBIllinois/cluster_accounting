@@ -15,7 +15,6 @@ cp conf/settings.inc.php.dist conf/settings.inc.php
 * SESSION_NAME - Unique name for the session. Defaults to PHPSESSID
 * SESSION_TIMEOUT - Timeout before you are forced logoff
 * PASSWORD_RESET_URL - URL to website where you can reset your LDAP password if you have one
-* BOA_CFOP - UofI Account number to bill against
 
 ## Database Settings
 * MYSQL_HOST - Mysql/MariaDB host

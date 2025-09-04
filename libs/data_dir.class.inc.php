@@ -33,26 +33,35 @@ class data_dir {
 		$this->project = new project($this->db,$project_id);
 
 		$error = false;
-
+		$message = "";
 		if ($this->data_dir_exists($directory)) {
 			$error = true;
-			$message .= "<div class='alert alert-danger'>Directory " . $directory . " is already in the database</div>";
+			$message .= "Directory " . $directory . " is already in the database";
 		}
-
 		if ($error) {
-			return array('RESULT'=>false,"MESSAGE"=>$message);
+			throw new \Exception($message);
+			return array('RESULT'->false);
 		}
 		else {
-			$sql = "INSERT INTO data_dir(data_dir_project_id,data_dir_path,data_dir_default) ";
-			$sql .= "VALUES(:project_id,:directory,:default)";
-			$parameters = array(
-				':project_id'=>$this->project->get_project_id(),
-				':directory'=>$directory,
-				':default'=>$default
-			);
-			$result = $this->db->insert_query($sql,$parameters);
+			try {
+				$sql = "INSERT INTO data_dir(data_dir_project_id,data_dir_path,data_dir_default,data_dir_enabled) ";
+				$sql .= "VALUES(:project_id,:directory,:default,:enabled) ";
+				$sql .= "ON DUPLICATE KEY UPDATE data_dir_project_id=:project_id,data_dir_enabled=:enabled ";
+				$parameters = array(
+					':project_id'=>$this->project->get_project_id(),
+					':directory'=>$directory,
+					':default'=>$default,
+					':enabled'=>1
+				);
+				$data_dir_id = $this->db->insert_query($sql,$parameters);
+			}
+			catch (\PDOException $e) {
+				throw new \Exception($e->getMessage());
+				return array('RESULT'=>false);
+				
+			}
 			return array('RESULT'=>true,
-					"data_dir_id"=>$result,
+					"data_dir_id"=>$data_dir_id,
 					"MESSAGE"=>"<div class='alert alert-success'>Directory " . $directory . " successfully added</div>"
 			);
 		}
@@ -168,17 +177,20 @@ class data_dir {
 	}
 	
 	private function data_dir_exists($directory) {
-		$sql = "SELECT count(1) as count FROM data_dir ";
-		$sql .= "WHERE data_dir_path LIKE ':data_dir_path%' ";
-		$sql .= "AND data_dir_enabled='1'";
-		
-		$parameters = array(
-			':data_dir_path'=>$directory
-		);
-		$result = $this->db->query($sql,$parameters);
-
-		if ($result[0]['count']) {
-			return true;
+		try {
+			$sql = "SELECT 1 FROM data_dir ";
+			$sql .= "WHERE data_dir_path LIKE :data_dir_path ";
+			$sql .= "AND data_dir_enabled='1' LIMIT 1";
+			$parameters = array(
+				':data_dir_path'=>$directory . "%"
+			);
+			$result = $this->db->query($sql,$parameters);
+			if ($result) {
+				return true;
+			}
+		}
+		catch (\PDOException $e) {
+			throw $e;
 		}
 		return false;
 
