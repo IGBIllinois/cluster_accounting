@@ -1,7 +1,7 @@
 # Cluster Accounting
 [![Build Status](https://github.com/IGBIllinois/cluster_accounting/actions/workflows/main.yml/badge.svg)](https://github.com/IGBIllinois/cluster_accounting/actions/workflows/main.yml)
 
-- Cluster Accounting records jobs submitted on an HPC cluster using Torque or SLURM.
+- Cluster Accounting records jobs submitted on an HPC cluster using SLURM.
 - Records data usage of the shared filesystem for billing
 - Supports different prices for CPU, Memory, GPUs in different queues.
 - Emails users their monthly bill
