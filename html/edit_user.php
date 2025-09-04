@@ -126,7 +126,7 @@ require_once 'includes/header.inc.php';
 		</div>
 	</div>
 </form>
-
+<br>
 <?php
 if (isset($message)) { echo $message; }
 ?>

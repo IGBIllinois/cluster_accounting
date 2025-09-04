@@ -1,6 +1,7 @@
 <?php
 require_once 'includes/main.inc.php';
 
+$message = "";
 if (!$login_user->is_admin()) {
         exit;
 }
@@ -48,7 +49,12 @@ if (isset($_POST['add_project'])) {
 				$default,$_POST['cfop_billtype'],$_POST['owner'],$cfop,$_POST['activity'],$hide_cfop,$_POST['custom_bill_description']);
 
 	if ($result['RESULT']) {
+		$message = "<div class='alert alert-success'>" . $result['MESSAGE'] . "</div>";
+		$log->send_log($result['MESSAGE']);
 		unset($_POST);
+	}
+	else {
+		$message = $result['MESSAGE'];
 	}
 }
 
@@ -195,8 +201,8 @@ require_once 'includes/header.inc.php';
 		</div>
 </form>
 <?php
-if (isset($result['MESSAGE'])) {
-	echo $result['MESSAGE'];
+if (isset($message)) {
+	echo $message;
 }
 ?>
 </div>

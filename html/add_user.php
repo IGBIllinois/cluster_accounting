@@ -50,21 +50,24 @@ if (isset($_POST['add_user'])) {
 			$_POST['custom_bill_description'] = "";
 			break;
 
+	}
+	try {
+		$user = new user($db,$ldap);
+		$result = $user->create($_POST['new_username'],$supervisor_id,$admin,$billtype,$cfop,$_POST['activity'],$hide_cfop,$_POST['custom_bill_description']);
+		if ($result['RESULT'] == true) {
+	                $log->send_log($result['MESSAGE']);
+        	        header("Location: user.php?user_id=" . $result['user_id']);
+	        }
+        	elseif ($result['RESULT'] == false) {
+                	$message = $result['MESSAGE'];
+	        }
 
-
-
+	}
+	catch (\Exception $e) {
+		$message = "<div class='alert alert-danger'>Error adding user: " . $e->getMessage() . "</div>";
 
 	}
 
-	$user = new user($db,$ldap);
-	$result = $user->create($_POST['new_username'],$supervisor_id,$admin,$billtype,$cfop,$_POST['activity'],$hide_cfop,$_POST['custom_bill_description']);
-
-	if ($result['RESULT'] == true) {
-		header("Location: user.php?user_id=" . $result['user_id']);
-	}
-	elseif ($result['RESULT'] == false) {
-		$message = $result['MESSAGE'];
-	}
 }
 elseif (isset($_POST['cancel_user'])) {
 	unset($_POST);

@@ -62,7 +62,7 @@ class data_dir {
 			}
 			return array('RESULT'=>true,
 					"data_dir_id"=>$data_dir_id,
-					"MESSAGE"=>"<div class='alert alert-success'>Directory " . $directory . " successfully added</div>"
+					"MESSAGE"=>"Directory " . $directory . " successfully added."
 			);
 		}
 	}

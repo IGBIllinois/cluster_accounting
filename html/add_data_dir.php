@@ -13,8 +13,9 @@ if (isset($_POST['add_dir'])) {
 	try {
 		$result = $data_dir->create($_POST['project_id'],$_POST['directory'],$default);
 		if ($result['RESULT']) {
+			$log->send_log($result['MESSAGE']);
 	                unset($_POST);
-        	        //header('Location: data_dir_custom.php');
+        	        header('Location: data_dir_custom.php');
 		}
         }
 	catch (\Exception $e) {

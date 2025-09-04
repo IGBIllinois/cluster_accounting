@@ -65,7 +65,7 @@ class user {
 			$message .= "<div class='alert alert-danger'>User " . $username . " does not exist in LDAP database.</div>";
 		}
 
-		if (is_null($supervisor_id)) {
+		if (is_null($supervisor_id) || !is_numeric($supervisor_id)) {
 			$error = true;
 			$message .= "<div class='alert alert-danger'>Please select a supervisor.</div>";
 		}
@@ -130,15 +130,15 @@ class user {
 				$default = 1;
 				$data_dir->create($project->get_project_id(),$home_dir,$default);
 			}
-			catch (\Exception $e) {
-				throw $e;
+			catch (\PDOException | \Exception $e) {
+				throw new \Exception($e->getMessage());
 				return array('RESULT'=>false,
-					'MESSAGE'=>$e->getMessage()
-				);
-					
+                                        'MESSAGE'=>$e->getMessage()
+                                );
+
 			}
 			return array('RESULT'=>true,
-				'MESSAGE'=>'User succesfully added.',
+				'MESSAGE'=>"User " . $username . " succesfully added.",
 				'user_id'=>$this->get_user_id());
 		}
 
@@ -379,7 +379,7 @@ class user {
 
 	}
 	public function set_supervisor($supervisor_id) {
-		$sql = "UPDATE users SET user_supervisor=:supervisor_id WHERE user_id=:user_id";
+		$sql = "UPDATE users SET user_supervisor=:supervisor_id WHERE user_id=:user_id LIMIT 1";
 		$parameters = array(
 			':supervisor_id'=>$supervisor_id,
 			':user_id'=>$this->get_user_id()

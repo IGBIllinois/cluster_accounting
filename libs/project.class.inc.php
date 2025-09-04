@@ -102,7 +102,7 @@ class project {
  				$this->id = $this->db->insert_query($sql,$parameters);
 				if ($this->id) {
 					$this->set_cfop($cfop_billtype,$cfop,$activity,$hide_cfop,$custom_bill_description);
-					$message = "<div class='alert alert-success'>Project " . $name . " successfully created.</div>";
+					$message = "Project " . $name . " successfully created.";
 					return array('RESULT'=>true,
 						'MESSAGE'=>$message,
 						'project_id'=>$this->id);
