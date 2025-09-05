@@ -109,8 +109,8 @@ class job_functions {
         	                        }
 
 	                        }
-				return $report;
                 	}
+			return $report;
 		}
 		catch (\Exception $e) {
 			throw $e;
