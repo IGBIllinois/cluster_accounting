@@ -121,26 +121,25 @@ class job_functions {
 
         public static function get_jobs_custom_bill($db,$month,$year) {
 
-
                 $sql = "SELECT DATE_FORMAT(job_bill.job_bill_date,'%c/%e/%Y') as 'DATE', ";
                 $sql .= "users.user_name as 'NAME', ";
                 $sql .= "cfops.cfop_custom_description as 'DESCRIPTION', ";
-                $sql .= "ROUND(SUM(jobs.job_billed_cost),2) as 'COST', ";
+                $sql .= "ROUND(SUM(job_bill.job_bill_billed_cost),2) as 'COST', ";
                 $sql .= "projects.project_name as 'PROJECT' ";
-                $sql .= "FROM jobs ";
-                $sql .= "LEFT JOIN users ON users.user_id=jobs.job_user_id ";
-                $sql .= "LEFT JOIN projects ON projects.project_id=jobs.job_project_id ";
-                $sql .= "LEFT JOIN cfops ON cfops.project_id=projects.project_id ";
-                $sql .= "LEFT JOIN queue_cost ON queue_cost.queue_cost_id=jobs.job_queue_cost_id ";
-                $sql .= "LEFT JOIN queues ON queues.queue_id=jobs.job_queue_id ";
-                $sql .= "WHERE (YEAR(jobs.job_end_time)=:year AND month(jobs.job_end_time)=:month) ";
+                $sql .= "FROM job_bill ";
+                $sql .= "LEFT JOIN users ON users.user_id=job_bill.job_bill_user_id ";
+                $sql .= "LEFT JOIN projects ON projects.project_id=job_bill.job_bill_project_id ";
+                $sql .= "LEFT JOIN cfops ON cfops.cfop_project_id=projects.project_id ";
+                $sql .= "LEFT JOIN queue_cost ON queue_cost.queue_cost_id=job_bill.job_bill_queue_cost_id ";
+                $sql .= "LEFT JOIN queues ON queues.queue_id=job_bill.job_bill_queue_id ";
+                $sql .= "WHERE (YEAR(job_bill.job_bill_date)=:year AND month(job_bill.job_bill_date)=:month) ";
                 $sql .= "AND cfops.cfop_billtype=:billtype ";
                 $sql .= "GROUP BY ";
                 $sql .= "queue_cost.queue_cost_id, ";
-                $sql .= "jobs.job_project_id, ";
-                $sql .= "jobs.job_queue_id, ";
+                $sql .= "job_bill.job_bill_project_id, ";
+                $sql .= "job_bill.job_bill_queue_id, ";
                 $sql .= "users.user_name ";
-                $sql .= "HAVING ROUND(SUM(jobs.job_billed_cost),2) > 0.00 ";
+                $sql .= "HAVING ROUND(SUM(job_bill.job_bill_billed_cost),2) > 0.00 ";
                 $sql .= "ORDER BY `NAME` ASC";
 		$parameters = array(
 			':month'=>$month,
