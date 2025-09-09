@@ -14,10 +14,10 @@ if (!$login_user->permission($user_id)) {
 $year = date('Y');
 $month = date('m');
 $start_date = date('Ym') . "01";
-
 if (isset($_GET['month']) && isset($_GET['year'])) {
 	$year = $_GET['year'];
 	$month = $_GET['month'];
+	$month = date('m',mktime(0,0,0,$month));
 	$start_date = $year . $month . "01";
 }
 
@@ -35,7 +35,6 @@ if (isset($_POST['email_bill'])) {
 
 $end_date = date('Ymd',strtotime('-1 second',strtotime('+1 month',strtotime($start_date))));
 $month_name = date('F',strtotime($start_date));
-
 //list of users to select from
 $user_list = array();
 if ($login_user->is_supervisor()) {
