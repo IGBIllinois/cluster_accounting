@@ -301,7 +301,7 @@ class data_dir {
 			if ($project->get_billtype() != project::BILLTYPE_NO_BILL) {
 				$billed_cost = $total_cost;
 			}
-			$current_date = date('Y-m-d h:i:s'); 
+			$current_date = date('Y-m-d h:i:s');
         	        $insert_array = array('data_bill_data_dir_id'=>$this->get_data_dir_id(),
                 	                'data_bill_project_id'=>$project->get_project_id(),
                         	        'data_bill_cfop_id'=>$project->get_cfop_id_by_date($current_date),

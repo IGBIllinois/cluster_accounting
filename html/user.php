@@ -1,7 +1,7 @@
 <?php
 require_once 'includes/main.inc.php';
 
-$user_id = 0;
+$user_id = $login_user->get_user_id();
 $user = "";
 if (isset($_GET['user_id']) && (is_numeric($_GET['user_id']))) {
 	$user = new user($db,$ldap,$_GET['user_id']);
