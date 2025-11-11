@@ -4,6 +4,7 @@ class data_functions {
 
 	public const CONVERT_TERABYTES = 1099511627776;
         public const CONVERT_GIGABYTES = 1073741824;
+	public const DATA_PRECISION = 6;
 
 	public static function get_directories($db,$default = 1,$start,$count) {
 		$sql = "SELECT data_dir.*, projects.project_name, projects.project_id ";
@@ -109,7 +110,7 @@ class data_functions {
 	public static function get_data_bill($db,$month,$year) {
 		$sql = "SELECT data_dir.data_dir_path as 'Directory', ";
 		$sql .= "DATE_FORMAT(data_bill.data_bill_date,'%c/%e/%Y') as 'DATE' , ";
-	        $sql .= "ROUND(data_bill.data_bill_avg_bytes / :terabytes,3) as 'Terabytes', ";
+	        $sql .= "ROUND(data_bill.data_bill_avg_bytes / :terabytes,:data_precision) as 'Terabytes', ";
         	$sql .= "ROUND(data_cost.data_cost_value,2) as 'Rate ($/Terabyte)', ";
         	$sql .= "ROUND(data_bill.data_bill_total_cost,2) as 'Total Cost', ";
 	        $sql .= "ROUND(data_bill.data_bill_billed_cost,2) as 'Billed Cost', ";
@@ -127,7 +128,8 @@ class data_functions {
 		$parameters = array(
 			':month'=>$month,
 			':year'=>$year,
-			':terabytes'=>data_functions::CONVERT_TERABYTES
+			':terabytes'=>data_functions::CONVERT_TERABYTES,
+			':data_precision'=>data_functions::DATA_PRECISION
 		);
         	return $db->query($sql,$parameters);
 	}
@@ -177,8 +179,8 @@ class data_functions {
 		$sql .= ":fbs_data_skucode as 'SKU_Code', ";
 		$sql .= "'' AS UsageType,'' AS Service,'' AS TimeUse, ";
 		$sql .= "CONCAT('Biocluster Data - ',SUBSTRING_INDEX(data_dir.data_dir_path,'/',-1)) as 'PrintableComments', ";
-		$sql .= "ROUND(data_bill.data_bill_billed_cost,2) as 'UnitPriceOverride', ";
-		$sql .= "'1' AS Quantity, '' AS DateTimeStart, '' AS DateTimeEnd, ";
+		$sql .= "ROUND(data_cost.data_cost_value,2) as 'UnitPriceOverride', ";
+		$sql .= "ROUND(data_bill.data_bill_avg_bytes / :terabytes,:data_precision) AS Quantity, '' AS DateTimeStart, '' AS DateTimeEnd, ";
 		$sql .= "CONCAT(cfops.cfop_value,IF(cfops.cfop_activity <> '','-',''),cfops.cfop_activity) as 'CFOP' ";
                	$sql .= "FROM data_bill ";
                 $sql .= "LEFT JOIN cfops ON cfops.cfop_id=data_bill.data_bill_cfop_id ";
@@ -198,7 +200,9 @@ class data_functions {
                         ':month'=>$month,
                         ':year'=>$year,
 			':minimal_bill'=>$minimal_bill,
-			':billtype'=>project::BILLTYPE_CFOP
+			':billtype'=>project::BILLTYPE_CFOP,
+			':terabytes'=>data_functions::CONVERT_TERABYTES,
+			':data_precision'=>data_functions::DATA_PRECISION
                 );
                 $report = $db->query($sql,$parameters);
 		try {
@@ -261,11 +265,11 @@ class data_functions {
 	}
 
 	public static function bytes_to_terabytes($bytes = 0) {
-                return round($bytes / self::CONVERT_TERABYTES,3);
+                return round($bytes / self::CONVERT_TERABYTES,self::DATA_PRECISION);
 
         }
         public static function bytes_to_gigabytes($bytes = 0) {
-                return round($bytes / self::CONVERT_GIGABYTES,3);
+                return round($bytes / self::CONVERT_GIGABYTES,self::DATA_PRECISION);
         }
 
 	public static function get_minimal_year($db) {

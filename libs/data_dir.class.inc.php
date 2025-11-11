@@ -133,7 +133,7 @@ class data_dir {
 	
 	private function get_data_dir() {
 		$sql = "SELECT data_dir.*, ";
-		$sql .= "ROUND(du.data_usage_bytes / :terabytes,3) as terabytes,du.data_usage_time as data_usage_time ";
+		$sql .= "ROUND(du.data_usage_bytes / :terabytes,:data_precision) as terabytes,du.data_usage_time as data_usage_time ";
 		$sql .= "FROM data_dir ";
 		$sql .= "LEFT JOIN (SELECT data_usage.data_usage_time, data_usage.data_usage_data_dir_id, data_usage.data_usage_bytes ";
 		$sql .= "FROM data_usage WHERE data_usage.data_usage_data_dir_id=:data_dir_id ORDER BY data_usage.data_usage_time DESC LIMIT 1) as du ";
@@ -142,7 +142,8 @@ class data_dir {
 		$sql .= "LIMIT 1";
 		$parameters = array(
 			':data_dir_id'=>$this->get_data_dir_id(),
-			':terabytes'=>data_functions::CONVERT_TERABYTES
+			':terabytes'=>data_functions::CONVERT_TERABYTES,
+			':data_precision'=>data_functions::DATA_PRECISION
 		);
 		$result = $this->db->query($sql,$parameters);
 		if ($result) {
@@ -259,7 +260,7 @@ class data_dir {
 	}
 
 	public function get_usage_range($start_date,$end_date) {
-                $sql = "SELECT ROUND(data_usage_bytes / :terabytes,3) as terabytes, ";
+                $sql = "SELECT ROUND(data_usage_bytes / :terabytes,:data_precision) as terabytes, ";
 		$sql .= "DATE_FORMAT(data_usage_time,'%Y-%m-%d') as date FROM data_usage ";
                 $sql .= "LEFT JOIN data_dir ON data_dir_id=data_usage_data_dir_id ";
                 $sql .= "WHERE data_usage_time BETWEEN :start_date AND :end_date ";
@@ -269,7 +270,8 @@ class data_dir {
                         ':data_dir_id'=>$this->get_data_dir_id(),
                         ':start_date'=>$start_date->format("Y-m-d H:i:s"),
                         ':end_date'=>$end_date->format("Y-m-d H:i:s"),
-			':terabytes'=>data_functions::CONVERT_TERABYTES
+			':terabytes'=>data_functions::CONVERT_TERABYTES,
+			':data_precision'=>data_functions::DATA_PRECISION
                 );
                 return $this->db->query($sql,$parameters);
         }

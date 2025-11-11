@@ -235,7 +235,7 @@ class user {
 		$sql = "SELECT data_dir.data_dir_path as directory, ";
 		$sql .= "data_cost.data_cost_value as data_cost_value, ";
 		$sql .= "projects.project_name as project, ";
-		$sql .= "ROUND((data_bill.data_bill_avg_bytes / 1099511627776),4) as terabytes, ";
+		$sql .= "ROUND((data_bill.data_bill_avg_bytes / :terabytes),:data_precision) as terabytes, ";
 		$sql .= "ROUND(data_bill.data_bill_total_cost,2) as total_cost, ";
 		$sql .= "ROUND(data_bill.data_bill_billed_cost,2) as billed_cost, ";
 		$sql .= "cfops.cfop_value as cfop, ";
@@ -252,7 +252,9 @@ class user {
 		$parameters = array(
 			':owner'=>$this->get_user_id(),
 			':month'=>$month,
-			':year'=>$year
+			':year'=>$year,
+			':terabytes'=>data_functions::CONVERT_TERABYTES,
+			':data_precision'=>data_functions::DATA_PRECISION
 		);
 		return $this->db->query($sql,$parameters);
 		
