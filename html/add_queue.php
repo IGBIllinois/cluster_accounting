@@ -11,7 +11,7 @@ if (isset($_POST['new_queue'])) {
                 $var = trim(rtrim($var));
         }
         $queue = new queue($db);
-        $result = $queue->create($_POST['name'],$_POST['description'],$_POST['ldap_group'],$_POST['cpu_cost'],$_POST['mem_cost'],$_POST['gpu_cost'],$ldap);
+        $result = $queue->create($_POST['name'],$_POST['description'],$_POST['skucode'],$_POST['ldap_group'],$_POST['cpu_cost'],$_POST['mem_cost'],$_POST['gpu_cost'],$ldap);
         if($result['RESULT']) {
                 unset($_POST);
         }
@@ -39,6 +39,12 @@ require_once 'includes/header.inc.php';
 		<input class='form-control' type='text' name='description' id='description_input'
 			value='<?php if (isset($_POST['description'])) { echo $_POST['description']; } ?>'>
 	</div>
+	<div class='mb-3'>
+                <label for='description_input'>SKU Code (optional):</label>
+                <input class='form-control' type='text' name='skucode' id='skucode_input'
+                        value='<?php if (isset($_POST['skucode'])) { echo $_POST['skucode']; } ?>'>
+        </div>
+
 	<div class='mb-3'>
 		<label for='ldap_group_input'>LDAP Group (optional):</label>
 		<input class='form-control' type='text' name='ldap_group' id='ldap_group_input'

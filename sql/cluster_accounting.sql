@@ -41,6 +41,7 @@ CREATE TABLE queues (
 	queue_name VARCHAR(50) NOT NULL,
 	queue_ldap_group VARCHAR(50) NOT NULL,
 	queue_description VARCHAR(100),
+	queue_skucode VARCHAR(100) DEFAULT '',
 	queue_time_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	queue_enabled BOOLEAN DEFAULT TRUE,
 	CONSTRAINT queuename UNIQUE(queue_name),

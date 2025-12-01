@@ -9,6 +9,7 @@ class functions {
 		$sql .= "queues.queue_name as name, ";
 		$sql .= "queues.queue_ldap_group as ldap_group, ";
 		$sql .= "queues.queue_description as description, ";
+		$sql .= "queues.queue_skucode as skucode, ";
 		$sql .= "queues.queue_time_created as time_created, ";
 		$sql .= "a.queue_cost_id as cost_id, ";
 		$sql .= "a.queue_cost_mem as cost_memory_secs, ";

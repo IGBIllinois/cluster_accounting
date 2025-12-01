@@ -11,6 +11,7 @@ class queue {
 	private $name;
 	private $ldap_group;
 	private $description;
+	private $skucode;
 	private $enabled;
 	private $cpu_cost;
 	private $mem_cost;
@@ -40,9 +41,10 @@ class queue {
 	//create()
 	//$name - string - name of queue
 	//$description - string - queue description
+	//$skucode - string - fbs SKU Code
 	//returns array with id of new queue
 	//Creates new queue
-	public function create($name,$description,$ldap_group,$cpu,$mem,$gpu,$ldap) {
+	public function create($name,$description,$skucode = "",$ldap_group,$cpu,$mem,$gpu,$ldap) {
 		$errors = false;
 		$message = "";
 		if(!$this->verify_queue_name($name)) {
@@ -83,12 +85,13 @@ class queue {
 				$public = 1;
 			}
 			try {
-				$sql = "INSERT INTO queues(queue_name,queue_description,queue_ldap_group,queue_public) ";
+				$sql = "INSERT INTO queues(queue_name,queue_description,queue_skucode,queue_ldap_group,queue_public) ";
 				$sql .= "VALUES(:queue_name,:queue_description,:queue_ldap_group,:queue_public) ";
 				$sql .= "ON DUPLICATE KEY UPDATE queue_description=:queue_description,";
 				$sql .= "queue_ldap_group=:queue_ldap_group,queue_enabled='1',queue_public=:queue_public";
 				$parameters = array(':queue_name'=>$name,
                                         ':queue_description'=>$description,
+					':queue_skucode'=>$skucode,
                                         ':queue_ldap_group'=>$ldap_group,
 					':queue_public'=>$public);
 				$this->id = $this->db->insert_query($sql,$parameters);
@@ -146,6 +149,9 @@ class queue {
 	}
 	public function get_description() {
 		return $this->description;
+	}
+	public function get_skucode() {
+		return $this->skucode;
 	}
 	public function get_enabled() {
 		return $this->enabled;
@@ -270,7 +276,6 @@ class queue {
 
 	}
 
-
 	public function calculate_cost($cpu_time,$wallclock_time,$slots,$mem,$start_time,$end_time,$num_gpu) {
 		if ($start_time == "0000-00-00 00:00:00") {
 			return 0;
@@ -347,6 +352,7 @@ class queue {
 			$this->id = $result[0]['queue_id'];
 			$this->name = $result[0]['queue_name'];
 			$this->description = $result[0]['queue_description'];
+			$this->skucode = $result[0]['queue_skucode'];
 			$this->ldap_group = $result[0]['queue_ldap_group'];
 			$this->cpu_cost = $result[0]['queue_cost_cpu'];
 			$this->mem_cost = $result[0]['queue_cost_mem'];
