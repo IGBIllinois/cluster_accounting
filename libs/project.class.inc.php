@@ -99,7 +99,8 @@ class project {
                                         ':project_default'=>$default,
 					':project_enabled'=>1
                                 );
- 				$this->id = $this->db->insert_query($sql,$parameters);
+ 				$project_id = $this->db->insert_query($sql,$parameters);
+				$this->get_project($project_id);
 				if ($this->id) {
 					$this->set_cfop($cfop_billtype,$cfop,$activity,$hide_cfop,$custom_bill_description);
 					$message = "Project " . $name . " successfully created.";

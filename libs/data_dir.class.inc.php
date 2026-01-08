@@ -46,7 +46,7 @@ class data_dir {
 			try {
 				$sql = "INSERT INTO data_dir(data_dir_project_id,data_dir_path,data_dir_default,data_dir_enabled) ";
 				$sql .= "VALUES(:project_id,:directory,:default,:enabled) ";
-				$sql .= "ON DUPLICATE KEY UPDATE data_dir_project_id=:project_id,data_dir_enabled=:enabled ";
+				$sql .= "ON DUPLICATE KEY UPDATE data_dir_project_id=:project_id,data_dir_enabled=:enabled,data_dir_default=:default ";
 				$parameters = array(
 					':project_id'=>$this->project->get_project_id(),
 					':directory'=>$directory,
