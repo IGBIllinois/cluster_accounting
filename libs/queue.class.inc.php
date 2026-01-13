@@ -81,18 +81,20 @@ class queue {
 		if ($errors == 0) {
 			$result = false;
 			$public = 0;
+			$enabled = 1;
 			if ($ldap_group == "") {
 				$public = 1;
 			}
 			try {
 				$sql = "INSERT INTO queues(queue_name,queue_description,queue_skucode,queue_ldap_group,queue_public) ";
 				$sql .= "VALUES(:queue_name,:queue_description,:queue_ldap_group,:queue_public) ";
-				$sql .= "ON DUPLICATE KEY UPDATE queue_description=:queue_description,";
-				$sql .= "queue_ldap_group=:queue_ldap_group,queue_enabled='1',queue_public=:queue_public";
+				$sql .= "ON DUPLICATE KEY UPDATE queue_description=:queue_description,queue_skucode=:queue_skucode,";
+				$sql .= "queue_ldap_group=:queue_ldap_group,queue_enabled=:enabled,queue_public=:queue_public";
 				$parameters = array(':queue_name'=>$name,
                                         ':queue_description'=>$description,
 					':queue_skucode'=>$skucode,
                                         ':queue_ldap_group'=>$ldap_group,
+					':enabled'=>$enabled,
 					':queue_public'=>$public);
 				$this->id = $this->db->insert_query($sql,$parameters);
 				if ($this->id) {

@@ -40,7 +40,7 @@ require_once 'includes/header.inc.php';
 			value='<?php if (isset($_POST['description'])) { echo $_POST['description']; } ?>'>
 	</div>
 	<div class='mb-3'>
-                <label for='description_input'>SKU Code (optional):</label>
+                <label for='description_input'>FBS SKU Code (optional):</label>
                 <input class='form-control' type='text' name='skucode' id='skucode_input'
                         value='<?php if (isset($_POST['skucode'])) { echo $_POST['skucode']; } ?>'>
         </div>

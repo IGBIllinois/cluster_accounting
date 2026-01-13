@@ -17,19 +17,20 @@ $year = $selected_year->format('Y');
 $min_year = job_bill::get_minimal_year($db);
 $year_html = "<select class='form-select' name='year'>";
 for ($i=$min_year; $i<=date("Y");$i++) {
-        if ($i == $year) { $year_html .= "<option value='" . $i . "' selected='true'>" . $i . "</option>"; }
-        else { $year_html .= "<option value='" . $i . "'>" . $i . "</option>"; }
+        if ($i == $year) { $year_html .= "<option value='" . $i . "' selected='true'>" . $i . "</option>\n"; }
+        else { $year_html .= "<option value='" . $i . "'>" . $i . "</option>\n"; }
 }
 $year_html .= "</select>";
 
-$start_date = DateTime::createFromFormat("Y-m-d H:i:s",$year . "-07-01 00:00:00");
-$end_date = DateTime::createFromFormat("Y-m-d H:i:s",$year+1 . "-06-30 23:59:59");
+$current_year = new DateTime();
+
+$start_date = DateTime::createFromFormat("Y-m-d H:i:s",$year -1 . "-07-01 00:00:00");
+$end_date = DateTime::createFromFormat("Y-m-d H:i:s",$year . "-06-30 23:59:59");
 
 $url_navigation = html::get_url_navigation_year($_SERVER['PHP_SELF'],$year);
 
 $next_year = DateTime::createFromFormat('Y-m',$year . "-01");
 $next_year->modify('first day of next year');
-$current_year = new DateTime();
 
 $graph_type_array[0]['type'] = 'top_job_users';
 $graph_type_array[0]['title'] = 'Top Users';
@@ -79,7 +80,7 @@ $stats = new statistics($db);
 require_once 'includes/header.inc.php';
 
 ?>
-<h3>Fiscal Yearly Stats - <?php echo $year; ?></h3>
+<h3>Fiscal Yearly Stats - FY<?php echo $year; ?></h3>
 <form action='<?php echo $_SERVER['PHP_SELF']; ?>' method='get'>
 	<div class='row'>
 		<div class='col-auto'>
@@ -102,7 +103,7 @@ require_once 'includes/header.inc.php';
 
         <?php
                 if ($next_year > $current_year) {
-                        echo "<div class='d-flex justify-content-end'><a class='btn btn-sm btn-primary' onclick='return false;'>Next Year</a></div>";
+                        echo "<div class='d-flex justify-content-end'><a class='btn btn-sm btn-primary' disabled onclick='return false;'>Next Year</a></div>";
                 }
                 else {
                         echo "<div class='d-flex justify-content-end'><a class='btn btn-sm btn-primary' href='" . $url_navigation['forward_url'] . "'>Next Year</a></div>";
@@ -110,6 +111,7 @@ require_once 'includes/header.inc.php';
         ?>
         </div>
 </div>
+<br>
 <p>
 <table class='table table-striped table-bordered table-sm'>
 	<tr>
