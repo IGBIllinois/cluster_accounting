@@ -5,7 +5,7 @@ if (!$login_user->is_admin()) {
 	exit;
 }
 
-if (isset($_GET['user_id'])) {
+if (isset($_GET['user_id']) && is_numeric($_GET['user_id'])) {
 
 	$user_id = $_GET['user_id'];
 	$user = new user($db,$ldap,$user_id);

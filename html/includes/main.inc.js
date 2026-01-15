@@ -22,6 +22,9 @@ function confirm_delete_project() {
 	return confirm("Are you sure you want to delete this project?");
 }
 
+function confirm_disable_queue() {
+	return confirm("Are you sure you want to delete this queue?");
+}
 function confirm_update_data_cost() {
 	return confirm("Are you sure want to update the data storage cost?");
 }

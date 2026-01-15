@@ -17,6 +17,8 @@ class queue {
 	private $mem_cost;
 	private $gpu_cost;
 
+	private const SKUCODE_MAX_LENGTH = 16;
+
 	///////////////Public Functions///////////
 
 	public function __construct($db,$id = 0,$date = 0,$name = "") {
@@ -78,6 +80,14 @@ class queue {
 			$errors = true;
 			$message .= "<div class='alert alert-danger'>Queue Name already exists.</div>";
 		}
+		if (!$this->verify_skucode($skucode)) {
+			$errors = true;
+			$message .= "<div class='alert alert-danger'>FBS SKU Code can only be uppercase letters and maximum length of " . self::SKUCODE_MAX_LENGTH . ".</div>";
+		}
+		if (($cpu == 0) && ($mem == 0) && ($gpu == 0) & ($skucode == "")) {
+			$errors = true;
+			$message .= "<div class='alert alert-danger'>FBS SKU Code Required when Cost is not 0</div>";
+		}
 		if ($errors == 0) {
 			$result = false;
 			$public = 0;
@@ -87,7 +97,7 @@ class queue {
 			}
 			try {
 				$sql = "INSERT INTO queues(queue_name,queue_description,queue_skucode,queue_ldap_group,queue_public) ";
-				$sql .= "VALUES(:queue_name,:queue_description,:queue_ldap_group,:queue_public) ";
+				$sql .= "VALUES(:queue_name,:queue_description,:queue_skucode,:queue_ldap_group,:queue_public) ";
 				$sql .= "ON DUPLICATE KEY UPDATE queue_description=:queue_description,queue_skucode=:queue_skucode,";
 				$sql .= "queue_ldap_group=:queue_ldap_group,queue_enabled=:enabled,queue_public=:queue_public";
 				$parameters = array(':queue_name'=>$name,
@@ -123,6 +133,85 @@ class queue {
 		}
 	}
 
+	public function edit($description,$skucode = "",$ldap_group,$cpu_cost,$mem_cost,$gpu_cost,$ldap) {
+		$errors = false;
+                $message = "";
+                if ($description == "") {
+                        $errors = true;
+                        $message .= "<div class='alert alert-danger'>Please enter a queue description.</div>";
+
+                }
+                if (!$this->verify_ldap_group($ldap,$ldap_group)) {
+                        $errors = true;
+                        $message .= "<div class='alert alert-danger'>Please enter valid LDAP group.</div>";
+
+                }
+                if (!is_numeric($cpu)) {
+                        $errors = true;
+                        $message .= "<div class='alert alert-danger'>Please enter valid CPU cost.</div>";
+                }
+                if (!is_numeric($mem)) {
+                        $errors = true;
+                        $message .= "<div class='alert alert-danger'>Please enter valid memory cost.</div>";
+
+                }
+                if (!is_numeric($gpu)) {
+                        $errors = true;
+                        $message .= "<div class='alert alert-danger'>Please enter valid GPU cost.</div>";
+                }
+                if (!$this->verify_skucode($skucode)) {
+                        $errors = true;
+                        $message .= "<div class='alert alert-danger'>FBS SKU Code can only be uppercase letters and maximum length of " . self::SKUCODE_MAX_LENGTH . ".</div>";
+                }
+                if (($cpu == 0) && ($mem == 0) && ($gpu == 0) & ($skucode == "")) {
+                        $errors = true;
+                        $message .= "<div class='alert alert-danger'>FBS SKU Code Required when Cost is not 0</div>";
+                }
+		if ($errors == 0) {
+                        $result = false;
+                        $public = 0;
+                        $enabled = 1;
+                        if ($ldap_group == "") {
+                                $public = 1;
+                        }
+                        try {
+				$sql = "UPDATE queues set queue_description=:queue_description,queue_skucode=:queue_skucode, ";
+				$sql .= "queue_ldap_group=:queue_ldap_group,queue_public=:queue_public ";
+				$sql .= "WHERE queue_id=:queue_id ";
+                                $parameters = array(
+					':queue_description'=>':queue_description',
+                                        ':queue_skucode'=>$skucode,
+                                        ':queue_ldap_group'=>$ldap_group,
+                                        ':queue_public'=>$public,
+					':queue_id'=>$this->get_queue_id()
+				);
+                                $this->db->non_select_query($sql,$parameters);
+                                $this->update_cost($cpu,$mem,$gpu);
+                                $message = "<div class='alert alert-success'>Queue " . $name . " successfully updated.</div>";
+				$this->get_queue($this->get_queue_id());
+                                $result = true;
+                        }
+                        catch(\PDOException $e) {
+                                $message = "<div class='alert alert-danger'>" . $e->getMessage() . "</div>";
+
+                        }
+                        if ($result) {
+                                return array ('RESULT'=>$result,
+                                        'ID'=>$this->get_queue_id(),
+                                        'MESSAGE'=>$message);
+                        }
+                        else {
+                                return array('RESULT'=>$result,
+                                        'MESSAGE'=>$message);
+                        }
+                }
+                else {
+                        return array('RESULT'=>False,
+                                        'MESSAGE'=>$message);
+                }
+
+
+	}
 	public function get_queue_id() {
 		return $this->id;
 	}
@@ -278,6 +367,13 @@ class queue {
 
 	}
 
+	public function verify_skucode($skucode) {
+		if ((strlen($skucode) <= self::SKUCODE_MAX_LENGTH) && (preg_match('/^[A-Z]+$/',$skucode))) {
+			return true;
+		}
+		return false;
+
+	}
 	public function calculate_cost($cpu_time,$wallclock_time,$slots,$mem,$start_time,$end_time,$num_gpu) {
 		if ($start_time == "0000-00-00 00:00:00") {
 			return 0;
@@ -295,7 +391,7 @@ class queue {
 		$sql .= "queue_cost_gpu as gpu, queue_cost_time_created as time ";
 		$sql .= "FROM queue_cost ";
 		$sql .= "WHERE queue_cost_queue_id=:queue_id ";
-		$sql .= "ORDER BY queue_cost_time_created ASC ";
+		$sql .= "ORDER BY queue_cost_time_created DESC ";
 		$parameters = array(':queue_id'=>$this->get_queue_id());
 		return $this->db->query($sql,$parameters);
 
@@ -320,6 +416,7 @@ class queue {
 	private function load_by_id($id,$date) {
 		$this->get_queue($id,$date);
 	}
+
 	//load_by_name()
 	//$queue_name - string - name of queue
 	//loads queue object with queue name

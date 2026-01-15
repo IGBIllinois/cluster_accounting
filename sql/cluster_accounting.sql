@@ -32,6 +32,7 @@ CREATE TABLE cfops(
 	cfop_activity VARCHAR(6),
 	cfop_custom_description VARCHAR(255),
 	cfop_restricted BOOLEAN DEFAULT 0,
+	cfop_active BOOLEAN DEFAULT 0,
 	cfop_time_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY(cfop_id)
 );

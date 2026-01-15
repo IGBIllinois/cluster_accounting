@@ -321,8 +321,8 @@ class project {
 				'cfop_billtype'=>$cfop_billtype,
 				'cfop_value'=>$cfop,
 				'cfop_activity'=>$activity,
-				'cfop_active'=>$active,
 				'cfop_restricted'=>$hide_cfop,
+				'cfop_active'=>$active,
 				'cfop_custom_description'=>$custom_bill_description
 				);
 		return $this->db->build_insert("cfops",$insert_array);
