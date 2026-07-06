@@ -11,12 +11,12 @@ if (isset($_GET['queue_id']) && is_numeric($_GET['queue_id'])) {
 	
 }
 
-//Create New Queue
+//Edit Queue
 if (isset($_POST['edit_queue'])) {
         $_POST = array_map('trim',$_POST);
 
 	$queue = new queue($db,$_POST['queue_id']);
-        $result = $queue->create($_POST['name'],$_POST['description'],$_POST['skucode'],$_POST['ldap_group'],$_POST['cpu_cost'],$_POST['mem_cost'],$_POST['gpu_cost'],$ldap);
+        $result = $queue->edit($_POST['description'],$_POST['skucode'],$_POST['ldap_group'],$_POST['cpu_cost'],$_POST['mem_cost'],$_POST['gpu_cost'],$ldap);
         if($result['RESULT']) {
                 unset($_POST);
         }
@@ -156,6 +156,7 @@ require_once 'includes/header.inc.php';
 <br>
 <div class='mb-3 row'>
 	<div class='col-sm-8'>
+		<input type='hidden' name='queue_id' value='<?php echo $queue->get_queue_id(); ?>'>
 		<input class='btn btn-primary' type='submit' name='edit_queue' value='Edit Queue'>
 		<input class='btn btn-danger' type='submit' name='delete_queue' value='Delete Queue' onClick='return (confirm_disable_queue());'>
 		<input class='btn btn-warning' type='submit' name='cancel_queue' value='Cancel'>
@@ -176,7 +177,7 @@ require_once 'includes/header.inc.php';
 </table>
 </div>
 </div>
-
+<br>
 <?php
 
 if (isset($result['MESSAGE'])) { echo $result['MESSAGE']; }

@@ -146,16 +146,16 @@ class queue {
                         $message .= "<div class='alert alert-danger'>Please enter valid LDAP group.</div>";
 
                 }
-                if (!is_numeric($cpu)) {
+                if (!is_numeric($cpu_cost)) {
                         $errors = true;
                         $message .= "<div class='alert alert-danger'>Please enter valid CPU cost.</div>";
                 }
-                if (!is_numeric($mem)) {
+                if (!is_numeric($mem_cost)) {
                         $errors = true;
                         $message .= "<div class='alert alert-danger'>Please enter valid memory cost.</div>";
 
                 }
-                if (!is_numeric($gpu)) {
+                if (!is_numeric($gpu_cost)) {
                         $errors = true;
                         $message .= "<div class='alert alert-danger'>Please enter valid GPU cost.</div>";
                 }
@@ -163,7 +163,7 @@ class queue {
                         $errors = true;
                         $message .= "<div class='alert alert-danger'>FBS SKU Code can only be uppercase letters and maximum length of " . self::SKUCODE_MAX_LENGTH . ".</div>";
                 }
-                if (($cpu == 0) && ($mem == 0) && ($gpu == 0) & ($skucode == "")) {
+                if (($cpu_cost == 0) && ($mem_cost == 0) && ($gpu_cost == 0) & ($skucode == "")) {
                         $errors = true;
                         $message .= "<div class='alert alert-danger'>FBS SKU Code Required when Cost is not 0</div>";
                 }
@@ -179,16 +179,18 @@ class queue {
 				$sql .= "queue_ldap_group=:queue_ldap_group,queue_public=:queue_public ";
 				$sql .= "WHERE queue_id=:queue_id ";
                                 $parameters = array(
-					':queue_description'=>':queue_description',
+					':queue_description'=>$description,
                                         ':queue_skucode'=>$skucode,
                                         ':queue_ldap_group'=>$ldap_group,
                                         ':queue_public'=>$public,
 					':queue_id'=>$this->get_queue_id()
 				);
                                 $this->db->non_select_query($sql,$parameters);
-                                $this->update_cost($cpu,$mem,$gpu);
-                                $message = "<div class='alert alert-success'>Queue " . $name . " successfully updated.</div>";
-				$this->get_queue($this->get_queue_id());
+				if (($cpu_cost != $this->get_cpu_cost()) || ($mem_cost != $this->get_mem_cost()) || ($gpu_cost != $this->get_gpu_cost())) {
+					$this->update_cost($cpu_cost,$mem_cost,$gpu_cost);
+				}
+                                $message = "<div class='alert alert-success'>Queue " . $this->get_name() . " successfully updated.</div>";
+				$this->get_queue($this->get_queue_id(),date('Y-m-d HH:mm:ss'));
                                 $result = true;
                         }
                         catch(\PDOException $e) {
@@ -304,18 +306,17 @@ class queue {
 			$errors = true;
 			$message .= "<div class='alert alert-danger'>Please enter a valid GPU cost.</div>";
 		}
-
 		if ($errors) {
 			return array('RESULT'=>false,
 					'MESSAGE'=>$message);
 		}
 		else {
 			try {
-			$insert_array = array('queue_cost_queue_id'=>$this->get_queue_id(),
+				$insert_array = array('queue_cost_queue_id'=>$this->get_queue_id(),
 					'queue_cost_mem'=>$mem_cost,
 					'queue_cost_cpu'=>$cpu_cost,
 					'queue_cost_gpu'=>$gpu_cost);
-			$result = $this->db->build_insert("queue_cost",$insert_array);
+				$result = $this->db->build_insert("queue_cost",$insert_array);
 			}
 			catch (\PDOException $e) {
 				throw $e;
