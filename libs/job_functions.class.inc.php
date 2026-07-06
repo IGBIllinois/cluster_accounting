@@ -196,8 +196,6 @@ class job_functions {
                 	foreach ($terms as $term) {
 	                        $search_sql = "(job_name LIKE '%" . $term . "%' OR ";
         	                $search_sql .= "queue_name LIKE '%" . $term . "%' OR ";
-                	        $search_sql .= "cfop LIKE '%" . $term . "%' OR ";
-                        	$search_sql .= "activity_code LIKE '%" . $term . "%' OR ";
 	                        $search_sql .= "project_name LIKE '%" . $term . "%' OR ";
         	                $search_sql .= "job_number LIKE '%" . $term . "%' OR ";
 				$search_sql .= "exec_hosts LIKE '%" . $term . "%') ";
@@ -255,8 +253,6 @@ class job_functions {
                         foreach ($terms as $term) {
                                 $search_sql = "(job_name LIKE '%" . $term . "%' OR ";
                                 $search_sql .= "queue_name LIKE '%" . $term . "%' OR ";
-                                $search_sql .= "cfop LIKE '%" . $term . "%' OR ";
-                                $search_sql .= "activity_code LIKE '%" . $term . "%' OR ";
                                 $search_sql .= "project_name LIKE '%" . $term . "%' OR ";
                                 $search_sql .= "job_number LIKE '%" . $term . "%') ";
                                 array_push($where_sql,$search_sql);
