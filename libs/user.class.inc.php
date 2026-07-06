@@ -347,19 +347,25 @@ class user {
 	}
 	public function disable() {
 		$supervising_users = $this->get_supervising_users();
-		$message;
+		$message = "";
 		$error = false;
 		if (count($supervising_users)) {
-			$message = "Unable to delete user.  User is supervising " . count($supervising_users) . " other users.";
+			$message .= "<div class='alert alert-danger'>Unable to delete user.  User is supervising " . count($supervising_users) . " other users.</div>";
 			$error = true;
 		}		
-		if (is_dir($this->default_data_dir()->get_directory())) {
-                        $message = "Unable to delete user.  Home folder " . $this->default_data_dir()->get_directory() . " still exists.";
+                if (count($this->get_owned_projects()) > 1) {
+                        $message .= "<div class='alert alert-danger'>Unable to delete user.  User is the owner of active projects</div>";
                         $error = true;
                 }
-                if (count($this->get_owned_projects()) > 1) {
-                        $message = "Unable to delete user.  User is the owner of active projects";
+		$data_dir_result = $this->default_data_dir()->disable();
+		if ($data_dir_result['RESULT'] == false) {
+			$error = true;
+			$message .= $data_dir_result['MESSAGE'];
+		}
+		$project_result = $this->default_project()->disable();
+                if ($project_result['RESULT'] == false) {
                         $error = true;
+                        $message .= $project_result['MESSAGE'];
                 }
 
 		if (!$error) {
@@ -369,10 +375,8 @@ class user {
 			);
 			$this->enabled = false;
 			$this->db->non_select_query($sql,$parameters);
-			$this->default_project()->disable();
-			$this->default_data_dir()->disable();
 			
-			$message = "User successfully deleted";
+			$message = "<div class='alert alert-success'>User " . $this->get_username() . " successfully deleted</div>";
 			return array('RESULT'=>true,'MESSAGE'=>$message);
 		}
 		else {

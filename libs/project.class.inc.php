@@ -346,7 +346,7 @@ class project {
 		$error = false;
 		if (count($this->get_directories())) {
 			$error = true;
-			$message .= "<div class='alert alert-danger'>Unable to delete project.  Project contains active directories</div>";
+			$message = "<div class='alert alert-danger'>Unable to delete project.  Project contains active directories</div>";
 		}
 		if ($error) {
 			$result = false;
@@ -362,10 +362,10 @@ class project {
 		$result = $this->db->non_select_query($sql,$parameters);
 		if ($result) {
 			$this->enabled = 0;
-			$message = "Project " . $this->get_name() . " successfully disabled";
+			$message = "<div class='alert alert-success'>Project " . $this->get_name() . " successfully disabled</div>";
 		}
 		else {
-			$message = "Failed disabling project " . $this->get_name();
+			$message = "<div class='alert alert-danger'>Failed disabling project " . $this->get_name() . "</div>";
 		}	
 		return array('RESULT'=>$result,'MESSAGE'=>$message);
 	}

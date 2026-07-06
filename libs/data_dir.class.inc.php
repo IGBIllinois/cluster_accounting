@@ -111,7 +111,7 @@ class data_dir {
 		$message = "";
 		$result = 0;
 		if (is_dir($this->get_directory())) {
-                        $message = "Unable to delete directory.  Directory " . $this->get_directory() . " still exists.";
+                        $message = "<div class='alert alert-danger'>Unable to delete directory.  Directory " . $this->get_directory() . " still exists.</div>";
                         $error = true;
                 }
 		if (!$error) {
@@ -123,7 +123,7 @@ class data_dir {
 			$result = $this->db->non_select_query($sql,$parameters);
 			if ($result) {
 				$this->enabled = 0;
-				$message = "Successfully remove directory " . $this->get_directory() . ".";
+				$message = "<div class='alert alert-success'>Successfully remove directory " . $this->get_directory() . ".</div>";
 			}
 		}
 		return array('RESULT'=>$result,'MESSAGE'=>$message);
