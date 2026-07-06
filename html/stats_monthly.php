@@ -117,7 +117,7 @@ require_once 'includes/header.inc.php';
 
         <?php
                 if ($next_month > $current_month) {
-                        echo "<div class='d-flex justify-content-end'><a class='btn btn-sm btn-primary' onclick='return false;'>Next Month</a></div>";
+                        echo "<div class='d-flex justify-content-end'><a class='btn btn-sm btn-secondary' disabled onclick='return false;'>Next Month</a></div>";
                 }
                 else {
                         echo "<div class='d-flex justify-content-end'><a class='btn btn-sm btn-primary' href='" . $url_navigation['forward_url'] . "'>Next Month</a></div>";
@@ -128,6 +128,14 @@ require_once 'includes/header.inc.php';
 <p>
 <table class='table table-striped table-bordered table-sm'>
 	<tbody>
+		<tr>
+			<td>Start Date</td>
+			<td><?php echo $selected_month->format('Y-m-d');?></td>
+		</tr>
+		<tr>
+			<td>End Date</td>
+			<td><?php echo $selected_month_end->format('Y-m-d');?></td>
+		</tr>
 		<tr>
 			<td>Number Of Jobs:</td>
 			<td><?php echo $stats->get_num_jobs($selected_month,$selected_month_end,true); ?></td>

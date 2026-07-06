@@ -16,7 +16,7 @@ $year = $selected_year->format('Y');
 //////Year////////
 $min_year = job_bill::get_minimal_year($db);
 $year_html = "<select class='form-select' name='year'>";
-for ($i=$min_year; $i<=date("Y");$i++) {
+for ($i=$min_year; $i<=date("Y") +1;$i++) {
         if ($i == $year) { $year_html .= "<option value='" . $i . "' selected='true'>" . $i . "</option>\n"; }
         else { $year_html .= "<option value='" . $i . "'>" . $i . "</option>\n"; }
 }
@@ -31,7 +31,6 @@ $url_navigation = html::get_url_navigation_year($_SERVER['PHP_SELF'],$year);
 
 $next_year = DateTime::createFromFormat('Y-m',$year . "-01");
 $next_year->modify('first day of next year');
-
 $graph_type_array[0]['type'] = 'top_job_users';
 $graph_type_array[0]['title'] = 'Top Users';
 
@@ -102,8 +101,8 @@ require_once 'includes/header.inc.php';
 	<div class='col'>
 
         <?php
-                if ($next_year > $current_year) {
-                        echo "<div class='d-flex justify-content-end'><a class='btn btn-sm btn-primary' disabled onclick='return false;'>Next Year</a></div>";
+                if ($next_year->format('Y') > $current_year->format('Y')+1) {
+                        echo "<div class='d-flex justify-content-end'><a class='btn btn-sm btn-secondary' disabled onclick='return false;'>Next Year</a></div>";
                 }
                 else {
                         echo "<div class='d-flex justify-content-end'><a class='btn btn-sm btn-primary' href='" . $url_navigation['forward_url'] . "'>Next Year</a></div>";
@@ -114,6 +113,14 @@ require_once 'includes/header.inc.php';
 <br>
 <p>
 <table class='table table-striped table-bordered table-sm'>
+	<tr>
+		<td>Start Date</td>
+		<td><?php echo $start_date->format('Y-m-d');?></td>
+	</tr>
+	<tr>
+		<td>End Date</td>
+                <td><?php echo $end_date->format('Y-m-d');?></td>
+	</tr>
 	<tr>
 		<td>Number Of Jobs:</td>
 		<td><?php echo $stats->get_num_jobs($start_date,$end_date,true); ?></td>

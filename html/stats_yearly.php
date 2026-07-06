@@ -102,7 +102,7 @@ require_once 'includes/header.inc.php';
 
         <?php
                 if ($next_year > $current_year) {
-                        echo "<div class='d-flex justify-content-end'><a class='btn btn-sm btn-primary' onclick='return false;'>Next Year</a></div>";
+                        echo "<div class='d-flex justify-content-end'><a class='btn btn-sm btn-secondary' disabled onclick='return false;'>Next Year</a></div>";
                 }
                 else {
                         echo "<div class='d-flex justify-content-end'><a class='btn btn-sm btn-primary' href='" . $url_navigation['forward_url'] . "'>Next Year</a></div>";
@@ -112,6 +112,14 @@ require_once 'includes/header.inc.php';
 </div>
 <p>
 <table class='table table-striped table-bordered table-sm'>
+	<tr>
+                <td>Start Date</td>
+                <td><?php echo $start_date->format('Y-m-d');?></td>
+        </tr>
+        <tr>
+                <td>End Date</td>
+                <td><?php echo $end_date->format('Y-m-d');?></td>
+        </tr>
 	<tr>
 		<td>Number Of Jobs:</td>
 		<td><?php echo $stats->get_num_jobs($start_date,$end_date,true); ?></td>
