@@ -25,6 +25,7 @@ to view a detail listing of your jobs.
 <th>Queue</th>
 <th>Start Time</th>
 <th>Elapsed Time</th>
+<th>Current Cost</th>
 </thead>
 <tbody>
 {% for row in jobs_table %}
@@ -34,6 +35,7 @@ to view a detail listing of your jobs.
 		<td> {{ row.queue }} </td>
 		<td> {{ row.start_time }} </td>
 		<td> {{ row.elapsed_time }} </td>
+		<td> ${{ row.current_cost }} </td>
 	</tr>
 {% endfor %}
 </tbody>

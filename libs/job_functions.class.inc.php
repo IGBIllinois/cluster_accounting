@@ -325,6 +325,7 @@ class job_functions {
                 $sql .= "queues.queue_name as queue, ";
                 $sql .= "running_jobs.job_start_time as start_time, ";
                 $sql .= "SEC_TO_TIME(running_jobs.job_ru_wallclock) as elapsed_time, ";
+                $sql .= "ROUND(running_jobs.job_estimated_cost,2) as current_cost, ";
                 $sql .= "IFNULL(notifications.notification_count,0) as notification_count ";
                 $sql .= "FROM running_jobs ";
                 $sql .= "LEFT JOIN queues ON queues.queue_id=running_jobs.job_queue_id ";
