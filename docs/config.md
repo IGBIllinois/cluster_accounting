@@ -42,4 +42,10 @@ cp conf/settings.inc.php.dist conf/settings.inc.php
 * RESERVE_PROCESSORS_FACTOR - Amount of variance between walltime and elapsed time before a warning will pop up saying to reserve correct number of processors in job details
 * RESERVE_MEMORY_FACTOR - Amount of variance between used memory and reserved memory beforea warning will pop up saying to reserve correct amount of memory in job details
 
+## Long Running Job Notification Settings
+* LONG_RUNNING_JOB_QUEUE - Queue name to check for long running jobs when emailing users. Defaults to GPU
+* LONG_RUNNING_JOB_DAYS - Number of days a job must be running in LONG_RUNNING_JOB_QUEUE before the owning user is emailed a notice. Defaults to 7
+* LONG_RUNNING_JOB_REPEAT_COUNT - Number of additional times to repeat the notification email while the job is still running. Defaults to 3
+* LONG_RUNNING_JOB_REPEAT_DAYS - Number of days to wait between repeat notification emails. Defaults to 7
+
 

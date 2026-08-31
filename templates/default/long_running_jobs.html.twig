@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<style>
+{{ css }}
+</style>
+</head>
+<div class='container-fluid'>
+<div class='col-sm-12 col-md-12 col-lg-12 col-xl-12'>
+<br>
+<p>{{ full_name }}, </p>
+<p>The job(s) below have been running in the {{ queue }} queue for {{ days }} or more days.  You can go to <a href='{{ website_url }}'>{{ website_url }}</a>
+to view a detail listing of your jobs.
+<br>If you believe this is in error, please email us at <a href='mailto:{{ admin_email }}'>{{ admin_email }}</a>.
+<p>
+<br>Name: {{ full_name }}
+<br>Username: {{ username }}
+
+<h4>Long Running Jobs</h4>
+
+<p>
+<table class='table table-bordered table-sm'>
+<thead>
+<th>Job Number</th>
+<th>Job Name</th>
+<th>Queue</th>
+<th>Start Time</th>
+<th>Elapsed Time</th>
+</thead>
+<tbody>
+{% for row in jobs_table %}
+	<tr>
+		<td> {{ row.job_number }} </td>
+		<td> {{ row.job_name }} </td>
+		<td> {{ row.queue }} </td>
+		<td> {{ row.start_time }} </td>
+		<td> {{ row.elapsed_time }} </td>
+	</tr>
+{% endfor %}
+</tbody>
+</table>
+
+</div>
+</div>
+</html>

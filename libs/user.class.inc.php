@@ -18,6 +18,7 @@ class user {
 	private $default_project_id;
 	private $default_data_dir_id;	
 	private const USER_BILL_TWIG = "user_bill.html.twig";
+	private const LONG_RUNNING_JOB_TWIG = "long_running_jobs.html.twig";
 	private $ldap_attributes = array(
 			'firstname'=>'givenname',
 			'lastname'=>'sn',
@@ -533,6 +534,67 @@ class user {
 			} catch (Exception $e) {
 				throw new \Exception("Email BIll - User " . $this->get_username() . " Error sending mail. " . $e->getMessage());
 				return false;;
+			}
+			return $result;
+		}
+
+	}
+
+	public function email_long_running_jobs($jobs,$queue_name,$days,$website_url,$admin_email) {
+
+		if (!$this->ldap->is_ldap_user($this->get_username())) {
+			throw new \Exception("Email Long Running Jobs - User " . $this->get_username() . " not in ldap");
+		}
+		elseif ($this->get_email() == "") {
+			throw new \Exception("Email Long Running Jobs - User " . $this->get_username() . " email is not set");
+		}
+		else {
+			$subject = "Biocluster - Long Running Job Notice";
+
+			$to = $this->get_email();
+			if (settings::get_debug()) {
+				$to = $admin_email;
+			}
+			$twig_variables = array(
+	                        'css' => settings::get_email_css_contents(),
+	                        'full_name' => $this->get_full_name(),
+	                        'username' => $this->get_username(),
+	                        'website_url' => $website_url,
+	                        'queue' => $queue_name,
+	                        'days' => $days,
+	                        'jobs_table' => $jobs,
+				'admin_email'=> $admin_email
+	                );
+
+			$loader = new \Twig\Loader\FilesystemLoader(settings::get_twig_dir());
+			$twig = new \Twig\Environment($loader);
+
+			if (file_exists(settings::get_twig_dir() . "/custom/" . self::LONG_RUNNING_JOB_TWIG)) {
+				$html_message = $twig->render("custom/" . self::LONG_RUNNING_JOB_TWIG,$twig_variables);
+			}
+			else {
+				$html_message = $twig->render("default/" . self::LONG_RUNNING_JOB_TWIG,$twig_variables);
+			}
+
+			$email = new \IGBIllinois\email(settings::get_smtp_host(),
+						settings::get_smtp_port(),
+						settings::get_smtp_username(),
+						settings::get_smtp_password());
+
+			$email->set_replyto_emails($admin_email);
+			$email->set_to_emails($to);
+			if (!settings::get_debug() && $this->get_supervisor_id()) {
+				$supervisor = new user($this->db,$this->ldap,$this->get_supervisor_id());
+				if ($supervisor->get_email() != "") {
+					$email->set_cc_emails($supervisor->get_email());
+				}
+			}
+			try {
+				$result = $email->send_email(settings::get_from_email(),$subject,"",$html_message,settings::get_from_name());
+				$message = "Email Long Running Jobs - User " . $this->get_username() . " successfully sent to " . $this->get_email();
+
+			} catch (Exception $e) {
+				throw new \Exception("Email Long Running Jobs - User " . $this->get_username() . " Error sending mail. " . $e->getMessage());
 			}
 			return $result;
 		}

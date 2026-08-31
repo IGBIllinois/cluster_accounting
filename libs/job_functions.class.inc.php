@@ -314,6 +314,65 @@ class job_functions {
 
 	}
 
+	public static function get_long_running_jobs($db,$queue_name,$days,$repeat_days,$repeat_count) {
+                $sql = "SELECT IF(ISNULL(running_jobs.job_number_array),running_jobs.job_number, ";
+                $sql .= "CONCAT(running_jobs.job_number,'[',running_jobs.job_number_array,']')) as job_number, ";
+                $sql .= "running_jobs.job_number as job_number_raw, ";
+                $sql .= "IFNULL(running_jobs.job_number_array,0) as job_number_array, ";
+                $sql .= "running_jobs.job_name as job_name, ";
+                $sql .= "running_jobs.job_user_id as user_id, ";
+		$sql .= "running_jobs.job_user as username, ";
+                $sql .= "queues.queue_name as queue, ";
+                $sql .= "running_jobs.job_start_time as start_time, ";
+                $sql .= "SEC_TO_TIME(running_jobs.job_ru_wallclock) as elapsed_time, ";
+                $sql .= "IFNULL(notifications.notification_count,0) as notification_count ";
+                $sql .= "FROM running_jobs ";
+                $sql .= "LEFT JOIN queues ON queues.queue_id=running_jobs.job_queue_id ";
+                $sql .= "LEFT JOIN long_running_job_notifications notifications ";
+                $sql .= "ON notifications.notification_job_number=running_jobs.job_number ";
+                $sql .= "AND notifications.notification_job_number_array=IFNULL(running_jobs.job_number_array,0) ";
+                $sql .= "AND notifications.notification_job_user=running_jobs.job_user ";
+                $sql .= "AND notifications.notification_job_start_time=running_jobs.job_start_time ";
+		$sql .= "WHERE queues.queue_name=:queue_name ";
+		$sql .= "AND running_jobs.job_start_time<=DATE_SUB(NOW(),INTERVAL :days DAY) ";
+		$sql .= "AND IFNULL(notifications.notification_count,0)<:max_notifications ";
+		$sql .= "AND (IFNULL(notifications.notification_count,0)=0 ";
+		$sql .= "OR notifications.notification_last_sent<=DATE_SUB(NOW(),INTERVAL :repeat_days DAY)) ";
+		$sql .= "ORDER BY running_jobs.job_user_id ";
+		$parameters = array(
+			':queue_name'=>$queue_name,
+			':days'=>$days,
+			':max_notifications'=>$repeat_count + 1,
+			':repeat_days'=>$repeat_days
+		);
+		$result = $db->query($sql,$parameters);
+                return $result;
+	}
+
+	public static function record_long_running_job_notification($db,$job_number,$job_number_array,$job_user,$job_start_time) {
+		$sql = "INSERT INTO long_running_job_notifications ";
+		$sql .= "(notification_job_number,notification_job_number_array,notification_job_user,notification_job_start_time,notification_count,notification_last_sent) ";
+		$sql .= "VALUES(:job_number,:job_number_array,:job_user,:job_start_time,1,NOW()) ";
+		$sql .= "ON DUPLICATE KEY UPDATE notification_count=notification_count+1,notification_last_sent=NOW()";
+		$parameters = array(
+			':job_number'=>$job_number,
+			':job_number_array'=>$job_number_array,
+			':job_user'=>$job_user,
+			':job_start_time'=>$job_start_time
+		);
+		return $db->insert_query($sql,$parameters);
+	}
+
+	public static function cleanup_long_running_job_notifications($db) {
+		$sql = "DELETE notifications FROM long_running_job_notifications notifications ";
+		$sql .= "LEFT JOIN running_jobs ON running_jobs.job_number=notifications.notification_job_number ";
+		$sql .= "AND IFNULL(running_jobs.job_number_array,0)=notifications.notification_job_number_array ";
+		$sql .= "AND running_jobs.job_user=notifications.notification_job_user ";
+		$sql .= "AND running_jobs.job_start_time=notifications.notification_job_start_time ";
+		$sql .= "WHERE running_jobs.job_id IS NULL";
+		return $db->non_select_query($sql);
+	}
+
 }
 
 ?>
