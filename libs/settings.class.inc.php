@@ -22,7 +22,7 @@ class settings {
 	private const REPORT_PREFIX = "Report";
 	private const DATA_MIN_BILL = 0.00;
 	private	const CFOP_API_ENABLED = false;
-	private const LONG_RUNNING_JOB_QUEUE = "GPU";
+	private const LONG_RUNNING_JOB_QUEUE = "gpu";
 	private const LONG_RUNNING_JOB_DAYS = 7;
 	private const LONG_RUNNING_JOB_REPEAT_COUNT = 3;
 	private const LONG_RUNNING_JOB_REPEAT_DAYS = 7;
