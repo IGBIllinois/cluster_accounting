@@ -540,7 +540,7 @@ class user {
 
 	}
 
-	public function email_long_running_jobs($jobs,$queue_name,$days,$website_url,$admin_email) {
+	public function email_long_running_jobs($jobs,$days,$website_url,$admin_email) {
 
 		if (!$this->ldap->is_ldap_user($this->get_username())) {
 			throw new \Exception("Email Long Running Jobs - User " . $this->get_username() . " not in ldap");
@@ -560,7 +560,6 @@ class user {
 	                        'full_name' => $this->get_full_name(),
 	                        'username' => $this->get_username(),
 	                        'website_url' => $website_url,
-	                        'queue' => $queue_name,
 	                        'days' => $days,
 	                        'jobs_table' => $jobs,
 				'admin_email'=> $admin_email

@@ -334,18 +334,20 @@ class job_functions {
                 $sql .= "AND notifications.notification_job_number_array=IFNULL(running_jobs.job_number_array,0) ";
                 $sql .= "AND notifications.notification_job_user=running_jobs.job_user ";
                 $sql .= "AND notifications.notification_job_start_time=running_jobs.job_start_time ";
-		$sql .= "WHERE queues.queue_name=:queue_name ";
-		$sql .= "AND running_jobs.job_start_time<=DATE_SUB(NOW(),INTERVAL :days DAY) ";
+		$sql .= "WHERE running_jobs.job_start_time<=DATE_SUB(NOW(),INTERVAL :days DAY) ";
 		$sql .= "AND IFNULL(notifications.notification_count,0)<:max_notifications ";
 		$sql .= "AND (IFNULL(notifications.notification_count,0)=0 ";
 		$sql .= "OR notifications.notification_last_sent<=DATE_SUB(NOW(),INTERVAL :repeat_days DAY)) ";
-		$sql .= "ORDER BY running_jobs.job_user_id ";
 		$parameters = array(
-			':queue_name'=>$queue_name,
 			':days'=>$days,
 			':max_notifications'=>$repeat_count + 1,
 			':repeat_days'=>$repeat_days
 		);
+		if (!empty($queue_name)) {
+			$sql .= "AND queues.queue_name=:queue_name ";
+			$parameters[':queue_name'] = $queue_name;
+		}
+		$sql .= "ORDER BY running_jobs.job_user_id ";
 		$result = $db->query($sql,$parameters);
                 return $result;
 	}

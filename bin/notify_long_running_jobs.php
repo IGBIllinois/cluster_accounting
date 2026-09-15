@@ -21,7 +21,7 @@ date_default_timezone_set(settings::get_timezone());
 //Command parameters
 $output_command = "notify_long_running_jobs.php Emails users whose jobs have been running longer than a configured number of days\n";
 $output_command .= "Usage: php notify_long_running_jobs.php \n";
-$output_command .= "	--queue			Queue name to check (Default: " . settings::get_long_running_job_queue() . ")\n";
+$output_command .= "	--queue			Queue name to check (Default: all queues)\n";
 $output_command .= "	--days			Number of days a job must be running before notifying (Default: " . settings::get_long_running_job_days() . ")\n";
 $output_command .= "	--repeat-count		Number of additional times to repeat the notification while the job is still running (Default: " . settings::get_long_running_job_repeat_count() . ")\n";
 $output_command .= "	--repeat-days		Number of days to wait between repeat notifications (Default: " . settings::get_long_running_job_repeat_days() . ")\n";
@@ -50,7 +50,7 @@ if (isset($options['h']) || isset($options['help'])) {
 	exit;
 }
 
-$queue_name = settings::get_long_running_job_queue();
+$queue_name = null;
 $days = settings::get_long_running_job_days();
 $repeat_count = settings::get_long_running_job_repeat_count();
 $repeat_days = settings::get_long_running_job_repeat_days();
@@ -100,7 +100,7 @@ foreach ($jobs_by_user as $user_id => $user_jobs) {
 	$user_object = new user($db,$ldap,$user_id);
 	$level = \IGBIllinois\log::NOTICE;
 	try {
-		$user_object->email_long_running_jobs($user_jobs,$queue_name,$days,settings::get_website_url(),settings::get_admin_email());
+		$user_object->email_long_running_jobs($user_jobs,$days,settings::get_website_url(),settings::get_admin_email());
 		foreach ($user_jobs as $job) {
 			job_functions::record_long_running_job_notification($db,$job['job_number_raw'],$job['job_number_array'],
 				$job['username'],$job['start_time']);

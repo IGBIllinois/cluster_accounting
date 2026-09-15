@@ -22,7 +22,6 @@ class settings {
 	private const REPORT_PREFIX = "Report";
 	private const DATA_MIN_BILL = 0.00;
 	private	const CFOP_API_ENABLED = false;
-	private const LONG_RUNNING_JOB_QUEUE = "gpu";
 	private const LONG_RUNNING_JOB_DAYS = 7;
 	private const LONG_RUNNING_JOB_REPEAT_COUNT = 3;
 	private const LONG_RUNNING_JOB_REPEAT_DAYS = 7;
@@ -354,13 +353,6 @@ class settings {
 		}
 		return "";
 
-	}
-
-	public static function get_long_running_job_queue() {
-		if (defined("LONG_RUNNING_JOB_QUEUE") && (LONG_RUNNING_JOB_QUEUE != "")) {
-			return LONG_RUNNING_JOB_QUEUE;
-		}
-		return self::LONG_RUNNING_JOB_QUEUE;
 	}
 
 	public static function get_long_running_job_days() {
