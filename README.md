@@ -71,5 +71,8 @@ max_execution_time = 120
 ```
 systemctl restart httpd php-fpm
 ```
-
+11. If logging is enabled, change permissions on log folder to allow apache user to write to it
+```
+chown apache:apache /var/www/accounting/log
+```
 
