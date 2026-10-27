@@ -426,7 +426,6 @@ class queue {
 		$sql .= "WHERE queue_name=:queue_name LIMIT 1";
 		$parameters = array(':queue_name'=>$queue_name);
 		$result = $this->db->query($sql,$parameters);
-		
 		if ($result) {
 			$this->get_queue($result[0]['queue_id'],$date);
 		}

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "07166656092764564de997f0e52e5344",
+    "content-hash": "fd5ccb13e501847403a06230be4a9c23",
     "packages": [
         {
             "name": "amenadiel/jpgraph",
@@ -467,16 +467,16 @@
         },
         {
             "name": "igbillinois/igbillinois-php",
-            "version": "1.4.6",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/IGBIllinois/IGBIllinois-php.git",
-                "reference": "9c122865343d04198ee6172e2037ba310acc04ef"
+                "reference": "86ee75a44a650d43108f7623d44e81daf9bb0f9e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/IGBIllinois/IGBIllinois-php/zipball/9c122865343d04198ee6172e2037ba310acc04ef",
-                "reference": "9c122865343d04198ee6172e2037ba310acc04ef",
+                "url": "https://api.github.com/repos/IGBIllinois/IGBIllinois-php/zipball/86ee75a44a650d43108f7623d44e81daf9bb0f9e",
+                "reference": "86ee75a44a650d43108f7623d44e81daf9bb0f9e",
                 "shasum": ""
             },
             "require": {
@@ -494,7 +494,7 @@
                 "phpoffice/phpspreadsheet": ">=1.29.8 <2.0.0"
             },
             "require-dev": {
-                "phpdocumentor/phpdocumentor": "v3.0.0"
+                "phpdocumentor/phpdocumentor": "v3.8.1"
             },
             "type": "project",
             "autoload": {
@@ -519,10 +519,10 @@
                 "template"
             ],
             "support": {
-                "source": "https://github.com/IGBIllinois/IGBIllinois-php/tree/1.4.6",
+                "source": "https://github.com/IGBIllinois/IGBIllinois-php/tree/1.5.0",
                 "issues": "https://github.com/IGBIllinois/IGBIllinois-php/issues"
             },
-            "time": "2025-08-29T15:58:00+00:00"
+            "time": "2026-10-25T16:35:48+00:00"
         },
         {
             "name": "maennchen/zipstream-php",

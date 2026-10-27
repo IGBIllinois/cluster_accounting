@@ -17,7 +17,8 @@ class slurm {
 	private const SLURM_DELIMITER = "|";
 	private const SLURM_TIME_FORMAT = "%Y-%m-%d %H:%M:%s";
 	private const TRES_GPU = "gpu";
-
+	private const SLURM_TIME_LENGTH = 27;
+	private const SLURM_FORMATTED_TIME_LENGTH = 18; 
 	public static function get_accounting($start_time,$end_time) {
 
 		$exec = "export SLURM_TIME_FORMAT='" . self::SLURM_TIME_FORMAT . "'; ";
@@ -118,7 +119,10 @@ class slurm {
 				$length = 1;
 				$gpu = substr($job_data['AllocTRES'],$start_position,$length);
 			}
-		
+			if (isset($job_data['Start']) && ($job_data['Start'] == 'None')) {
+				$job_data['Start'] = "0000-00-00 00:00:00";
+				$job_data['End'] = "0000-00-00 00:00:00";
+			}
                 	//creates array that gets submitted to the job.class.inc.php with the required information
 	                $job_insert = array('job_number'=>$job_data['JobID'],
         	                        'job_user'=>$job_data['User'],
@@ -126,11 +130,11 @@ class slurm {
                         	        'job_queue_name'=>$job_data['Partition'],
                                 	'job_name'=>$job_data['JobName'],
 	                                'job_slots'=>$job_data['ReqCPUS'],
-        	                        'job_submission_time'=>$job_data['Submit'],
-                	                'job_start_time'=>$job_data['Start'],
-                        	        'job_end_time'=>$job_data['End'],
-                                	'job_ru_wallclock'=>self::convert_to_seconds(self::format_slurm_time($job_data['Elapsed'])),
-	                                'job_cpu_time'=>self::convert_to_seconds(self::format_slurm_time($job_data['TotalCPU'])),
+        	                        'job_submission_time'=>self::format_slurm_time($job_data['Submit']),
+                	                'job_start_time'=>self::format_slurm_time($job_data['Start']),
+                        	        'job_end_time'=>self::format_slurm_time($job_data['End']),
+                                	'job_ru_wallclock'=>self::convert_to_seconds(self::format_elapsed_slurm_time($job_data['Elapsed'])),
+	                                'job_cpu_time'=>self::convert_to_seconds(self::format_elapsed_slurm_time($job_data['TotalCPU'])),
         	                        'job_reserved_mem'=>self::convert_memory($job_data['ReqMem']),
 					'job_used_mem'=>self::convert_memory($job_data['MaxRSS']),
                                         'job_exec_hosts'=>$job_data['NodeList'],
@@ -195,10 +199,10 @@ class slurm {
                                         'job_queue_name'=>$job_data['Partition'],
                                         'job_name'=>$job_data['JobName'],
                                         'job_slots'=>$job_data['ReqCPUS'],
-                                        'job_submission_time'=>$job_data['Submit'],
-                                        'job_start_time'=>$start_time,
-                                        'job_ru_wallclock'=>self::convert_to_seconds(self::format_slurm_time($job_data['Elapsed'])),
-                                        'job_cpu_time'=>self::convert_to_seconds(self::format_slurm_time($job_data['TotalCPU'])),
+                                        'job_submission_time'=>format_slurm_time($job_data['Submit']),
+                                        'job_start_time'=>format_slurm_time($start_time),
+                                        'job_ru_wallclock'=>self::convert_to_seconds(self::format_elapsed_slurm_time($job_data['Elapsed'])),
+                                        'job_cpu_time'=>self::convert_to_seconds(self::format_elapsed_slurm_time($job_data['TotalCPU'])),
                                         'job_reserved_mem'=>self::convert_memory($job_data['ReqMem']),
                                         'job_exec_hosts'=>$job_data['NodeList'],
                                         'job_gpu'=>$gpu,
@@ -236,7 +240,11 @@ class slurm {
 		return $seconds;
 	}
 
-	public static function format_slurm_time($slurm_time) {
+	//format_elapsed_slurm_time()
+	//Removeds microseconds from sacct Elapsed,TotalCPU in slurm
+	//$slurm_time - string formatted as YYYY-MM-DD HH:MM:SS.SSSS
+	//return - string formatted as YYYY-MM-DD HH:MM:SS
+	public static function format_elapsed_slurm_time($slurm_time) {
 		//Remove Microseconds
 		if (strpos($slurm_time,".")) {
                                 $slurm_time = substr($slurm_time,0,strpos($slurm_time,"."));
@@ -247,6 +255,19 @@ class slurm {
 		}
 
 		return $slurm_time;
+	}
+
+	//format_slurm_time()
+	//Removes extra microseconds from sacct Submit,Start,End in slurm 25.05
+	//$slurm_time - slurm time for sacct Submit,Start,End
+	//returns time in YYYY-MM-DD HH:MM:SS
+	public static function format_slurm_time($slurm_time) {
+		$formatted_slurm_time = $slurm_time;
+		if (strlen($slurm_time) == self::SLURM_TIME_LENGTH) {
+			$formatted_slurm_time = substr($slurm_time,0,self::SLURM_FORMATTED_TIME_LENGTH);
+		}
+		return $formatted_slurm_time;
+
 	}
 	//convert_memory() - converts string repesenting amount of memory into bytes.
 	//$mem - string can be in the format of NUMBER + SUFFIX where suffix is either
